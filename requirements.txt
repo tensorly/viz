@@ -1,5 +1,5 @@
 pip
-
+build
 wheel
 twine
 
@@ -7,14 +7,12 @@ flake8
 black
 isort
 seed-isort-config
-bumpversion
+bump2version
 
 sphinx
-watchdog
 
 tox
 coverage
 pytest
 pytest-cov
 pytest-randomly
-
