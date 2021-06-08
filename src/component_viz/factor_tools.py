@@ -1,5 +1,8 @@
 import numpy as np
 from scipy.optimize import linear_sum_assignment
+import scipy.linalg as sla
+
+from ._utils import unfold_tensor
 
 
 def normalise(x, axis=0):
@@ -10,6 +13,16 @@ def tucker_congruence(factor_matrix1, factor_matrix2):
     congruence = normalise(factor_matrix1).T @ normalise(factor_matrix2)
     permutation = linear_sum_assignment(-congruence)
     return congruence[permutation].mean()
+
+
+def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
+    congruence_product = normalise(factor_matrix1).T@normalise(factor_matrix2)
+    if ignore_sign:
+        congruence_product = np.abs(congruence_product)
+    row_index, column_index = linear_sum_assignment(-congruence_product)
+    permutation = np.zeros_like(row_index)
+    permutation[row_index] = column_index
+    return permutation
 
 
 def factor_match_score(
@@ -96,8 +109,16 @@ def factor_match_score(
 
 
 def degeneracy_score(cp_tensor):
-    raise NotImplementedError
+    # TODO: docstring for degeneracy_score
+    # TODO: test for degenearcy_score 
+    weights, factors = cp_tensor
+    rank = factors.shape[1]
+    tucker_congruence_scores = np.ones(shape=(rank,rank))
 
+    for factor in factors:
+        tucker_congruence_scores *= normalise(factor).T@normalise(factor)
+    
+    return tucker_congruence_scores.min()
 
 def construct_cp_tensor(cp_tensor):
     if cp_tensor[0] is None:
@@ -126,14 +147,14 @@ def construct_tucker_tensor(tucker_tensor):
     einsum_input = ''
     einsum_output = ''
     
-    for mode in range(len(cp_tensor[1])):
+    for mode in range(len(tucker_tensor[1])):
         idx = chr(ord('a') + mode)
         rank_idx = chr(ord('A') + mode)
 
         # We cannot use einsum with letters outside the alphabet
         if ord(idx) > ord("z"):
             max_modes = ord("a") - ord("z")
-            raise ValueError(f"Cannot have more than {max_modes} modes. Current components have {len(cp_tensor[1])}.")
+            raise ValueError(f"Cannot have more than {max_modes} modes. Current components have {len(tucker_tensor[1])}.")
 
         einsum_core += rank_idx
         einsum_input += f', {idx}{rank_idx}'
