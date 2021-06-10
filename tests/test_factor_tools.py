@@ -3,9 +3,9 @@ from pytest import approx
 import numpy as np
 from component_viz import factor_tools
 
-def test_factor_match_score():
-    A = np.random.standard_normal((30, 3))
-    B = np.random.standard_normal((20, 3))
+def test_factor_match_score(rng):
+    A = rng.standard_normal((30, 3))
+    B = rng.standard_normal((20, 3))
 
     assert factor_tools.factor_match_score((None, (A, B)), (None, (A, B))) == approx(1)
     assert factor_tools.factor_match_score((None, (A, B)), (None, (0.5*A, 0.5*B))) == approx(1)
@@ -161,11 +161,11 @@ def test_factor_match_score_known_matrix_four_modes():
     assert factor_tools.factor_match_score((None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2))) == pytest.approx(0.015619878684950, rel=1e-8, abs=1e-10)
     assert factor_tools.factor_match_score((None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2)), consider_weights=True) == pytest.approx(0.007867447488467, rel=1e-8, abs=1e-10)
 
-def test_factor_match_score_permutation():
+def test_factor_match_score_permutation(rng):
     num_components = 4
-    A = np.random.standard_normal((30,num_components))
-    B = np.random.standard_normal((20,num_components))
-    permutation = np.random.permutation(num_components)
+    A = rng.standard_normal((30,num_components))
+    B = rng.standard_normal((20,num_components))
+    permutation = rng.permutation(num_components)
 
     A_permuted = A[:, permutation]
     B_permuted = B[:, permutation]
