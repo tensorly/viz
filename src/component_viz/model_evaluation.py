@@ -5,6 +5,8 @@ from itertools import product
 
 
 def estimate_core_tensor(factors, X):
+    """Efficient estimation of the Tucker core from a factor matrices and a data tensor.
+    """
     # FAST EFFICIENT AND SCALABLE CORE CONSISTENCY DIAGNOSTIC FOR THE PARAFAC DECOMPOSITION FOR BIG SPARSE TENSORS
     # Efficient Vector and Parallel Manipulation Tensor Products
     svds = [sla.svd(factor, full_matrices=False) for factor in factors]
@@ -36,7 +38,7 @@ def core_consistency(cp_tensor, X, normalised=False):
     T = np.zeros([rank]*X.ndim)
     np.fill_diagonal(T, 1)
     if normalised:
-        denom = np.linalg.norm(G, 'fro')**2 
+        denom = np.sum(G**2)
     else:
         denom = rank
 
