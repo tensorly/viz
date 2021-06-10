@@ -110,9 +110,8 @@ def factor_match_score(
 
 def degeneracy_score(cp_tensor):
     # TODO: docstring for degeneracy_score
-    # TODO: test for degenearcy_score 
     weights, factors = cp_tensor
-    rank = factors.shape[1]
+    rank = factors[0].shape[1]
     tucker_congruence_scores = np.ones(shape=(rank,rank))
 
     for factor in factors:
@@ -121,6 +120,8 @@ def degeneracy_score(cp_tensor):
     return tucker_congruence_scores.min()
 
 def construct_cp_tensor(cp_tensor):
+    #TODO: reconsider name
+    #TODO: move to utils?
     if cp_tensor[0] is None:
         weights = np.ones(cp_tensor[1][0].shape[1])
     else:
@@ -162,3 +163,46 @@ def construct_tucker_tensor(tucker_tensor):
         
     
     return np.einsum(f'{einsum_core}{einsum_input} -> {einsum_output}', tucker_tensor[0], *tucker_tensor[1])
+
+
+def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode=None, method="transpose"):
+    """Resolve the sign indeterminacy of CP models.
+    """
+    if flip_mode < 0:
+        flip_mode = dataset.ndim - flip_mode
+    if flip_mode > dataset.ndim or flip_mode < 0:
+        raise ValueError("`flip_mode` must be between `-dataset.ndim` and `dataset.ndim-1`.")
+    
+    if resolve_mode is None:
+        for mode in range(dataset.ndim):
+            if mode != flip_mode:
+                cp_tensor = resolve_cp_sign_indeterminacy(
+                    cp_tensor, dataset, flip_mode=flip_mode, resolve_mode=mode, method=method,
+                )
+        
+        return cp_tensor
+
+    unfolded_dataset = unfold_tensor(dataset, resolve_mode)
+    factor_matrix = cp_tensor[1][resolve_mode]
+
+    if method == "transpose":
+        sign_scores = factor_matrix.T @ unfolded_dataset
+    elif method == "positive_coord":
+        sign_scores = sla.lstsq(factor_matrix, unfolded_dataset)[0]
+    else:
+        raise ValueError("Method must be either `transpose` or `positive_coord`")
+
+    signs = np.sign(np.sum(sign_scores**2 * np.sign(sign_scores), axis=1))
+    signs = signs.reshape(1, -1)
+
+    factor_matrices = list(cp_tensor[1])
+    factor_matrices[resolve_mode] = factor_matrices[resolve_mode] * signs
+    factor_matrices[flip_mode] = factor_matrices[resolve_mode] * signs
+    return cp_tensor[0], tuple(factor_matrices)
+
+
+def classification_accuracy(factor_matrix, labels, classifier, metric=None):
+    classifier.fit(factor_matrix, labels)
+    if metric is None:
+        return classifier.score(factor_matrix, labels)
+    return metric(labels, classifier.predict(factor_matrix))
