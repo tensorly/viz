@@ -90,16 +90,15 @@ def factor_match_score(
             norms2 *= np.linalg.norm(factor2, axis=0)
         congruence_product *= normalise(factor1).T @ normalise(factor2)
     
+    if consider_weights:
+        congruence_product *= 1 - np.abs(norms1[:, np.newaxis] - norms2[np.newaxis, :])/np.maximum(norms1[:, np.newaxis], norms2[np.newaxis, :])
+
     if absolute_value:
         congruence_product = np.abs(congruence_product)
+
     row_index, column_index = linear_sum_assignment(-congruence_product)
-    norms1 = norms1[row_index]
-    norms2 = norms2[column_index]
     congruence_product = congruence_product[row_index, column_index]
 
-    if consider_weights:
-        congruence_product *= (1 - np.abs(norms1 - norms2)/np.maximum(norms1, norms2))
-    
     if not return_permutation:
         return congruence_product.mean()
     
@@ -202,6 +201,9 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode
 
 
 def classification_accuracy(factor_matrix, labels, classifier, metric=None):
+    #TODO: docstring
+    #TODO: test
+    #TODO: example
     classifier.fit(factor_matrix, labels)
     if metric is None:
         return classifier.score(factor_matrix, labels)
