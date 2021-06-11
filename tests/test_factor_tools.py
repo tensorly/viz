@@ -3,6 +3,7 @@ from pytest import approx
 import numpy as np
 from component_viz import factor_tools
 
+
 def test_factor_match_score(rng):
     A = rng.standard_normal((30, 3))
     B = rng.standard_normal((20, 3))
@@ -12,10 +13,7 @@ def test_factor_match_score(rng):
     assert factor_tools.factor_match_score((None, (A, B)), (None, (0.5*A, 0.5*B)), consider_weights=False) == approx(1)
     assert factor_tools.factor_match_score((None, (A, B)), (None, (0.1*A, 0.1*B)), consider_weights=True) < 0.5
 
-    # TODO: More tests for FMS -> Examples with known FMS
-    # TODO: seed
-
-def test_factor_match_score_known_matrix_three_modes():
+def test_factor_match_score_against_tensortoolbox_three_modes():
     A1 = np.array(
         [
             [-3.17188834,  0.12037674, -0.52441857],
@@ -78,7 +76,7 @@ def test_factor_match_score_known_matrix_three_modes():
     assert factor_tools.factor_match_score((None, (A1, B1, C1)), (None, (A2, B2, C2))) == pytest.approx(0.027696956568833, rel=1e-8, abs=1e-10)
     assert factor_tools.factor_match_score((None, (A1, B1, C1)), (None, (A2, B2, C2)), consider_weights=True) == pytest.approx(0.019965399034340, rel=1e-8, abs=1e-10)
 
-def test_factor_match_score_known_matrix_four_modes():
+def test_factor_match_score_against_tensortoolbox_four_modes():
     A1 = np.array(
         [
             [-1.25305822,  0.41480863,  0.67937122, -1.41094398],
@@ -177,3 +175,42 @@ def test_factor_match_score_permutation(rng):
         )
     assert fms == approx(1)
     assert np.allclose(permutation, p)
+
+def test_degeneracy_on_degenerate_components():
+    A = np.array(
+        [
+            [ 1,  1, 3],
+            [-1, -1, 0],
+            [ 1,  1, 2],
+            [ 2,  2, 6],
+        ]
+    )
+    B = np.array(
+        [
+            [ 4,  4,  6],
+            [-3, -3,  2],
+            [ 0,  0, -8],
+        ]
+    )
+    C = np.array(
+        [
+            [ 1, -1,  3],
+            [ 2, -2,  4],
+            [-1,  1,  2],
+            [ 2, -2, -3],
+        ]
+    )
+    assert factor_tools.degeneracy_score((None, (A, B, C))) == pytest.approx(-1)
+
+def test_degeneracy_on_orthogonal_components(rng):
+    A = rng.standard_normal(size=(4, 4))
+    A_orthogonal = np.linalg.qr(A)[0]
+    B = rng.standard_normal(size=(4, 4))
+    B_orthogonal = np.linalg.qr(B)[0]
+    assert factor_tools.degeneracy_score((None, (A_orthogonal, B))) == pytest.approx(0)
+    assert factor_tools.degeneracy_score((None, (A, B_orthogonal))) == pytest.approx(0)
+
+def test_degeneracy_one_mode(rng):
+    A = rng.standard_normal(size=(5, 3))
+    min_crossproduct = (factor_tools.normalise(A).T@factor_tools.normalise(A)).min()
+    assert factor_tools.degeneracy_score((None, (A,))) == pytest.approx(min_crossproduct)
