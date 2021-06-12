@@ -3,10 +3,10 @@ from . import model_evaluation
 import numpy as np
 
 
-# TODO: Tester
-# Sett similarity metric til funksjon som returnerer kun 1 for å sjekke at den brukes
-# Sjekk med comparison_tensors lik cp_tensor for å sjekke at vi får 1
-# Lage noen kjente cp tensorer og teste med de
+# TODO: Tests
+# Set similarity metric to a function that only return ones to check that the argument is used
+# Check comparison tensors equal to cp_tensor to check that we only get ones
+# Test with CP tensors with known similarity
 def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
     """Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
 
