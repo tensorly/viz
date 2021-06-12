@@ -4,6 +4,7 @@ import numpy as np
 import scipy.linalg as sla
 import matplotlib.pyplot as plt
 from itertools import product
+from .factor_tools import construct_cp_tensor
 
 
 def estimate_core_tensor(factors, X):
@@ -127,3 +128,33 @@ def core_consistency(cp_tensor, X, normalised=False):
         denom = rank
 
     return 100 - 100*np.sum((G - T)**2)/denom
+
+
+def sse(cp_tensor, X):
+    #TODO: Documentation
+    #TODO: tests
+    X_hat = construct_cp_tensor(cp_tensor)
+    return np.sum((X - X_hat)**2)
+
+
+def relative_sse(cp_tensor, X, sum_squared_X=None):
+    #TODO: Documentation
+    #TODO: tests
+    sum_squared_x = np.sum(X**2)
+    return sse(cp_tensor, X) / sum_squared_x
+
+
+def fit(cp_tensor, X, sum_squared_X=None):
+    #TODO: Documentation
+    #TODO: tests
+    return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
+
+def classification_accuracy(factor_matrix, labels, classifier, metric=None):
+    #TODO: docstring
+    #TODO: test
+    #TODO: example
+    #TODO: Move?
+    classifier.fit(factor_matrix, labels)
+    if metric is None:
+        return classifier.score(factor_matrix, labels)
+    return metric(labels, classifier.predict(factor_matrix))
