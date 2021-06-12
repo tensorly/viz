@@ -91,7 +91,7 @@ def factor_match_score(
     Examples
     --------
     >>> import numpy as np
-    ... from component_viz.factor_tools import factor_match_score
+    ... from component_vis.factor_tools import factor_match_score
     ... from tensorly.decomposition import parafac
     ... from tensorly.random import random_cp
     ... # Construct random cp tensor with TensorLy

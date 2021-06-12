@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import statsmodels.api as sm
 
-#TODO: visualisation or vizualisation?
+#TODO: visualisation or visualisation?
 def histogram_of_residuals(cp_tensor, X, ax=None, standardised=True, **kwargs):
     # TODO: docstring
     estimated_X = construct_cp_tensor(cp_tensor)
@@ -186,7 +186,7 @@ def plot_components(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     --------
     Small example with a simulated CP tensor
     >>> from tensorly.random import random_cp
-    ... from component_viz.visualisation import plot_components
+    ... from component_vis.visualisation import plot_components
     ... cp_tensor = random_cp(shape=(5,10,15), rank=3)
     ... plot_components(cp_tensor)
 
@@ -194,8 +194,8 @@ def plot_components(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     >>> import pandas as pd
     ... import numpy as np
     ... from plotly.data import stocks
-    ... from component_viz.xarray_wrapper import label_cp_tensor
-    ... from component_viz.visualisation import plot_components
+    ... from component_vis.xarray_wrapper import label_cp_tensor
+    ... from component_vis.visualisation import plot_components
     ... 
     ... # Load data and convert to xarray
     ... stocks = px.data.stocks().set_index("date").stack()
@@ -209,7 +209,7 @@ def plot_components(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     ... # Extract two components and convert to cp_tensor
     ... num_components = 2
     ... cp_tensor = s[:num_components], (U[:, :num_components], Vh.T[:, :num_components])
-    ... cp_tensor = component_viz.xarray_wrapper.label_cp_tensor(cp_tensor, stocks)
+    ... cp_tensor = component_vis.xarray_wrapper.label_cp_tensor(cp_tensor, stocks)
     ... 
     ... # Visualise the components with plot_components
     ... fig, axes = plot_components(cp_tensor, weight_behaviour="one_mode", weight_mode=1, plot_kwargs=[{}, {'marker': 'o', 'linewidth': 0}])
@@ -275,7 +275,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     >>> import numpy as np
     ... from tensorly.random import random_cp
     ... from tensorly.decomposition import parafac
-    ... from component_viz.visualisation import optimisation_diagnostic_plots
+    ... from component_vis.visualisation import optimisation_diagnostic_plots
     ... 
     ... # Generate random tensor and add noise
     ... rng = np.random.RandomState(1)
@@ -295,7 +295,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     >>> import numpy as np
     ... from tensorly.random import random_cp
     ... from tensorly.decomposition import parafac
-    ... from component_viz.visualisation import optimisation_diagnostic_plots
+    ... from component_vis.visualisation import optimisation_diagnostic_plots
     ... 
     ... # Generate random tensor and add noise
     ... rng = np.random.RandomState(1)

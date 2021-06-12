@@ -1,7 +1,7 @@
 import pytest
 from pytest import approx
 import numpy as np
-from component_viz import factor_tools
+from component_vis import factor_tools
 
 
 def test_factor_match_score(rng):

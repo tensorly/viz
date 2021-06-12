@@ -38,6 +38,8 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode
     return cp_tensor[0], tuple(factor_matrices)
 
 def normalise_cp_tensor(cp_tensor):
+    # TODO: documentation
+    # TODO: test
     weights, factors = cp_tensor
     if weights is None:
         weights = np.ones(factors[0].shape[1])
@@ -51,6 +53,8 @@ def normalise_cp_tensor(cp_tensor):
     return weights, tuple(new_factors)
 
 def distribute_weights_evenly(cp_tensor):
+    # TODO: documentation
+    # TODO: test
     weights, factors = normalise_cp_tensor(cp_tensor)
     weights = weights**(1/3)
     for factor in factors:
@@ -59,6 +63,8 @@ def distribute_weights_evenly(cp_tensor):
     return weights, factors
 
 def distribute_weights_in_one_mode(cp_tensor, mode):
+    # TODO: documentation
+    # TODO: test
     weights, factors = normalise_cp_tensor(cp_tensor)
     factors[mode][:] *= weights
     return np.ones_like(weights), factors

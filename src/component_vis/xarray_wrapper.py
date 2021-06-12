@@ -14,3 +14,8 @@ def label_factor_matrices(factor_matrices, dataset):
 
 def label_cp_tensor(cp_tensor, dataset):
     return (cp_tensor[0], label_factor_matrices(cp_tensor[1], dataset))
+
+
+def is_xarray(x):
+    # TODO: Is this how we want to check?
+    return isinstance(x, xarray.DataArray) or isinstance(x, xarray.Dataset)

@@ -5,6 +5,7 @@ import pandas as pd
 
 from ._utils import is_iterable
 from .factor_tools import construct_cp_tensor
+from .xarray_wrapper import is_xarray
 
 
 _LEVERAGE_NAME = "Leverage score"
@@ -17,19 +18,31 @@ def _compute_leverage(factor_matrix):
     return np.diag(leverage)
 
 
-def _compute_slabwise_sse(estimated, true, axis=0):
+def _compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     if not is_iterable(axis):
         axis = {axis}
     axis = set(axis)
 
     reduction_axis = tuple(i for i in range(true.ndim) if i not in axis)
-    return ((estimated - true)**2).sum(axis=reduction_axis)
+    SSE = ((estimated - true)**2).sum(axis=reduction_axis)
+    if normalise:
+        return SSE / SSE.sum()
+    else:
+        return SSE
 
 
-def compute_slabwise_sse(estimated, true, axis=0):
-    """Compute the slabwise SSE along the given mode(s).
+def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
+    r"""Compute the (normalised) slabwise SSE along the given mode(s).
 
-    # TODO: Write description of slabwise SSE.
+    For a tensor, :math:`\mathcal{X}`, and an estimated tensor :math:`\hat{\mathcal{X}}`,
+    we compute the :math:`i`-th normalised slabwise residual as
+
+    .. math::
+        r_i = \frac{\sum_{jk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}{\sum_{ijk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}. 
+
+    The residuals can measure how well our decomposition fits the different 
+    sample. If a sample, :math:`i`, has a high residual, then that indicates that 
+    the model is not able to describe its behaviour.
 
     Arguments
     ---------
@@ -37,6 +50,8 @@ def compute_slabwise_sse(estimated, true, axis=0):
         Estimated dataset, if this is an xarray, then the output is too.
     true : xarray or numpy array
         True dataset, if this is an xarray, then the output is too.
+    normalise : bool
+        Whether the SSE should be scaled so the vector sums to one.
     axis : int
         Axis (or axes) that the SSE is computed across (i.e. these are not the ones summed over).
         The output will still have these axes.
@@ -44,8 +59,10 @@ def compute_slabwise_sse(estimated, true, axis=0):
     Returns
     -------
     slab_sse : xarray or numpy array
-        The slabwise-SSE, if true tensor input is an xarray array, then the returned
-        tensor is too.
+        The (normalised) slabwise SSE, if true tensor input is an xarray array,
+        then the returned tensor is too.
+
+    TODO: example
     """
     # Check that dimensions match up.
     if hasattr(estimated, 'to_dataframe') and hasattr(true, 'to_dataframe'):
@@ -66,16 +83,29 @@ def compute_slabwise_sse(estimated, true, axis=0):
                     f"The dimension {dim} has different coordinates for the true and estimated tensor."
                 )
 
-    slab_sse = _compute_slabwise_sse(estimated, true, axis=axis)
+    slab_sse = _compute_slabwise_sse(estimated, true, normalise=normalise, axis=axis)
     if hasattr(slab_sse, 'to_dataframe'):
         slab_sse.name = _SLABWISE_SSE_NAME
     return slab_sse
 
 
 def compute_leverage(factor_matrix):
-    """Compute the leverage score of the given factor matrix.
+    r"""Compute the leverage score of the given factor matrix.
 
-    # TODO: Write description of leverage.
+    The leverage score is a measure of how much "influence" a slab (often representing a sample)
+    has on a tensor factorisation model. For example, if we have a CP model, :math:`[A, B, C]`,
+    where the :math:`A`-matrix represents the samples, then the sample-mode leverage score is
+    defined as
+
+    .. math::
+        
+        l_i = \left[A \left(A^T A\right)^{-1} A^T\right]_{ii},
+
+    that is, the :math:`i`-th diagonal entry of the matrix :math:`\left[A \left(A^T A\right)^{-1} A^T\right]`.
+    If a given sample, :math:`i`, has a high leverage score, then it likely has a strong
+    influence on the model.
+
+    # TODO: More description with some mathematical properties (e.g. sums to the rank) and interpretations
 
     If the factor matrix is a dataframe (i.e. has an index), then the output is
     also a dataframe with that index. Otherwise, the output is a NumPy array.
@@ -89,6 +119,8 @@ def compute_leverage(factor_matrix):
     -------
     leverage : DataFrame or numpy array
         The leverage scores, if the input is a dataframe, then the index is preserved.
+
+    #TODO: example
     """
     leverage = _compute_leverage(factor_matrix)
     
@@ -98,8 +130,8 @@ def compute_leverage(factor_matrix):
         return leverage
     
 
-def compute_outlier_info(cp_tensor, true_tensor, axis=0):
-    f"""Compute the leverage score and Slabwise SSE along one axis.
+def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
+    f"""Compute the leverage score and (normalised) slabwise SSE along one axis.
 
     # TODO: Write description of how to use this.
 
@@ -112,6 +144,8 @@ def compute_outlier_info(cp_tensor, true_tensor, axis=0):
         argument and a tuple of components as second argument
     true_tensor : xarray or numpy array
         Dataset that cp_tensor is fitted against.
+    normalise_sse : bool
+        If true, the slabwise SSE is scaled so it sums to one.
     axis : int
 
     Returns
@@ -122,18 +156,20 @@ def compute_outlier_info(cp_tensor, true_tensor, axis=0):
     leverage = compute_leverage(cp_tensor[1][axis])
 
     estimated_tensor = construct_cp_tensor(cp_tensor)
-    slab_sse = compute_slabwise_sse(estimated_tensor, true_tensor, axis=axis)
+    slab_sse = compute_slabwise_sse(estimated_tensor, true_tensor, normalise=normalise_sse, axis=axis)
     if hasattr(slab_sse, 'to_dataframe'):
         slab_sse = pd.DataFrame(slab_sse.to_series())
 
-    is_labelled = isinstance(leverage, pd.DataFrame)
-    is_xarray = isinstance(slab_sse, pd.DataFrame)
-    if (is_labelled and not is_xarray) or (not is_labelled and is_xarray):
+    leverage_is_labelled = isinstance(leverage, pd.DataFrame)
+    sse_is_labelled = isinstance(slab_sse, pd.DataFrame) #TODO: isxarray function?
+    if (leverage_is_labelled and not sse_is_labelled) or (not leverage_is_labelled and sse_is_labelled):
         raise ValueError(
             "If `cp_tensor` is labelled (factor matrices are dataframes), then"
             "`true_tensor` should be an xarray object and vice versa."
         )
-    elif not all(slab_sse.index == leverage.index):
+    elif not leverage_is_labelled and not sse_is_labelled:
+        return pd.DataFrame({_LEVERAGE_NAME: leverage, _SLABWISE_SSE_NAME: slab_sse})
+    elif leverage_is_labelled and not all(slab_sse.index == leverage.index):
         raise ValueError(
             "The indices of the labelled factor matrices does not match up with the xarray dataset"
         )

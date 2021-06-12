@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.linalg as sla
 import pytest
-from component_viz import factor_tools, model_evaluation
+from component_vis import factor_tools, model_evaluation
 
 
 def _estimate_core_tensor(factors, X):
