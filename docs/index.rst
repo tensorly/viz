@@ -1,10 +1,11 @@
-Welcome to component_viz's documentation!
+Welcome to component_vis's documentation!
 ======================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   api
    readme
    installation
    usage
@@ -17,3 +18,8 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+References
+==========
+
+.. bibliography::
