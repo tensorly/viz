@@ -28,12 +28,12 @@ def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
 def factor_match_score(
     cp_tensor1,
     cp_tensor2,
-    consider_weights=False,
+    consider_weights=True,
     skip_axis=None,
     return_permutation=False,
     absolute_value=True,
 ):
-    r"""Compute the factor match score.
+    r"""Compute the factor match score between ``cp_tensor1`` and ``cp_tensor2``.
 
     The factor match score is used to measure the similarity between two
     sets of components. There are many definitions of the FMS, but one 
@@ -41,13 +41,14 @@ def factor_match_score(
 
     .. math::
 
-        \sum_{r=1}^R \frac{\vec{a}_r^T \hat{\vec{a}}_r}{\|\vec{a}_r^T\|\|\hat{\vec{a}}_r\|}
-                     \frac{\vec{b}_r^T \hat{\vec{b}}_r]{\|\vec{b}_r^T\|\|\hat{\vec{b}}_r\|}
-                     \frac{\vec{c}_r^T \hat{\vec{c}}_r]{\|\vec{c}_r^T\|\|\hat{\vec{c}}_r\|},
+        \sum_{r=1}^R \frac{\vec{a}_r^T \hat{\vec{a}}_r}{\|\vec{a}_r^T\| \|\hat{\vec{a}}_r\|}
+                     \frac{\vec{b}_r^T \hat{\vec{b}}_r}{\|\vec{b}_r^T\| \|\hat{\vec{b}}_r\|}
+                     \frac{\vec{c}_r^T \hat{\vec{c}}_r}{\|\vec{c}_r^T\| \|\hat{\vec{c}}_r\|},
 
     where :math:`\vec{a}, \vec{b}` and :math:`\vec{c}` are the component vectors for
     one of the decompositions and :math:`\hat{\vec{a}}, \hat{\vec{b}}` and :math:`\hat{\vec{c}}`
-    are the component vectors for the other decomposition. 
+    are the component vectors for the other decomposition. Often, the absolute value of the inner
+    products is used instead of just the inner products (i.e. :math:`|\vec{a}_r^T \hat{\vec{a}}_r|`).
 
     The above definition does not take the norm of the component vectors into account.
     However, sometimes, we also wish to compare their norm. In that case, set the
@@ -57,18 +58,55 @@ def factor_match_score(
 
         \sum_{r=1}^R \left(1 - \frac{w_r \hat{w}_r}{\max\left( w_r \hat{w}_r \right)}\right)
                      \frac{\vec{a}_r^T \hat{\vec{a}}_r}{\|\vec{a}_r^T\|\|\hat{\vec{a}}_r\|}
-                     \frac{\vec{b}_r^T \hat{\vec{b}}_r]{\|\vec{b}_r^T\|\|\hat{\vec{b}}_r\|}
-                     \frac{\vec{c}_r^T \hat{\vec{c}}_r]{\|\vec{c}_r^T\|\|\hat{\vec{c}}_r\|}
+                     \frac{\vec{b}_r^T \hat{\vec{b}}_r}{\|\vec{b}_r^T\|\|\hat{\vec{b}}_r\|}
+                     \frac{\vec{c}_r^T \hat{\vec{c}}_r}{\|\vec{c}_r^T\|\|\hat{\vec{c}}_r\|}
     
     instead, where :math:`w_r = \|\vec{a}_r\| \|\vec{b}_r\| \|\vec{c}_r\|` and
     :math:`\hat{w}_r = \|\hat{\vec{a}}_r\| \|\hat{\vec{b}}_r\| \|\hat{\vec{c}}_r\|`.
 
     For both definitions above, there is a permutation determinacy. Two equivalent decompositions
     can have the same component vectors, but in a different order. To resolve this determinacy,
-    we use linear sum assignment solver available in SciPy to efficiently find the optimal
-    permutation.
+    we use linear sum assignment solver available in SciPy :cite:p:`crouse2016implementing` to 
+    efficiently find the optimal permutation.
 
-    LSAP https://doi.org/10.1109/TAES.2016.140952
+    Parameters
+    ----------
+    cp_tensor1 : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    cp_tensor2 : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    consider_weights : bool (default=True)
+        If False, then the weight-penalty is used (second equation above).
+    skip_axis : int or None (default=None)
+        Which axis to skip when computing the FMS. Useful if cross validation
+        or split-half analysis is used.
+    return_permutation : bool (default=False)
+        Whether or not to return the optimal permutation of the factors
+    absolute_value : bool (default=True)
+        If True, then only magnitude of the congruence is considered, not the
+        sign.
+    
+    Examples
+    --------
+    >>> import numpy as np
+    ... from component_viz.factor_tools import factor_match_score
+    ... from tensorly.decomposition import parafac
+    ... from tensorly.random import random_cp
+    ... # Construct random cp tensor with TensorLy
+    ... cp_tensor = random_cp(shape=(4,5,6), rank=3, random_state=42)
+    ... X = cp_tensor.to_tensor()
+    ... # Add noise
+    ... X_noisy = X + 0.05*np.random.RandomState(0).standard_normal(size=X.shape)
+    ... # Decompose with TensorLy and compute FMS
+    ... estimated_cp_tensor = parafac(X_noisy, rank=3, random_state=42)
+    ... fms_with_weight_penalty = factor_match_score(cp_tensor, estimated_cp_tensor, consider_weights=True)
+    ... fms_without_weight_penalty = factor_match_score(cp_tensor, estimated_cp_tensor, consider_weights=False)
+    ... print(f"Factor match score (with weight penalty): {fms_with_weight_penalty:.2f}")
+    ... print(f"Factor match score (without weight penalty): {fms_without_weight_penalty:.2f}")
+    Factor match score (with weight penalty): 0.95
+    Factor match score (without weight penalty): 0.99
     """
     # Extract weights and components from decomposition
     weights1, factors1 = cp_tensor1
@@ -83,6 +121,11 @@ def factor_match_score(
 
     congruence_product = 1
     for i, (factor1, factor2) in enumerate(zip(factors1, factors2)):
+        if hasattr(factor1, 'values'):
+            factor1 = factor1.values
+        if hasattr(factor2, 'values'):
+            factor2 = factor2.values
+        
         if i == skip_axis:
             continue
         if consider_weights:
@@ -121,10 +164,11 @@ def degeneracy_score(cp_tensor):
 def construct_cp_tensor(cp_tensor):
     #TODO: reconsider name
     #TODO: move to utils?
+    #TODO: Tests (1 component for example)
     if cp_tensor[0] is None:
         weights = np.ones(cp_tensor[1][0].shape[1])
     else:
-        weights = cp_tensor[0].squeeze()
+        weights = cp_tensor[0].reshape(-1)
     
     einsum_input = 'R'
     einsum_output = ''
@@ -143,6 +187,8 @@ def construct_cp_tensor(cp_tensor):
 
 
 def construct_tucker_tensor(tucker_tensor):
+    # TODO: Rename
+    # TODO: Documentation
     einsum_core = ''
     einsum_input = ''
     einsum_output = ''
@@ -163,48 +209,3 @@ def construct_tucker_tensor(tucker_tensor):
     
     return np.einsum(f'{einsum_core}{einsum_input} -> {einsum_output}', tucker_tensor[0], *tucker_tensor[1])
 
-
-def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode=None, method="transpose"):
-    """Resolve the sign indeterminacy of CP models.
-    """
-    if flip_mode < 0:
-        flip_mode = dataset.ndim - flip_mode
-    if flip_mode > dataset.ndim or flip_mode < 0:
-        raise ValueError("`flip_mode` must be between `-dataset.ndim` and `dataset.ndim-1`.")
-    
-    if resolve_mode is None:
-        for mode in range(dataset.ndim):
-            if mode != flip_mode:
-                cp_tensor = resolve_cp_sign_indeterminacy(
-                    cp_tensor, dataset, flip_mode=flip_mode, resolve_mode=mode, method=method,
-                )
-        
-        return cp_tensor
-
-    unfolded_dataset = unfold_tensor(dataset, resolve_mode)
-    factor_matrix = cp_tensor[1][resolve_mode]
-
-    if method == "transpose":
-        sign_scores = factor_matrix.T @ unfolded_dataset
-    elif method == "positive_coord":
-        sign_scores = sla.lstsq(factor_matrix, unfolded_dataset)[0]
-    else:
-        raise ValueError("Method must be either `transpose` or `positive_coord`")
-
-    signs = np.sign(np.sum(sign_scores**2 * np.sign(sign_scores), axis=1))
-    signs = signs.reshape(1, -1)
-
-    factor_matrices = list(cp_tensor[1])
-    factor_matrices[resolve_mode] = factor_matrices[resolve_mode] * signs
-    factor_matrices[flip_mode] = factor_matrices[resolve_mode] * signs
-    return cp_tensor[0], tuple(factor_matrices)
-
-
-def classification_accuracy(factor_matrix, labels, classifier, metric=None):
-    #TODO: docstring
-    #TODO: test
-    #TODO: example
-    classifier.fit(factor_matrix, labels)
-    if metric is None:
-        return classifier.score(factor_matrix, labels)
-    return metric(labels, classifier.predict(factor_matrix))
