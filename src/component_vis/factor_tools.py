@@ -2,7 +2,7 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 import scipy.linalg as sla
 
-from ._utils import unfold_tensor
+from ._utils import unfold_tensor, extract_singleton
 
 
 def normalise(x, axis=0):
@@ -159,7 +159,7 @@ def degeneracy_score(cp_tensor):
     for factor in factors:
         tucker_congruence_scores *= normalise(factor).T@normalise(factor)
     
-    return tucker_congruence_scores.min()
+    return np.asarray(tucker_congruence_scores).min()
 
 def construct_cp_tensor(cp_tensor):
     #TODO: reconsider name
