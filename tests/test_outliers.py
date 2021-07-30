@@ -11,6 +11,17 @@ def test_leverage(rng):
     compute_leverage(A)
     pass
 
+def test_leverage_known_matrix():
+    A = np.array([
+        [0,  0, -1],
+        [0,  2,  1],
+        [1, -2,  1],
+        [2, -2,  0],
+    ])
+    leverage = compute_leverage(A)
+    supposed_leverage = [0.4, 0.9 + 1/30, 0.7 + 1/30, 0.9 + 1/30]
+    assert np.allclose(leverage, supposed_leverage)
+
 def test_leverages_sum_to_R(rng):
     N, R = 10,3
     A = rng.standard_normal(size=(N,R))
@@ -33,5 +44,3 @@ def test_slabwise_sse_sum_equals_total_sse(rng):
     slab_sse = compute_slabwise_sse(tensor1, tensor2, normalise=False)
     total_sse = np.sum((tensor1 - tensor2)**2)
     assert np.sum(slab_sse) == pytest.approx(total_sse)
-    
-
