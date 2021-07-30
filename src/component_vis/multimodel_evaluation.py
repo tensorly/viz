@@ -3,7 +3,7 @@ from . import model_evaluation
 import numpy as np
 
 
-# TODO: Tests
+# TODO: Tests for similarity_evaluation
 # Set similarity metric to a function that only return ones to check that the argument is used
 # Check comparison tensors equal to cp_tensor to check that we only get ones
 # Test with CP tensors with known similarity
@@ -26,7 +26,7 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     --------
     similarity : float 
     """
-    # TODO: example
+    # TODO: example for similarity_evaluation
     if similarity_metric is None:
         similarity_metric = factor_match_score
     
@@ -37,8 +37,8 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
 
 
 def get_model_with_lowest_error(cp_tensors, X, error_function=None):
-    # TODO: tests
-    # TODO: documentation
+    # TODO: tests for get_model_with_lowest_error
+    # TODO: documentation for get_model_with_lowest_error
     if error_function is None:
         error_function = model_evaluation.relative_sse
 
@@ -58,6 +58,8 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
 
 
 def sort_models_by_error(cp_tensors, X, error_function=None):
+    # TODO: documentation for sort_models_by_error
+    # TODO: tests for sort_models_by_error
     errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function)[2]
     sorted_tensors = sorted(zip(errors, cp_tensors))
     # We use np.asarray(error).item() because the error is an XArray object for X-array datasets
