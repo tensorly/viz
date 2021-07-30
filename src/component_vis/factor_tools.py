@@ -6,16 +6,56 @@ from ._utils import unfold_tensor, extract_singleton
 
 
 def normalise(x, axis=0):
+    """Normalise a matrix so all columns have unit norm.
+
+    Arguments
+    ---------
+    x : np.ndarray
+        Matrix (or vector/tensor) to normalise.
+    axis : int
+        Axis along which to normalise, if 0, then all columns will have unit norm
+        and if 1 then all rows will have unit norm.
+    
+    Returns
+    -------
+    np.ndarray
+        Normalised matrix
+    """
     return x / np.linalg.norm(x, axis=axis, keepdims=True)
 
 
-def tucker_congruence(factor_matrix1, factor_matrix2):
+def cosine_similarity(factor_matrix1, factor_matrix2):
+    r"""The average cosine similarity (Tucker congruence) with optimal column permutation.
+
+    The cosine similarity between two vectors is computed as
+
+    .. math::
+
+        \cos (\mathbf{x}, \mathbf{y}) = 
+        \frac{\mathbf{x}^\mathsf{T}}{\|\mathbf{x}\|}\frac{\mathbf{y}}{\|\mathbf{y}\|}
+
+    This function returns the average cosine similarity between the columns vectors of 
+    the two factor matrices, using the optimal column permutation.
+
+    Arguments
+    ---------
+    factor_matrix1 : np.ndarray or pd.DataFrame
+        First factor matrix
+    factor_matrix2 : np.ndarray or pd.DataFrame
+        Second factor matrix
+    
+    Returns
+    -------
+    float
+        The average cosine similarity.
+    """
     congruence = normalise(factor_matrix1).T @ normalise(factor_matrix2)
     permutation = linear_sum_assignment(-congruence)
-    return congruence[permutation].mean()
+    return extract_singleton(congruence[permutation].mean())
 
 
 def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
+    # TODO: Docstring for get_permutation
     congruence_product = normalise(factor_matrix1).T@normalise(factor_matrix2)
     if ignore_sign:
         congruence_product = np.abs(congruence_product)
@@ -152,6 +192,8 @@ def factor_match_score(
 
 def degeneracy_score(cp_tensor):
     # TODO: docstring for degeneracy_score
+    # TODO: Find rule of thumbs for degenerate solutions
+    # TODO: Find cites
     weights, factors = cp_tensor
     rank = factors[0].shape[1]
     tucker_congruence_scores = np.ones(shape=(rank,rank))
@@ -162,9 +204,10 @@ def degeneracy_score(cp_tensor):
     return np.asarray(tucker_congruence_scores).min()
 
 def construct_cp_tensor(cp_tensor):
-    #TODO: reconsider name
-    #TODO: move to utils?
-    #TODO: Tests (1 component for example)
+    # TODO: Docstring for construct_cp_tensor
+    # TODO: Reconsider name
+    # TODO: Move to utils?
+    # TODO: Tests (1 component for example)
     if cp_tensor[0] is None:
         weights = np.ones(cp_tensor[1][0].shape[1])
     else:
@@ -188,7 +231,9 @@ def construct_cp_tensor(cp_tensor):
 
 def construct_tucker_tensor(tucker_tensor):
     # TODO: Rename
-    # TODO: Documentation
+    # TODO: Docstring for construct_tucker_tensor
+    # TODO: Reconsider name
+    # TODO: Move to utils?
     einsum_core = ''
     einsum_input = ''
     einsum_output = ''
@@ -208,4 +253,3 @@ def construct_tucker_tensor(tucker_tensor):
         
     
     return np.einsum(f'{einsum_core}{einsum_input} -> {einsum_output}', tucker_tensor[0], *tucker_tensor[1])
-
