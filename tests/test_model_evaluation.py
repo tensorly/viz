@@ -160,9 +160,7 @@ def test_core_consistency_with_one_component(rng):
        [0.42242025]])
 
     cc = model_evaluation.core_consistency((None, (A,B,C)), X, normalised=False)
-    assert cc == pytest.approx(100)        
-
-    # TODO: test 1 component should get 100 cc
+    assert cc == pytest.approx(100)
 
 def test_core_consistency_against_matlab(rng):
     """Test against the MATLAB implementation by Vagelis Papalexakis https://www.cs.ucr.edu/~epapalex/code.html
