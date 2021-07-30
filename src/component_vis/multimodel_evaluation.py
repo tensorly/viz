@@ -60,4 +60,5 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
 def sort_models_by_error(cp_tensors, X, error_function=None):
     errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function)[2]
     sorted_tensors = sorted(zip(errors, cp_tensors))
-    return [cp_tensor for error, cp_tensor in sorted_tensors], [error for error, cp_tensor in sorted_tensors]
+    # We use np.asarray(error).item() because the error is an XArray object for X-array datasets
+    return [cp_tensor for error, cp_tensor in sorted_tensors], [np.asarray(error).item() for error, cp_tensor in sorted_tensors]
