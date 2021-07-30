@@ -1,11 +1,14 @@
 from .model_evaluation import estimate_core_tensor
 from .outliers import compute_leverage, compute_slabwise_sse, compute_outlier_info
-from .factor_tools import construct_cp_tensor
+from .factor_tools import construct_cp_tensor, factor_match_score
 from .outliers import _LEVERAGE_NAME, _SLABWISE_SSE_NAME
+from . import postprocessing
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 import statsmodels.api as sm
+from matplotlib.lines import Line2D
+
 
 #TODO: visualisation or visualisation?
 def histogram_of_residuals(cp_tensor, X, ax=None, standardised=True, **kwargs):
@@ -64,6 +67,7 @@ def outlier_plot(cp_tensor, X, mode=0, rule_of_thumbs=None, ax=None):
 
 
 def factor_scatterplot(cp_tensor, mode, x_component=0, y_component=1, orthogonalise=False, ax=None):
+    #TODO: component scatterplot?
     if ax is None:
         ax = plt.gca()
 
@@ -110,6 +114,7 @@ def factor_scatterplot(cp_tensor, mode, x_component=0, y_component=1, orthogonal
 # TODO: Core element image plot
 def core_element_plot(cp_tensor, X, normalised=False, ax=None):
     # TODO: docstring
+    
     weights, factors = cp_tensor
     rank = weights.shape[0]
 
@@ -155,7 +160,7 @@ def core_element_plot(cp_tensor, X, normalised=False, ax=None):
     return ax
 
 
-def plot_components(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
+def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
     
     Arguments
@@ -217,11 +222,11 @@ def plot_components(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     if weight_behaviour == "ignore":
         weights, factor_matrices = cp_tensor
     elif weight_behaviour == "normalise":
-        weights, factor_matrices = normalise_cp_tensor(cp_tensor)
+        weights, factor_matrices = postprocessing.normalise_cp_tensor(cp_tensor)
     elif weight_behaviour == "evenly":
-        weights, factor_matrices = distribute_weights_evenly(cp_tensor)
+        weights, factor_matrices = postprocessing.distribute_weights_evenly(cp_tensor)
     elif weight_behaviour == "one_mode":
-        weights, factor_matrices = distribute_weights_in_one_mode(cp_tensor, weight_mode)
+        weights, factor_matrices = postprocessing.distribute_weights_in_one_mode(cp_tensor, weight_mode)
     else:
         raise ValueError("weight_behaviour must be either 'ignore', 'normalise' or 'one_mode'")
     
@@ -231,7 +236,7 @@ def plot_components(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     if plot_kwargs is None:
         plot_kwargs = [{}]*num_modes
     
-    factor_fig, axes = plt.subplots(1, num_modes, figsize=(16, 9/num_modes))
+    fig, axes = plt.subplots(1, num_modes, figsize=(16, 9/num_modes))
 
     for mode, factor_matrix in enumerate(factor_matrices):
         if hasattr(factor_matrix, 'plot'):
