@@ -62,7 +62,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
         The (normalised) slabwise SSE, if true tensor input is an xarray array,
         then the returned tensor is too.
 
-    TODO: example
+    TODO: example for compute_slabwise_sse
     """
     # Check that dimensions match up.
     if hasattr(estimated, 'to_dataframe') and hasattr(true, 'to_dataframe'):
@@ -120,7 +120,7 @@ def compute_leverage(factor_matrix):
     leverage : DataFrame or numpy array
         The leverage scores, if the input is a dataframe, then the index is preserved.
 
-    #TODO: example
+    #TODO: example for compute_leverage
     """
     leverage = _compute_leverage(factor_matrix)
     
@@ -133,7 +133,7 @@ def compute_leverage(factor_matrix):
 def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     f"""Compute the leverage score and (normalised) slabwise SSE along one axis.
 
-    # TODO: Write description of how to use this.
+    # TODO: Write description of how to use compute_outlier_info.
 
     These metrics are often plotted against each other to discover outliers.
 
@@ -161,7 +161,7 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
         slab_sse = pd.DataFrame(slab_sse.to_series())
 
     leverage_is_labelled = isinstance(leverage, pd.DataFrame)
-    sse_is_labelled = isinstance(slab_sse, pd.DataFrame) #TODO: isxarray function?
+    sse_is_labelled = isinstance(slab_sse, pd.DataFrame) # TODO: isxarray function?
     if (leverage_is_labelled and not sse_is_labelled) or (not leverage_is_labelled and sse_is_labelled):
         raise ValueError(
             "If `cp_tensor` is labelled (factor matrices are dataframes), then"
@@ -177,3 +177,11 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     results = pd.concat([leverage, slab_sse], axis=1)
     results.columns = [_LEVERAGE_NAME, _SLABWISE_SSE_NAME]
     return results
+
+
+# TODO: Leverage and SSE rule of thumbs
+def get_leverage_outlier_threshold(leverage_scores, method):
+    raise NotImplementedError
+
+def get_slab_sse_outlier_threshold(slab_sse, method):
+    raise NotImplementedError
