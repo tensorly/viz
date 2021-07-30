@@ -1,4 +1,6 @@
 import numpy as np
+import scipy.linalg as sla
+from ._utils import unfold_tensor
 
 
 def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode=None, method="transpose"):
@@ -6,7 +8,7 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode
     """
     # TODO: More documentation
     if flip_mode < 0:
-        flip_mode = dataset.ndim - flip_mode
+        flip_mode = dataset.ndim + flip_mode
     if flip_mode > dataset.ndim or flip_mode < 0:
         raise ValueError("`flip_mode` must be between `-dataset.ndim` and `dataset.ndim-1`.")
     
@@ -30,11 +32,11 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode
         raise ValueError("Method must be either `transpose` or `positive_coord`")
 
     signs = np.sign(np.sum(sign_scores**2 * np.sign(sign_scores), axis=1))
-    signs = signs.reshape(1, -1)
+    signs = np.asarray(signs).reshape(1, -1)
 
     factor_matrices = list(cp_tensor[1])
     factor_matrices[resolve_mode] = factor_matrices[resolve_mode] * signs
-    factor_matrices[flip_mode] = factor_matrices[resolve_mode] * signs
+    factor_matrices[flip_mode] = factor_matrices[flip_mode] * signs
     return cp_tensor[0], tuple(factor_matrices)
 
 def normalise_cp_tensor(cp_tensor):
