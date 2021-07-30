@@ -40,3 +40,5 @@ def load_aminoacids():
     dims = ["Samples", "Excitation frequency", "Emission frequency"]
     
     return xr.DataArray(X, dims=dims, coords=coords_dict)
+
+# TODO: Add more example datasets
