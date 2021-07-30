@@ -131,29 +131,29 @@ def core_consistency(cp_tensor, X, normalised=False):
 
 
 def sse(cp_tensor, X):
-    #TODO: Documentation
-    #TODO: tests
+    #TODO: Documentation for sse
+    #TODO: tests for sse
     X_hat = construct_cp_tensor(cp_tensor)
     return np.sum((X - X_hat)**2)
 
 
 def relative_sse(cp_tensor, X, sum_squared_X=None):
-    #TODO: Documentation
-    #TODO: tests
+    #TODO: Documentation for relative_sse
+    #TODO: tests for relative_sse
     sum_squared_x = np.sum(X**2)
     return sse(cp_tensor, X) / sum_squared_x
 
 
 def fit(cp_tensor, X, sum_squared_X=None):
-    #TODO: Documentation
-    #TODO: tests
+    #TODO: Documentation for fit
+    #TODO: tests for fit
     return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
 
 def classification_accuracy(factor_matrix, labels, classifier, metric=None):
-    #TODO: docstring
-    #TODO: test
-    #TODO: example
-    #TODO: Move?
+    #TODO: docstring for classification accuracy
+    #TODO: test for classification accuracy
+    #TODO: example for classification accuracy
+    #TODO: Move to factor_tools?
     classifier.fit(factor_matrix, labels)
     if metric is None:
         return classifier.score(factor_matrix, labels)
