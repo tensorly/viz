@@ -24,6 +24,10 @@ def extract_singleton(x):
 
     This is useful whenever XArray is used, since many NumPy functions that
     return a number will return an XArray singleton.
+
+    Parameters:
+    -----------
+    x : numpy.ndarray or xarray.DataArray
     """
     # TODO: Change code so this utility is used
     return np.asarray(x).item()
