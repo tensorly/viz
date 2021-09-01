@@ -2,6 +2,8 @@ from warnings import warn
 
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
+from scipy.optimize import brentq
 
 from ._utils import is_iterable
 from .factor_tools import construct_cp_tensor
@@ -180,8 +182,83 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
 
 
 # TODO: Leverage and SSE rule of thumbs
-def get_leverage_outlier_threshold(leverage_scores, method):
-    raise NotImplementedError
+def get_leverage_outlier_threshold(leverage_scores, method, p_value=0.05):
+    """Compute threshold for detecting possible outliers based on leverage.
+
+    Huber's heuristic for selecting outliers
+    ----------------------------------------
+
+    In Robust Statistics, Huber :cite:p:`huber2009robust`shows that that if the leverage
+    score, :math:`h_i`, of a sample is equal to :math:`1/r` and we duplicate that sample,
+    then its leverage score will be equal to :math:`1/(1+r)`. We can therefore, think of
+    of the reciprocal of the leverage score, :math:`1/h_i`, as the number of similar samples
+    in the dataset. Following this logic, Huber recommends two thresholds for selecting
+    outliers: 0.2 (which we name ``"huber low"``) and 0.5 (which we name ``"huber high"``).
+
+    Hoaglin and Welch's heuristic for selecting outliers
+    ----------------------------------------------------
+
+    In :cite:p:`belsley1980regression` (page 17), :citeauthor:p:`belsley1980regression`,
+    show that if the factor matrix is normally distributed, then we can scale leverage,
+    we obtain a Fisher-distributed random variable. Specifically, we have that
+    :math:`(n - r)[h_i - (1/n)]/[(1 - h_i)(r - 1)]` follows a Fisher distribution with
+    :math:`(r-1)` and :math:`(n-r)` degrees of freedom. While the factor matrix seldomly
+    follows a normal distribution, :citeauthor:p:`belsley1980regression` still argues that
+    this can be a good starting point for cut-off values of suspicious data points. They
+    therefore say that :math:`2r/n` is a good cutoff in general and that :math:`3r/n`
+    is a good cutoff when :math:`r < 6` and :math:`n-r > 12`.
+
+    Fisher-distribution
+    -------------------
+
+    Another way to select ouliers is also based on the findings by :citeauthor:p:`belsley1980regression`.
+    We can use the transformation into a Fisher distributed variable (assuming that the factor
+    elements are drawn from a normal distribution), to compute cut-off values based on a p-value.
+    The elements of the factor matrices are seldomly normally distributed, so this is
+    also just a rule-of-thumb.
+
+    Parameters:
+    -----------
+    leverage_scores : np.ndarray or pd.DataFrame
+    method : {"huber lower", "huber higher", "hw lower", "hw higher", "p-value"}
+    p_value : float (optional, default=0.05)
+        If ``method="p-value"``, then this is the p-value used for the cut-off.
+    
+    Returns:
+    --------
+    threshold : float
+        Threshold value, data points with a leverage score larger than the threshold are suspicious
+        and may be outliers.
+    """
+    # TODO: Incorporate in plot
+    # TODO: Unit tests
+    num_samples = len(leverage_scores)
+    num_components = np.sum(leverage_scores)
+
+    method = method.lower()
+    if method == "huber lower":
+        return 0.2
+    elif method == "huber higher":
+        return 0.5
+    elif method == "hw lower":
+        return 2*num_samples/num_components
+    elif method == "hw higher":
+        return 3*num_samples/num_components
+    elif method == "p-value":
+        dofs1 = num_components - 1
+        dofs2 = num_samples - num_components
+        def func(h):
+            F = dofs2 * (h - 1/num_samples) / ((1 - h)*dofs1 + 1e-10)
+            return stats.F.cdf(F, dofs1, dofs2) - 0.95
+        
+        return brentq(func, 0, 1,)[0]
+        if dofs1 <= 0:
+            raise ValueError("Cannot use P-value when there is only one component.")
+        if dofs2 <= 0:
+            raise ValueError("Cannot use P-value when there are fewer samples than components.")
+    else:
+        raise ValueError(f"Method must be one of 'huber lower', 'huber higher', 'hw lower' or 'hw higher', or 'p-value' not {method}")
+
 
 def get_slab_sse_outlier_threshold(slab_sse, method):
     raise NotImplementedError
