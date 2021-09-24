@@ -1,9 +1,12 @@
 import numpy as np
 import scipy.linalg as sla
 from ._utils import unfold_tensor
+from .factor_tools import factor_match_score
+from .xarray_wrapper import label_cp_tensor
 
 
-def resolve_cp_sign_indeterminacy(cp_tensor, dataset, flip_mode=-1, resolve_mode=None, method="transpose"):
+# TODO: Fix naming, what is resolve mode and what is flip mode?
+def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, flip_mode=-1, method="transpose"):
     """Resolve the sign indeterminacy of CP models.
     """
     # TODO: More documentation for resolve_cp_sign_indeterminacy
@@ -70,3 +73,44 @@ def distribute_weights_in_one_mode(cp_tensor, mode):
     weights, factors = normalise_cp_tensor(cp_tensor)
     factors[mode][:] *= weights
     return np.ones_like(weights), factors
+
+
+# TODO: Should we name this reference_cp_tensor or target_cp_tensor?
+def permute_cp_tensor(cp_tensor, reference_cp_tensor, consider_weights=True):
+    # TODO: docstring for permute_cp_tensor
+    # TODO: test for permute_cp_tensor
+    fms, permutation = factor_match_score(reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True)
+    weights, factors = cp_tensor
+    
+    if weights is not None:
+        new_weights = weights.copy()[permutation]
+    else:
+        new_weights = None
+
+    new_factors = [None]*len(factors)
+    for mode, factor in enumerate(factors):
+        new_factor = factor.copy()
+        if hasattr(factor, 'values'):
+            new_factor.values[:] = new_factor.values[:, permutation]
+        else:
+            new_factor[:] = new_factor[:, permutation]
+        new_factors[mode] = new_factor
+
+    return new_weights, new_factors
+        
+
+def postprocess(cp_tensor, reference_cp_tensor=None, dataset=None, resolve_mode=None, flip_mode=-1, flip_method="transpose"):
+    # TODO: Docstring for postprocess
+    # TODO: Unit test for postprocess
+    if reference_cp_tensor is not None:
+        cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor)
+    cp_tensor = normalise_cp_tensor(cp_tensor)
+
+    if dataset is not None:
+        cp_tensor = label_cp_tensor(cp_tensor, dataset)
+        cp_tensor = resolve_cp_sign_indeterminacy(
+            cp_tensor, dataset, resolve_mode=resolve_mode, flip_mode=flip_mode, method=flip_method
+        )
+    
+    return cp_tensor
+    
