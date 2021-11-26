@@ -1,5 +1,5 @@
-import xarray as xr
 import pandas as pd
+import xarray as xr
 
 
 def label_factor_matrices(factor_matrices, dataset):
@@ -18,4 +18,10 @@ def label_cp_tensor(cp_tensor, dataset):
 
 def is_xarray(x):
     # TODO: Is this how we want to check?
-    return isinstance(x, xarray.DataArray) or isinstance(x, xarray.Dataset)
+    return isinstance(x, xr.DataArray) or isinstance(x, xr.Dataset)
+
+
+# TODO: is_dataframe too
+def get_data(x):
+    # TODO: extract data array from xarray/dataframe in a safe manner
+    pass
