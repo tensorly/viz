@@ -7,7 +7,9 @@ import numpy as np
 # Set similarity metric to a function that only return ones to check that the argument is used
 # Check comparison tensors equal to cp_tensor to check that we only get ones
 # Test with CP tensors with known similarity
-def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
+def similarity_evaluation(
+    cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs
+):
     """Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
 
     Parameters
@@ -29,7 +31,7 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     # TODO: example for similarity_evaluation
     if similarity_metric is None:
         similarity_metric = factor_match_score
-    
+
     return [
         similarity_metric(cp_tensor, comparison_cp_tensor, **kwargs)
         for comparison_cp_tensor in comparison_cp_tensors
@@ -53,14 +55,19 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
             selected_cp_tensor = cp_tensor
             lowest_sse = sse
             selected_index = i
-    
+
     return selected_cp_tensor, selected_index, all_sse
 
 
 def sort_models_by_error(cp_tensors, X, error_function=None):
     # TODO: documentation for sort_models_by_error
     # TODO: tests for sort_models_by_error
-    errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function)[2]
+    errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function)[
+        2
+    ]
     sorted_tensors = sorted(zip(errors, cp_tensors))
     # We use np.asarray(error).item() because the error is an XArray object for X-array datasets
-    return [cp_tensor for error, cp_tensor in sorted_tensors], [np.asarray(error).item() for error, cp_tensor in sorted_tensors]
+    return (
+        [cp_tensor for error, cp_tensor in sorted_tensors],
+        [np.asarray(error).item() for error, cp_tensor in sorted_tensors],
+    )
