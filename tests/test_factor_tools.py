@@ -2,6 +2,7 @@ import pytest
 from pytest import approx
 import numpy as np
 from component_vis import factor_tools
+from component_vis import postprocessing
 
 
 def test_factor_match_score(rng):
@@ -12,6 +13,7 @@ def test_factor_match_score(rng):
     assert factor_tools.factor_match_score((None, (A, B)), (None, (0.5*A, 0.5*B))) == approx(1)
     assert factor_tools.factor_match_score((None, (A, B)), (None, (0.5*A, 0.5*B)), consider_weights=False) == approx(1)
     assert factor_tools.factor_match_score((None, (A, B)), (None, (0.1*A, 0.1*B)), consider_weights=True) < 0.5
+
 
 def test_factor_match_score_against_tensortoolbox_three_modes():
     A1 = np.array(
@@ -75,6 +77,7 @@ def test_factor_match_score_against_tensortoolbox_three_modes():
     
     assert factor_tools.factor_match_score((None, (A1, B1, C1)), (None, (A2, B2, C2))) == pytest.approx(0.027696956568833, rel=1e-8, abs=1e-10)
     assert factor_tools.factor_match_score((None, (A1, B1, C1)), (None, (A2, B2, C2)), consider_weights=True) == pytest.approx(0.019965399034340, rel=1e-8, abs=1e-10)
+
 
 def test_factor_match_score_against_tensortoolbox_four_modes():
     A1 = np.array(
@@ -159,6 +162,7 @@ def test_factor_match_score_against_tensortoolbox_four_modes():
     assert factor_tools.factor_match_score((None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2))) == pytest.approx(0.015619878684950, rel=1e-8, abs=1e-10)
     assert factor_tools.factor_match_score((None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2)), consider_weights=True) == pytest.approx(0.007867447488467, rel=1e-8, abs=1e-10)
 
+
 def test_factor_match_score_permutation(rng):
     num_components = 4
     A = rng.standard_normal((30,num_components))
@@ -175,6 +179,7 @@ def test_factor_match_score_permutation(rng):
         )
     assert fms == approx(1)
     assert np.allclose(permutation, p)
+
 
 def test_degeneracy_on_degenerate_components():
     A = np.array(
@@ -202,6 +207,7 @@ def test_degeneracy_on_degenerate_components():
     )
     assert factor_tools.degeneracy_score((None, (A, B, C))) == pytest.approx(-1)
 
+
 def test_degeneracy_on_orthogonal_components(rng):
     A = rng.standard_normal(size=(4, 4))
     A_orthogonal = np.linalg.qr(A)[0]
@@ -210,7 +216,84 @@ def test_degeneracy_on_orthogonal_components(rng):
     assert factor_tools.degeneracy_score((None, (A_orthogonal, B))) == pytest.approx(0)
     assert factor_tools.degeneracy_score((None, (A, B_orthogonal))) == pytest.approx(0)
 
+
 def test_degeneracy_one_mode(rng):
     A = rng.standard_normal(size=(5, 3))
     min_crossproduct = (factor_tools.normalise(A).T@factor_tools.normalise(A)).min()
     assert factor_tools.degeneracy_score((None, (A,))) == pytest.approx(min_crossproduct)
+
+
+def test_cp_tensors_equals(rng):
+    # Generate random decomposition
+    A = rng.standard_normal((30, 3))
+    B = rng.standard_normal((20, 3))
+    C = rng.standard_normal((10, 3))
+    w = rng.uniform(size=(3,))
+
+    cp_tensor1 = (w, (A, B, C))
+    cp_tensor2 = (w.copy(), (A.copy(), B.copy(), C.copy()))
+
+    # Check that a decomposition is equal to its copy
+    assert factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor2)
+
+    # Check that the decompositions are not equal if one of the factor matrices differ
+    cp_tensor3 = (w.copy(), (A.copy(), B.copy(), rng.standard_normal((15, 3))))
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor3)
+
+    # Check that two equivalent, but permuted decompositions are not equal
+    permutation = [2, 1, 0]
+    cp_tensor4 = (w[permutation], (A[:, permutation], B[:, permutation], C[:, permutation]))
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor4)
+
+    # Check that two equivalent decompositions with different weight distributions are not equal
+    cp_tensor5 = postprocessing.distribute_weights_evenly(cp_tensor1)
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor5)
+
+    # Check that two completely different CP tensors are not equal
+    A2 = rng.standard_normal((30, 3))
+    B2 = rng.standard_normal((20, 3))
+    C2 = rng.standard_normal((10, 3))
+    w2 = rng.uniform(size=(3,))
+
+    cp_tensor6 = (w2, (A2, B2, C2))
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor6)
+
+
+def test_cp_tensors_equivalent(rng):
+    # Generate random decomposition
+    A = rng.standard_normal((30, 3))
+    B = rng.standard_normal((20, 3))
+    C = rng.standard_normal((10, 3))
+    w = rng.uniform(size=(3,))
+    cp_tensor1 = (w, (A, B, C))
+
+    # Check that a decomposition is equivalent to its copy
+    cp_tensor2 = (w, (A.copy(), B.copy(), C.copy()))
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor2)
+
+    # Check that the decompositions are not equivalent if one of the factor matrices differ
+    cp_tensor3 = (w, (A.copy(), B.copy(), rng.standard_normal((15, 3))))
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor3)
+
+    # Check that two permuted decompositions are equivalent
+    permutation = [2, 1, 0]
+    cp_tensor4 = (w[permutation], (A[:, permutation], B[:, permutation], C[:, permutation]))
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor4)
+
+    # Check that two decompositions with different weight distributions are equivalent
+    cp_tensor5 = postprocessing.normalise_cp_tensor(cp_tensor1)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor5)
+
+    cp_tensor6 = postprocessing.distribute_weights_evenly(cp_tensor1)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor6)
+
+    cp_tensor7 = postprocessing.distribute_weights_in_one_mode(cp_tensor1, mode=1)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor7)
+    
+    # Check that two completely different cp decompositions are not equivalent
+    A2 = rng.standard_normal((30, 3))
+    B2 = rng.standard_normal((20, 3))
+    C2 = rng.standard_normal((10, 3))
+    w2 = rng.uniform(size=(3,))
+    cp_tensor8 = (w2, (A2, B2, C2))
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor8)
