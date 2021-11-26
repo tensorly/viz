@@ -1,9 +1,14 @@
 """Methods to evaluate a single tensor factorisation model.
+
+This module contains functions used to evaluate a single tensor factorisation model
+comparing it to a data tensor.
 """
+from itertools import product
+
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy.linalg as sla
-import matplotlib.pyplot as plt
-from itertools import product
+
 from .factor_tools import construct_cp_tensor
 
 
@@ -29,7 +34,7 @@ def estimate_core_tensor(factors, X):
     for U, s, Vh in svds[::-1]:
         s_pinv = s.copy()
         mask = s_pinv != 0
-        s_pinv[mask] = 1/s_pinv[mask]
+        s_pinv[mask] = 1 / s_pinv[mask]
         X = np.tensordot(np.diag(s_pinv), X, (1, X.ndim - 1))
     for U, s, Vh in svds[::-1]:
         X = np.tensordot(Vh.T, X, (1, X.ndim - 1))
@@ -85,6 +90,11 @@ def core_consistency(cp_tensor, X, normalised=False):
         and is unlikely to be less than 0. For core consistencies close to
         100, the formulas approximately coincide.
 
+    Returns
+    -------
+    float
+        The core consistency
+
     Examples
     --------
     We can use the core consistency diagonstic to determine the correct number of components
@@ -115,46 +125,108 @@ def core_consistency(cp_tensor, X, normalised=False):
     A = factors[0].copy()
     if weights is not None:
         A *= weights.reshape(1, -1)
-    
+
     factors = tuple((A, *factors[1:]))
 
     # Estimate core and compare
     G = estimate_core_tensor(factors, X)
-    T = np.zeros([rank]*X.ndim)
+    T = np.zeros([rank] * X.ndim)
     np.fill_diagonal(T, 1)
     if normalised:
-        denom = np.sum(G**2)
+        denom = np.sum(G ** 2)
     else:
         denom = rank
 
-    return 100 - 100*np.sum((G - T)**2)/denom
+    return 100 - 100 * np.sum((G - T) ** 2) / denom
 
 
 def sse(cp_tensor, X):
-    #TODO: Documentation for sse
-    #TODO: tests for sse
+    # TODO: Documentation for sse
+    # TODO: tests for sse
     X_hat = construct_cp_tensor(cp_tensor)
-    return np.sum((X - X_hat)**2)
+    return np.sum((X - X_hat) ** 2)
 
 
 def relative_sse(cp_tensor, X, sum_squared_X=None):
-    #TODO: Documentation for relative_sse
-    #TODO: tests for relative_sse
-    sum_squared_x = np.sum(X**2)
+    # TODO: Documentation for relative_sse
+    # TODO: tests for relative_sse
+    sum_squared_x = np.sum(X ** 2)
     return sse(cp_tensor, X) / sum_squared_x
 
 
 def fit(cp_tensor, X, sum_squared_X=None):
-    #TODO: Documentation for fit
-    #TODO: tests for fit
+    # TODO: Documentation for fit
+    # TODO: tests for fit
     return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
 
+
 def classification_accuracy(factor_matrix, labels, classifier, metric=None):
-    #TODO: docstring for classification accuracy
-    #TODO: test for classification accuracy
-    #TODO: example for classification accuracy
-    #TODO: Move to factor_tools?
+    # TODO: docstring for classification accuracy
+    # TODO: test for classification accuracy
+    # TODO: example for classification accuracy
+    # TODO: Move to factor_tools?
     classifier.fit(factor_matrix, labels)
     if metric is None:
         return classifier.score(factor_matrix, labels)
     return metric(labels, classifier.predict(factor_matrix))
+
+
+def percentage_variation(cp_tensor, X=None, method="data"):
+    r"""Compute the percentage of variation captured by each component.
+
+    The (possible) non-orthogonality of CP factor matrices makes it less straightforward
+    to estimate the amount of variation captured by each component, compared to a model with
+    orthogonal factors. To estimate the amount of variation captured by a single component,
+    we therefore use the following formula:
+
+    .. math::
+
+        \text{fit}_i = \frac{\text{SS}_i}{SS_\mathbf{\mathcal{X}}}
+    
+    where :math:`\text{SS}_i` is the squared norm of the tensor constructed using only the
+    i-th component, and :math:`SS_\mathbf{\mathcal{X}}` is the squared norm of the data
+    tensor. If ``method="data"``, then :math:`SS_\mathbf{\mathcal{X}}` is the squared
+    norm of the tensor constructed from the CP tensor using all factor matrices.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    X : np.ndarray
+        Data tensor that the cp_tensor is fitted against
+    method : {"data", "model", "both"}
+        Which method to use for computing the fit.
+    
+    Returns
+    -------
+    fit : float or tuple
+        The fit (depending on the method). If ``method="both"``, then a tuple is returned
+        where the first element is the fit computed against the data tensor and the second
+        element is the fit computed against the model.
+    """
+    # TODO: Examples for percentage_variation
+    # TODO: Unit tests for percentage_variation
+    weights, factor_matrices = cp_tensor
+    rank = factor_matrices[0].shape[1]
+    if weights:
+        temp = weights.reshape(rank, 1) @ weight.reshape(1, rank)
+    else:
+        temp = np.ones(rank, rank)
+
+    for factor_matrix in factor_matrices:
+        temp *= factor_matrix.T @ factor_matrix
+
+    # Compute sum squared of single-component model by the diagonal entries of the cross-product matrix
+    ssc = np.abs(np.diagonal(temp))
+
+    if method == "data":
+        if X is None:
+            raise TypeError("The dataset must be provided if ``method='data'``")
+        return ssc / np.sum(X ** 2)
+    elif method == "model":
+        return ssc / np.abs(np.sum(temp))
+    elif method == "both":
+        return ssc / np.sum(X ** 2), ssc / np.abs(np.sum(temp))
+    else:
+        raise ValueError("Method must be either 'data', 'model' or 'both")
