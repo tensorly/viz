@@ -5,6 +5,9 @@ from scipy.io import loadmat
 import xarray as xr
 
 
+__all__ = ["load_aminoacids"]
+
+
 class RemoteZip:
     def __init__(self, url):
         req = requests.get(url)
@@ -24,6 +27,7 @@ class RemoteZip:
 
 
 def load_aminoacids():
+    # TODO: Docstring for load_aminoacids
     print('Loading Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro')
     aminoacids_zip = RemoteZip("http://models.life.ku.dk/sites/default/files/Amino_Acid_fluo.zip")
     matlab_variables = loadmat(aminoacids_zip.extract_file('amino.mat'))
@@ -33,11 +37,11 @@ def load_aminoacids():
     emission_frequencies = matlab_variables['EmAx'].squeeze()
     excitation_frequencies = matlab_variables['ExAx'].squeeze()
     coords_dict = {
-        "Samples": list(range(I)), 
+        "Sample": list(range(I)), 
         "Emission frequency": emission_frequencies,
         "Excitation frequency": excitation_frequencies,
     }
-    dims = ["Samples", "Excitation frequency", "Emission frequency"]
+    dims = ["Sample", "Excitation frequency", "Emission frequency"]
     
     return xr.DataArray(X, dims=dims, coords=coords_dict)
 
