@@ -12,3 +12,9 @@ Factor tools
 
 .. automodule:: component_vis.factor_tools
     :members:
+
+Post processing
+---------------
+
+.. automodule:: component_vis.postprocessing
+    :members:
