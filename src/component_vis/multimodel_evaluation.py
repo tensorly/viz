@@ -10,7 +10,7 @@ import numpy as np
 def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
     """Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
 
-    Arguments:
+    Parameters
     ----------
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
@@ -22,8 +22,8 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     **kwargs
         Extra keyword-arguments passed to ``similarity_metric``.
 
-    Returns:
-    --------
+    Returns
+    -------
     similarity : float 
     """
     # TODO: example for similarity_evaluation
@@ -51,7 +51,7 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
         all_sse.append(sse)
         if sse < lowest_sse:
             selected_cp_tensor = cp_tensor
-            lowest_sse = lowest_sse
+            lowest_sse = sse
             selected_index = i
     
     return selected_cp_tensor, selected_index, all_sse
