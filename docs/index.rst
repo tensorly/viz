@@ -6,12 +6,7 @@ Welcome to component_vis's documentation!
    :caption: Contents:
 
    api
-   readme
    installation
-   usage
-   modules
-   contributing
-   history
 
 Indices and tables
 ==================
