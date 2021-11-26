@@ -1,6 +1,8 @@
 import numpy as np
 import xarray
 
+# TODO: Utility for checking labelled both tensor and decomposition
+
 
 def is_iterable(x):
     """Check if variable is iterable
@@ -25,8 +27,8 @@ def extract_singleton(x):
     This is useful whenever XArray is used, since many NumPy functions that
     return a number will return an XArray singleton.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     x : numpy.ndarray or xarray.DataArray
     """
     # TODO: Change code so this utility is used
