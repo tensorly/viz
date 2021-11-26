@@ -9,7 +9,6 @@ from ._utils import is_iterable
 from .factor_tools import construct_cp_tensor
 from .xarray_wrapper import is_xarray
 
-
 _LEVERAGE_NAME = "Leverage score"
 _SLABWISE_SSE_NAME = "Slabwise SSE"
 
@@ -26,7 +25,7 @@ def _compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     axis = set(axis)
 
     reduction_axis = tuple(i for i in range(true.ndim) if i not in axis)
-    SSE = ((estimated - true)**2).sum(axis=reduction_axis)
+    SSE = ((estimated - true) ** 2).sum(axis=reduction_axis)
     if normalise:
         return SSE / SSE.sum()
     else:
@@ -46,8 +45,8 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     sample. If a sample, :math:`i`, has a high residual, then that indicates that 
     the model is not able to describe its behaviour.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     estimated : xarray or numpy array
         Estimated dataset, if this is an xarray, then the output is too.
     true : xarray or numpy array
@@ -67,7 +66,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     TODO: example for compute_slabwise_sse
     """
     # Check that dimensions match up.
-    if hasattr(estimated, 'to_dataframe') and hasattr(true, 'to_dataframe'):
+    if hasattr(estimated, "to_dataframe") and hasattr(true, "to_dataframe"):
         if estimated.dims != true.dims:
             raise ValueError(
                 f"Dimensions of estimated and true tensor must be equal,"
@@ -86,7 +85,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
                 )
 
     slab_sse = _compute_slabwise_sse(estimated, true, normalise=normalise, axis=axis)
-    if hasattr(slab_sse, 'to_dataframe'):
+    if hasattr(slab_sse, "to_dataframe"):
         slab_sse.name = _SLABWISE_SSE_NAME
     return slab_sse
 
@@ -112,8 +111,8 @@ def compute_leverage(factor_matrix):
     If the factor matrix is a dataframe (i.e. has an index), then the output is
     also a dataframe with that index. Otherwise, the output is a NumPy array.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     factor_matrix : DataFrame or numpy array
         The factor matrix whose leverage we compute
     
@@ -125,12 +124,14 @@ def compute_leverage(factor_matrix):
     #TODO: example for compute_leverage
     """
     leverage = _compute_leverage(factor_matrix)
-    
+
     if hasattr(factor_matrix, "index"):
-        return pd.DataFrame(leverage.reshape(-1, 1), columns=[_LEVERAGE_NAME], index=factor_matrix.index)
+        return pd.DataFrame(
+            leverage.reshape(-1, 1), columns=[_LEVERAGE_NAME], index=factor_matrix.index
+        )
     else:
         return leverage
-    
+
 
 def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     f"""Compute the leverage score and (normalised) slabwise SSE along one axis.
@@ -139,8 +140,8 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
 
     These metrics are often plotted against each other to discover outliers.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
@@ -155,16 +156,21 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     DataFrame
         Dataframe with two columns, "{_LEVERAGE_NAME}" and "{_SLABWISE_SSE_NAME}".
     """
+    # Add whether suspicious based on rule-of-thumb cutoffs as boolean columns
     leverage = compute_leverage(cp_tensor[1][axis])
 
     estimated_tensor = construct_cp_tensor(cp_tensor)
-    slab_sse = compute_slabwise_sse(estimated_tensor, true_tensor, normalise=normalise_sse, axis=axis)
-    if hasattr(slab_sse, 'to_dataframe'):
+    slab_sse = compute_slabwise_sse(
+        estimated_tensor, true_tensor, normalise=normalise_sse, axis=axis
+    )
+    if hasattr(slab_sse, "to_dataframe"):
         slab_sse = pd.DataFrame(slab_sse.to_series())
 
     leverage_is_labelled = isinstance(leverage, pd.DataFrame)
-    sse_is_labelled = isinstance(slab_sse, pd.DataFrame) # TODO: isxarray function?
-    if (leverage_is_labelled and not sse_is_labelled) or (not leverage_is_labelled and sse_is_labelled):
+    sse_is_labelled = isinstance(slab_sse, pd.DataFrame)  # TODO: isxarray function?
+    if (leverage_is_labelled and not sse_is_labelled) or (
+        not leverage_is_labelled and sse_is_labelled
+    ):
         raise ValueError(
             "If `cp_tensor` is labelled (factor matrices are dataframes), then"
             "`true_tensor` should be an xarray object and vice versa."
@@ -182,6 +188,7 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
 
 
 # TODO: Leverage and SSE rule of thumbs
+# TODO: Unit tests for get_leverage_outlier_threshold: Monte-carlo experiment with p-value
 def get_leverage_outlier_threshold(leverage_scores, method, p_value=0.05):
     """Compute threshold for detecting possible outliers based on leverage.
 
@@ -217,15 +224,15 @@ def get_leverage_outlier_threshold(leverage_scores, method, p_value=0.05):
     The elements of the factor matrices are seldomly normally distributed, so this is
     also just a rule-of-thumb.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     leverage_scores : np.ndarray or pd.DataFrame
     method : {"huber lower", "huber higher", "hw lower", "hw higher", "p-value"}
     p_value : float (optional, default=0.05)
         If ``method="p-value"``, then this is the p-value used for the cut-off.
     
-    Returns:
-    --------
+    Returns
+    -------
     threshold : float
         Threshold value, data points with a leverage score larger than the threshold are suspicious
         and may be outliers.
@@ -241,24 +248,68 @@ def get_leverage_outlier_threshold(leverage_scores, method, p_value=0.05):
     elif method == "huber higher":
         return 0.5
     elif method == "hw lower":
-        return 2*num_samples/num_components
+        return 2 * num_components / num_samples
     elif method == "hw higher":
-        return 3*num_samples/num_components
+        return 3 * num_components / num_samples
     elif method == "p-value":
         dofs1 = num_components - 1
         dofs2 = num_samples - num_components
+
         def func(h):
-            F = dofs2 * (h - 1/num_samples) / ((1 - h)*dofs1 + 1e-10)
-            return stats.F.cdf(F, dofs1, dofs2) - 0.95
-        
-        return brentq(func, 0, 1,)[0]
+            F = dofs2 * (h - 1 / num_samples) / ((1 - h) * dofs1 + 1e-10)
+            return stats.f.cdf(F, dofs1, dofs2) - (1 - p_value)
+
         if dofs1 <= 0:
             raise ValueError("Cannot use P-value when there is only one component.")
         if dofs2 <= 0:
-            raise ValueError("Cannot use P-value when there are fewer samples than components.")
+            raise ValueError(
+                "Cannot use P-value when there are fewer samples than components."
+            )
+        return brentq(func, 0, 1,)
     else:
-        raise ValueError(f"Method must be one of 'huber lower', 'huber higher', 'hw lower' or 'hw higher', or 'p-value' not {method}")
+        raise ValueError(
+            f"Method must be one of 'huber lower', 'huber higher', 'hw lower' or 'hw higher', or 'p-value' not {method}"
+        )
 
 
-def get_slab_sse_outlier_threshold(slab_sse, method):
-    raise NotImplementedError
+def get_slab_sse_outlier_threshold(slab_sse, method, p_value=0.05, dof=1):
+    """Compute rule-of-thumb threshold values for suspicious residuals.
+
+    One way to determine possible outliers is to examine how well the model describes
+    the different data points. A standard way of measuring this, is by the slab-wise
+    sum of squared errors (slabwise SSE), which is the sum of squared error for each
+    data point.
+
+    There is, unfortunately, no guaranteed way to detect outliers automatically based 
+    on the residuals. However, if the slabs we compute the SSE for are large, then we 
+    can use the central limit theorem to assume normally distributed slabwise SSE. 
+    Based on this, we can use the student t distribution to find an appropriate cut-off 
+    value.
+
+    Another rule-of-thumb follows from :cite:p:`naes2002user` (p. 187), which states
+    that two times the standard deviation of the slabwise SSE can be used for
+    determining data points with a suspiciously high residual.
+
+    Parameters
+    ----------
+    slab_sse : np.ndarray or pd.DataFrame
+    method : {"two_sigma", "p_value"}
+    p_value : float (optional, default=0.05)
+        If ``method="p-value"``, then this is the p-value used for the cut-off.
+
+    Returns
+    -------
+    threshold : float
+        Threshold value, data points with a higher SSE than the threshold are suspicious
+        and may be outliers.
+    """
+    # TODO: documentation example for get_slab_sse_outlier_threshold
+    num_samples = len(slab_sse)
+    std = np.std(slab_sse, dof=dof)
+    mean = np.mean(slab_sse)
+    if method == "two_sigma":
+        return std * 2
+    elif method == "p_value":
+        return mean + std * stats.t.isf(p_value, dof)
+    else:
+        raise ValueError(f"Method must be one of 'two_sigma' and 'p_value'")
