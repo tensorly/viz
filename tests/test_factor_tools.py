@@ -1,8 +1,7 @@
-import pytest
-from pytest import approx
 import numpy as np
-from component_vis import factor_tools
-from component_vis import postprocessing
+import pytest
+from component_vis import factor_tools, postprocessing
+from pytest import approx
 
 
 def test_factor_match_score(rng):
@@ -11,7 +10,7 @@ def test_factor_match_score(rng):
 
     assert factor_tools.factor_match_score((None, (A, B)), (None, (A, B))) == approx(1)
     assert factor_tools.factor_match_score(
-        (None, (A, B)), (None, (0.5 * A, 0.5 * B))
+        (None, (A, B)), (None, (2.0 * A, 0.5 * B)),
     ) == approx(1)
     assert factor_tools.factor_match_score(
         (None, (A, B)), (None, (0.5 * A, 0.5 * B)), consider_weights=False
@@ -85,7 +84,7 @@ def test_factor_match_score_against_tensortoolbox_three_modes():
     )
 
     assert factor_tools.factor_match_score(
-        (None, (A1, B1, C1)), (None, (A2, B2, C2))
+        (None, (A1, B1, C1)), (None, (A2, B2, C2)), consider_weights=False
     ) == pytest.approx(0.027696956568833, rel=1e-8, abs=1e-10)
     assert factor_tools.factor_match_score(
         (None, (A1, B1, C1)), (None, (A2, B2, C2)), consider_weights=True
@@ -173,7 +172,7 @@ def test_factor_match_score_against_tensortoolbox_four_modes():
     )
 
     assert factor_tools.factor_match_score(
-        (None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2))
+        (None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2)), consider_weights=False
     ) == pytest.approx(0.015619878684950, rel=1e-8, abs=1e-10)
     assert factor_tools.factor_match_score(
         (None, (A1, B1, C1, D1)), (None, (A2, B2, C2, D2)), consider_weights=True

@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
-from component_vis import postprocessing
-from component_vis import factor_tools
+from component_vis import factor_tools, postprocessing
 
 
 def test_normalise_cp_tensor_normalises(rng):
@@ -161,8 +160,8 @@ def test_resolve_cp_sign_indeterminacy_flips_negative_components_for_nonnegative
             sign_flipped_cp_tensor = postprocessing.resolve_cp_sign_indeterminacy(
                 wrong_flip_cp_tensor,
                 dense_tensor,
-                flip_mode=flip1,
-                resolve_mode=flip2,
+                resolve_mode=flip1,
+                unresolved_mode=flip2,
                 method=method,
             )
             assert np.all(sign_flipped_cp_tensor[1][0] >= 0)
