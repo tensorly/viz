@@ -1,7 +1,9 @@
 import numpy as np
-import scipy.linalg as sla
 import pytest
+import scipy.linalg as sla
+import tensorly as tl
 from component_vis import factor_tools, model_evaluation
+from tensorly.random import random_cp
 
 
 def _estimate_core_tensor(factors, X):
@@ -385,3 +387,28 @@ def test_core_consistency_against_matlab(rng):
 
     cc = model_evaluation.core_consistency((weights, (A, B, C)), X, normalised=False)
     assert cc == pytest.approx(99.830437445788107)
+
+
+def test_sse(rng):
+    cp = random_cp((4, 5, 6), 3, random_state=rng)
+    tensor = cp.to_tensor()
+    noise = rng.random_sample((4, 5, 6))
+    sse = model_evaluation.sse(cp, tensor + noise)
+    assert sse == pytest.approx(tl.sum(noise ** 2))
+
+
+def test_relative_sse(rng):
+    cp = random_cp((4, 5, 6), 3, random_state=rng)
+    tensor = cp.to_tensor()
+    noise = rng.random_sample((4, 5, 6))
+    rel_sse = model_evaluation.relative_sse(cp, tensor + noise)
+    assert rel_sse == pytest.approx(tl.sum(noise ** 2) / tl.sum((tensor + noise) ** 2))
+
+
+def test_fit(rng):
+    cp = random_cp((4, 5, 6), 3, random_state=rng)
+    tensor = cp.to_tensor()
+    noise = rng.random_sample((4, 5, 6))
+    fit = model_evaluation.fit(cp, tensor + noise)
+    assert fit == pytest.approx(1 - tl.sum(noise ** 2) / tl.sum((tensor + noise) ** 2))
+
