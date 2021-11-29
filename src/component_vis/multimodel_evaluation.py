@@ -1,6 +1,7 @@
-from .factor_tools import factor_match_score
-from . import model_evaluation
 import numpy as np
+
+from . import model_evaluation
+from .factor_tools import factor_match_score
 
 
 # TODO: Tests for similarity_evaluation
@@ -26,7 +27,7 @@ def similarity_evaluation(
 
     Returns
     -------
-    similarity : float 
+    similarity : float
     """
     # TODO: example for similarity_evaluation
     if similarity_metric is None:
