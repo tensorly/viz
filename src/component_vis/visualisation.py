@@ -580,17 +580,17 @@ def component_comparison_plot(
 
 def optimisation_diagnostic_plots(error_logs, n_iter_max):
     """Diagnostic plots for the optimisation problem.
-    
+
     This function creates two plots. One plot that shows the loss value for each initialisation
     and whether or not that initialisation converged or ran until the maximum number of iterations.
     The other plot shows the error log for each initialisation, with the initialisation with lowest
     final error in a different colour (orange).
-    
+
     These plots can be helpful for understanding how stable the model is with respect to initialisation.
     Ideally, we should see that many initialisations converged and obtained the same, low, error.
     If models converge, but with different errors, then this can indicate that indicates that a stricter
     convergence tolerance is required, and if no models converge, then more iterations may be required.
-    
+
     Parameters
     ----------
     error_logs : list of arrays
@@ -598,12 +598,12 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     n_iter_max : int
         Maximum number of iterations for the fitting procedure. Used to determine if the
         models converged or not.
-    
+
     Returns
     -------
     fig : matplotlib.figure.Figure
     axes : array(dtype=matplotlib.axes.Axes)
-    
+
     Examples
     --------
     Fit the wrong number of components to show local minima problems
@@ -624,8 +624,8 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     ... 
     ... # Plot the diganostic plots
     ... optimisation_diagnostic_plots(errs, 500)
-    
-    
+
+
     Fit a model with too few iterations
     >>> import numpy as np
     ... from tensorly.random import random_cp

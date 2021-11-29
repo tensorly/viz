@@ -43,16 +43,16 @@ def estimate_core_tensor(factors, X):
 
 def core_consistency(cp_tensor, X, normalised=False):
     r"""Computes the core consistency :cite:p:`bro2003new`
-    
+
     A CP model can be interpreted as a restricted Tucker model, where the
     core tensor is constrained to be superdiagonal. For a third order tensor,
     this means that the core tensor, :math:`\mathcal{G}`, satisfy :math:`g_{ijk}\neq0`
     only if :math:`i = j = k`. To compute the core consistency of a CP decomposition,
     we use this property, and calculate the optimal Tucker core tensor given
-    the factor matrices of the CP model. 
+    the factor matrices of the CP model.
 
-    The key observation is that if the data tensor follows the assumptions 
-    of the CP model, then the optimal core tensor should be similar to that 
+    The key observation is that if the data tensor follows the assumptions
+    of the CP model, then the optimal core tensor should be similar to that
     of the CP model, i. e. superdiagonal. However, if the data can be better
     described by allowing for interactions between the components across modes,
     then the core tensor will have non-zero off-diagonal. The core consistency
@@ -141,27 +141,152 @@ def core_consistency(cp_tensor, X, normalised=False):
 
 
 def sse(cp_tensor, X):
-    # TODO: Documentation for sse
+    """Compute the sum of squared error for a given cp_tensor.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    X : ndarray
+        Tensor approximated by ``cp_tensor``
+
+    Returns
+    -------
+    float
+        The sum of squared error, ``sum((X_hat - X)**2)``, where ``X_hat``
+        is the dense tensor represented by ``cp_tensor``
+
+    Examples
+    --------
+    Below, we create a random CP tensor and a random tensor and compute
+    the sum of squared error for these two tensors.
+
+    >>> import tensorly as tl
+    >>> from tensorly.random import random_cp
+    >>> from component_vis.model_evaluation import sse
+    >>> rng = tl.check_random_state(0)
+    >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
+    >>> X = rng.random_sample((4, 5, 6))
+    >>> sse(cp, X)
+    18.948918157419186
+    """
     # TODO: tests for sse
     X_hat = construct_cp_tensor(cp_tensor)
     return np.sum((X - X_hat) ** 2)
 
 
 def relative_sse(cp_tensor, X, sum_squared_X=None):
-    # TODO: Documentation for relative_sse
+    """Compute the relative sum of squared error for a given cp_tensor.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    X : ndarray
+        Tensor approximated by ``cp_tensor``
+    sum_squared_X: float (optional)
+        If ``sum(X**2)`` is already computed, you can optionally provide it 
+        using this argument to avoid unnecessary recalculation.
+
+    Returns
+    -------
+    float
+        The relative sum of squared error, ``sum((X_hat - X)**2)/sum(X**2)``,
+        where ``X_hat`` is the dense tensor represented by ``cp_tensor``
+
+    Examples
+    --------
+    Below, we create a random CP tensor and a random tensor and compute
+    the sum of squared error for these two tensors.
+
+    >>> import tensorly as tl
+    >>> from tensorly.random import random_cp
+    >>> from component_vis.model_evaluation import relative_sse
+    >>> rng = tl.check_random_state(0)
+    >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
+    >>> X = rng.random_sample((4, 5, 6))
+    >>> relative_sse(cp, X)
+    0.4817407254961442
+    """
     # TODO: tests for relative_sse
-    sum_squared_x = np.sum(X ** 2)
+    if sum_squared_X is None:
+        sum_squared_x = np.sum(X ** 2)
     return sse(cp_tensor, X) / sum_squared_x
 
 
 def fit(cp_tensor, X, sum_squared_X=None):
-    # TODO: Documentation for fit
+    """Compute the fit (1-relative sum squared error) for a given cp_tensor.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    X : ndarray
+        Tensor approximated by ``cp_tensor``
+    sum_squared_X: float (optional)
+        If ``sum(X**2)`` is already computed, you can optionally provide it 
+        using this argument to avoid unnecessary recalculation.
+
+    Returns
+    -------
+    float
+        The relative sum of squared error, ``sum((X_hat - X)**2)/sum(X**2)``,
+        where ``X_hat`` is the dense tensor represented by ``cp_tensor``
+
+    Examples
+    --------
+    Below, we create a random CP tensor and a random tensor and compute
+    the sum of squared error for these two tensors.
+
+    >>> import tensorly as tl
+    >>> from tensorly.random import random_cp
+    >>> from component_vis.model_evaluation import fit
+    >>> rng = tl.check_random_state(0)
+    >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
+    >>> X = rng.random_sample((4, 5, 6))
+    >>> fit(cp, X)
+    0.5182592745038558
+
+    We can see that it is equal to 1 - relative SSE
+
+    >>> from component_vis.model_evaluation import relative_sse
+    >>> 1 - relative_sse(cp, X)
+    0.5182592745038558
+    """
     # TODO: tests for fit
     return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
 
 
 def classification_accuracy(factor_matrix, labels, classifier, metric=None):
-    # TODO: docstring for classification accuracy
+    """Use scikit-learn classifier to evaluate the predictive power of a factor matrix.
+
+    This is useful if you evaluate the components based on their predictive
+    power with respect to some task.
+
+    Parameters
+    ----------
+    factor_matrix : ndarray(ndim=2)
+        Factor matrix from a tensor decomposition model
+    labels : ndarray(ndim=1)
+        Labels for each row of ``factor_matrix``. should have same length
+        as the first dimension of ``factor_matrix``.
+    classifier : scikit learn classifier
+        Scikit learn classifier. Must have the ``fit`` and ``predict`` methods,
+        and if ``metric`` is ``None``, then it should also have the ``score``
+        method. See https://scikit-learn.org/stable/developers/develop.html.
+    metric : Callable
+        Callable (typically function) with the signature ``metric(y_true, y_pred)``,
+        where ``y_true=labels`` and ``y_pred`` is the predicted labels
+        obtained from ``classifier``. See https://scikit-learn.org/stable/developers/develop.html#specific-models.
+
+    Returns
+    -------
+    float
+        Score based on the classifier's performance.
+    """
     # TODO: test for classification accuracy
     # TODO: example for classification accuracy
     # TODO: Move to factor_tools?
@@ -182,7 +307,7 @@ def percentage_variation(cp_tensor, X=None, method="data"):
     .. math::
 
         \text{fit}_i = \frac{\text{SS}_i}{SS_\mathbf{\mathcal{X}}}
-    
+
     where :math:`\text{SS}_i` is the squared norm of the tensor constructed using only the
     i-th component, and :math:`SS_\mathbf{\mathcal{X}}` is the squared norm of the data
     tensor. If ``method="data"``, then :math:`SS_\mathbf{\mathcal{X}}` is the squared
@@ -197,7 +322,7 @@ def percentage_variation(cp_tensor, X=None, method="data"):
         Data tensor that the cp_tensor is fitted against
     method : {"data", "model", "both"}
         Which method to use for computing the fit.
-    
+
     Returns
     -------
     fit : float or tuple
@@ -210,7 +335,7 @@ def percentage_variation(cp_tensor, X=None, method="data"):
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]
     if weights:
-        temp = weights.reshape(rank, 1) @ weight.reshape(1, rank)
+        temp = weights.reshape(rank, 1) @ weights.reshape(1, rank)
     else:
         temp = np.ones(rank, rank)
 
