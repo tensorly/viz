@@ -321,13 +321,9 @@ def permute_cp_tensor(
     ValueError
         If both ``permutation`` and ``reference_cp_tensor`` is provided
     """
-    if permutation is None and reference_cp_tensor is None:
+    if permutation is not None and reference_cp_tensor is not None:
         raise ValueError(
-            "Must either provide a permutation or a reference CP tensor. Neither is provided"
-        )
-    elif permutation is not None and reference_cp_tensor is not None:
-        raise ValueError(
-            "Must either provide a permutation or a reference CP tensor. Both is provided"
+            "Must either provide a permutation, a reference CP tensor or neither. Both is provided"
         )
     # TODO: test for permute_cp_tensor
 
