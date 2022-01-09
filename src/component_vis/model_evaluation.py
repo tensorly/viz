@@ -334,7 +334,7 @@ def percentage_variation(cp_tensor, X=None, method="data"):
     # TODO: Unit tests for percentage_variation
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]
-    if weights:
+    if weights is not None:
         temp = weights.reshape(rank, 1) @ weights.reshape(1, rank)
     else:
         temp = np.ones(rank, rank)
