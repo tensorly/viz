@@ -335,7 +335,7 @@ def permute_cp_tensor(
             return_permutation=True,
         )
     elif permutation is None:
-        variation = percentage_variation(cp_tensor)
+        variation = percentage_variation(cp_tensor, method="model")
         permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
 
     rank = cp_tensor[1][0].shape[1]
