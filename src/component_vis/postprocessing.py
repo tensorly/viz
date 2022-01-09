@@ -3,6 +3,7 @@ import scipy.linalg as sla
 
 from ._utils import is_iterable, unfold_tensor
 from .factor_tools import factor_match_score
+from .model_evaluation import percentage_variation
 from .xarray_wrapper import label_cp_tensor
 
 
@@ -280,7 +281,13 @@ def _permute_cp_tensor(cp_tensor, permutation):
 def permute_cp_tensor(
     cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True
 ):
-    """Permute the CP tensors so the factors align with those of the reference CP tensor.
+    """Permute the CP tensor
+    
+    This function supports three ways of permuting a CP tensor: Aligning the components
+    with those of a reference CP tensor (if ``reference_cp_tensor`` is not ``None``),
+    permuting the components according to a given permutation (if ``permutation`` is not ``None``)
+    or so the components are in descending order with respect to their explained variation
+    (if both ``reference_cp_tensor`` and ``permutation`` is ``None``).
 
     This function uses the factor match score to compute the optimal permutation between
     two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
@@ -324,13 +331,16 @@ def permute_cp_tensor(
         )
     # TODO: test for permute_cp_tensor
 
-    if permutation is None:
+    if permutation is None and reference_cp_tensor is not None:
         fms, permutation = factor_match_score(
             reference_cp_tensor,
             cp_tensor,
             consider_weights=consider_weights,
             return_permutation=True,
         )
+    elif permutation is None:
+        variation = percentage_variation(cp_tensor)
+        permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
 
     rank = cp_tensor[1][0].shape[1]
     if len(permutation) != rank:
@@ -398,8 +408,7 @@ def postprocess(
     """
     # TODO: Docstring for postprocess
     # TODO: Unit test for postprocess
-    if reference_cp_tensor is not None:
-        cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor)
+    cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
     cp_tensor = normalise_cp_tensor(cp_tensor)
 
     if dataset is not None:
