@@ -40,8 +40,34 @@ def similarity_evaluation(
 
 
 def get_model_with_lowest_error(cp_tensors, X, error_function=None):
+    """Compute reconstruction error for all cp_tensors and return model with lowest error.
+
+    This is useful to select the best initialisation if several random
+    initialisations are used to fit the model. By default, the relative SSE
+    is used, but another error function can be used too.
+
+    Parameters
+    ----------
+    cp_tensors : list of CPTensors
+        List of all CP tensors to compare
+    X : ndarray
+        Dataset modelled by the CP tensors
+    error_function : Callable (optional)
+        Callable with the signature ``error_function(cp_tensor, X)``,
+        that should return a measure of the modelling error (e.g. SSE).
+
+    Returns
+    -------
+    CPTensor
+        The CP tensor with the lowest error
+    int
+        The index of the selected CP tensor in ``cp_tensors``
+    list
+        List of the error values for all CP tensors in ``cp_tensor``
+        (in the same order as ``cp_tensors``).
+    """
     # TODO: tests for get_model_with_lowest_error
-    # TODO: documentation for get_model_with_lowest_error
+    # TODO: example for get_model_with_lowest_error
     if error_function is None:
         error_function = model_evaluation.relative_sse
 
@@ -61,8 +87,26 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
 
 
 def sort_models_by_error(cp_tensors, X, error_function=None):
-    # TODO: documentation for sort_models_by_error
-    # TODO: tests for sort_models_by_error
+    """Sort the ``cp_tensors`` by their error so the model with the lowest error is first.
+
+    Parameters
+    ----------
+    cp_tensors : list of CPTensors
+        List of all CP tensors
+    X : ndarray
+        Dataset modelled by the CP tensors
+    error_function : Callable (optional)
+        Callable with the signature ``error_function(cp_tensor, X)``,
+        that should return a measure of the modelling error (e.g. SSE).
+
+    Returns
+    -------
+    list of CPTensors
+        List of all CP tensors sorted so the CP tensor with the lowest error
+        is first and highest error is last.
+    """
+    # TODO: examples for sort_models_by_error
+    # TODO: tests for sort_models_by_error: Create one CP tensor, create copies where A is multiplied by 2, 3, 4, 5, etc. Shuffle copies, check that after sorting, they are in right order.
     errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function)[
         2
     ]
