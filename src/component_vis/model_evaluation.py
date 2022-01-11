@@ -3,13 +3,11 @@
 This module contains functions used to evaluate a single tensor factorisation model
 comparing it to a data tensor.
 """
-from itertools import product
-
-import matplotlib.pyplot as plt
 import numpy as np
 import scipy.linalg as sla
 
 from .factor_tools import construct_cp_tensor
+from .xarray_wrapper import _handle_labelled_cp
 
 
 def estimate_core_tensor(factors, X):
@@ -69,8 +67,8 @@ def core_consistency(cp_tensor, X, normalised=False):
     score close to 100 indicates that the CP model is likely valid. If the
     core consistency is low, however, then the model either has components
     that describe noise or the data does not follow the model's assumptions.
-    So the core consistency can help determine if the chosen number of 
-    components is suitable. 
+    So the core consistency can help determine if the chosen number of
+    components is suitable.
 
     Parameters
     ----------
@@ -116,7 +114,8 @@ def core_consistency(cp_tensor, X, normalised=False):
 
     Notes
     -----
-    This implementation uses the fast method of estimating the core tensor :cite:p:`papalexakis2015fast,buis1996efficient`
+    This implementation uses the fast method of estimating the core tensor
+    :cite:p:`papalexakis2015fast,buis1996efficient`
     """
     # Distribute weights
     weights, factors = cp_tensor
@@ -187,7 +186,7 @@ def relative_sse(cp_tensor, X, sum_squared_X=None):
     X : ndarray
         Tensor approximated by ``cp_tensor``
     sum_squared_X: float (optional)
-        If ``sum(X**2)`` is already computed, you can optionally provide it 
+        If ``sum(X**2)`` is already computed, you can optionally provide it
         using this argument to avoid unnecessary recalculation.
 
     Returns
@@ -227,7 +226,7 @@ def fit(cp_tensor, X, sum_squared_X=None):
     X : ndarray
         Tensor approximated by ``cp_tensor``
     sum_squared_X: float (optional)
-        If ``sum(X**2)`` is already computed, you can optionally provide it 
+        If ``sum(X**2)`` is already computed, you can optionally provide it
         using this argument to avoid unnecessary recalculation.
 
     Returns
@@ -296,6 +295,7 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
     return metric(labels, classifier.predict(factor_matrix))
 
 
+@_handle_labelled_cp("cp_tensor", None)
 def percentage_variation(cp_tensor, X=None, method="data"):
     r"""Compute the percentage of variation captured by each component.
 
@@ -334,7 +334,7 @@ def percentage_variation(cp_tensor, X=None, method="data"):
     # TODO: Unit tests for percentage_variation
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]
-    if weights:
+    if weights is not None:
         temp = weights.reshape(rank, 1) @ weights.reshape(1, rank)
     else:
         temp = np.ones(rank, rank)
