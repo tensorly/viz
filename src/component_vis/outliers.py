@@ -1,5 +1,3 @@
-from warnings import warn
-
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
@@ -7,7 +5,7 @@ from scipy.optimize import brentq
 
 from ._utils import is_iterable
 from .factor_tools import construct_cp_tensor
-from .xarray_wrapper import is_xarray
+from .xarray_wrapper import is_dataframe, is_xarray
 
 _LEVERAGE_NAME = "Leverage score"
 _SLABWISE_SSE_NAME = "Slabwise SSE"
@@ -39,10 +37,11 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     we compute the :math:`i`-th normalised slabwise residual as
 
     .. math::
-        r_i = \frac{\sum_{jk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}{\sum_{ijk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}. 
+        r_i = \frac{\sum_{jk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}
+                   {\sum_{ijk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}.
 
-    The residuals can measure how well our decomposition fits the different 
-    sample. If a sample, :math:`i`, has a high residual, then that indicates that 
+    The residuals can measure how well our decomposition fits the different
+    sample. If a sample, :math:`i`, has a high residual, then that indicates that
     the model is not able to describe its behaviour.
 
     Parameters
@@ -56,7 +55,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     axis : int
         Axis (or axes) that the SSE is computed across (i.e. these are not the ones summed over).
         The output will still have these axes.
-    
+
     Returns
     -------
     slab_sse : xarray or numpy array
@@ -66,7 +65,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
     TODO: example for compute_slabwise_sse
     """
     # Check that dimensions match up.
-    if hasattr(estimated, "to_dataframe") and hasattr(true, "to_dataframe"):
+    if is_xarray(estimated) and is_xarray(true):
         if estimated.dims != true.dims:
             raise ValueError(
                 f"Dimensions of estimated and true tensor must be equal,"
@@ -83,6 +82,11 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
                 raise ValueError(
                     f"The dimension {dim} has different coordinates for the true and estimated tensor."
                 )
+    elif is_dataframe(estimated) and is_dataframe(true):
+        if estimated.columns != true.columns:
+            raise ValueError("Columns of true and estimated matrix must be equal")
+        if estimated.index != true.index:
+            raise ValueError("Index of true and estimated matrix must be equal")
 
     slab_sse = _compute_slabwise_sse(estimated, true, normalise=normalise, axis=axis)
     if hasattr(slab_sse, "to_dataframe"):
@@ -99,7 +103,7 @@ def compute_leverage(factor_matrix):
     defined as
 
     .. math::
-        
+
         l_i = \left[A \left(A^T A\right)^{-1} A^T\right]_{ii},
 
     that is, the :math:`i`-th diagonal entry of the matrix :math:`\left[A \left(A^T A\right)^{-1} A^T\right]`.
@@ -115,7 +119,7 @@ def compute_leverage(factor_matrix):
     ----------
     factor_matrix : DataFrame or numpy array
         The factor matrix whose leverage we compute
-    
+
     Returns
     -------
     leverage : DataFrame or numpy array
@@ -163,7 +167,7 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     slab_sse = compute_slabwise_sse(
         estimated_tensor, true_tensor, normalise=normalise_sse, axis=axis
     )
-    if hasattr(slab_sse, "to_dataframe"):
+    if is_xarray(slab_sse):
         slab_sse = pd.DataFrame(slab_sse.to_series())
 
     leverage_is_labelled = isinstance(leverage, pd.DataFrame)
@@ -230,7 +234,7 @@ def get_leverage_outlier_threshold(leverage_scores, method, p_value=0.05):
     method : {"huber lower", "huber higher", "hw lower", "hw higher", "p-value"}
     p_value : float (optional, default=0.05)
         If ``method="p-value"``, then this is the p-value used for the cut-off.
-    
+
     Returns
     -------
     threshold : float
@@ -280,10 +284,10 @@ def get_slab_sse_outlier_threshold(slab_sse, method, p_value=0.05, dof=1):
     sum of squared errors (slabwise SSE), which is the sum of squared error for each
     data point.
 
-    There is, unfortunately, no guaranteed way to detect outliers automatically based 
-    on the residuals. However, if the slabs we compute the SSE for are large, then we 
-    can use the central limit theorem to assume normally distributed slabwise SSE. 
-    Based on this, we can use the student t distribution to find an appropriate cut-off 
+    There is, unfortunately, no guaranteed way to detect outliers automatically based
+    on the residuals. However, if the slabs we compute the SSE for are large, then we
+    can use the central limit theorem to assume normally distributed slabwise SSE.
+    Based on this, we can use the student t distribution to find an appropriate cut-off
     value.
 
     Another rule-of-thumb follows from :cite:p:`naes2002user` (p. 187), which states
@@ -310,6 +314,8 @@ def get_slab_sse_outlier_threshold(slab_sse, method, p_value=0.05, dof=1):
     if method == "two_sigma":
         return std * 2
     elif method == "p_value":
-        return mean + std * stats.t.isf(p_value, dof)
+        return mean + std * stats.t.isf(p_value, num_samples - dof)
     else:
-        raise ValueError(f"Method must be one of 'two_sigma' and 'p_value'")
+        raise ValueError(
+            f"Method must be one of 'two_sigma' and 'p_value', not '{method}'."
+        )
