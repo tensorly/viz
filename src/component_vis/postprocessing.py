@@ -3,6 +3,7 @@ import scipy.linalg as sla
 
 from ._utils import is_iterable, unfold_tensor
 from .factor_tools import factor_match_score
+from .model_evaluation import percentage_variation
 from .xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
@@ -14,9 +15,7 @@ from .xarray_wrapper import (
 # TODO: Fix naming, what is resolve mode and what is flip mode?
 @_handle_labelled_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
-def resolve_cp_sign_indeterminacy(
-    cp_tensor, dataset, resolve_mode=None, unresolved_mode=-1, method="transpose"
-):
+def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresolved_mode=-1, method="transpose"):
     r"""Resolve the sign indeterminacy of CP models.
 
     Tensor factorisations have a sign indeterminacy that allows any change in the
@@ -143,9 +142,7 @@ def resolve_cp_sign_indeterminacy(
     if unresolved_mode < 0:
         unresolved_mode = dataset.ndim + unresolved_mode
     if unresolved_mode > dataset.ndim or unresolved_mode < 0:
-        raise ValueError(
-            "`unresolved_mode` must be between `-dataset.ndim` and `dataset.ndim-1`."
-        )
+        raise ValueError("`unresolved_mode` must be between `-dataset.ndim` and `dataset.ndim-1`.")
     if is_iterable(resolve_mode) and unresolved_mode in resolve_mode:
         raise ValueError("The unresolved mode cannot be resolved.")
 
@@ -156,11 +153,7 @@ def resolve_cp_sign_indeterminacy(
         for mode in resolve_mode:
             if mode != unresolved_mode:
                 cp_tensor = resolve_cp_sign_indeterminacy(
-                    cp_tensor,
-                    dataset,
-                    unresolved_mode=unresolved_mode,
-                    resolve_mode=mode,
-                    method=method,
+                    cp_tensor, dataset, unresolved_mode=unresolved_mode, resolve_mode=mode, method=method,
                 )
 
         return cp_tensor
@@ -287,10 +280,14 @@ def _permute_cp_tensor(cp_tensor, permutation):
 
 # TODO: Should we name this reference_cp_tensor or target_cp_tensor?
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
-def permute_cp_tensor(
-    cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True
-):
-    """Permute the CP tensors so the factors align with those of the reference CP tensor.
+def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True):
+    """Permute the CP tensor
+    
+    This function supports three ways of permuting a CP tensor: Aligning the components
+    with those of a reference CP tensor (if ``reference_cp_tensor`` is not ``None``),
+    permuting the components according to a given permutation (if ``permutation`` is not ``None``)
+    or so the components are in descending order with respect to their explained variation
+    (if both ``reference_cp_tensor`` and ``permutation`` is ``None``).
 
     This function uses the factor match score to compute the optimal permutation between
     two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
@@ -324,23 +321,17 @@ def permute_cp_tensor(
     ValueError
         If both ``permutation`` and ``reference_cp_tensor`` is provided
     """
-    if permutation is None and reference_cp_tensor is None:
-        raise ValueError(
-            "Must either provide a permutation or a reference CP tensor. Neither is provided"
-        )
-    elif permutation is not None and reference_cp_tensor is not None:
-        raise ValueError(
-            "Must either provide a permutation or a reference CP tensor. Both is provided"
-        )
+    if permutation is not None and reference_cp_tensor is not None:
+        raise ValueError("Must either provide a permutation, a reference CP tensor or neither. Both is provided")
     # TODO: test for permute_cp_tensor
 
-    if permutation is None:
+    if permutation is None and reference_cp_tensor is not None:
         fms, permutation = factor_match_score(
-            reference_cp_tensor,
-            cp_tensor,
-            consider_weights=consider_weights,
-            return_permutation=True,
+            reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,
         )
+    elif permutation is None:
+        variation = percentage_variation(cp_tensor, method="model")
+        permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
 
     rank = cp_tensor[1][0].shape[1]
     if len(permutation) != rank:
@@ -353,12 +344,7 @@ def permute_cp_tensor(
 @_handle_labelled_cp("reference_cp_tensor", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 def postprocess(
-    cp_tensor,
-    reference_cp_tensor=None,
-    dataset=None,
-    resolve_mode=None,
-    unresolved_mode=-1,
-    flip_method="transpose",
+    cp_tensor, reference_cp_tensor=None, dataset=None, resolve_mode=None, unresolved_mode=-1, flip_method="transpose",
 ):
     """Standard postprocessing of a CP decomposition.
 
@@ -410,17 +396,12 @@ def postprocess(
     """
     # TODO: Docstring for postprocess
     # TODO: Unit test for postprocess
-    if reference_cp_tensor is not None:
-        cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor)
+    cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
     cp_tensor = normalise_cp_tensor(cp_tensor)
 
     if dataset is not None:
         cp_tensor = resolve_cp_sign_indeterminacy(
-            cp_tensor,
-            dataset,
-            resolve_mode=resolve_mode,
-            unresolved_mode=unresolved_mode,
-            method=flip_method,
+            cp_tensor, dataset, resolve_mode=resolve_mode, unresolved_mode=unresolved_mode, method=flip_method,
         )
         cp_tensor = label_cp_tensor(cp_tensor, dataset)
 
