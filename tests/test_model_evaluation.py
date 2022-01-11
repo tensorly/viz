@@ -411,4 +411,3 @@ def test_fit(rng):
     noise = rng.random_sample((4, 5, 6))
     fit = model_evaluation.fit(cp, tensor + noise)
     assert fit == pytest.approx(1 - tl.sum(noise ** 2) / tl.sum((tensor + noise) ** 2))
-
