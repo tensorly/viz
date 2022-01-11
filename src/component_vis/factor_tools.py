@@ -5,10 +5,9 @@ models. For example, comparing two factorisations, or constructing
 a CP tensor.
 """
 import numpy as np
-import scipy.linalg as sla
 from scipy.optimize import linear_sum_assignment
 
-from ._utils import extract_singleton, unfold_tensor
+from ._utils import extract_singleton
 
 
 def normalise(x, axis=0):
@@ -21,7 +20,7 @@ def normalise(x, axis=0):
     axis : int
         Axis along which to normalise, if 0, then all columns will have unit norm
         and if 1 then all rows will have unit norm.
-    
+
     Returns
     -------
     np.ndarray
@@ -37,10 +36,10 @@ def cosine_similarity(factor_matrix1, factor_matrix2):
 
     .. math::
 
-        \cos (\mathbf{x}, \mathbf{y}) = 
+        \cos (\mathbf{x}, \mathbf{y}) =
         \frac{\mathbf{x}^\mathsf{T}}{\|\mathbf{x}\|}\frac{\mathbf{y}}{\|\mathbf{y}\|}
 
-    This function returns the average cosine similarity between the columns vectors of 
+    This function returns the average cosine similarity between the columns vectors of
     the two factor matrices, using the optimal column permutation.
 
     Parameters
@@ -49,7 +48,7 @@ def cosine_similarity(factor_matrix1, factor_matrix2):
         First factor matrix
     factor_matrix2 : np.ndarray or pd.DataFrame
         Second factor matrix
-    
+
     Returns
     -------
     float
@@ -69,9 +68,10 @@ def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
 
     .. math::
 
-        \max_\sigma \sum_{r} \frac{\left|\mathbf{a}_{r}^\mathsf{T} \hat{\mathbf{a}}_{\sigma(r)}\right|}{\|\mathbf{a}_{r}\| \|\hat{\mathbf{a}}_{\sigma(r)}\|}
-    
-    where :math:`\mathbf{a}_r` is the :math:`r`-th component vector for the 
+        \max_\sigma \sum_{r} \frac{\left|\mathbf{a}_{r}^\mathsf{T}\hat{\mathbf{a}}_{\sigma(r)}\right|}
+                                  {\|\mathbf{a}_{r}\| \|\hat{\mathbf{a}}_{\sigma(r)}\|}
+
+    where :math:`\mathbf{a}_r` is the :math:`r`-th component vector for the
     first factor matrix and :math:`\hat{\mathbf{a}}_{\sigma(r)}` is :math:`r`-th
     component vector of the second factor matrix after permuting the columns.
 
@@ -85,7 +85,7 @@ def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
         Whether to take the absolute value of the inner products before
         computing the permutation. This is usually done because of the sign
         indeterminacy of component models.
-    
+
     Returns
     -------
     permutation : np.ndarray(dtype=int)
@@ -110,7 +110,7 @@ def factor_match_score(
     r"""Compute the factor match score between ``cp_tensor1`` and ``cp_tensor2``.
 
     The factor match score is used to measure the similarity between two
-    sets of components. There are many definitions of the FMS, but one 
+    sets of components. There are many definitions of the FMS, but one
     common definition for third order tensors is given by:
 
     .. math::
@@ -134,13 +134,13 @@ def factor_match_score(
                      \frac{\vec{a}_r^T \hat{\vec{a}}_r}{\|\vec{a}_r^T\|\|\hat{\vec{a}}_r\|}
                      \frac{\vec{b}_r^T \hat{\vec{b}}_r}{\|\vec{b}_r^T\|\|\hat{\vec{b}}_r\|}
                      \frac{\vec{c}_r^T \hat{\vec{c}}_r}{\|\vec{c}_r^T\|\|\hat{\vec{c}}_r\|}
-    
+
     instead, where :math:`w_r = \|\vec{a}_r\| \|\vec{b}_r\| \|\vec{c}_r\|` and
     :math:`\hat{w}_r = \|\hat{\vec{a}}_r\| \|\hat{\vec{b}}_r\| \|\hat{\vec{c}}_r\|`.
 
     For both definitions above, there is a permutation determinacy. Two equivalent decompositions
     can have the same component vectors, but in a different order. To resolve this determinacy,
-    we use linear sum assignment solver available in SciPy :cite:p:`crouse2016implementing` to 
+    we use linear sum assignment solver available in SciPy :cite:p:`crouse2016implementing` to
     efficiently find the optimal permutation.
 
     Parameters
@@ -161,7 +161,7 @@ def factor_match_score(
     absolute_value : bool (default=True)
         If True, then only magnitude of the congruence is considered, not the
         sign.
-    
+
     Returns
     -------
     fms : float
@@ -247,21 +247,21 @@ def degeneracy_score(cp_tensor):
         \cos(\mathbf{b}_{r}, \mathbf{b}_{s})
         \cos(\mathbf{c}_{r}, \mathbf{c}_{s})
         \approx -1
-    
+
     for some :math:`r \neq s`, where :math:`\mathbf{A}, \mathbf{B}`
-    and :math:`\mathbf{C}` are factor matrices and 
+    and :math:`\mathbf{C}` are factor matrices and
 
     .. math::
 
-        \cos(\mathbf{x}, \mathbf{y}) = 
+        \cos(\mathbf{x}, \mathbf{y}) =
         \frac{\mathbf{x}^\mathsf{T} \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.
 
     Furthermore, the magnitude of the degenerate components are unbounded and
     may approach infinity.
-    
+
     Degenerate solutions typically signify that the decomposition is unreliable,
     and that one should take care before interpreting the components.
-    
+
     There are several strategies to avoid degenerate solutions:
 
      * Fitting models with more random initialisations
@@ -274,7 +274,7 @@ def degeneracy_score(cp_tensor):
     be degenerate.
 
     To measure degeneracy, we compute the degeneracy score, which is the
-    minimum triple cosine (for a third-order tensor). A score close to 
+    minimum triple cosine (for a third-order tensor). A score close to
     -1 signifies a degenerate solution. A score of -0.85 is an indication
     of a troublesome model :cite:p:`krijnen1993analysis` (as cited in
     :cite:p:`bro1997parafac`).
@@ -287,12 +287,12 @@ def degeneracy_score(cp_tensor):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
-    
+
     Returns
     -------
     degeneracy_score : float
         Degeneracy score, between 1 and -1. A score close to -1 signifies
-        a degenerate solution. A score of -0.85 is an indication of a 
+        a degenerate solution. A score of -0.85 is an indication of a
         troublesome model :cite:p:`krijnen1993analysis` (as cited in
         :cite:p:`bro1997parafac`).
     """
@@ -310,6 +310,7 @@ def degeneracy_score(cp_tensor):
     return np.asarray(tucker_congruence_scores).min()
 
 
+# TODO: Rename these to be named cp_to_tensor and tucker_to_tensor? or cp_to_dense and tucker_to_dense?
 def construct_cp_tensor(cp_tensor):
     """Construct a CP tensor, equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
 
@@ -321,7 +322,7 @@ def construct_cp_tensor(cp_tensor):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
-    
+
     Returns
     -------
     xarray or np.ndarray
@@ -366,7 +367,7 @@ def construct_tucker_tensor(tucker_tensor):
     tucker : CPTensor or tuple
         TensorLy-style TuckerTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
-    
+
     Returns
     -------
     xarray or np.ndarray
@@ -423,7 +424,7 @@ def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
     cp_tensor2 : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    
+
     Returns
     -------
     bool
