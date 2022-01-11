@@ -4,24 +4,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
 from matplotlib.lines import Line2D
-from scipy import stats
-
-from component_vis import model_evaluation
 
 from . import model_evaluation, postprocessing
-from .factor_tools import construct_cp_tensor, factor_match_score, get_permutation
+from .factor_tools import construct_cp_tensor, factor_match_score
 from .model_evaluation import estimate_core_tensor
 from .outliers import (
     _LEVERAGE_NAME,
     _SLABWISE_SSE_NAME,
-    compute_leverage,
     compute_outlier_info,
-    compute_slabwise_sse,
     get_leverage_outlier_threshold,
     get_slab_sse_outlier_threshold,
 )
 
 # TODO: Examples in docstrings
+
 
 # TODO: Scree plot
 # TODO: Test this function
@@ -155,7 +151,6 @@ def outlier_plot(
 ):
     # TODO: rule of thumbs
     weights, factor_matrices = cp_tensor
-    factor_matrix = factor_matrices[mode]
 
     outlier_info = compute_outlier_info(cp_tensor, dataset, axis=mode)
 
@@ -399,27 +394,28 @@ def components_plot(
 
     Full example with PCA of a real stock dataset
     >>> import pandas as pd
-    ... import numpy as np
-    ... from plotly.data import stocks
-    ... from component_vis.xarray_wrapper import label_cp_tensor
-    ... from component_vis.visualisation import plot_components
-    ... 
-    ... # Load data and convert to xarray
-    ... stocks = px.data.stocks().set_index("date").stack()
-    ... stocks.index.names = ["Date", "Stock"]
-    ... stocks = stocks.to_xarray()
-    ... 
-    ... # Compute PCA via SVD of centered data
-    ... stocks -= stocks.mean(axis=0)
-    ... U, s, Vh = np.linalg.svd(stocks, full_matrices=False)
-    ... 
-    ... # Extract two components and convert to cp_tensor
-    ... num_components = 2
-    ... cp_tensor = s[:num_components], (U[:, :num_components], Vh.T[:, :num_components])
-    ... cp_tensor = component_vis.xarray_wrapper.label_cp_tensor(cp_tensor, stocks)
-    ... 
-    ... # Visualise the components with plot_components
-    ... fig, axes = plot_components(cp_tensor, weight_behaviour="one_mode", weight_mode=1, plot_kwargs=[{}, {'marker': 'o', 'linewidth': 0}])
+    >>> import numpy as np
+    >>> from plotly.data import stocks
+    >>> from component_vis.xarray_wrapper import label_cp_tensor
+    >>> from component_vis.visualisation import plot_components
+    >>>
+    >>> # Load data and convert to xarray
+    >>> stocks = px.data.stocks().set_index("date").stack()
+    >>> stocks.index.names = ["Date", "Stock"]
+    >>> stocks = stocks.to_xarray()
+    >>>
+    >>> # Compute PCA via SVD of centered data
+    >>> stocks -= stocks.mean(axis=0)
+    >>> U, s, Vh = np.linalg.svd(stocks, full_matrices=False)
+    >>>
+    >>> # Extract two components and convert to cp_tensor
+    >>> num_components = 2
+    >>> cp_tensor = s[:num_components], (U[:, :num_components], Vh.T[:, :num_components])
+    >>> cp_tensor = component_vis.xarray_wrapper.label_cp_tensor(cp_tensor, stocks)
+    >>>
+    >>> # Visualise the components with plot_components
+    >>> fig, axes = plot_components(cp_tensor, weight_behaviour="one_mode", weight_mode=1,
+    ...                             plot_kwargs=[{}, {'marker': 'o', 'linewidth': 0}])
     """
     if weight_behaviour == "ignore":
         weights, factor_matrices = cp_tensor
@@ -704,7 +700,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
 
     fig.legend(
         custom_lines,
-        ["Converged", "Did not converge", "Lowest final error", "Other runs",],
+        ["Converged", "Did not converge", "Lowest final error", "Other runs"],
         ncol=2,
         bbox_to_anchor=(0.5, -0.1),
         loc="lower center",
