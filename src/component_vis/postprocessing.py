@@ -3,10 +3,17 @@ import scipy.linalg as sla
 
 from ._utils import is_iterable, unfold_tensor
 from .factor_tools import factor_match_score
-from .xarray_wrapper import label_cp_tensor
+from .xarray_wrapper import (
+    _SINGLETON,
+    _handle_labelled_cp,
+    _handle_labelled_dataset,
+    label_cp_tensor,
+)
 
 
 # TODO: Fix naming, what is resolve mode and what is flip mode?
+@_handle_labelled_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def resolve_cp_sign_indeterminacy(
     cp_tensor, dataset, resolve_mode=None, unresolved_mode=-1, method="transpose"
 ):
@@ -177,6 +184,7 @@ def resolve_cp_sign_indeterminacy(
     return cp_tensor[0], tuple(factor_matrices)
 
 
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def normalise_cp_tensor(cp_tensor):
     """Ensure that the all factor matrices have unit norm, and all weight is stored in the weight-vector
 
@@ -205,6 +213,7 @@ def normalise_cp_tensor(cp_tensor):
     return weights, tuple(new_factors)
 
 
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def distribute_weights_evenly(cp_tensor):
     """Ensure that the weight-vector consists of ones and all factor matrices have equal norm
 
@@ -228,6 +237,7 @@ def distribute_weights_evenly(cp_tensor):
     return weights, factors
 
 
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def distribute_weights_in_one_mode(cp_tensor, mode):
     """Normalise all factors and multiply the weights into one mode.
 
@@ -253,7 +263,6 @@ def distribute_weights_in_one_mode(cp_tensor, mode):
     return np.ones_like(weights), factors
 
 
-# TODO: Should we name this reference_cp_tensor or target_cp_tensor?
 def _permute_cp_tensor(cp_tensor, permutation):
     # TODO: Handle dataframes
 
@@ -277,6 +286,7 @@ def _permute_cp_tensor(cp_tensor, permutation):
 
 
 # TODO: Should we name this reference_cp_tensor or target_cp_tensor?
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def permute_cp_tensor(
     cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True
 ):
@@ -340,6 +350,8 @@ def permute_cp_tensor(
     return _permute_cp_tensor(cp_tensor, permutation)
 
 
+@_handle_labelled_cp("reference_cp_tensor", None, optional=True)
+@_handle_labelled_cp("cp_tensor", None)
 def postprocess(
     cp_tensor,
     reference_cp_tensor=None,
