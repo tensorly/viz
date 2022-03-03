@@ -344,7 +344,7 @@ def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, con
 @_handle_labelled_cp("reference_cp_tensor", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 def postprocess(
-    cp_tensor, reference_cp_tensor=None, dataset=None, resolve_mode=None, unresolved_mode=-1, flip_method="transpose",
+    cp_tensor, dataset=None, reference_cp_tensor=None, resolve_mode=None, unresolved_mode=-1, flip_method="transpose",
 ):
     """Standard postprocessing of a CP decomposition.
 
