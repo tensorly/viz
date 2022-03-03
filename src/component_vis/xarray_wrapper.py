@@ -53,9 +53,7 @@ def label_cp_tensor(cp_tensor, dataset):
     elif isinstance(dataset, np.ndarray):
         return cp_tensor
     else:
-        raise ValueError(
-            "Dataset must be either numpy array, xarray or pandas dataframe."
-        )
+        raise ValueError("Dataset must be either numpy array, xarray or pandas dataframe.")
 
 
 def is_xarray(x):
@@ -95,9 +93,7 @@ def _unlabel_cp_tensor(cp_tensor, optional):
     is_labelled = is_dataframe(factors[0])
     for factor in factors:
         if is_dataframe(factor) != is_labelled:
-            raise ValueError(
-                "All factor matrices must either be labelled or not labelled."
-            )
+            raise ValueError("All factor matrices must either be labelled or not labelled.")
 
     if not is_labelled:
         return (weights, factors), None
@@ -170,24 +166,20 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
             bound_arguments = signature(func).bind(*args, **kwargs)
 
             cp_tensor = bound_arguments.arguments[cp_tensor_name]
-            cp_tensor_unlabelled, cp_tensor_metadata = _unlabel_cp_tensor(
-                cp_tensor, optional=optional
-            )
+            cp_tensor_unlabelled, cp_tensor_metadata = _unlabel_cp_tensor(cp_tensor, optional=optional)
 
             bound_arguments.arguments[cp_tensor_name] = cp_tensor_unlabelled
             out = func(*bound_arguments.args, **bound_arguments.kwargs)
 
-            if output_cp_tensor_index is not None:
-                out_cp_tensor = _relabel_cp_tensor(
-                    out[output_cp_tensor_index], cp_tensor_metadata, optional=optional
-                )
+            if output_cp_tensor_index is _SINGLETON:
+                out = _relabel_cp_tensor(out, cp_tensor_metadata, optional=optional)
+            elif output_cp_tensor_index is not None:
+                out_cp_tensor = _relabel_cp_tensor(out[output_cp_tensor_index], cp_tensor_metadata, optional=optional)
                 out = (
                     out[:output_cp_tensor_index],
                     out_cp_tensor,
                     out[output_cp_tensor_index + 1 :],
                 )
-            elif output_cp_tensor_index is _SINGLETON:
-                out = _relabel_cp_tensor(out, cp_tensor_metadata, optional=optional)
             return out
 
         return func2
@@ -203,29 +195,30 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
         def func2(*args, **kwargs):
             bound_arguments = signature(func).bind(*args, **kwargs)
 
+            if optional and dataset_name not in bound_arguments.arguments:
+                return func(*bound_arguments.args, **bound_arguments.kwargs)
             dataset = bound_arguments.arguments[dataset_name]
-            dataset_unlabelled, DatasetType, dataset_metadata = _unlabel_dataset(
-                dataset, optional=optional
-            )
+            dataset_unlabelled, DatasetType, dataset_metadata = _unlabel_dataset(dataset, optional=optional)
 
             bound_arguments.arguments[dataset_name] = dataset_unlabelled
             out = func(*bound_arguments.args, **bound_arguments.kwargs)
 
-            if dataset_name is not None:
+            if output_dataset_index is _SINGLETON:
+                out = _relabel_dataset(out, DatasetType, dataset_metadata, optional=optional)
+            elif output_dataset_index is not None:
                 out_dataset = _relabel_dataset(
-                    out[dataset_name], DatasetType, dataset_metadata, optional=optional
+                    out[output_dataset_index], DatasetType, dataset_metadata, optional=optional
                 )
                 out = (
                     out[:output_dataset_index],
                     out_dataset,
                     out[output_dataset_index + 1 :],
                 )
-            elif output_dataset_index is _SINGLETON:
-                out = _relabel_dataset(
-                    out, DatasetType, dataset_metadata, optional=optional
-                )
             return out
 
         return func2
 
     return decorator
+
+
+# TODO NEXT MAYBE: Make a _handle_labelled_factor_matrix decorator
