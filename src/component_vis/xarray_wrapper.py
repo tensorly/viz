@@ -165,7 +165,7 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
         def func2(*args, **kwargs):
             bound_arguments = signature(func).bind(*args, **kwargs)
 
-            cp_tensor = bound_arguments.arguments[cp_tensor_name]
+            cp_tensor = bound_arguments.arguments.get(cp_tensor_name, None)
             cp_tensor_unlabelled, cp_tensor_metadata = _unlabel_cp_tensor(cp_tensor, optional=optional)
 
             bound_arguments.arguments[cp_tensor_name] = cp_tensor_unlabelled
