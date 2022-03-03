@@ -364,7 +364,7 @@ def postprocess(
 
      * ``permute_cp_tensor``
      * ``normalise_cp_tensor``
-     * ``resolve_cp_sign_inditerminacy``
+     * ``resolve_cp_sign_indeterminacy``
      * ``label_cp_tensor``
 
     Parameters
