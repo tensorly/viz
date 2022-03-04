@@ -7,7 +7,7 @@ from matplotlib.lines import Line2D
 
 from . import model_evaluation, postprocessing
 from .factor_tools import construct_cp_tensor, factor_match_score
-from .model_evaluation import estimate_core_tensor
+from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
     _LEVERAGE_NAME,
     _SLABWISE_SSE_NAME,
@@ -31,9 +31,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="fit", ax=None):
 
     if errors is None:
         # compute error using the metric function
-        errors = {
-            model: metric(cp_tensor, dataset) for model, cp_tensor in cp_tensors.items()
-        }
+        errors = {model: metric(cp_tensor, dataset) for model, cp_tensor in cp_tensors.items()}
     else:
         errors = dict(errors)
 
@@ -128,9 +126,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     if use_pingouin:
         from pingouin import qqplot
 
-        warn(
-            "GPL-3 Lisenced code is loaded, so this code also follows the GPL-3 license."
-        )
+        warn("GPL-3 Lisenced code is loaded, so this code also follows the GPL-3 license.")
         qqplot(residuals, ax=ax, **kwargs)
     else:
         sm.qqplot(residuals, ax=ax, **kwargs)
@@ -157,24 +153,16 @@ def outlier_plot(
     if ax is None:
         ax = plt.gca()
 
-    ax.plot(
-        outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], "o"
-    )
+    ax.plot(outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], "o")
     ax.set_xlabel("Leverage score")
     ax.set_ylabel("Slabwise SSE")
-    if hasattr(factor_matrices[mode], "index") and factor_matrices[
-        mode
-    ].index.name not in {None, ""}:
+    if hasattr(factor_matrices[mode], "index") and factor_matrices[mode].index.name not in {None, ""}:
         title = f"Outlier plot for {factor_matrices[mode].index.name}"
     else:
         title = f"Outlier plot for mode {mode}"
     ax.set_title(title)
 
-    for x, y, s in zip(
-        outlier_info[f"{_LEVERAGE_NAME}"],
-        outlier_info[f"{_SLABWISE_SSE_NAME}"],
-        outlier_info.index,
-    ):
+    for x, y, s in zip(outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], outlier_info.index,):
         ax.text(x, y, s)
 
     # Vertical lines for leverage based rule-of-thumb thresholds
@@ -185,9 +173,7 @@ def outlier_plot(
 
         for leverage_rule_of_thumb in leverage_rule_of_thumbs:
             threshold = get_leverage_outlier_threshold(
-                outlier_info[f"{_LEVERAGE_NAME}"],
-                method=leverage_rule_of_thumb,
-                p_value=leverage_p_value,
+                outlier_info[f"{_LEVERAGE_NAME}"], method=leverage_rule_of_thumb, p_value=leverage_p_value,
             )
             if leverage_rule_of_thumb == "p-value":
                 leverage_rule_of_thumb = f"p-value: {leverage_p_value}"
@@ -213,9 +199,7 @@ def outlier_plot(
     return ax
 
 
-def component_scatterplot(
-    cp_tensor, mode, x_component=0, y_component=1, ax=None, **kwargs
-):
+def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None, **kwargs):
     """Scatterplot of two columns in a factor matrix.
 
     Create a scatterplot with the columns of a factor matrix as feature-vectors.
@@ -271,10 +255,7 @@ def component_scatterplot(
     ymin, ymax = ax.get_ylim()
 
     ax.text(
-        xmax - 0.05 * (xmax - xmin),
-        0,
-        f"Component {x_component}",
-        horizontalalignment="left",
+        xmax - 0.05 * (xmax - xmin), 0, f"Component {x_component}", horizontalalignment="left",
     )
 
     return ax
@@ -355,9 +336,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     return ax
 
 
-def components_plot(
-    cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None
-):
+def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
     
     Parameters
@@ -424,13 +403,9 @@ def components_plot(
     elif weight_behaviour == "evenly":
         weights, factor_matrices = postprocessing.distribute_weights_evenly(cp_tensor)
     elif weight_behaviour == "one_mode":
-        weights, factor_matrices = postprocessing.distribute_weights_in_one_mode(
-            cp_tensor, weight_mode
-        )
+        weights, factor_matrices = postprocessing.distribute_weights_in_one_mode(cp_tensor, weight_mode)
     else:
-        raise ValueError(
-            "weight_behaviour must be either 'ignore', 'normalise' or 'one_mode'"
-        )
+        raise ValueError("weight_behaviour must be either 'ignore', 'normalise' or 'one_mode'")
 
     num_components = len(weights.reshape(-1))
     num_modes = len(factor_matrices)
@@ -451,11 +426,7 @@ def components_plot(
 
 
 def component_comparison_plot(
-    cp_tensors,
-    row="model",
-    weight_behaviour="normalise",
-    weight_mode=0,
-    plot_kwargs=None,
+    cp_tensors, row="model", weight_behaviour="normalise", weight_mode=0, plot_kwargs=None,
 ):
     """Create a plot to compare different CP tensors.
 
@@ -506,9 +477,7 @@ def component_comparison_plot(
     else:
         raise ValueError("Row must be either 'model' or 'component'")
 
-    fig, axes = plt.subplots(
-        num_rows, num_modes, figsize=(16, num_rows * 9 / num_modes)
-    )
+    fig, axes = plt.subplots(num_rows, num_modes, figsize=(16, num_rows * 9 / num_modes))
     for i, (model_name, cp_tensor) in enumerate(cp_tensors.items()):
         # TODO: Function for weight_behaviour?
         if weight_behaviour == "ignore":
@@ -516,17 +485,11 @@ def component_comparison_plot(
         elif weight_behaviour == "normalise":
             weights, factor_matrices = postprocessing.normalise_cp_tensor(cp_tensor)
         elif weight_behaviour == "evenly":
-            weights, factor_matrices = postprocessing.distribute_weights_evenly(
-                cp_tensor
-            )
+            weights, factor_matrices = postprocessing.distribute_weights_evenly(cp_tensor)
         elif weight_behaviour == "one_mode":
-            weights, factor_matrices = postprocessing.distribute_weights_in_one_mode(
-                cp_tensor, weight_mode
-            )
+            weights, factor_matrices = postprocessing.distribute_weights_in_one_mode(cp_tensor, weight_mode)
         else:
-            raise ValueError(
-                "weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'"
-            )
+            raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
 
         fms, permutation = factor_match_score(
             cp_tensor, main_cp_tensor, consider_weights=False, return_permutation=True
@@ -555,9 +518,7 @@ def component_comparison_plot(
 
     if row == "model":
         fig.legend(
-            [str(i) for i in range(num_components)],
-            loc="upper center",
-            ncol=num_components,
+            [str(i) for i in range(num_components)], loc="upper center", ncol=num_components,
         )
         for row_idx, model_name in enumerate(cp_tensors):
             axes[row_idx, 0].set_ylabel(model_name)
@@ -680,21 +641,9 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     custom_lines = [
         Line2D([0], [0], marker="o", alpha=1, color="k", linewidth=0),
         Line2D([0], [0], marker="x", alpha=1, color="k", linewidth=0),
+        Line2D([0], [0], marker="s", alpha=1, color=plt.rcParams["axes.prop_cycle"].by_key()["color"][1], linewidth=0,),
         Line2D(
-            [0],
-            [0],
-            marker="s",
-            alpha=1,
-            color=plt.rcParams["axes.prop_cycle"].by_key()["color"][1],
-            linewidth=0,
-        ),
-        Line2D(
-            [0],
-            [0],
-            marker="s",
-            alpha=0.5,
-            color=plt.rcParams["axes.prop_cycle"].by_key()["color"][0],
-            linewidth=0,
+            [0], [0], marker="s", alpha=0.5, color=plt.rcParams["axes.prop_cycle"].by_key()["color"][0], linewidth=0,
         ),
     ]
 
@@ -706,3 +655,28 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         loc="lower center",
     )
     return fig, axes
+
+
+def percentage_variation_plots(
+    cp_tensor, dataset=None, method="data", ax=None,
+):
+    """Bar chart showing the percentage of variation explained by each of the components.
+    """
+    # TODO: Write docstring
+    if ax is None:
+        ax = plt.gca()
+
+    labels = {"data": "Percentage of data", "model": "Percentage of model"}
+    variation = percentage_variation(cp_tensor, dataset, method=method)
+    if method == "both":
+        data_var, model_var = variation
+        ax.bar(np.arange(len(data_var)) - 0.2, data_var, width=0.4, label=labels["data"])
+        ax.bar(np.arange(len(model_var)) + 0.2, model_var, width=0.4, label=labels["model"])
+
+    else:
+        ax.bar(range(len(variation)), variation, label=labels[method])
+
+    ax.legend()
+    ax.set_xlabel("Component number")
+    ax.set_ylabel("Percentage variation explained [%]")
+    return ax
