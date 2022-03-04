@@ -304,7 +304,7 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
     return metric(labels, classifier.predict(factor_matrix))
 
 
-@_handle_labelled_dataset("X", None)
+@_handle_labelled_dataset("X", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 def percentage_variation(cp_tensor, X=None, method="data"):
     r"""Compute the percentage of variation captured by each component.
