@@ -37,6 +37,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     #'sphinx.ext.napoleon'
+    "matplotlib.sphinxext.plot_directive",
     "numpydoc",
     "sphinxcontrib.bibtex",
 ]
@@ -133,13 +134,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (
-        master_doc,
-        "component_vis.tex",
-        u"component_vis Documentation",
-        u"Marie Roald",
-        "manual",
-    ),
+    (master_doc, "component_vis.tex", u"component_vis Documentation", u"Marie Roald", "manual",),
 ]
 
 

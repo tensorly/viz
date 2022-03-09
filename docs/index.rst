@@ -1,5 +1,5 @@
 Welcome to component_vis's documentation!
-======================================
+=========================================
 
 .. toctree::
    :maxdepth: 2

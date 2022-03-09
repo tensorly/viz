@@ -1,20 +1,14 @@
 API Reference
 =============
 
-Model evaluation
-----------------
+.. toctree::
+    api/postprocessing
+    api/factor_tools
+    api/model_evaluation
+    api/multimodel_evaluation
+    api/outliers
+    api/visualisation
+    api/data
 
-.. automodule:: component_vis.model_evaluation
-    :members:
 
-Factor tools
-------------
 
-.. automodule:: component_vis.factor_tools
-    :members:
-
-Post processing
----------------
-
-.. automodule:: component_vis.postprocessing
-    :members:
