@@ -1,13 +1,12 @@
-"""Methods to evaluate a single tensor factorisation model.
-
+"""
 This module contains functions used to evaluate a single tensor factorisation model
-comparing it to a data tensor.
+by comparing it to a data tensor.
 """
 import numpy as np
 import scipy.linalg as sla
 
 from .factor_tools import construct_cp_tensor
-from .xarray_wrapper import _handle_labelled_cp
+from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 
 
 def estimate_core_tensor(factors, X):
@@ -170,7 +169,6 @@ def sse(cp_tensor, X):
     >>> sse(cp, X)
     18.948918157419186
     """
-    # TODO: tests for sse
     X_hat = construct_cp_tensor(cp_tensor)
     return np.sum((X - X_hat) ** 2)
 
@@ -209,7 +207,6 @@ def relative_sse(cp_tensor, X, sum_squared_X=None):
     >>> relative_sse(cp, X)
     0.4817407254961442
     """
-    # TODO: tests for relative_sse
     if sum_squared_X is None:
         sum_squared_x = np.sum(X ** 2)
     return sse(cp_tensor, X) / sum_squared_x
@@ -255,7 +252,6 @@ def fit(cp_tensor, X, sum_squared_X=None):
     >>> 1 - relative_sse(cp, X)
     0.5182592745038558
     """
-    # TODO: tests for fit
     return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
 
 
@@ -296,6 +292,7 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
 
 
 @_handle_labelled_cp("cp_tensor", None)
+@_handle_labelled_dataset("X", None, optional=True)
 def percentage_variation(cp_tensor, X=None, method="data"):
     r"""Compute the percentage of variation captured by each component.
 
