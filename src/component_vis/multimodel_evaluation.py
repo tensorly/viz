@@ -1,3 +1,6 @@
+"""
+Utilities for comparing multiple decompositions against each other.
+"""
 import numpy as np
 
 from . import model_evaluation
@@ -8,9 +11,7 @@ from .factor_tools import factor_match_score
 # Set similarity metric to a function that only return ones to check that the argument is used
 # Check comparison tensors equal to cp_tensor to check that we only get ones
 # Test with CP tensors with known similarity
-def similarity_evaluation(
-    cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs
-):
+def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
     """Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
 
     Parameters
@@ -20,7 +21,7 @@ def similarity_evaluation(
         argument and a tuple of components as second argument
     comparison_cp_tensors : List[CPTensor or tuple]
         List of TensorLy-style CPTensors to compare with
-    similarity_metric : Callable[CPTensor, CPTensor, **kwargs] -> float
+    similarity_metric : Callable[CPTensor, CPTensor, \*\*kwargs] -> float
         Function that takes two CPTensors as input and returns their similarity
     **kwargs
         Extra keyword-arguments passed to ``similarity_metric``.
@@ -34,12 +35,11 @@ def similarity_evaluation(
         similarity_metric = factor_match_score
 
     return [
-        similarity_metric(cp_tensor, comparison_cp_tensor, **kwargs)
-        for comparison_cp_tensor in comparison_cp_tensors
+        similarity_metric(cp_tensor, comparison_cp_tensor, **kwargs) for comparison_cp_tensor in comparison_cp_tensors
     ]
 
 
-def get_model_with_lowest_error(cp_tensors, X, error_function=None):
+def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index=False, return_errors=False):
     """Compute reconstruction error for all cp_tensors and return model with lowest error.
 
     This is useful to select the best initialisation if several random
@@ -54,17 +54,23 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
         Dataset modelled by the CP tensors
     error_function : Callable (optional)
         Callable with the signature ``error_function(cp_tensor, X)``,
-        that should return a measure of the modelling error (e.g. SSE).
+        that should return a measure of the modelling error (e.g. SSE). Default
+        is relative SSE.
+    return_index : bool (optional, default=False)
+        If True, then the index of the CP tensor with the lowest error is returned
+    return_errors : bool (optional, defult=False)
+        if True, then a list of errors for each CP tensor is returned.
 
     Returns
     -------
     CPTensor
         The CP tensor with the lowest error
     int
-        The index of the selected CP tensor in ``cp_tensors``
+        The index of the selected CP tensor in ``cp_tensors``. Only returned 
+        if ``return_index=True``.
     list
-        List of the error values for all CP tensors in ``cp_tensor``
-        (in the same order as ``cp_tensors``).
+        List of the error values for all CP tensors in ``cp_tensor`` (in the same
+        order as ``cp_tensors``). only returned if ``return_errors=True``
     """
     # TODO: tests for get_model_with_lowest_error
     # TODO: example for get_model_with_lowest_error
@@ -83,7 +89,16 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None):
             lowest_sse = sse
             selected_index = i
 
-    return selected_cp_tensor, selected_index, all_sse
+    returns = [selected_cp_tensor]
+    if return_index:
+        returns.append(selected_index)
+    if return_errors:
+        returns.append(all_sse)
+    returns = tuple(returns)
+    if len(returns) == 1:
+        return returns[0]
+    else:
+        return returns
 
 
 def sort_models_by_error(cp_tensors, X, error_function=None):
@@ -104,15 +119,16 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
     list of CPTensors
         List of all CP tensors sorted so the CP tensor with the lowest error
         is first and highest error is last.
+    list of floats
+        List of error computed for each CP tensor (in sorted order)
     """
     # TODO: examples for sort_models_by_error
-    # TODO: tests for sort_models_by_error: Create one CP tensor, create copies where A is multiplied by 2, 3, 4, 5, etc. Shuffle copies, check that after sorting, they are in right order.
-    errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function)[
-        2
-    ]
-    sorted_tensors = sorted(zip(errors, cp_tensors))
+    # TODO: Regression test, input list of cp tensors where two of the cp tensors are identical. This failed before.
+
+    errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function, return_errors=True)[1]
+    sorted_errors = sorted(zip(errors, range(len(errors))))
     # We use np.asarray(error).item() because the error is an XArray object for X-array datasets
     return (
-        [cp_tensor for error, cp_tensor in sorted_tensors],
-        [np.asarray(error).item() for error, cp_tensor in sorted_tensors],
+        [cp_tensors[idx] for _error, idx in sorted_errors],
+        [np.asarray(error).item() for error, _cp_tensor in sorted_errors],
     )
