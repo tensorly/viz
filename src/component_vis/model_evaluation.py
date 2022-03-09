@@ -9,6 +9,7 @@ from .factor_tools import construct_cp_tensor
 from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 
 
+@_handle_labelled_dataset("X", None)
 def estimate_core_tensor(factors, X):
     """Efficient estimation of the Tucker core from a factor matrices and a data tensor.
 
@@ -38,6 +39,8 @@ def estimate_core_tensor(factors, X):
     return np.ascontiguousarray(X)
 
 
+@_handle_labelled_dataset("X", None)
+@_handle_labelled_cp("cp_tensor", None)
 def core_consistency(cp_tensor, X, normalised=False):
     r"""Computes the core consistency :cite:p:`bro2003new`
 
@@ -138,6 +141,8 @@ def core_consistency(cp_tensor, X, normalised=False):
     return 100 - 100 * np.sum((G - T) ** 2) / denom
 
 
+@_handle_labelled_dataset("X", None)
+@_handle_labelled_cp("cp_tensor", None)
 def sse(cp_tensor, X):
     """Compute the sum of squared error for a given cp_tensor.
 
@@ -173,6 +178,8 @@ def sse(cp_tensor, X):
     return np.sum((X - X_hat) ** 2)
 
 
+@_handle_labelled_dataset("X", None)
+@_handle_labelled_cp("cp_tensor", None)
 def relative_sse(cp_tensor, X, sum_squared_X=None):
     """Compute the relative sum of squared error for a given cp_tensor.
 
@@ -212,6 +219,8 @@ def relative_sse(cp_tensor, X, sum_squared_X=None):
     return sse(cp_tensor, X) / sum_squared_x
 
 
+@_handle_labelled_dataset("X", None)
+@_handle_labelled_cp("cp_tensor", None)
 def fit(cp_tensor, X, sum_squared_X=None):
     """Compute the fit (1-relative sum squared error) for a given cp_tensor.
 
@@ -291,6 +300,7 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
     return metric(labels, classifier.predict(factor_matrix))
 
 
+@_handle_labelled_dataset("X", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_labelled_dataset("X", None, optional=True)
 def percentage_variation(cp_tensor, X=None, method="data"):
@@ -345,10 +355,10 @@ def percentage_variation(cp_tensor, X=None, method="data"):
     if method == "data":
         if X is None:
             raise TypeError("The dataset must be provided if ``method='data'``")
-        return ssc / np.sum(X ** 2)
+        return 100 * ssc / np.sum(X ** 2)
     elif method == "model":
-        return ssc / np.abs(np.sum(temp))
+        return 100 * ssc / np.abs(np.sum(temp))
     elif method == "both":
-        return ssc / np.sum(X ** 2), ssc / np.abs(np.sum(temp))
+        return 100 * ssc / np.sum(X ** 2), 100 * ssc / np.abs(np.sum(temp))
     else:
         raise ValueError("Method must be either 'data', 'model' or 'both")

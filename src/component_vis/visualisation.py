@@ -8,7 +8,7 @@ from matplotlib.lines import Line2D
 from . import model_evaluation, postprocessing
 from ._utils import is_iterable
 from .factor_tools import construct_cp_tensor, factor_match_score
-from .model_evaluation import estimate_core_tensor
+from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
     _LEVERAGE_NAME,
     _SLABWISE_SSE_NAME,
@@ -357,7 +357,6 @@ def outlier_plot(
 
     for x, y, s in zip(outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], outlier_info.index,):
         ax.text(x, y, s, zorder=0)
-
     # Vertical lines for leverage based rule-of-thumb thresholds
     leverage_thresholds = {}
     if leverage_rule_of_thumbs is not None:
@@ -618,7 +617,6 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     return ax
 
 
-# TODO:use decorator?
 def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
     
@@ -980,3 +978,28 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         loc="lower center",
     )
     return fig, axes
+
+
+def percentage_variation_plots(
+    cp_tensor, dataset=None, method="data", ax=None,
+):
+    """Bar chart showing the percentage of variation explained by each of the components.
+    """
+    # TODO: Write docstring
+    if ax is None:
+        ax = plt.gca()
+
+    labels = {"data": "Percentage of data", "model": "Percentage of model"}
+    variation = percentage_variation(cp_tensor, dataset, method=method)
+    if method == "both":
+        data_var, model_var = variation
+        ax.bar(np.arange(len(data_var)) - 0.2, data_var, width=0.4, label=labels["data"])
+        ax.bar(np.arange(len(model_var)) + 0.2, model_var, width=0.4, label=labels["model"])
+
+    else:
+        ax.bar(range(len(variation)), variation, label=labels[method])
+
+    ax.legend()
+    ax.set_xlabel("Component number")
+    ax.set_ylabel("Percentage variation explained [%]")
+    return ax
