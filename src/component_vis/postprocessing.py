@@ -344,7 +344,14 @@ def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, con
 @_handle_labelled_cp("reference_cp_tensor", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 def postprocess(
-    cp_tensor, dataset=None, reference_cp_tensor=None, resolve_mode=None, unresolved_mode=-1, flip_method="transpose",
+    cp_tensor,
+    dataset=None,
+    reference_cp_tensor=None,
+    resolve_mode=None,
+    unresolved_mode=-1,
+    flip_method="transpose",
+    weight_behaviour="normalise",
+    weight_mode=-1,
 ):
     """Standard postprocessing of a CP decomposition.
 
@@ -388,6 +395,17 @@ def postprocess(
         for the method in :cite:p:`bro2008resolving,bro2013solving`, and
         ``"positive_coord"`` for the method corrected for non-orthogonal
         factor matrices described above.
+    weight_behaviour : {"ignore", "normalise", "evenly", "one_mode"} (default="normalise")
+        How to handle the component weights.
+
+         * ``"ignore"`` - Do nothing
+         * ``"normalise"`` - Normalise all factor matrices
+         * ``"evenly"`` - All factor matrices have equal norm
+         * ``"one_mode"`` - The weight is allocated in one mode, all other factor matrices have unit norm columns.
+
+    weight_mode : int (optional)
+        Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
+
     
     Returns
     -------
@@ -397,7 +415,17 @@ def postprocess(
     # TODO: Docstring for postprocess
     # TODO: Unit test for postprocess
     cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
-    cp_tensor = normalise_cp_tensor(cp_tensor)
+
+    if weight_behaviour == "ignore":
+        pass
+    elif weight_behaviour == "normalise":
+        cp_tensor = normalise_cp_tensor(cp_tensor)
+    elif weight_behaviour == "evenly":
+        cp_tensor = distribute_weights_evenly(cp_tensor)
+    elif weight_behaviour == "one_mode":
+        cp_tensor = distribute_weights_in_one_mode(cp_tensor, weight_mode)
+    else:
+        raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
 
     if dataset is not None:
         cp_tensor = resolve_cp_sign_indeterminacy(
