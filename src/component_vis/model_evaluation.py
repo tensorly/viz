@@ -300,7 +300,6 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
     return metric(labels, classifier.predict(factor_matrix))
 
 
-@_handle_labelled_dataset("X", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_labelled_dataset("X", None, optional=True)
 def percentage_variation(cp_tensor, X=None, method="data"):
