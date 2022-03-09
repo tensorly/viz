@@ -5,8 +5,10 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
+# TODO: Add add_factor_metadata using metadata from xarray coords.
 
-def label_factor_matrices(factor_matrices, dataset):
+
+def _label_factor_matrices(factor_matrices, dataset):
     if is_xarray(dataset):
         factor_matrices = [
             pd.DataFrame(factor_matrix, index=dataset.coords[dim_name])
@@ -49,7 +51,7 @@ def label_cp_tensor(cp_tensor, dataset):
     # TODO: Unit test for label_cp_tensor
     #   - Create CPTensor and DataArray. Check that labelling it works
     if is_xarray(dataset) or is_dataframe(dataset):
-        return (cp_tensor[0], label_factor_matrices(cp_tensor[1], dataset))
+        return (cp_tensor[0], _label_factor_matrices(cp_tensor[1], dataset))
     elif isinstance(dataset, np.ndarray):
         return cp_tensor
     else:
@@ -66,8 +68,11 @@ def is_dataframe(x):
 
 
 def get_data(x):
-    # TODO: extract data array from xarray/dataframe in a safe manner
-    pass
+    if is_xarray(x):
+        return x.data
+    if is_dataframe(x):
+        return x.values
+    return np.asarray(x)
 
 
 def _check_is_argument(func, arg_name):
@@ -221,4 +226,4 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
     return decorator
 
 
-# TODO NEXT MAYBE: Make a _handle_labelled_factor_matrix decorator
+# TODO: Make a _handle_labelled_factor_matrix decorator
