@@ -278,6 +278,54 @@ def _permute_cp_tensor(cp_tensor, permutation):
     return new_weights, new_factors
 
 
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
+def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True):
+    """Find the optimal permutation between two CP tensors.
+
+    This function supports two ways of finding the permutation of a CP tensor: Aligning the components
+    with those of a reference CP tensor (if ``reference_cp_tensor`` is not ``None``), or finding the
+    permutation so the components are in descending order with respect to their explained variation
+    (if both ``reference_cp_tensor`` and ``permutation`` is ``None``).
+
+    This function uses the factor match score to compute the optimal permutation between
+    two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
+    may have permuted columns.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+    reference_cp_tensor : CPTensor or tuple (optional)
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument. The tensor
+        that ``cp_tensor`` is aligned with. Either this or the ``permutation``
+        argument must be passed, not both.
+    consider_weights : bool
+        Whether to consider the factor weights when the factor match score is computed.
+
+    Returns
+    -------
+    tuple
+        The permutation to use when permuting ``cp_tensor``.
+    """
+    # TODO: test for get_cp_permutation
+    if reference_cp_tensor is not None:
+        fms, permutation = factor_match_score(
+            reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,
+        )
+    else:
+        variation = percentage_variation(cp_tensor, method="model")
+        permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
+
+    rank = cp_tensor[1][0].shape[1]
+    if len(permutation) != rank:
+        remaining_indices = sorted(set(range(rank)) - set(permutation))
+        permutation = list(permutation) + remaining_indices
+
+    return permutation
+
+
 # TODO: Should we name this reference_cp_tensor or target_cp_tensor?
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
 def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True):
@@ -321,22 +369,15 @@ def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, con
     ValueError
         If both ``permutation`` and ``reference_cp_tensor`` is provided
     """
-    if permutation is not None and reference_cp_tensor is not None:
-        raise ValueError("Must either provide a permutation, a reference CP tensor or neither. Both is provided")
     # TODO: test for permute_cp_tensor
 
-    if permutation is None and reference_cp_tensor is not None:
-        fms, permutation = factor_match_score(
-            reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,
-        )
-    elif permutation is None:
-        variation = percentage_variation(cp_tensor, method="model")
-        permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
+    if permutation is not None and reference_cp_tensor is not None:
+        raise ValueError("Must either provide a permutation, a reference CP tensor or neither. Both is provided")
 
-    rank = cp_tensor[1][0].shape[1]
-    if len(permutation) != rank:
-        remaining_indices = sorted(set(range(rank)) - set(permutation))
-        permutation = list(permutation) + remaining_indices
+    if permutation is None:
+        permutation = get_cp_permutation(
+            cp_tensor=cp_tensor, reference_cp_tensor=reference_cp_tensor, consider_weights=consider_weights,
+        )
 
     return _permute_cp_tensor(cp_tensor, permutation)
 
