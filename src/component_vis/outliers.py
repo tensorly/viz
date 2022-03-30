@@ -170,8 +170,8 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     if is_xarray(slab_sse):
         slab_sse = pd.DataFrame(slab_sse.to_series())
 
-    leverage_is_labelled = isinstance(leverage, pd.DataFrame)
-    sse_is_labelled = isinstance(slab_sse, pd.DataFrame)  # TODO: isxarray function?
+    leverage_is_labelled = is_dataframe(leverage)
+    sse_is_labelled = is_dataframe(slab_sse)
     if (leverage_is_labelled and not sse_is_labelled) or (not leverage_is_labelled and sse_is_labelled):
         raise ValueError(
             "If `cp_tensor` is labelled (factor matrices are dataframes), then"
@@ -187,13 +187,12 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
     return results
 
 
-# TODO: Leverage and SSE rule of thumbs
 def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.05):
     """Compute threshold for detecting possible outliers based on leverage.
 
     **Huber's heuristic for selecting outliers**
 
-    In Robust Statistics, Huber :cite:p:`huber2009robust` shows that that if the leverage score, 
+    In Robust Statistics, Huber :cite:p:`huber2009robust` shows that that if the leverage score,
     :math:`h_i`, of a sample is equal to :math:`1/r` and we duplicate that sample, then its leverage
     score will be equal to :math:`1/(1+r)`. We can therefore, think of of the reciprocal of the
     leverage score, :math:`1/h_i`, as the number of similar samples in the dataset. Following this
@@ -202,7 +201,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
 
     **Hoaglin and Welch's heuristic for selecting outliers**
 
-    In :cite:p:`belsley1980regression` (page 17), :cite:authors:`belsley1980regression`, show that if 
+    In :cite:p:`belsley1980regression` (page 17), :cite:authors:`belsley1980regression`, show that if
     the factor matrix is normally distributed, then we can scale leverage, we obtain a Fisher-distributed
     random variable. Specifically, we have that :math:`(n - r)[h_i - (1/n)]/[(1 - h_i)(r - 1)]` follows
     a Fisher distribution with :math:`(r-1)` and :math:`(n-r)` degrees of freedom. While the factor matrix
@@ -290,17 +289,17 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     95% confidence interval for the false positive rate: [0.0468, 0.0554]
 
     This indicates that the false positive rate is most accurate when the number of components is equal
-    to the number of samples - 1. We can increase the number of samples to assess this hypothesis
+    to the number of samples - 1. We can increase the number of samples to assess this conjecture
 
     >>> leverages = [compute_false_positive_rate(100, 9, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval
     >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
     95% confidence interval for the false positive rate: [0.0558, 0.0581]
 
-    The increase in the false positive rate supports the hypothesis that :cite:author:`belsley1980regression`'s
+    The increase in the false positive rate supports the conjecture that :cite:author:`belsley1980regression`'s
     method for computing the p-value is accurate only when the number of components is high. Still, it is
     important to remember that the original assumptions (normally distributed components) is seldomly satisfied
-    also, so this method is still only a rule-of-thumb.
+    also, so this method is only a rule-of-thumb and can still be useful.
 
     **Hotelling's T-squared statistic requires few components or many samples:**
     Here, we use Monte-Carlo estimation to demonstrate that the Hotelling T-squared statistic is only valid with
@@ -330,6 +329,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     95% confidence interval for the false positive rate: [0.0746, 0.0842]
 
     But if we increase the number of samples, then the estimate is good again
+
     >>> fprs = [compute_hotelling_false_positive_rate(100, 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval
     >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
@@ -384,7 +384,7 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
     There is, unfortunately, no guaranteed way to detect outliers automatically based
     on the residuals. However, if the noise is normally distributed, then the residuals
     follow a scaled chi-squared distribution. Specifically, we have that
-    :math:`\text{SSE}_i^2 \sim g\Chi^2_h`, where :math:`g = \frac{\sigma^2}{2\mu}`,
+    :math:`\text{SSE}_i^2 \sim g\chi^2_h`, where :math:`g = \frac{\sigma^2}{2\mu}`,
     :math:`h = \frac{\mu}{g} = \frac{2\mu^2}{\sigma^2}`, and :math:`\mu` is the
     average slabwise SSE and :math:`\sigma^2` is the variance of the slabwise
     SSE :cite:p:`nomikos1995multivariate`.
