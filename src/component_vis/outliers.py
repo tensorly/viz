@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
-from scipy.optimize import brentq
-from sympy import factor
 
 from ._utils import is_iterable
 from .factor_tools import construct_cp_tensor
