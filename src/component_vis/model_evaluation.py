@@ -337,27 +337,26 @@ def percentage_variation(cp_tensor, X=None, method="data"):
         element is the fit computed against the model.
     """
     # TODO: Examples for percentage_variation
-    # TODO: Unit tests for percentage_variation
+    # TODO: Unit tests for percentage_variation. Use orthogonal components in all modes
+    # TODO: Unit test for percentage_variation - Should sum to 100
+    # TODO: There is something wrong here...
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]
     if weights is not None:
-        temp = weights.reshape(rank, 1) @ weights.reshape(1, rank)
+        ssc = weights.copy()
     else:
-        temp = np.ones(rank, rank)
+        ssc = np.ones(rank)
 
     for factor_matrix in factor_matrices:
-        temp *= factor_matrix.T @ factor_matrix
-
-    # Compute sum squared of single-component model by the diagonal entries of the cross-product matrix
-    ssc = np.abs(np.diagonal(temp))
+        ssc = np.sum(ssc * np.abs(factor_matrix) ** 2)
 
     if method == "data":
         if X is None:
             raise TypeError("The dataset must be provided if ``method='data'``")
         return 100 * ssc / np.sum(X ** 2)
     elif method == "model":
-        return 100 * ssc / np.abs(np.sum(temp))
+        return 100 * ssc / np.sum(ssc)
     elif method == "both":
-        return 100 * ssc / np.sum(X ** 2), 100 * ssc / np.abs(np.sum(temp))
+        return 100 * ssc / np.sum(X ** 2), 100 * ssc / np.sum(ssc)
     else:
         raise ValueError("Method must be either 'data', 'model' or 'both")
