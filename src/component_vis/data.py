@@ -5,9 +5,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
-import tensorly as tl
 import xarray as xr
 from scipy.io import loadmat
+
+from component_vis.factor_tools import construct_cp_tensor
 
 __all__ = ["load_aminoacids", "load_oslo_city_bike", "download_city_bike"]
 
@@ -52,21 +53,21 @@ def load_aminoacids():
 
 def load_oslo_city_bike():
     """Download bike data from the bike sharing system in Oslo 2020-2021.
-    
+
     The dataset is a five-way tensor with modes:
-    
+
      * Bike station id
      * Year
      * Month
      * Day of week
      * Hour of day
-    
+
     where the elements corresponds to the number of trips ending in a given
     time period and station. For example, the index ``377, 2020, 5, 1, 13`` corresponds
     to the number of trips that ended at station 377 at 1pm (CET time) on Mondays in May of 2020.
-    
+
     The data was collected using the open API of https://oslobysykkel.no/en/open-data.
-    
+
     Returns
     -------
     xarray.DataArray
@@ -80,35 +81,35 @@ def load_oslo_city_bike():
 
 def download_city_bike(source="oslobysykkel.no", years=(2020, 2021)):
     """Download bike data from the bike sharing system in Oslo.
-    
+
     The dataset is a five-way tensor with modes:
-    
+
      * Bike station id
      * Year
      * Month
      * Day of week
      * Hour of day
-    
+
     where the elements corresponds to the number of trips ending in a given
     time period and station. For example, the index ``377, 2020, 5, 1, 13`` corresponds
     to the number of trips that ended at station 377 at 1pm (CET time) on Mondays in May of 2020.
-    
+
     The data was collected using the open urbansharing API.
-    
-    Arguments
-    ---------
+
+    Parameters
+    ----------
     source : str
-        String to download data from. The API endpoint becomes: 
+        String to download data from. The API endpoint becomes:
         https://data.urbansharing.com/{source}/trips/v1/{year}/{month:02d}.csv
         Some end-points that are known to work are:
-        
+
          * oslobysykkel.no
          * bergenbysykkel.no
          * trondheimbysykkel.no
-         
+
     years : iterable of int
-        The years to download data from. 
-    
+        The years to download data from.
+
     Returns
     -------
     xarray.DataArray
@@ -116,8 +117,6 @@ def download_city_bike(source="oslobysykkel.no", years=(2020, 2021)):
         and hour of day. There are also three metadata-coordinates along the "Bike station ID"-axis containing
         latitudes, longitudes and station names.
     """
-    data = []
-    start_data = []
     end_data = []
 
     lat = {}
@@ -125,7 +124,7 @@ def download_city_bike(source="oslobysykkel.no", years=(2020, 2021)):
     name = {}
     for year in years:
         print(f"Loading {year}", flush=True)
-        for month in trange(12):
+        for month in range(12):
             month += 1
             df = pd.read_csv(f"https://data.urbansharing.com/{source}/trips/v1/{year}/{month:02d}.csv")
             # station_names = sorted(set(df["start_station_name"]) | set(df["end_station_name"]))
@@ -183,15 +182,18 @@ def download_city_bike(source="oslobysykkel.no", years=(2020, 2021)):
     return dataset
 
 
-def simulated_random_cp_tensor(shape, rank, noise_level=0.1, seed=None):
+# TODO NEXT: Make test with labelled=True and labelled=False
+# TODO NEXT: Make test with noise level. Compare constructing the tensor with the components
+# TODO NEXT: Make test with seed, should give same output if seed is the same twice
+def simulated_random_cp_tensor(shape, rank, noise_level=0.1, labelled=False, seed=None):
     """Create a random noisy CP tensor.
-    
+
     The factor matrices and weights have uniformly distributed elements and
     the noise is normally distributed with magnitude ``noise_level * tl.norm(X)``,
     where ``X`` is the datatensor represented by the decomposition.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     shape : iterable of ints
         The shape of the data tensor
     rank : int
@@ -200,7 +202,7 @@ def simulated_random_cp_tensor(shape, rank, noise_level=0.1, seed=None):
         Relative magnitude of the noise compared to the magnitude of the data.
     seed : {None, int, array_like[ints], np.random.SeedSequence, np.random.BitGenerator, np.random.Generator}
         Seed for numpy random number generator
-    
+
     Returns
     -------
     cp_tensor
@@ -208,19 +210,20 @@ def simulated_random_cp_tensor(shape, rank, noise_level=0.1, seed=None):
 
     np.ndarray
         Dense tensor with noise added
-
     """
     rng = np.random.default_rng(seed)
     weights = rng.random(size=rank)
     factors = [rng.random(size=(length, rank)) for length in shape]
-    cp = tl.cp_tensor.CPTensor((weights, factors))
+    if labelled:
+        factors = [pd.DataFrame(factor) for factor in factors]
+    cp = weights, factors
 
-    X = cp.to_tensor()
+    X = construct_cp_tensor(cp)
     noise = rng.standard_normal(size=shape)
-    X_noisy = X + tl.norm(X) * noise_level * noise / tl.norm(noise)
+    X_noisy = X + np.linalg.norm(X) * noise_level * noise / np.linalg.norm(noise)
 
     return cp, X_noisy
 
 
 # TODO: Add more example datasets
-# TODO: Tooth data
+# TODO: Enron data
