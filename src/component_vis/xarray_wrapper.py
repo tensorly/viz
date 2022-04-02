@@ -5,13 +5,11 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-# TODO: Add add_factor_metadata using metadata from xarray coords.
-
 
 def _label_factor_matrices(factor_matrices, dataset):
     if is_xarray(dataset):
         factor_matrices = [
-            pd.DataFrame(factor_matrix, index=dataset.coords[dim_name])
+            pd.DataFrame(factor_matrix, index=dataset.coords[dim_name].values)
             for factor_matrix, dim_name in zip(factor_matrices, dataset.dims)
         ]
         for factor_matrix, dim_name in zip(factor_matrices, dataset.dims):
@@ -48,8 +46,6 @@ def label_cp_tensor(cp_tensor, dataset):
     CPTensor
         Tuple on the CPTensor format, except that the factor matrices are data frames.
     """
-    # TODO: Unit test for label_cp_tensor
-    #   - Create CPTensor and DataArray. Check that labelling it works
     if is_xarray(dataset) or is_dataframe(dataset):
         return (cp_tensor[0], _label_factor_matrices(cp_tensor[1], dataset))
     elif isinstance(dataset, np.ndarray):
@@ -58,21 +54,93 @@ def label_cp_tensor(cp_tensor, dataset):
         raise ValueError("Dataset must be either numpy array, xarray or pandas dataframe.")
 
 
+# TODO: Move to utils
 def is_xarray(x):
+    """Check if ``x`` is an xarray data array.
+    
+    Arguments
+    ---------
+    x
+        Object to check
+    
+    Returns
+    -------
+    bool
+        ``True`` if x is an xarray data array, ``False`` otherwise.
+    """
     # TODO: Is this how we want to check?
     return isinstance(x, xr.DataArray)
 
 
+# TODO: Move to utils
 def is_dataframe(x):
+    """Check if ``x`` is a data frame.
+    
+    Arguments
+    ---------
+    x
+        Object to check
+    
+    Returns
+    -------
+    bool
+        ``True`` if x is a data frame, ``False`` otherwise.
+    """
     return isinstance(x, pd.DataFrame)
 
 
 def get_data(x):
+    """Extract the numerical values from ``x`` as a numpy array.
+    
+    Arguments
+    ---------
+    x : np.ndarray or pd.DataFrame or xr.DataArray
+
+    Returns
+    -------
+    np.ndarray
+        The numerical values of ``x`` as a numpy array.
+    """
     if is_xarray(x):
         return x.data
     if is_dataframe(x):
         return x.values
     return np.asarray(x)
+
+
+def is_labelled_cp(cp_tensor):
+    """Check if a dataframe is labelled or not
+    
+    Arguments
+    ---------
+    cp_tensor : tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    
+    Returns
+    -------
+    bool
+        Whether the factor matrices are labelled or not
+    
+    Raises
+    ------
+    TypeError
+        If only some of the factor matrices are labelled (i.e. not none or all).
+    """
+    num_dataframes = 0
+    for factor_matrix in cp_tensor[1]:
+        if is_dataframe(factor_matrix):
+            num_dataframes += 1
+
+    if num_dataframes == 0:
+        return False
+    elif num_dataframes == len(cp_tensor[1]):
+        return True
+    else:
+        raise TypeError(
+            f"{num_dataframes} out of {len(cp_tensor[1])} factor matrices are labelled (are data frames)."
+            + " All or none should be labelled."
+        )
 
 
 def _check_is_argument(func, arg_name):
@@ -137,7 +205,7 @@ def _unlabel_dataset(dataset, optional):
             "coords": dataset.coords,
             "dims": dataset.dims,
             "attrs": dataset.attrs,
-        }  # TODO: Extract metadata
+        }
     elif is_dataframe(dataset):
         np_dataset = dataset.values
         DatasetType = pd.DataFrame
@@ -181,9 +249,9 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
             elif output_cp_tensor_index is not None:
                 out_cp_tensor = _relabel_cp_tensor(out[output_cp_tensor_index], cp_tensor_metadata, optional=optional)
                 out = (
-                    out[:output_cp_tensor_index],
+                    *out[:output_cp_tensor_index],
                     out_cp_tensor,
-                    out[output_cp_tensor_index + 1 :],
+                    *out[output_cp_tensor_index + 1 :],
                 )
             return out
 
@@ -192,6 +260,7 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
     return decorator
 
 
+# TODO: Make test for handle labelled dataset
 def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False):
     def decorator(func):
         _check_is_argument(func, dataset_name)
