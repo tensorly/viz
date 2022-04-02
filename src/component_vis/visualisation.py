@@ -35,7 +35,7 @@ __all__ = [
 # TODO NEXT: Use all of these functions in an example notebook
 
 
-# TODO: Test this function
+# TODO: Test this function - Ok with list of cp tensors and dict of cp tensors
 def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     """Create scree plot for the given cp tensors.
 
@@ -123,7 +123,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     if isinstance(metric, str):
         ax.set_ylabel(metric.replace("_", " "))
         metric = getattr(model_evaluation, metric.lower().replace(" ", "_"))
-    cp_tensors = dict(cp_tensors)
+    cp_tensors = dict(enumerate(cp_tensors))
 
     if errors is None:
         # compute error using the metric function
@@ -135,7 +135,6 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     return ax
 
 
-# TODO: Plotly version of these plots?
 @_handle_labelled_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwargs):
@@ -258,6 +257,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
 
 
 # TODO: mode or axis?
+# TODO: Write more docs, include see also
 def outlier_plot(
     cp_tensor, dataset, mode=0, leverage_rule_of_thumbs=None, residual_rule_of_thumbs=None, p_value=0.05, ax=None,
 ):
@@ -266,8 +266,8 @@ def outlier_plot(
     Detecting outliers can be a difficult task, and a common way to do this is by making a scatter-plot where the
     leverage score is plotted against the slabwise SSE (or residual).
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
