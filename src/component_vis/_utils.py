@@ -1,11 +1,21 @@
 import numpy as np
 import xarray
 
-# TODO: Utility for checking labelled both tensor and decomposition
+from .xarray_wrapper import _handle_labelled_dataset
 
 
 def is_iterable(x):
     """Check if variable is iterable
+
+    Arguments
+    ---------
+    x
+        Variable to check if is iterable
+    
+    Returns
+    -------
+    bool
+        Whether ``x`` is iterable or not.
     """
     try:
         iter(x)
@@ -15,8 +25,22 @@ def is_iterable(x):
         return True
 
 
+@_handle_labelled_dataset("tensor", None)
 def unfold_tensor(tensor, mode):
-    # TODO: Docstring for unfold_tensor
+    """Unfolds (matricises) a potentially labelled data tensor into a numpy array along given mode.
+
+    Arguments
+    ---------
+    tensor : np.ndarray or xarray.DataArray
+        Dataset to unfold
+    mode : int
+        Which mode (axis) to unfold the dataset along.
+    
+    Returns
+    -------
+    np.ndarray
+        The unfolded dataset as a numpy array.
+    """
     dataset = np.asarray(tensor)
     return np.moveaxis(dataset, mode, 0).reshape(dataset.shape[mode], -1)
 
@@ -24,12 +48,17 @@ def unfold_tensor(tensor, mode):
 def extract_singleton(x):
     """Extracts a singleton from an array.
 
-    This is useful whenever XArray is used, since many NumPy functions that
-    return a number will return an XArray singleton.
+    This is useful whenever XArray or Pandas is used, since many NumPy functions that
+    return a number may return a singleton array instead.
 
     Parameters
     ----------
-    x : numpy.ndarray or xarray.DataArray
+    x : float, numpy.ndarray, xarray.DataArray or pandas.DataFrame
+        Singleton array to extract value from.
+
+    Returns
+    -------
+    float
+        Singleton value extracted from ``x``.
     """
-    # TODO: Change code so this utility is used
-    return np.asarray(x).item()
+    return np.asarray(x).reshape(-1).item()
