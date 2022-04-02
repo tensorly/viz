@@ -72,7 +72,6 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
         List of the error values for all CP tensors in ``cp_tensor`` (in the same
         order as ``cp_tensors``). only returned if ``return_errors=True``
     """
-    # TODO: tests for get_model_with_lowest_error
     # TODO: example for get_model_with_lowest_error
     if error_function is None:
         error_function = model_evaluation.relative_sse
@@ -122,7 +121,6 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
     list of floats
         List of error computed for each CP tensor (in sorted order)
     """
-    # TODO: examples for sort_models_by_error
     # TODO: Regression test, input list of cp tensors where two of the cp tensors are identical. This failed before.
 
     errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function, return_errors=True)[1]
