@@ -1,17 +1,20 @@
-"""Utility functions for analysing tensor factorisation models
-
-This module contains functions that are useful when inspecting tensor factorisation
-models. For example, comparing two factorisations, or constructing
-a CP tensor.
+"""
+This module contains most functions that only work on tensor factorisation models, not data
+tensors. The module contains functions that are useful for inspecting tensor factorisation
+models. For example, computing how similar two factorisations are, checking if two decompositions
+are equivalent, or simply generating a dense tensor from a (possibly) labelled decomposition.
 """
 import numpy as np
+import xarray as xr
 from scipy.optimize import linear_sum_assignment
+
+from component_vis.xarray_wrapper import is_labelled_cp
 
 from ._utils import extract_singleton
 
 
 def normalise(x, axis=0):
-    """Normalise a matrix so all columns have unit norm.
+    """Normalise a matrix (or tensor) so all columns (or fibers) have unit norm.
 
     Parameters
     ----------
@@ -19,12 +22,25 @@ def normalise(x, axis=0):
         Matrix (or vector/tensor) to normalise.
     axis : int
         Axis along which to normalise, if 0, then all columns will have unit norm
-        and if 1 then all rows will have unit norm.
+        and if 1 then all rows will have unit norm. When normalising a tensor, then
+        the axis represents the axis whose fibers should have unit norm.
 
     Returns
     -------
     np.ndarray
         Normalised matrix
+
+    Examples
+    --------
+    >>> random_matrix = np.random.random_sample((3, 4))
+    >>> matrix_normalized_cols = normalise(random_matrix, axis=0)
+    >>> print(np.linalg.norm(matrix_normalized_cols, axis=0))
+    array([1., 1., 1., 1.])
+
+    >>> random_matrix = np.random.random_sample((3, 4))
+    >>> matrix_normalized_rows = normalise(random_matrix, axis=1)
+    >>> print(np.linalg.norm(matrix_normalized_rows, axis=1))
+    array([1., 1., 1.])
     """
     return x / np.linalg.norm(x, axis=axis, keepdims=True)
 
@@ -60,6 +76,7 @@ def cosine_similarity(factor_matrix1, factor_matrix2):
 
 
 def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
+    # TODO: fix bug with different r
     r"""Find optimal permutation of the factor matrices
 
     Efficient estimation of the optimal permutation for two factor matrices.
@@ -100,12 +117,7 @@ def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
 
 
 def factor_match_score(
-    cp_tensor1,
-    cp_tensor2,
-    consider_weights=True,
-    skip_axis=None,
-    return_permutation=False,
-    absolute_value=True,
+    cp_tensor1, cp_tensor2, consider_weights=True, skip_axis=None, return_permutation=False, absolute_value=True,
 ):
     r"""Compute the factor match score between ``cp_tensor1`` and ``cp_tensor2``.
 
@@ -115,14 +127,14 @@ def factor_match_score(
 
     .. math::
 
-        \sum_{r=1}^R \frac{\vec{a}_r^T \hat{\vec{a}}_r}{\|\vec{a}_r^T\| \|\hat{\vec{a}}_r\|}
-                     \frac{\vec{b}_r^T \hat{\vec{b}}_r}{\|\vec{b}_r^T\| \|\hat{\vec{b}}_r\|}
-                     \frac{\vec{c}_r^T \hat{\vec{c}}_r}{\|\vec{c}_r^T\| \|\hat{\vec{c}}_r\|},
+        \sum_{r=1}^R \frac{\mathbf{a}_r^T \hat{\mathbf{a}}_r}{\|\mathbf{a}_r^T\| \|\hat{\mathbf{a}}_r\|}
+                     \frac{\mathbf{b}_r^T \hat{\mathbf{b}}_r}{\|\mathbf{b}_r^T\| \|\hat{\mathbf{b}}_r\|}
+                     \frac{\mathbf{c}_r^T \hat{\mathbf{c}}_r}{\|\mathbf{c}_r^T\| \|\hat{\mathbf{c}}_r\|},
 
-    where :math:`\vec{a}, \vec{b}` and :math:`\vec{c}` are the component vectors for
-    one of the decompositions and :math:`\hat{\vec{a}}, \hat{\vec{b}}` and :math:`\hat{\vec{c}}`
+    where :math:`\mathbf{a}, \mathbf{b}` and :math:`\mathbf{c}` are the component vectors for
+    one of the decompositions and :math:`\hat{\mathbf{a}}, \hat{\mathbf{b}}` and :math:`\hat{\mathbf{c}}`
     are the component vectors for the other decomposition. Often, the absolute value of the inner
-    products is used instead of just the inner products (i.e. :math:`|\vec{a}_r^T \hat{\vec{a}}_r|`).
+    products is used instead of just the inner products (i.e. :math:`|\mathbf{a}_r^T \hat{\mathbf{a}}_r|`).
 
     The above definition does not take the norm of the component vectors into account.
     However, sometimes, we also wish to compare their norm. In that case, set the
@@ -131,12 +143,12 @@ def factor_match_score(
     .. math::
 
         \sum_{r=1}^R \left(1 - \frac{w_r \hat{w}_r}{\max\left( w_r \hat{w}_r \right)}\right)
-                     \frac{\vec{a}_r^T \hat{\vec{a}}_r}{\|\vec{a}_r^T\|\|\hat{\vec{a}}_r\|}
-                     \frac{\vec{b}_r^T \hat{\vec{b}}_r}{\|\vec{b}_r^T\|\|\hat{\vec{b}}_r\|}
-                     \frac{\vec{c}_r^T \hat{\vec{c}}_r}{\|\vec{c}_r^T\|\|\hat{\vec{c}}_r\|}
+                     \frac{\mathbf{a}_r^T \hat{\mathbf{a}}_r}{\|\mathbf{a}_r^T\|\|\hat{\mathbf{a}}_r\|}
+                     \frac{\mathbf{b}_r^T \hat{\mathbf{b}}_r}{\|\mathbf{b}_r^T\|\|\hat{\mathbf{b}}_r\|}
+                     \frac{\mathbf{c}_r^T \hat{\mathbf{c}}_r}{\|\mathbf{c}_r^T\|\|\hat{\mathbf{c}}_r\|}
 
-    instead, where :math:`w_r = \|\vec{a}_r\| \|\vec{b}_r\| \|\vec{c}_r\|` and
-    :math:`\hat{w}_r = \|\hat{\vec{a}}_r\| \|\hat{\vec{b}}_r\| \|\hat{\vec{c}}_r\|`.
+    instead, where :math:`w_r = \|\mathbf{a}_r\| \|\mathbf{b}_r\| \|\mathbf{c}_r\|` and
+    :math:`\hat{w}_r = \|\hat{\mathbf{a}}_r\| \|\hat{\mathbf{b}}_r\| \|\hat{\mathbf{c}}_r\|`.
 
     For both definitions above, there is a permutation determinacy. Two equivalent decompositions
     can have the same component vectors, but in a different order. To resolve this determinacy,
@@ -215,9 +227,9 @@ def factor_match_score(
         congruence_product *= normalise(factor1).T @ normalise(factor2)
 
     if consider_weights:
-        congruence_product *= 1 - np.abs(
-            norms1[:, np.newaxis] - norms2[np.newaxis, :]
-        ) / np.maximum(norms1[:, np.newaxis], norms2[np.newaxis, :])
+        congruence_product *= 1 - np.abs(norms1[:, np.newaxis] - norms2[np.newaxis, :]) / np.maximum(
+            norms1[:, np.newaxis], norms2[np.newaxis, :]
+        )
 
     if absolute_value:
         congruence_product = np.abs(congruence_product)
@@ -233,7 +245,6 @@ def factor_match_score(
     return congruence_product.mean(), permutation
 
 
-# TODO: Move all functions below to different modules
 def degeneracy_score(cp_tensor):
     r"""Compute the degeneracy score for a given decomposition.
 
@@ -297,9 +308,7 @@ def degeneracy_score(cp_tensor):
         :cite:p:`bro1997parafac`).
     """
     # TODO: Example
-    # TODO: Find rule of thumbs for degenerate solutions
-    # TODO: Find cites
-    # TODO: Move to model evaluation?
+    # TODO: Add cite about ill-posedness and how it spawns degenerate solutions
     weights, factors = cp_tensor
     rank = factors[0].shape[1]
     tucker_congruence_scores = np.ones(shape=(rank, rank))
@@ -328,11 +337,10 @@ def construct_cp_tensor(cp_tensor):
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
     """
-    # TODO: Handle dataframes
-    # TODO: Docstring for construct_cp_tensor
     # TODO: Reconsider name
-    # TODO: Move to utils?
     # TODO: Tests (1 component for example)
+    # TODO: Example with and without labels
+
     if cp_tensor[0] is None:
         weights = np.ones(cp_tensor[1][0].shape[1])
     else:
@@ -346,18 +354,32 @@ def construct_cp_tensor(cp_tensor):
         # We cannot use einsum with letters outside the alphabet
         if ord(idx) > ord("z"):
             max_modes = ord("a") - ord("z") - 1
-            raise ValueError(
-                f"Cannot have more than {max_modes} modes. Current components have {len(cp_tensor[1])}."
-            )
+            raise ValueError(f"Cannot have more than {max_modes} modes. Current components have {len(cp_tensor[1])}.")
 
         einsum_input += f", {idx}R"
         einsum_output += idx
 
-    return np.einsum(f"{einsum_input} -> {einsum_output}", weights, *cp_tensor[1])
+    tensor = np.einsum(f"{einsum_input} -> {einsum_output}", weights, *cp_tensor[1])
+
+    if not is_labelled_cp(cp_tensor):
+        return tensor
+
+    # Convert to labelled xarray DataArray:
+    coords_dict = {}
+    dims = []
+    for mode, fm in enumerate(cp_tensor[1]):
+        mode_name = f"Mode {mode}"
+        if fm.index.name is not None:
+            mode_name = fm.index.name
+
+        coords_dict[mode_name] = fm.index.values
+        dims.append(mode_name)
+
+    return xr.DataArray(tensor, dims=dims, coords=coords_dict)
 
 
 def construct_tucker_tensor(tucker_tensor):
-    """Construct a CP tensor, equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
+    """Construct a Tucker tensor, equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
 
     If the factor matrices are data frames, then the tensor will be returned as a labelled
     xarray. Otherwise, it will be returned as a numpy array.
@@ -374,10 +396,8 @@ def construct_tucker_tensor(tucker_tensor):
         Dense tensor represented by the decomposition.
     """
     # TODO: Rename
-    # TODO: Docstring for construct_tucker_tensor
     # TODO: Reconsider name
-    # TODO: Move to utils?
-    # TODO: Handle dataframes
+    # TODO: NEXT Handle dataframes
     einsum_core = ""
     einsum_input = ""
     einsum_output = ""
@@ -397,15 +417,9 @@ def construct_tucker_tensor(tucker_tensor):
         einsum_input += f", {idx}{rank_idx}"
         einsum_output += idx
 
-    return np.einsum(
-        f"{einsum_core}{einsum_input} -> {einsum_output}",
-        tucker_tensor[0],
-        *tucker_tensor[1],
-    )
+    return np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)
 
 
-# TODO: Test for check_cp_tensors_equals
-# TODO: Move check_cp_tensors_equals and check_cp_tensors_equivalent to different module
 def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
     """Check if the factor matrices and weights are equal.
 
@@ -430,7 +444,6 @@ def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
     bool
         Whether the decompositions are equal.
     """
-    # (e.g. if factors are permuted, then)
     # TODO: Handle dataframes
     rank = cp_tensor1[1][0].shape[1]
     num_modes = len(cp_tensor1[1])
@@ -483,9 +496,9 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
     bool
         Whether the decompositions are equivalent.
     """
-    from . import postprocessing  # HACK: Avoiding circular dependencies
-
     # TODO: Handle dataframes
+    # TODO: circular import
+    from . import postprocessing  # NOTE: Circular import, but it is fine since module is imported
 
     rank = cp_tensor1[1][0].shape[1]
     num_modes = len(cp_tensor1[1])
@@ -499,9 +512,7 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
         if not cp_tensor1[1][mode].shape == cp_tensor2[1][mode].shape:
             return False
 
-    cp_tensor2 = postprocessing.permute_cp_tensor(
-        cp_tensor2, reference_cp_tensor=cp_tensor1
-    )
+    cp_tensor2 = postprocessing.permute_cp_tensor(cp_tensor2, reference_cp_tensor=cp_tensor1)
 
     cp_tensor1 = postprocessing.normalise_cp_tensor(cp_tensor1)
     cp_tensor2 = postprocessing.normalise_cp_tensor(cp_tensor2)
@@ -509,9 +520,7 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
     if not np.allclose(cp_tensor1[0], cp_tensor2[0], rtol=rtol, atol=atol):
         return False
     for mode in range(num_modes):
-        if not np.allclose(
-            cp_tensor1[1][mode], cp_tensor2[1][mode], rtol=rtol, atol=atol
-        ):
+        if not np.allclose(cp_tensor1[1][mode], cp_tensor2[1][mode], rtol=rtol, atol=atol):
             return False
 
     return True
