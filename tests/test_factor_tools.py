@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
 from pytest import approx
-from sympy import factor
 
 from component_vis import factor_tools, postprocessing
 
