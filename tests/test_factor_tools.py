@@ -1,7 +1,9 @@
 import numpy as np
 import pytest
-from component_vis import factor_tools, postprocessing
 from pytest import approx
+from sympy import factor
+
+from component_vis import factor_tools, postprocessing
 
 
 def test_factor_match_score(rng):
@@ -9,18 +11,11 @@ def test_factor_match_score(rng):
     B = rng.standard_normal((20, 3))
 
     assert factor_tools.factor_match_score((None, (A, B)), (None, (A, B))) == approx(1)
-    assert factor_tools.factor_match_score(
-        (None, (A, B)), (None, (2.0 * A, 0.5 * B)),
-    ) == approx(1)
+    assert factor_tools.factor_match_score((None, (A, B)), (None, (2.0 * A, 0.5 * B)),) == approx(1)
     assert factor_tools.factor_match_score(
         (None, (A, B)), (None, (0.5 * A, 0.5 * B)), consider_weights=False
     ) == approx(1)
-    assert (
-        factor_tools.factor_match_score(
-            (None, (A, B)), (None, (0.1 * A, 0.1 * B)), consider_weights=True
-        )
-        < 0.5
-    )
+    assert factor_tools.factor_match_score((None, (A, B)), (None, (0.1 * A, 0.1 * B)), consider_weights=True) < 0.5
 
 
 def test_factor_match_score_against_tensortoolbox_three_modes():
@@ -188,9 +183,7 @@ def test_factor_match_score_permutation(rng):
     A_permuted = A[:, permutation]
     B_permuted = B[:, permutation]
 
-    fms, p = factor_tools.factor_match_score(
-        (None, (A_permuted, B_permuted)), (None, (A, B)), return_permutation=True
-    )
+    fms, p = factor_tools.factor_match_score((None, (A_permuted, B_permuted)), (None, (A, B)), return_permutation=True)
     assert fms == approx(1)
     assert np.allclose(permutation, p)
 
@@ -214,9 +207,7 @@ def test_degeneracy_on_orthogonal_components(rng):
 def test_degeneracy_one_mode(rng):
     A = rng.standard_normal(size=(5, 3))
     min_crossproduct = (factor_tools.normalise(A).T @ factor_tools.normalise(A)).min()
-    assert factor_tools.degeneracy_score((None, (A,))) == pytest.approx(
-        min_crossproduct
-    )
+    assert factor_tools.degeneracy_score((None, (A,))) == pytest.approx(min_crossproduct)
 
 
 def test_cp_tensors_equals(rng):
@@ -299,3 +290,25 @@ def test_cp_tensors_equivalent(rng):
     w2 = rng.uniform(size=(3,))
     cp_tensor8 = (w2, (A2, B2, C2))
     assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor8)
+
+
+def test_get_permutation(rng):
+    A = rng.standard_normal((30, 5))
+
+    permutation = [2, 1, 0, 4, 3]
+    out_permutation = factor_tools.get_permutation(A, A[:, permutation])
+    assert out_permutation == permutation
+
+    subset = [1, 2, 3]
+    out_permutation = factor_tools.get_permutation(A[:, subset], A)
+    assert out_permutation == [1, 2, 3, 0, 4]
+
+    out_permutation = factor_tools.get_permutation(A, A[:, subset], allow_smaller_rank=True)
+    assert out_permutation == [factor_tools.NO_COLUMN, 0, 1, 2, factor_tools.NO_COLUMN]
+
+    subset = [0, 2]
+    out_permutation = factor_tools.get_permutation(A[:, subset], A)
+    assert out_permutation == [0, 2, 1, 3, 4]
+
+    out_permutation = factor_tools.get_permutation(A, A[:, subset], allow_smaller_rank=True)
+    assert out_permutation == [0, factor_tools.NO_COLUMN, 1, factor_tools.NO_COLUMN, factor_tools.NO_COLUMN]

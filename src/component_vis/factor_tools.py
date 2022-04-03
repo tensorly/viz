@@ -4,6 +4,8 @@ tensors. The module contains functions that are useful for inspecting tensor fac
 models. For example, computing how similar two factorisations are, checking if two decompositions
 are equivalent, or simply generating a dense tensor from a (possibly) labelled decomposition.
 """
+import enum
+
 import numpy as np
 import xarray as xr
 from scipy.optimize import linear_sum_assignment
@@ -75,8 +77,34 @@ def cosine_similarity(factor_matrix1, factor_matrix2):
     return extract_singleton(congruence[permutation].mean())
 
 
-def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
-    # TODO: fix bug with different r
+NO_COLUMN = slice(0, 0, 1)
+
+
+def _get_linear_sum_assignment_permutation(cost_matrix, allow_smaller_rank):
+    row_index, column_index = linear_sum_assignment(-cost_matrix)
+
+    R1, R2 = cost_matrix.shape
+    if R1 > R2 and not allow_smaller_rank:
+        raise ValueError(
+            f"Cannot permute a {R2}-column matrix against a {R1}-column matrix unless ``allow_smaller_rank=True``."
+        )
+
+    permutation = [None] * max(R1, R2)
+    for row_idx, col_idx in zip(row_index, column_index):
+        permutation[row_idx] = col_idx
+
+    missing_entries = sorted(set(range(R2)) - set(permutation))
+    for i, missing in enumerate(missing_entries):
+        permutation[i + len(row_index)] = missing
+
+    for i, p, in enumerate(permutation):
+        if p is None:
+            permutation[i] = NO_COLUMN
+
+    return row_index, column_index, permutation
+
+
+def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True, allow_smaller_rank=False):
     r"""Find optimal permutation of the factor matrices
 
     Efficient estimation of the optimal permutation for two factor matrices.
@@ -102,22 +130,38 @@ def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True):
         Whether to take the absolute value of the inner products before
         computing the permutation. This is usually done because of the sign
         indeterminacy of component models.
+    allow_smaller_rank : bool (default=False)
+        If ``True``, then the function can align a smaller matrix onto a larger one. Missing
+        columns are aligned with ``component_vis.factor_tools.NO_COLUMN`` (a slice that slices nothing).
 
     Returns
     -------
-    permutation : np.ndarray(dtype=int)
+    permutation : list[int | slice]
+        List of ints used to permute ``factor_matrix2`` so its columns optimally align with ``factor_matrix1``.
+        If the ``factor_matrix1`` has a column with no corresponding column in ``factor_matrix2`` (i.e. there
+        are fewer columns in ``factor_matrix2`` than in ``factor_matrix1``), then 
+        ``component_vis.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing columns.
+    
+    Raises
+    ------
+    ValueError
+        If ``allow_smaller_rank=False`` and ``factor_matrix2`` has fewer columns than ``factor_matrix1``.
     """
     congruence_product = normalise(factor_matrix1).T @ normalise(factor_matrix2)
     if ignore_sign:
         congruence_product = np.abs(congruence_product)
-    row_index, column_index = linear_sum_assignment(-congruence_product)
-    permutation = np.zeros_like(row_index)
-    permutation[row_index] = column_index
-    return permutation
+
+    return _get_linear_sum_assignment_permutation(congruence_product, allow_smaller_rank=allow_smaller_rank)[-1]
 
 
 def factor_match_score(
-    cp_tensor1, cp_tensor2, consider_weights=True, skip_axis=None, return_permutation=False, absolute_value=True,
+    cp_tensor1,
+    cp_tensor2,
+    consider_weights=True,
+    skip_axis=None,
+    return_permutation=False,
+    absolute_value=True,
+    allow_smaller_rank=False,
 ):
     r"""Compute the factor match score between ``cp_tensor1`` and ``cp_tensor2``.
 
@@ -173,13 +217,25 @@ def factor_match_score(
     absolute_value : bool (default=True)
         If True, then only magnitude of the congruence is considered, not the
         sign.
+    allow_smaller_rank : bool (default=False)
+        Only relevant if ``return_permutation=True``. If ``True``, then ``cp_tensor2``
+        can have fewer components than ``cp_tensor2``. Missing components are aligned
+        with ``component_vis.factor_tools.component_vis.factor_tools.NO_COLUMN`` (a slice that slices nothing).
 
     Returns
     -------
     fms : float
         The factor match score
-    permutation : list of ints (only if return_permutation=True)
-        The permutation of cp_tensor2
+    permutation : list[int | object] (only if return_permutation=True)
+        List of ints used to permute ``cp_tensor2`` so its components optimally align with ``cp_tensor1``.
+        If the ``cp_tensor1`` has a component with no corresponding component in ``cp_tensor2`` (i.e. there
+        are fewer components in ``cp_tensor2`` than in ``cp_tensor1``), then
+        ``component_vis.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing components.
+    
+    Raises
+    ------
+    ValueError
+        If ``allow_smaller_rank=False`` and ``cp_tensor2`` has fewer components than ``cp_tensor1``.
 
     Examples
     --------
@@ -234,7 +290,11 @@ def factor_match_score(
     if absolute_value:
         congruence_product = np.abs(congruence_product)
 
-    row_index, column_index = linear_sum_assignment(-congruence_product)
+    # If permutation is not returned, then smaller rank is OK
+    allow_smaller_rank = allow_smaller_rank or not return_permutation
+    row_index, column_index, permutation = _get_linear_sum_assignment_permutation(
+        congruence_product, allow_smaller_rank=allow_smaller_rank
+    )
     congruence_product = congruence_product[row_index, column_index]
 
     if not return_permutation:
