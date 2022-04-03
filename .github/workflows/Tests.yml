@@ -1,0 +1,25 @@
+name: Tests
+
+on: [push, pull_request]
+jobs:
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with: 
+          python-version: '3.8'
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip wheel
+          python -m pip install -e .[tests,all]
+      - name: run tests
+        run: python3 -m pytest --cov=component_vis --cov-report=xml
+      - name: upload coverage to Codecov
+        if: ${{matrix.os == 'ubuntu-latest'}}
+        uses: codecov/codecov-action@v2
+        with:
+          verbose: true
