@@ -1,8 +1,8 @@
 import numpy as np
 import scipy.linalg as sla
 
+from . import factor_tools
 from ._utils import is_iterable, unfold_tensor
-from .factor_tools import factor_match_score
 from .model_evaluation import percentage_variation
 from .xarray_wrapper import (
     _SINGLETON,
@@ -192,7 +192,6 @@ def normalise_cp_tensor(cp_tensor):
     tuple
         The scaled CP tensor.
     """
-    # TODO: test for normalise_cp_tensor
     weights, factors = cp_tensor
     if weights is None:
         weights = np.ones(factors[0].shape[1])
@@ -202,6 +201,9 @@ def normalise_cp_tensor(cp_tensor):
     for factor in factors:
         norm = np.linalg.norm(factor, axis=0, keepdims=True)
         weights *= norm.ravel()
+
+        # If a component vector is zero, then we do not want to divide by zero, and zero / 1 is equal to zero.
+        norm[norm == 0] = 1
         new_factors.append(factor / norm)
     return weights, tuple(new_factors)
 
@@ -221,9 +223,8 @@ def distribute_weights_evenly(cp_tensor):
     tuple
         The scaled CP tensor.
     """
-    # TODO: test for distribute_weights_evenly
     weights, factors = normalise_cp_tensor(cp_tensor)
-    weights = weights ** (1 / 3)
+    weights = weights ** (1 / len(factors))
     for factor in factors:
         factor[:] *= weights
     weights = np.ones_like(weights)
@@ -250,15 +251,14 @@ def distribute_weights_in_one_mode(cp_tensor, mode):
     tuple
         The scaled CP tensor.
     """
-    # TODO: test for distribute_weights_in_one_mode
     weights, factors = normalise_cp_tensor(cp_tensor)
     factors[mode][:] *= weights
     return np.ones_like(weights), factors
 
 
 def _permute_cp_tensor(cp_tensor, permutation):
-    # TODO: Handle dataframes
-
+    """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.
+    """
     weights, factors = cp_tensor
 
     if weights is not None:
@@ -309,9 +309,9 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
     tuple
         The permutation to use when permuting ``cp_tensor``.
     """
-    # TODO: test for get_cp_permutation
+    # TODO: NEXT test for get_cp_permutation
     if reference_cp_tensor is not None:
-        fms, permutation = factor_match_score(
+        fms, permutation = factor_tools.factor_match_score(
             reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,
         )
     else:
@@ -369,8 +369,6 @@ def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, con
     ValueError
         If both ``permutation`` and ``reference_cp_tensor`` is provided
     """
-    # TODO: test for permute_cp_tensor
-
     if permutation is not None and reference_cp_tensor is not None:
         raise ValueError("Must either provide a permutation, a reference CP tensor or neither. Both is provided")
 
@@ -453,7 +451,7 @@ def postprocess(
     CPTensor
         The post processed CPTensor.
     """
-    # TODO: Docstring for postprocess
+    # TODO: Docstring example for postprocess
     # TODO: Unit test for postprocess
     cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
 

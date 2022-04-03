@@ -4,8 +4,6 @@ tensors. The module contains functions that are useful for inspecting tensor fac
 models. For example, computing how similar two factorisations are, checking if two decompositions
 are equivalent, or simply generating a dense tensor from a (possibly) labelled decomposition.
 """
-import enum
-
 import numpy as np
 import xarray as xr
 from scipy.optimize import linear_sum_assignment
