@@ -5,6 +5,7 @@ import pandas as pd
 import pytest
 import xarray as xr
 
+from component_vis._module_utils import is_dataframe
 from component_vis.data import simulated_random_cp_tensor
 from component_vis.xarray_wrapper import (
     _SINGLETON,
@@ -16,9 +17,8 @@ from component_vis.xarray_wrapper import (
     _unlabel_cp_tensor,
     _unlabel_dataset,
     get_data,
-    is_dataframe,
-    is_labelled_cp,
     label_cp_tensor,
+    is_labelled_cp,
 )
 
 

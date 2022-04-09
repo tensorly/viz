@@ -124,4 +124,3 @@ def test_sort_models_by_error_with_identical_decompositions(rng):
     assert cp_tensors[9:] == sorted_cp_tensors[1::2]
 
     assert errors == sorted(errors)
-

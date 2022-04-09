@@ -38,27 +38,6 @@ def _alias_mode_axis():
     return decorator
 
 
-def is_iterable(x):
-    """Check if variable is iterable
-
-    Arguments
-    ---------
-    x
-        Variable to check if is iterable
-    
-    Returns
-    -------
-    bool
-        Whether ``x`` is iterable or not.
-    """
-    try:
-        iter(x)
-    except TypeError:
-        return False
-    else:
-        return True
-
-
 def extract_singleton(x):
     """Extracts a singleton from an array.
 

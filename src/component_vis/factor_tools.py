@@ -8,7 +8,7 @@ import numpy as np
 import xarray as xr
 from scipy.optimize import linear_sum_assignment
 
-from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp, is_labelled_cp
+from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp
 
 from .model_evaluation import percentage_variation
 from .utils import _alias_mode_axis, extract_singleton

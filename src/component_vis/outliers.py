@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 
-from .utils import _alias_mode_axis, cp_to_tensor, is_iterable
-from .xarray_wrapper import is_dataframe, is_xarray
+from ._module_utils import is_dataframe, is_iterable, is_xarray
+from .utils import _alias_mode_axis, cp_to_tensor
 
 _LEVERAGE_NAME = "Leverage score"
 _SLABWISE_SSE_NAME = "Slabwise SSE"

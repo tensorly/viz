@@ -6,7 +6,7 @@ import statsmodels.api as sm
 from matplotlib.lines import Line2D
 
 from . import model_evaluation, postprocessing
-from .utils import _alias_mode_axis, cp_to_tensor, is_iterable
+from ._module_utils import is_dataframe, is_iterable
 from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
     _LEVERAGE_NAME,
@@ -15,11 +15,11 @@ from .outliers import (
     get_leverage_outlier_threshold,
     get_slab_sse_outlier_threshold,
 )
+from .utils import _alias_mode_axis, cp_to_tensor
 from .xarray_wrapper import (
     _handle_labelled_cp,
     _handle_labelled_dataset,
     _handle_none_weights_cp_tensor,
-    is_dataframe,
 )
 
 __all__ = [

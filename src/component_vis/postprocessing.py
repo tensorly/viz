@@ -2,7 +2,8 @@ import numpy as np
 import scipy.linalg as sla
 
 from . import factor_tools
-from .utils import is_iterable, unfold_tensor
+from ._module_utils import is_iterable
+from .utils import unfold_tensor
 from .xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,

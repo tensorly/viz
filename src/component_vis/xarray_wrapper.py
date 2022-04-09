@@ -5,40 +5,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-
-# TODO: Move to utils
-def is_xarray(x):
-    """Check if ``x`` is an xarray data array.
-    
-    Arguments
-    ---------
-    x
-        Object to check
-    
-    Returns
-    -------
-    bool
-        ``True`` if x is an xarray data array, ``False`` otherwise.
-    """
-    # TODO: Is this how we want to check?
-    return isinstance(x, xr.DataArray)
-
-
-# TODO: Move to utils
-def is_dataframe(x):
-    """Check if ``x`` is a data frame.
-    
-    Arguments
-    ---------
-    x
-        Object to check
-    
-    Returns
-    -------
-    bool
-        ``True`` if x is a data frame, ``False`` otherwise.
-    """
-    return isinstance(x, pd.DataFrame)
+from ._module_utils import is_dataframe, is_xarray
 
 
 def _label_factor_matrices(factor_matrices, dataset):
