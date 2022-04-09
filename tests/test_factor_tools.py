@@ -206,7 +206,7 @@ def test_degeneracy_on_orthogonal_components(rng):
 
 def test_degeneracy_one_mode(rng):
     A = rng.standard_normal(size=(5, 3))
-    min_crossproduct = (factor_tools.normalise(A).T @ factor_tools.normalise(A)).min()
+    min_crossproduct = (utils.normalise(A).T @ utils.normalise(A)).min()
     assert factor_tools.degeneracy_score((None, (A,))) == pytest.approx(min_crossproduct)
 
 

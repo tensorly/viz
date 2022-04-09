@@ -176,3 +176,40 @@ def tucker_to_tensor(tucker_tensor):
         einsum_output += idx
 
     return np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)
+
+
+@_alias_mode_axis()
+def normalise(x, mode=0, axis=None):
+    """Normalise a matrix (or tensor) so all columns (or fibers) have unit norm.
+
+    Parameters
+    ----------
+    x : np.ndarray
+        Matrix (or vector/tensor) to normalise.
+    mode : int
+        Axis along which to normalise, if 0, then all columns will have unit norm
+        and if 1 then all rows will have unit norm. When normalising a tensor, then
+        the axis represents the axis whose fibers should have unit norm.
+    axis : int
+        Alias for mode. If this is provided, then no value for mode can be provided.
+
+    Returns
+    -------
+    np.ndarray
+        Normalised matrix
+
+    Examples
+    --------
+    >>> random_matrix = np.random.random_sample((3, 4))
+    >>> matrix_normalized_cols = normalise(random_matrix, axis=0)
+    >>> print(np.linalg.norm(matrix_normalized_cols, axis=0))
+    array([1., 1., 1., 1.])
+
+    >>> random_matrix = np.random.random_sample((3, 4))
+    >>> matrix_normalized_rows = normalise(random_matrix, axis=1)
+    >>> print(np.linalg.norm(matrix_normalized_rows, axis=1))
+    array([1., 1., 1.])
+    """
+    norms = np.linalg.norm(x, axis=mode, keepdims=True)
+    norms[norms == 0] = 1
+    return x / norms

@@ -4,8 +4,8 @@ import scipy.linalg as sla
 import tensorly as tl
 from tensorly.random import random_cp
 
-from component_vis import factor_tools, model_evaluation
-from component_vis.utils import cp_to_tensor, tucker_to_tensor
+from component_vis import model_evaluation
+from component_vis.utils import cp_to_tensor, normalise, tucker_to_tensor
 
 
 def _estimate_core_tensor(factors, X):
@@ -79,9 +79,9 @@ def test_core_consistency_cp_tensor(rng):
 
 
 def test_core_consistency_with_known_tucker(rng):
-    A = factor_tools.normalise(rng.standard_normal(size=(4, 3)))
-    B = factor_tools.normalise(rng.standard_normal(size=(5, 3)))
-    C = factor_tools.normalise(rng.standard_normal(size=(6, 3)))
+    A = normalise(rng.standard_normal(size=(4, 3)))
+    B = normalise(rng.standard_normal(size=(5, 3)))
+    C = normalise(rng.standard_normal(size=(6, 3)))
     core = rng.standard_normal(size=(3, 3, 3))
     tucker_tensor = (core, (A, B, C))
     cp_tensor = (None, (A, B, C))
