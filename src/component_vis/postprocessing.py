@@ -247,8 +247,8 @@ def postprocess(
     CPTensor
         The post processed CPTensor.
     """
-    # TODO: Docstring example for postprocess
-    # TODO: Unit test for postprocess
+    # TODOC: postprocess
+    # TOTEST: postprocess
     cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
 
     if weight_behaviour == "ignore":

@@ -35,8 +35,7 @@ __all__ = [
 ]
 
 
-# TODO: Examples in docstrings
-# TODO NEXT: Use all of these functions in an example notebook
+# TODOC: Examples in docstrings
 
 
 def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
@@ -259,7 +258,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     return ax
 
 
-# TODO: Write more docs, include see also
+# TODOC: Include see also for outlier plot
 @_alias_mode_axis()
 def outlier_plot(
     cp_tensor,
@@ -515,7 +514,6 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> component_scatterplot(cp_tensor, mode=1)
         >>> plt.show()
     """
-    # TODO: component scatterplot?
     if ax is None:
         ax = plt.gca()
 
@@ -999,7 +997,7 @@ def percentage_variation_plots(
 ):
     """Bar chart showing the percentage of variation explained by each of the components.
     """
-    # TODO: Write docstring
+    # TODOC: percentage_variation_plots
     if ax is None:
         ax = plt.gca()
 

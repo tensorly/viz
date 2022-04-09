@@ -405,8 +405,8 @@ def degeneracy_score(cp_tensor):
         troublesome model :cite:p:`krijnen1993analysis` (as cited in
         :cite:p:`bro1997parafac`).
     """
-    # TODO: Example
-    # TODO: Add cite about ill-posedness and how it spawns degenerate solutions
+    # TODOC: Example for degeneracy_score
+    # TODOC: Add cite about ill-posedness and how it spawns degenerate solutions
     weights, factors = cp_tensor
     rank = factors[0].shape[1]
     tucker_congruence_scores = np.ones(shape=(rank, rank))
@@ -470,7 +470,7 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
     tuple
         The permutation to use when permuting ``cp_tensor``.
     """
-    # TODO: NEXT test for get_cp_permutation
+    # TOTEST: get_cp_permutation
     if reference_cp_tensor is not None:
         fms, permutation = factor_match_score(
             reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,

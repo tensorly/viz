@@ -32,7 +32,7 @@ class RemoteZip:
 
 
 def load_aminoacids():
-    # TODO: Docstring for load_aminoacids
+    # TODOC: load_aminoacids
     print('Loading Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro')
     aminoacids_zip = RemoteZip("http://models.life.ku.dk/sites/default/files/Amino_Acid_fluo.zip")
     matlab_variables = loadmat(aminoacids_zip.extract_file("amino.mat"))

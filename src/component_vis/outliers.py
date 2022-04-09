@@ -63,7 +63,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, mode=0, axis=None):
         The (normalised) slabwise SSE, if true tensor input is an xarray array,
         then the returned tensor is too.
 
-    TODO: example for compute_slabwise_sse
+    TODOC: example for compute_slabwise_sse
     """
     # Check that dimensions match up.
     if is_xarray(estimated) and is_xarray(true):
@@ -109,7 +109,7 @@ def compute_leverage(factor_matrix):
     If a given sample, :math:`i`, has a high leverage score, then it likely has a strong
     influence on the model.
 
-    # TODO: More description with some mathematical properties (e.g. sums to the rank) and interpretations
+    # TODOC: More description with some mathematical properties (e.g. sums to the rank) and interpretations
 
     If the factor matrix is a dataframe (i.e. has an index), then the output is
     also a dataframe with that index. Otherwise, the output is a NumPy array.
@@ -130,7 +130,7 @@ def compute_leverage(factor_matrix):
     The leverage score is related to the Hotelling T2-statistic (or D-statistic), which
     is equal to a scaled version of leverage computed based on centered factor matrices.
     """
-    # TODO: example for compute_leverage
+    # TODOC: example for compute_leverage
     leverage = _compute_leverage(factor_matrix)
 
     if is_dataframe(factor_matrix):
@@ -143,7 +143,7 @@ def compute_leverage(factor_matrix):
 def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axis=None):
     f"""Compute the leverage score and (normalised) slabwise SSE along one axis.
 
-    # TODO: Write description of how to use compute_outlier_info.
+    # TODOC: Write description of how to use compute_outlier_info.
 
     These metrics are often plotted against each other to discover outliers.
 
@@ -412,7 +412,7 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
         Threshold value, data points with a higher SSE than the threshold are suspicious
         and may be outliers.
     """
-    # TODO: documentation example for get_slab_sse_outlier_threshold
+    # TODOC: example for get_slab_sse_outlier_threshold
     std = np.std(slab_sse, ddof=ddof)
     mean = np.mean(slab_sse)
     if method == "two sigma":

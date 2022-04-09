@@ -302,8 +302,8 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     float
         Score based on the estimator's performance.
     """
-    # TODO: test for scoring
-    # TODO: example for classification accuracy
+    # TOTEST: test for predictive_power
+    # TODOC: example for predictive_power
     factor_matrix = cp_tensor[1][mode]
     sklearn_estimator.fit(factor_matrix, y)
     if metric is None:
@@ -348,9 +348,9 @@ def percentage_variation(cp_tensor, X=None, method="data"):
         where the first element is the fit computed against the data tensor and the second
         element is the fit computed against the model.
     """
-    # TODO: Examples for percentage_variation
-    # TODO: Unit tests for percentage_variation. Use orthogonal components in all modes
-    # TODO: Unit test for percentage_variation - Should sum to 100
+    # TODOC: Examples for percentage_variation
+    # TOTEST: Unit tests for percentage_variation. Use orthogonal components in all modes
+    # TOTEST: Unit test for percentage_variation - Should sum to 100
     # TODO: There is something wrong here...
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]

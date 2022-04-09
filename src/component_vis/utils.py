@@ -1,4 +1,3 @@
-# TODO: rename module to utils not _utils
 import inspect
 from functools import wraps
 
@@ -98,8 +97,8 @@ def cp_to_tensor(cp_tensor):
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
     """
-    # TODO: Tests (1 component for example)
-    # TODO: Example with and without labels
+    # TOTEST: (1 component for example)
+    # TODOC: Example with and without labels
 
     if cp_tensor[0] is None:
         weights = np.ones(cp_tensor[1][0].shape[1])

@@ -5,6 +5,7 @@ import numpy as np
 
 from . import model_evaluation
 from .factor_tools import factor_match_score
+from .utils import extract_singleton
 
 
 def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
@@ -26,7 +27,7 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     -------
     similarity : float
     """
-    # TODO: example for similarity_evaluation
+    # TODOC: example for similarity_evaluation
     if similarity_metric is None:
         similarity_metric = factor_match_score
 
@@ -68,7 +69,7 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
         List of the error values for all CP tensors in ``cp_tensor`` (in the same
         order as ``cp_tensors``). only returned if ``return_errors=True``
     """
-    # TODO: example for get_model_with_lowest_error
+    # TODOC: example for get_model_with_lowest_error
     if error_function is None:
         error_function = model_evaluation.relative_sse
 
@@ -117,12 +118,9 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
     list of floats
         List of error computed for each CP tensor (in sorted order)
     """
-    # TODO: Regression test, input list of cp tensors where two of the cp tensors are identical. This failed before.
-
     errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function, return_errors=True)[1]
     sorted_errors = sorted(zip(errors, range(len(errors))))
-    # We use np.asarray(error).item() because the error is an XArray object for X-array datasets
     return (
         [cp_tensors[idx] for _error, idx in sorted_errors],
-        [np.asarray(error).item() for error, _cp_tensor in sorted_errors],
+        [extract_singleton(error) for error, _cp_tensor in sorted_errors],
     )
