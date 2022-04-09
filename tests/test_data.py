@@ -24,3 +24,33 @@ def test_simulated_data_has_correct_noise(noise_level, seed):
     relative_error = np.linalg.norm(X - true_X) / np.linalg.norm(true_X)
     assert relative_error == pytest.approx(noise_level)
 
+
+def test_simulated_data_is_seeded(seed):
+    shape = (5, 6, 7)
+    rank = 3
+    cp_tensor1, X1 = component_vis.data.simulated_random_cp_tensor(
+        shape, rank, noise_level=0.3, labelled=False, seed=seed
+    )
+    cp_tensor2, X2 = component_vis.data.simulated_random_cp_tensor(
+        shape, rank, noise_level=0.3, labelled=False, seed=seed
+    )
+
+    np.testing.assert_array_equal(X1, X2)
+    np.testing.assert_array_equal(cp_tensor1[0], cp_tensor2[0])
+
+    for fm1, fm2 in zip(cp_tensor1[1], cp_tensor2[1]):
+        np.testing.assert_array_equal(fm1, fm2)
+
+    cp_tensor3, X3 = component_vis.data.simulated_random_cp_tensor(
+        shape, rank, noise_level=0.3, labelled=False, seed=seed + 1
+    )
+
+    with pytest.raises(AssertionError):
+        np.testing.assert_array_equal(X1, X3)
+
+    with pytest.raises(AssertionError):
+        np.testing.assert_array_equal(cp_tensor1[0], cp_tensor3[0])
+
+    for fm1, fm3 in zip(cp_tensor1[1], cp_tensor3[1]):
+        with pytest.raises(AssertionError):
+            np.testing.assert_array_equal(fm1, fm3)

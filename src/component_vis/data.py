@@ -182,9 +182,6 @@ def download_city_bike(source="oslobysykkel.no", years=(2020, 2021)):
     return dataset
 
 
-# TODO NEXT: Make test with labelled=True and labelled=False
-# TODO NEXT: Make test with noise level. Compare constructing the tensor with the components
-# TODO NEXT: Make test with seed, should give same output if seed is the same twice
 def simulated_random_cp_tensor(shape, rank, noise_level=0.1, labelled=False, seed=None):
     """Create a random noisy CP tensor.
 
