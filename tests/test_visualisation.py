@@ -1,3 +1,5 @@
+import itertools
+
 import matplotlib
 import numpy as np
 import pytest
@@ -5,8 +7,8 @@ from numpy.testing import assert_allclose, assert_array_equal
 
 import component_vis.outliers as outliers
 from component_vis import model_evaluation, visualisation
-from component_vis.utils import cp_to_tensor
 from component_vis.data import simulated_random_cp_tensor
+from component_vis.utils import cp_to_tensor
 
 
 @pytest.mark.parametrize("labelled", [True, False])
@@ -178,23 +180,103 @@ def test_outlier_plot_has_correct_scatter_point_locations(seed, labelled):
 def test_outlier_plot_has_correct_text_labels_with_dataframe(seed):
     # Use the leverage and slab sse functions to compute leverage and slab sse values
     # Iterate over texts and check that the label is correct based on the leverage, slab sse and dataframe index
-    assert False, "Test not written yet"
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=True, seed=seed)
+
+    leverage = outliers.compute_leverage(cp_tensor[1][0]).values.ravel()
+    sse = outliers.compute_slabwise_sse(estimated=cp_to_tensor(cp_tensor), true=X, mode=0).values.ravel()
+
+    ax = visualisation.outlier_plot(cp_tensor, dataset=X, mode=0)
+    for text, leverage_value, sse_value, index in zip(ax.texts, leverage, sse, cp_tensor[1][0].index):
+        x, y = text.get_position()
+        assert x == pytest.approx(leverage_value)
+        assert y == pytest.approx(sse_value)
+        assert str(index) == text.get_text()
 
 
 def test_outlier_plot_has_correct_text_labels_with_array(seed):
     # Use the leverage and slab sse functions to compute leverage and slab sse values
     # Iterate over texts and check that the label is correct based on the leverage, slab sse and array index
-    assert False, "Test not written yet"
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=False, seed=seed)
+
+    leverage = outliers.compute_leverage(cp_tensor[1][0])
+    sse = outliers.compute_slabwise_sse(estimated=cp_to_tensor(cp_tensor), true=X, mode=0)
+
+    ax = visualisation.outlier_plot(cp_tensor, dataset=X, mode=0)
+    for text, leverage_value, sse_value, index in zip(ax.texts, leverage, sse, range(len(cp_tensor[1][0]))):
+        x, y = text.get_position()
+        assert x == pytest.approx(leverage_value)
+        assert y == pytest.approx(sse_value)
+        assert index == int(text.get_text())
 
 
-@pytest.mark.parametrize("labelled", [True, False])
-def test_outlier_plot_has_correct_leverage_thresholds(seed, labelled):
-    # Use the leverage functions to compute leverage values
-    # Use the get_leverage_outlier_threshold function compute leverage thresholds
-    # Set threshold to all the different possible threshold and check that there is a vertical line at the correct locations
-    # Check with multiple threshold types
-    # Check with multiple p-values
-    assert False, "Test not written yet"
+@pytest.mark.parametrize(
+    "labelled,method,p_value",
+    list(
+        itertools.product(
+            [True, False], ["huber lower", "huber higher", "hw lower", "hw higher", "p-value", "hotelling"], [0.1, 0.5]
+        )
+    ),
+)
+def test_outlier_plot_has_correct_leverage_threshold(seed, labelled, method, p_value):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    leverage = outliers.compute_leverage(cp_tensor[1][0])
+    if labelled:
+        leverage = leverage.values.ravel()
+    threshold = outliers.get_leverage_outlier_threshold(leverage, method=method, p_value=p_value)
+
+    ax = visualisation.outlier_plot(cp_tensor, X, mode=0, leverage_rule_of_thumbs=method, p_value=p_value)
+    assert all(x == pytest.approx(threshold) for x in ax.lines[-1].get_xdata())
+
+
+@pytest.mark.parametrize(
+    "labelled,methods,p_value",
+    list(
+        itertools.product(
+            [True, False],
+            [["huber lower", "p-value"], ["huber higher", "hw lower"], ["p-value", "hotelling"]],
+            [0.1, 0.5],
+        )
+    ),
+)
+def test_outlier_plot_has_multiple_correct_leverage_threshold_methods(seed, labelled, methods, p_value):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    leverage = outliers.compute_leverage(cp_tensor[1][0])
+    if labelled:
+        leverage = leverage.values.ravel()
+
+    ax = visualisation.outlier_plot(cp_tensor, X, mode=0, leverage_rule_of_thumbs=methods, p_value=p_value)
+    for i, method in enumerate(methods[::-1]):
+        threshold = outliers.get_leverage_outlier_threshold(leverage, method=method, p_value=p_value)
+        assert all(x == pytest.approx(threshold) for x in ax.lines[-1 - i].get_xdata())
+
+
+@pytest.mark.parametrize(
+    "labelled,method,p_values",
+    list(itertools.product([True, False], ["p-value", "hotelling"], [[0.1, 0.5], [0.1, 0.2, 0.3]],)),
+)
+def test_outlier_plot_has_multiple_correct_leverage_threshold_p_values(seed, labelled, method, p_values):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    leverage = outliers.compute_leverage(cp_tensor[1][0])
+    if labelled:
+        leverage = leverage.values.ravel()
+
+    ax = visualisation.outlier_plot(cp_tensor, X, mode=0, leverage_rule_of_thumbs=method, p_value=p_values)
+    for i, p_value in enumerate(p_values[::-1]):
+        threshold = outliers.get_leverage_outlier_threshold(leverage, method=method, p_value=p_value)
+        assert all(x == pytest.approx(threshold) for x in ax.lines[-1 - i].get_xdata())
 
 
 @pytest.mark.parametrize("labelled", [True, False])
