@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from component_vis import postprocessing
-from component_vis._utils import cp_to_tensor
+from component_vis.utils import cp_to_tensor
 
 
 def test_resolve_cp_sign_indeterminacy_does_not_change_tensor(rng):

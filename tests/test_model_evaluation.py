@@ -5,7 +5,7 @@ import tensorly as tl
 from tensorly.random import random_cp
 
 from component_vis import factor_tools, model_evaluation
-from component_vis._utils import cp_to_tensor, tucker_to_tensor
+from component_vis.utils import cp_to_tensor, tucker_to_tensor
 
 
 def _estimate_core_tensor(factors, X):

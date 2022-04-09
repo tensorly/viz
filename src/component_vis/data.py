@@ -8,7 +8,7 @@ import requests
 import xarray as xr
 from scipy.io import loadmat
 
-from ._utils import cp_to_tensor
+from .utils import cp_to_tensor
 
 __all__ = ["load_aminoacids", "load_oslo_city_bike", "download_city_bike"]
 

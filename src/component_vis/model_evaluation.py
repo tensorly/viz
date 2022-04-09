@@ -5,7 +5,7 @@ by comparing it to a data tensor.
 import numpy as np
 import scipy.linalg as sla
 
-from ._utils import cp_to_tensor
+from .utils import cp_to_tensor
 from .xarray_wrapper import (
     _handle_labelled_cp,
     _handle_labelled_dataset,

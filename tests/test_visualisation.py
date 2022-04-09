@@ -5,7 +5,7 @@ from numpy.testing import assert_allclose, assert_array_equal
 
 import component_vis.outliers as outliers
 from component_vis import model_evaluation, visualisation
-from component_vis._utils import cp_to_tensor
+from component_vis.utils import cp_to_tensor
 from component_vis.data import simulated_random_cp_tensor
 
 

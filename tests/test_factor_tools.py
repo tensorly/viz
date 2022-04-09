@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from pytest import approx
 
-import component_vis._utils as utils
+import component_vis.utils as utils
 from component_vis import factor_tools
 
 

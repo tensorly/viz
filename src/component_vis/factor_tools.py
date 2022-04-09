@@ -10,7 +10,7 @@ from scipy.optimize import linear_sum_assignment
 
 from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp, is_labelled_cp
 
-from ._utils import _alias_mode_axis, extract_singleton
+from .utils import _alias_mode_axis, extract_singleton
 from .model_evaluation import percentage_variation
 
 

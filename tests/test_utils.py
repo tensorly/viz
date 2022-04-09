@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-import component_vis._utils as utils
+import component_vis.utils as utils
 import component_vis.factor_tools as factor_tools
 
 

@@ -102,7 +102,6 @@ def unfold_tensor(tensor, mode, axis=None):
     return np.moveaxis(dataset, mode, 0).reshape(dataset.shape[mode], -1)
 
 
-# TODO: Rename these to be named cp_to_tensor and tucker_to_tensor? or cp_to_dense and tucker_to_dense?
 def cp_to_tensor(cp_tensor):
     """Construct a CP tensor, equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
 
@@ -120,7 +119,6 @@ def cp_to_tensor(cp_tensor):
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
     """
-    # TODO: Reconsider name
     # TODO: Tests (1 component for example)
     # TODO: Example with and without labels
 
@@ -178,8 +176,6 @@ def tucker_to_tensor(tucker_tensor):
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
     """
-    # TODO: Rename
-    # TODO: Reconsider name
     # TODO: NEXT Handle dataframes
     einsum_core = ""
     einsum_input = ""
