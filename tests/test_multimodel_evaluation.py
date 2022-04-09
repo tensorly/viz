@@ -42,17 +42,19 @@ def test_get_model_with_lowest_error(rng):
         assert error == approx(rel_sse)
 
     out = multimodel_evaluation.get_model_with_lowest_error(cp_tensors, X, return_errors=False, return_index=False)
-    assert len(out) == 2  # TODO CHECK: better things to test?
+    assert len(out) == 2
     out = multimodel_evaluation.get_model_with_lowest_error(cp_tensors, X, return_errors=False, return_index=True)
     assert len(out) == 2
     assert out[1] == 0
 
     out = multimodel_evaluation.get_model_with_lowest_error(cp_tensors, X, return_errors=True, return_index=False)
     assert len(out) == 2
-    np.testing.assert_allclose(out[1], errors)  # TODO: CHECK does this make sense?
+    np.testing.assert_allclose(out[1], errors)
 
-    # TODO NEXT: Test that index is only returned if return_index=True
-    # TODO NEXT: Test that errors is only returned if return_errors=True
+    out = multimodel_evaluation.get_model_with_lowest_error(cp_tensors, X, return_errors=True, return_index=True)
+    assert len(out) == 3
+    assert out[1] == 0
+    np.testing.assert_allclose(out[2], errors)
 
 
 def test_sort_models_by_error(rng):
@@ -78,7 +80,6 @@ def test_sort_models_by_error(rng):
         assert error == rel_sse
 
 
-# TODO: Regression test, input list of cp tensors where two of the cp tensors are identical. This failed before.
 def test_sort_models_by_error_with_identical_decompositions(rng):
     A = rng.standard_normal((30, 3))
     B = rng.standard_normal((20, 3))
