@@ -6,6 +6,41 @@ import pandas as pd
 import xarray as xr
 
 
+# TODO: Move to utils
+def is_xarray(x):
+    """Check if ``x`` is an xarray data array.
+    
+    Arguments
+    ---------
+    x
+        Object to check
+    
+    Returns
+    -------
+    bool
+        ``True`` if x is an xarray data array, ``False`` otherwise.
+    """
+    # TODO: Is this how we want to check?
+    return isinstance(x, xr.DataArray)
+
+
+# TODO: Move to utils
+def is_dataframe(x):
+    """Check if ``x`` is a data frame.
+    
+    Arguments
+    ---------
+    x
+        Object to check
+    
+    Returns
+    -------
+    bool
+        ``True`` if x is a data frame, ``False`` otherwise.
+    """
+    return isinstance(x, pd.DataFrame)
+
+
 def _label_factor_matrices(factor_matrices, dataset):
     if is_xarray(dataset):
         factor_matrices = [
@@ -52,41 +87,6 @@ def label_cp_tensor(cp_tensor, dataset):
         return cp_tensor
     else:
         raise ValueError("Dataset must be either numpy array, xarray or pandas dataframe.")
-
-
-# TODO: Move to utils
-def is_xarray(x):
-    """Check if ``x`` is an xarray data array.
-    
-    Arguments
-    ---------
-    x
-        Object to check
-    
-    Returns
-    -------
-    bool
-        ``True`` if x is an xarray data array, ``False`` otherwise.
-    """
-    # TODO: Is this how we want to check?
-    return isinstance(x, xr.DataArray)
-
-
-# TODO: Move to utils
-def is_dataframe(x):
-    """Check if ``x`` is a data frame.
-    
-    Arguments
-    ---------
-    x
-        Object to check
-    
-    Returns
-    -------
-    bool
-        ``True`` if x is a data frame, ``False`` otherwise.
-    """
-    return isinstance(x, pd.DataFrame)
 
 
 def get_data(x):
