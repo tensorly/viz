@@ -104,3 +104,55 @@ def test_scree_plot_works_with_given_errors(seed):
     line_x, line_y = line.get_data()
     assert_array_equal(line_x, list(errors.keys()))
     assert_array_equal(line_y, list(errors.values()))
+
+
+def test_component_scatterplot_labels_dataframes_correctly(seed):
+    shape = (5, 10, 15)
+    cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=True, seed=seed)
+
+    cp_tensor[1][0].index = ["A", "B", "C", "D", "E"]
+    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+
+    coord_to_label = {(row[0], row[1]): index for index, row in cp_tensor[1][0].iterrows()}
+    for text in ax.texts:
+        pos = text.get_position()
+        label = text.get_text()
+        assert label == coord_to_label[pos]
+
+
+def test_component_scatterplot_labels_arrays_correctly(seed):
+    shape = (5, 10, 15)
+    cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=False, seed=seed)
+
+    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+
+    coord_to_label = {(row[0], row[1]): str(i) for i, row in enumerate(cp_tensor[1][0])}
+    for text in ax.texts:
+        pos = text.get_position()
+        label = text.get_text()
+        assert label == coord_to_label[pos]
+
+
+def test_component_scatterplot_has_correct_length(seed):
+    shape = (5, 10, 15)
+    cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=False, seed=seed)
+
+    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+    assert len(ax.texts) == 5
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_component_scatterplot_has_correct_point_locations(seed, labelled):
+    shape = (5, 10, 15)
+    cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=labelled, seed=seed)
+
+    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+
+    if labelled:
+        data = cp_tensor[1][0].values[:, :2]
+    else:
+        data = cp_tensor[1][0][:, :2]
+
+    patch_collection = ax.collections[0]
+    np.testing.assert_allclose(data, patch_collection.get_offsets())
+
