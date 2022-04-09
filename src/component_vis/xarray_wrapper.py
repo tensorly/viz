@@ -262,7 +262,6 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
     return decorator
 
 
-# TODO: Make test for handle labelled dataset
 def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False):
     def decorator(func):
         _check_is_argument(func, dataset_name)
