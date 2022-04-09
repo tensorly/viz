@@ -351,7 +351,7 @@ def percentage_variation(cp_tensor, X=None, method="data"):
     # TODOC: Examples for percentage_variation
     # TOTEST: Unit tests for percentage_variation. Use orthogonal components in all modes
     # TOTEST: Unit test for percentage_variation - Should sum to 100
-    # TODO: There is something wrong here...
+    # FIXME: There is something wrong here...
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]
     if weights is not None:
