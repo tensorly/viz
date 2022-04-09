@@ -42,7 +42,9 @@ def normalise(x, axis=0):
     >>> print(np.linalg.norm(matrix_normalized_rows, axis=1))
     array([1., 1., 1.])
     """
-    return x / np.linalg.norm(x, axis=axis, keepdims=True)
+    norms = np.linalg.norm(x, axis=axis, keepdims=True)
+    norms[norms == 0] = 1
+    return x / norms
 
 
 def cosine_similarity(factor_matrix1, factor_matrix2):
@@ -255,16 +257,11 @@ def factor_match_score(
     Factor match score (with weight penalty): 0.95
     Factor match score (without weight penalty): 0.99
     """
-    # Extract weights and components from decomposition
-    weights1, factors1 = cp_tensor1
-    weights2, factors2 = cp_tensor2
+    from .postprocessing import normalise_cp_tensor  # HACK: Refactor to avoid circular imports
 
-    norms1 = np.ones(factors1[0].shape[1])
-    norms2 = np.ones(factors2[0].shape[1])
-    if weights1 is not None:
-        norms1 *= weights1
-    if weights2 is not None:
-        norms2 *= weights2
+    # Extract weights and components from decomposition
+    weights1, factors1 = normalise_cp_tensor(cp_tensor1)
+    weights2, factors2 = normalise_cp_tensor(cp_tensor2)
 
     congruence_product = 1
     for i, (factor1, factor2) in enumerate(zip(factors1, factors2)):
@@ -275,14 +272,11 @@ def factor_match_score(
 
         if i == skip_axis:
             continue
-        if consider_weights:
-            norms1 *= np.linalg.norm(factor1, axis=0)
-            norms2 *= np.linalg.norm(factor2, axis=0)
-        congruence_product *= normalise(factor1).T @ normalise(factor2)
+        congruence_product *= factor1.T @ factor2
 
     if consider_weights:
-        congruence_product *= 1 - np.abs(norms1[:, np.newaxis] - norms2[np.newaxis, :]) / np.maximum(
-            norms1[:, np.newaxis], norms2[np.newaxis, :]
+        congruence_product *= 1 - np.abs(weights1[:, np.newaxis] - weights2[np.newaxis, :]) / np.maximum(
+            weights1[:, np.newaxis], weights2[np.newaxis, :]
         )
 
     if absolute_value:
