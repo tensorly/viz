@@ -16,7 +16,12 @@ from .outliers import (
     get_leverage_outlier_threshold,
     get_slab_sse_outlier_threshold,
 )
-from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset, is_dataframe
+from .xarray_wrapper import (
+    _handle_labelled_cp,
+    _handle_labelled_dataset,
+    _handle_none_weights_cp_tensor,
+    is_dataframe,
+)
 
 __all__ = [
     "scree_plot",
@@ -123,7 +128,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     if isinstance(metric, str):
         ax.set_ylabel(metric.replace("_", " "))
         metric = getattr(model_evaluation, metric.lower().replace(" ", "_"))
-    cp_tensors = dict(enumerate(cp_tensors))
+    cp_tensors = dict(cp_tensors)
 
     if errors is None:
         # compute error using the metric function
@@ -244,7 +249,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     if ax is None:
         ax = plt.gca()
 
-    if use_pingouin:
+    if use_pingouin:  # pragma: no cover
         from pingouin import qqplot
 
         warn("GPL-3 Lisenced code is loaded, so this code also follows the GPL-3 license.")
@@ -418,6 +423,7 @@ def outlier_plot(
     return ax
 
 
+@_handle_none_weights_cp_tensor("cp_tensor")
 def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None, **kwargs):
     """Scatterplot of two columns in a factor matrix.
 
@@ -496,7 +502,6 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> plt.show()
     """
     # TODO: example with svd also maybe?
-    # TODO: handle weight
     # TODO: component scatterplot?
     # TODO: Handle dataframes
     if ax is None:
@@ -520,12 +525,13 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         ax.text(x, y, s)
 
     xmin, xmax = ax.get_xlim()
-    ymin, ymax = ax.get_ylim()
+    ymin, ymax = ax.get_ylim()  # TODO: what do we use these for?
 
     return ax
 
 
 # TODO: Core element heatmaps
+@_handle_none_weights_cp_tensor("cp_tensor")
 def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     """Scatter plot with the elements of the optimal core tensor for a given CP tensor.
 
@@ -585,7 +591,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     T = np.zeros([rank] * dataset.ndim)
     np.fill_diagonal(T, 1)
     if normalised:
-        denom = np.linalg.norm(core_tensor, "fro") ** 2
+        denom = np.sum((core_tensor) ** 2)
     else:
         denom = rank
 
@@ -617,6 +623,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     return ax
 
 
+@_handle_none_weights_cp_tensor("cp_tensor")
 def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
     
