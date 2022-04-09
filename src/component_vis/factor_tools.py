@@ -439,7 +439,7 @@ def _permute_cp_tensor(cp_tensor, permutation):
     return new_weights, new_factors
 
 
-@_handle_labelled_cp("cp_tensor", _SINGLETON)
+@_handle_labelled_cp("cp_tensor", None)
 def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True):
     """Find the optimal permutation between two CP tensors.
 
