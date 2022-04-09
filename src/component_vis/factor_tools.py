@@ -5,7 +5,6 @@ models. For example, computing how similar two factorisations are, checking if t
 are equivalent, or simply generating a dense tensor from a (possibly) labelled decomposition.
 """
 import numpy as np
-import xarray as xr
 from scipy.optimize import linear_sum_assignment
 
 from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp
@@ -188,9 +187,9 @@ def get_factor_matrix_permutation(factor_matrix1, factor_matrix2, ignore_sign=Tr
     permutation : list[int | slice]
         List of ints used to permute ``factor_matrix2`` so its columns optimally align with ``factor_matrix1``.
         If the ``factor_matrix1`` has a column with no corresponding column in ``factor_matrix2`` (i.e. there
-        are fewer columns in ``factor_matrix2`` than in ``factor_matrix1``), then 
+        are fewer columns in ``factor_matrix2`` than in ``factor_matrix1``), then
         ``component_vis.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing columns.
-    
+
     Raises
     ------
     ValueError
@@ -280,7 +279,7 @@ def factor_match_score(
         If the ``cp_tensor1`` has a component with no corresponding component in ``cp_tensor2`` (i.e. there
         are fewer components in ``cp_tensor2`` than in ``cp_tensor1``), then
         ``component_vis.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing components.
-    
+
     Raises
     ------
     ValueError
@@ -491,7 +490,7 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
 def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True):
     """Permute the CP tensor
-    
+
     This function supports three ways of permuting a CP tensor: Aligning the components
     with those of a reference CP tensor (if ``reference_cp_tensor`` is not ``None``),
     permuting the components according to a given permutation (if ``permutation`` is not ``None``)

@@ -13,7 +13,7 @@ def test_leverage(rng):
 
 
 def test_leverage_known_matrix():
-    A = np.array([[0, 0, -1], [0, 2, 1], [1, -2, 1], [2, -2, 0],])
+    A = np.array([[0, 0, -1], [0, 2, 1], [1, -2, 1], [2, -2, 0]])
     leverage = compute_leverage(A)
     supposed_leverage = [0.4, 0.9 + 1 / 30, 0.7 + 1 / 30, 0.9 + 1 / 30]
     assert np.allclose(leverage, supposed_leverage)

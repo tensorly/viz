@@ -58,7 +58,7 @@ def label_cp_tensor(cp_tensor, dataset):
 
 def get_data(x):
     """Extract the numerical values from ``x`` as a numpy array.
-    
+
     Arguments
     ---------
     x : np.ndarray or pd.DataFrame or xr.DataArray
@@ -77,18 +77,18 @@ def get_data(x):
 
 def is_labelled_cp(cp_tensor):
     """Check if a dataframe is labelled or not
-    
+
     Arguments
     ---------
     cp_tensor : tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    
+
     Returns
     -------
     bool
         Whether the factor matrices are labelled or not
-    
+
     Raises
     ------
     TypeError

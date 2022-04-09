@@ -367,9 +367,11 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
         I, R = num_samples, num_components
         F = stats.f.isf(p_value, R, I - R - 1)
         B = (R / (I - R - 1)) * F / (1 + (R / (I - R - 1)) * F)
-        return (
-            B * (I - 1) / I
-        )  # Remove the square compared to Nomikos & MacGregor since the leverage is A(AtA)^-1 At, not A(AtA / (I-1))^-1 At
+        # Remove the square compared to Nomikos & MacGregor since the leverage is:
+        #  A(AtA)^-1 At,
+        # not
+        #  A(AtA / (I-1))^-1 At
+        return B * (I - 1) / I
     else:
         raise ValueError(
             "Method must be one of 'huber lower', 'huber higher', 'hw lower' or 'hw higher', "

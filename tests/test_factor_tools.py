@@ -189,9 +189,9 @@ def test_factor_match_score_permutation(rng):
 
 
 def test_degeneracy_on_degenerate_components():
-    A = np.array([[1, 1, 3], [-1, -1, 0], [1, 1, 2], [2, 2, 6],])
-    B = np.array([[4, 4, 6], [-3, -3, 2], [0, 0, -8],])
-    C = np.array([[1, -1, 3], [2, -2, 4], [-1, 1, 2], [2, -2, -3],])
+    A = np.array([[1, 1, 3], [-1, -1, 0], [1, 1, 2], [2, 2, 6]])
+    B = np.array([[4, 4, 6], [-3, -3, 2], [0, 0, -8]])
+    C = np.array([[1, -1, 3], [2, -2, 4], [-1, 1, 2], [2, -2, -3]])
     assert factor_tools.degeneracy_score((None, (A, B, C))) == pytest.approx(-1)
 
 
@@ -336,9 +336,18 @@ def test_distribute_weights_evenly(rng, num_modes):
 
 
 def test_permute_cp_tensor(rng):
-    # Create a rank-3 CP tensor and a copy of it that is permuted. Test if postprocessing.permute_cp_tensor permutes it back
-    # Modify the permuted copy so that one of its components consists of random vectors, check again that the permutation is correct
-    # Create a copy of the rank-3 CP tensor, permute it and remove a component. Align the 3-component to the 2-component model and check that the first two components are the two components present in the two-component model
+    """Test for permutation of CP tensors
+
+    Create a rank-3 CP tensor and a copy of it that is permuted, then test if postprocessing.permute_cp_tensor
+    permutes it back.
+
+    Next, modify the permuted copy so that one of its components consists of random vectors, check again that
+    the permutation is correct.
+
+    Finally, create a copy of the rank-3 CP tensor, permute it and remove a component. Align the 3-component
+    to the 2-component model and check that the first two components are the two components present in the
+    two-component model
+    """
     A = rng.standard_normal((10, 4))
     B = rng.standard_normal((11, 4))
     C = rng.standard_normal((12, 4))

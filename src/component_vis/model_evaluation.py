@@ -292,7 +292,8 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     metric : Callable
         Callable (typically function) with the signature ``metric(y_true, y_pred)``,
         where ``y_true=labels`` and ``y_pred`` is the predicted values
-        obtained from ``sklearn_estimator``. See https://scikit-learn.org/stable/developers/develop.html#specific-models.
+        obtained from ``sklearn_estimator``. See
+        https://scikit-learn.org/stable/developers/develop.html#specific-models.
     axis : int (optional)
         Alias for mode, if set, then mode cannot be set.
 

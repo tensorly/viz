@@ -8,7 +8,7 @@ from .factor_tools import factor_match_score
 
 
 def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
-    """Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
+    r"""Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
 
     Parameters
     ----------
@@ -62,7 +62,7 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
     CPTensor
         The CP tensor with the lowest error
     int
-        The index of the selected CP tensor in ``cp_tensors``. Only returned 
+        The index of the selected CP tensor in ``cp_tensors``. Only returned
         if ``return_index=True``.
     list
         List of the error values for all CP tensors in ``cp_tensor`` (in the same

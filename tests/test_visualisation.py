@@ -3,7 +3,7 @@ import itertools
 import matplotlib
 import numpy as np
 import pytest
-from numpy.testing import assert_allclose, assert_array_equal
+from numpy.testing import assert_array_equal
 
 import component_vis.outliers as outliers
 from component_vis import model_evaluation, visualisation
@@ -283,7 +283,7 @@ def test_outlier_plot_has_multiple_correct_leverage_threshold_p_values(seed, lab
 def test_outlier_plot_has_correct_residual_thresholds(seed, labelled):
     # Use the slab sse functions to compute slab sse values
     # Use the get_slab_sse_outlier_threshold function compute slab sse thresholds
-    # Set threshold to all the different possible threshold and check that there is a vertical line at the correct locations
+    # Set threshold to all the different possible threshold and check that there is a line at the correct locations
     # Check with multiple threshold types
     # Check with multiple p-values
     assert False, "Test not written yet"

@@ -58,13 +58,13 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         This is useful to save computation time if, for example, the fit is computed beforehand.
     metric: str or Callable
         Which metric to plot, should have the signature ``metric(cp_tensor, dataset)`` and return
-        a float. If it is a string, then this will be used as the y-label and metric will be set to 
+        a float. If it is a string, then this will be used as the y-label and metric will be set to
         ``metric = getattr(component_vis.model_evaluation, metric)``.
         Also, if ``metric`` is a string, then it is converted to lower-case letters and spaces
         are converted to underlines before getting the metric from the ``model_evaluation`` module.
     ax: matplotlib axes
         Matplotlib axes that the plot will be placed in. If ``None``, then ``plt.gca()`` will be used.
-    
+
     Returns
     -------
     ax
@@ -83,12 +83,12 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         >>> from component_vis.visualisation import scree_plot
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
-        >>> 
+        >>>
         >>> dataset = simulated_random_cp_tensor((10, 20, 30), rank=3, noise_level=0.2, seed=42)[1]
         >>> cp_tensors = {}
         >>> for rank in range(1, 5):
         ...     cp_tensors[f"{rank} components"] = parafac(dataset, rank, random_state=1)
-        >>>     
+        >>>
         >>> scree_plot(cp_tensors, dataset)
         >>> plt.show()
 
@@ -102,12 +102,12 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         >>> from component_vis.visualisation import scree_plot
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
-        >>> 
+        >>>
         >>> dataset = simulated_random_cp_tensor((10, 20, 30), rank=3, noise_level=0.2, seed=42)[1]
         >>> cp_tensors = {}
         >>> for rank in range(1, 5):
         ...     cp_tensors[rank] = parafac(dataset, rank, random_state=1)
-        >>> 
+        >>>
         >>> fig, axes = plt.subplots(1, 2, figsize=(8, 2), tight_layout=True)
         >>> scree_plot(cp_tensors, dataset, ax=axes[0])
         >>> scree_plot(cp_tensors, dataset, metric="Core consistency", ax=axes[1])
@@ -141,7 +141,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
 @_handle_labelled_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwargs):
-    """Create a histogram of model residuals (:math:`\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}`).
+    r"""Create a histogram of model residuals (:math:`\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}`).
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
         If true, then the residuals are divided by their standard deviation
     **kwargs
         Additional keyword arguments passed to the histogram function
-    
+
     Returns
     -------
     ax : Matplotlib axes
@@ -218,9 +218,9 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
         for generating an enhanced QQ-plot (with error bars), at the cost
         of changing the license of component-vis into a GPL-license too.
     **kwargs
-        Additional keyword arguments passed to the qq-plot function 
+        Additional keyword arguments passed to the qq-plot function
         (``statsmodels.api.qqplot`` or ``pingouin.qqplot``)
-    
+
     Returns
     -------
     ax : Matplotlib axes
@@ -322,15 +322,17 @@ def outlier_plot(
         >>> from component_vis.data import load_oslo_city_bike
         >>> from component_vis.postprocessing import postprocess
         >>> from component_vis.visualisation import outlier_plot
-        >>> 
+        >>>
         >>> data = load_oslo_city_bike()
         >>> X = data.data
         >>> cp = non_negative_parafac_hals(X, 3, init="random")
         >>> cp = postprocess(cp, dataset=data, )
-        >>> 
-        >>> outlier_plot(cp, data, leverage_rule_of_thumbs='p-value', residual_rule_of_thumbs='p-value', p_value=[0.05, 0.01])
+        >>>
+        >>> outlier_plot(
+        ...     cp, data, leverage_rule_of_thumbs='p-value', residual_rule_of_thumbs='p-value', p_value=[0.05, 0.01]
+        ... )
         >>> plt.show()
-    
+
     We can also provide multiple types of rule-of-thumbs
 
     .. plot::
@@ -342,13 +344,15 @@ def outlier_plot(
         >>> from component_vis.data import load_oslo_city_bike
         >>> from component_vis.postprocessing import postprocess
         >>> from component_vis.visualisation import outlier_plot
-        >>> 
+        >>>
         >>> data = load_oslo_city_bike()
         >>> X = data.data
         >>> cp = non_negative_parafac_hals(X, 3, init="random")
         >>> cp = postprocess(cp, dataset=data, )
-        >>> 
-        >>> outlier_plot(cp, data, leverage_rule_of_thumbs=['huber lower', 'hw higher'], residual_rule_of_thumbs='two sigma')
+        >>>
+        >>> outlier_plot(
+        ...     cp, data, leverage_rule_of_thumbs=['huber lower', 'hw higher'], residual_rule_of_thumbs='two sigma'
+        ... )
         >>> plt.show()
     """
     weights, factor_matrices = cp_tensor
@@ -463,8 +467,8 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
 
     Returns
     -------
-    ax : Matplotlib axes    
-    
+    ax : Matplotlib axes
+
     Examples
     --------
     Small example with a simulated third order CP tensor
@@ -561,12 +565,11 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
         (see ``component_vis.model_evaluation.core_consistency``)
     ax : Matplotlib axes
         Axes to plot the core element plot within
-    
+
     Returns
     -------
     ax : Matplotlib axes
 
-    
     Examples
     --------
 
@@ -631,7 +634,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
 @_handle_none_weights_cp_tensor("cp_tensor")
 def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
-    
+
     Parameters
     ----------
     cp_tensor : CPTensor or tuple
@@ -639,23 +642,23 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         argument and a tuple of components as second argument
     weight_behaviour : {'ignore', 'normalise', 'evenly', 'one_mode'}
         How to handle the component weights.
-        
+
          * ignore - Do nothing, just plot the factor matrices
          * normalise - Plot all components after normalising them
          * evenly - Distribute the weight evenly across all modes
          * one_mode - Move all the weight into one factor matrix
-    
+
     weight_mode : int
         The mode that the weight should be placed in (only used if ``weight_behaviour='one_mode'``)
     plot_kwargs : list of dictionaries
         List of same length as the number of modes. Each element is a kwargs-dict passed to
         the plot function for that mode.
-    
+
     Returns
     -------
     fig : matplotlib.figure.Figure
     axes : ndarray(dtype=matplotlib.axes.Axes)
-    
+
     Examples
     --------
     Small example with a simulated CP tensor
@@ -763,7 +766,7 @@ def component_comparison_plot(
         Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
     plot_kwargs : list of list of dicts
         Nested list of dictionaries, one dictionary with keyword arguments for each subplot.
-    
+
     Returns
     -------
     fig : matplotlib figure
@@ -884,7 +887,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     Examples
     --------
     Fit the wrong number of components to show local minima problems
-   
+
     .. plot::
         :context: close-figs
         :include-source:
@@ -894,17 +897,17 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> from tensorly.random import random_cp
         >>> from tensorly.decomposition import parafac
         >>> from component_vis.visualisation import optimisation_diagnostic_plots
-        >>> 
+        >>>
         >>> # Generate random tensor and add noise
         >>> rng = np.random.RandomState(1)
         >>> cp_tensor = random_cp((5, 6, 7), 2, random_state=rng)
         >>> dataset = cp_tensor.to_tensor() + rng.standard_normal((5, 6, 7))
-        >>> 
+        >>>
         >>> # Fit 10 models
         >>> errs = []
         >>> for i in range(10):
         ...     errs.append(parafac(dataset, 3, n_iter_max=500, return_errors=True, init="random", random_state=rng)[1])
-        >>> 
+        >>>
         >>> # Plot the diganostic plots
         >>> optimisation_diagnostic_plots(errs, 500)
         >>> plt.show()
@@ -921,17 +924,17 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> from tensorly.random import random_cp
         >>> from tensorly.decomposition import parafac
         >>> from component_vis.visualisation import optimisation_diagnostic_plots
-        >>> 
+        >>>
         >>> # Generate random tensor and add noise
         >>> rng = np.random.RandomState(1)
         >>> cp_tensor = random_cp((5, 6, 7), 3, random_state=rng)
         >>> dataset = cp_tensor.to_tensor() + rng.standard_normal((5, 6, 7))
-        >>> 
+        >>>
         >>> # Fit 10 models
         >>> errs = []
         >>> for i in range(10):
         ...     errs.append(parafac(dataset, 3, n_iter_max=50, return_errors=True, init="random", random_state=rng)[1])
-        >>> 
+        >>>
         >>> # Plot the diganostic plots
         >>> optimisation_diagnostic_plots(errs, 50)
         >>> plt.show()

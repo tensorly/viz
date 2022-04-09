@@ -9,7 +9,7 @@ def is_iterable(x):
     ---------
     x
         Variable to check if is iterable
-    
+
     Returns
     -------
     bool
@@ -25,12 +25,12 @@ def is_iterable(x):
 
 def is_xarray(x):
     """Check if ``x`` is an xarray data array.
-    
+
     Arguments
     ---------
     x
         Object to check
-    
+
     Returns
     -------
     bool
@@ -42,12 +42,12 @@ def is_xarray(x):
 
 def is_dataframe(x):
     """Check if ``x`` is a data frame.
-    
+
     Arguments
     ---------
     x
         Object to check
-    
+
     Returns
     -------
     bool

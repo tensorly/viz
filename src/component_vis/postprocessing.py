@@ -85,8 +85,8 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
     described by the column basis of :math:`\mathbf{U}`.
 
     In the multiway case, when :math:`\mathcal{X}` is a tensor instead of a matrix, we can
-    apply the same logic :cite:p:`bro2013solving`. If we have the factor matrices 
-    :math:`\mathbf{A}, \mathbf{B}` and :math:`\mathbf{C}`, then we flip the sign of any 
+    apply the same logic :cite:p:`bro2013solving`. If we have the factor matrices
+    :math:`\mathbf{A}, \mathbf{B}` and :math:`\mathbf{C}`, then we flip the sign of any
     factor matrix (e.g. :math:`\mathbf{A}`) by computing
 
     .. math::
@@ -97,7 +97,7 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
     :math:`\mathbf{H}^{(\mathbf{A})} = \mathbf{A}(\mathbf{A}^\mathsf{T}\mathbf{A})^{-1} \mathbf{X}_{(0)}`,
     depending on whether the scheme based on the SVD scheme :cite:p:`bro2013solving` or the
     corrected scheme. :math:`\mathbf{X}_{(0)} \in \mathbb{R}^{I \times JK}` is the tensor,
-    :math:`\mathcal{X}`, unfolded along the first mode. We can then correct the sign of 
+    :math:`\mathcal{X}`, unfolded along the first mode. We can then correct the sign of
     :math:`\mathbf{A}` by multiplying and one of the other factor matrices by
     :math:`\text{diag}(\mathbf{f}^{(\mathbf{A})})`. By using this procedure, we can align all
     factor matrices except for one (the unresolved mode) with the "direction of the data".
@@ -116,7 +116,7 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
         ``unresolved_mode``.
     unresolved_mode : int
         Mode used to correct the sign indeterminacy in other mode(s). The
-        factor matrix in this mode may not be aligned with the data. 
+        factor matrix in this mode may not be aligned with the data.
     method : "transpose" or "positive_coord"
         Which method to use when computing the signs. Use ``"transpose"``
         for the method in :cite:p:`bro2008resolving,bro2013solving`, and
@@ -193,7 +193,7 @@ def postprocess(
 
     This function will perform standard postprocessing of a CP decomposition.
     If a reference CP tensor is provided, then the columns of ``cp_tensor``'s
-    factor matrices are aligned with the columns of ``reference_cp_tensor``'s 
+    factor matrices are aligned with the columns of ``reference_cp_tensor``'s
     factor matrices.
 
     Next, the CP tensor is normalised so the columns of all factor matrices have
@@ -225,7 +225,7 @@ def postprocess(
         ``unresolved_mode``.
     unresolved_mode : int
         Mode used to correct the sign indeterminacy in other mode(s). The
-        factor matrix in this mode may not be aligned with the data. 
+        factor matrix in this mode may not be aligned with the data.
     method : "transpose" or "positive_coord"
         Which method to use when computing the signs. Use ``"transpose"``
         for the method in :cite:p:`bro2008resolving,bro2013solving`, and
@@ -242,7 +242,6 @@ def postprocess(
     weight_mode : int (optional)
         Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
 
-    
     Returns
     -------
     CPTensor

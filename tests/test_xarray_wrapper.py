@@ -17,8 +17,8 @@ from component_vis.xarray_wrapper import (
     _unlabel_cp_tensor,
     _unlabel_dataset,
     get_data,
-    label_cp_tensor,
     is_labelled_cp,
+    label_cp_tensor,
 )
 
 
@@ -59,7 +59,7 @@ def test_handle_labelled_cp_singleton_return_wrapping(is_labelled, seed):
 
     @_handle_labelled_cp("cp_tensor", _SINGLETON, optional=False)
     def singelton_wrapping(a, cp_tensor):  # Two inputs to check that the correct argument is handled
-        b = cp_tensor[1][0][0, 0]
+        b = cp_tensor[1][0][0, 0]  # noqa
         return cp_tensor
 
     labelled = singelton_wrapping(1, cp_tensor)

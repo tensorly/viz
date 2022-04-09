@@ -1,5 +1,3 @@
-from typing import Type
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -67,19 +65,19 @@ def test_alias_mode_axis_fails_with_incompatible_functions():
     with pytest.raises(TypeError):
 
         @utils._alias_mode_axis()
-        def func(x, mode, not_axis=None):
+        def func1(x, mode, not_axis=None):
             return x
 
     with pytest.raises(TypeError):
 
         @utils._alias_mode_axis()
-        def func(x, not_mode, axis=None):
+        def func2(x, not_mode, axis=None):
             return x
 
     with pytest.raises(TypeError):
 
         @utils._alias_mode_axis()
-        def func(x, not_mode, not_axis=None):
+        def func3(x, not_mode, not_axis=None):
             return x
 
 
