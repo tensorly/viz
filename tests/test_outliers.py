@@ -1,6 +1,8 @@
 import numpy as np
-from component_vis.outliers import compute_leverage, compute_slabwise_sse
 import pytest
+
+from component_vis.outliers import compute_leverage, compute_slabwise_sse
+
 
 # TODO: test with xarrays as well. should we have some parameterization of fixture or something to test xarrays as well
 def test_leverage(rng):
@@ -9,7 +11,6 @@ def test_leverage(rng):
     N, R = 10, 3
     A = rng.standard_normal(size=(N, R))
     compute_leverage(A)
-    pass
 
 
 def test_leverage_known_matrix():
