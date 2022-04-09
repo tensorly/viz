@@ -7,10 +7,6 @@ from . import model_evaluation
 from .factor_tools import factor_match_score
 
 
-# TODO: Tests for similarity_evaluation
-# Set similarity metric to a function that only return ones to check that the argument is used
-# Check comparison tensors equal to cp_tensor to check that we only get ones
-# Test with CP tensors with known similarity
 def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
     """Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.
 
