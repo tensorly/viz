@@ -1,5 +1,6 @@
-import pytest
+import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 
 
 @pytest.fixture
@@ -13,3 +14,9 @@ def seed(pytestconfig):
 @pytest.fixture
 def rng(seed):
     return np.random.RandomState(seed=seed)
+
+
+@pytest.fixture(autouse=True)
+def close_matplotlib_figures():
+    yield
+    plt.close("all")
