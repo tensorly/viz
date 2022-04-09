@@ -214,21 +214,21 @@ def test_get_permutation(rng):
     A = rng.standard_normal((30, 5))
 
     permutation = [2, 1, 0, 4, 3]
-    out_permutation = factor_tools.get_permutation(A, A[:, permutation])
+    out_permutation = factor_tools.get_factor_matrix_permutation(A, A[:, permutation])
     assert out_permutation == permutation
 
     subset = [1, 2, 3]
-    out_permutation = factor_tools.get_permutation(A[:, subset], A)
+    out_permutation = factor_tools.get_factor_matrix_permutation(A[:, subset], A)
     assert out_permutation == [1, 2, 3, 0, 4]
 
-    out_permutation = factor_tools.get_permutation(A, A[:, subset], allow_smaller_rank=True)
+    out_permutation = factor_tools.get_factor_matrix_permutation(A, A[:, subset], allow_smaller_rank=True)
     assert out_permutation == [factor_tools.NO_COLUMN, 0, 1, 2, factor_tools.NO_COLUMN]
 
     subset = [0, 2]
-    out_permutation = factor_tools.get_permutation(A[:, subset], A)
+    out_permutation = factor_tools.get_factor_matrix_permutation(A[:, subset], A)
     assert out_permutation == [0, 2, 1, 3, 4]
 
-    out_permutation = factor_tools.get_permutation(A, A[:, subset], allow_smaller_rank=True)
+    out_permutation = factor_tools.get_factor_matrix_permutation(A, A[:, subset], allow_smaller_rank=True)
     assert out_permutation == [0, factor_tools.NO_COLUMN, 1, factor_tools.NO_COLUMN, factor_tools.NO_COLUMN]
 
 

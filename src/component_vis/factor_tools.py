@@ -10,8 +10,8 @@ from scipy.optimize import linear_sum_assignment
 
 from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp, is_labelled_cp
 
-from .utils import _alias_mode_axis, extract_singleton
 from .model_evaluation import percentage_variation
+from .utils import _alias_mode_axis, extract_singleton
 
 
 # TODO: Move normalise to utils
@@ -192,8 +192,7 @@ def _get_linear_sum_assignment_permutation(cost_matrix, allow_smaller_rank):
     return row_index, column_index, permutation
 
 
-# TODO: Rename to get_factor_matrix_permutation
-def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True, allow_smaller_rank=False):
+def get_factor_matrix_permutation(factor_matrix1, factor_matrix2, ignore_sign=True, allow_smaller_rank=False):
     r"""Find optimal permutation of the factor matrices
 
     Efficient estimation of the optimal permutation for two factor matrices.
@@ -528,7 +527,6 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
     return permutation
 
 
-# TODO: Should we name this reference_cp_tensor or target_cp_tensor?
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
 def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True):
     """Permute the CP tensor

@@ -5,7 +5,7 @@ by comparing it to a data tensor.
 import numpy as np
 import scipy.linalg as sla
 
-from .utils import cp_to_tensor
+from .utils import _alias_mode_axis, cp_to_tensor
 from .xarray_wrapper import (
     _handle_labelled_cp,
     _handle_labelled_dataset,
@@ -268,8 +268,9 @@ def fit(cp_tensor, X, sum_squared_X=None):
     return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
 
 
-def classification_accuracy(factor_matrix, labels, classifier, metric=None):
-    """Use scikit-learn classifier to evaluate the predictive power of a factor matrix.
+@_alias_mode_axis()
+def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=None):
+    """Use scikit-learn estimator to evaluate the predictive power of a factor matrix.
 
     This is useful if you evaluate the components based on their predictive
     power with respect to some task.
@@ -278,30 +279,35 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
     ----------
     factor_matrix : ndarray(ndim=2)
         Factor matrix from a tensor decomposition model
-    labels : ndarray(ndim=1)
-        Labels for each row of ``factor_matrix``. should have same length
-        as the first dimension of ``factor_matrix``.
-    classifier : scikit learn classifier
-        Scikit learn classifier. Must have the ``fit`` and ``predict`` methods,
+    y : ndarray(ndim=1)
+        Prediction target for each row of the factor matrix in the given mode.
+        ``y`` should have same length as the first dimension of this factor
+        matrix (i.e. the length of the tensor along the given mode).
+    sklearn_estimator : scikit learn estimator
+        Scikit learn estimator. Must have the ``fit`` and ``predict`` methods,
         and if ``metric`` is ``None``, then it should also have the ``score``
         method. See https://scikit-learn.org/stable/developers/develop.html.
+    mode : int
+        Which mode to perform the scoring along
     metric : Callable
         Callable (typically function) with the signature ``metric(y_true, y_pred)``,
-        where ``y_true=labels`` and ``y_pred`` is the predicted labels
-        obtained from ``classifier``. See https://scikit-learn.org/stable/developers/develop.html#specific-models.
+        where ``y_true=labels`` and ``y_pred`` is the predicted values
+        obtained from ``sklearn_estimator``. See https://scikit-learn.org/stable/developers/develop.html#specific-models.
+    axis : int (optional)
+        Alias for mode, if set, then mode cannot be set.
 
     Returns
     -------
     float
-        Score based on the classifier's performance.
+        Score based on the estimator's performance.
     """
-    # TODO: test for classification accuracy
+    # TODO: test for scoring
     # TODO: example for classification accuracy
-    # TODO: Move to factor_tools?
-    classifier.fit(factor_matrix, labels)
+    factor_matrix = cp_tensor[1][mode]
+    sklearn_estimator.fit(factor_matrix, y)
     if metric is None:
-        return classifier.score(factor_matrix, labels)
-    return metric(labels, classifier.predict(factor_matrix))
+        return sklearn_estimator.score(factor_matrix, y)
+    return metric(y, sklearn_estimator.predict(factor_matrix))
 
 
 @_handle_labelled_cp("cp_tensor", None)
