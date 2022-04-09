@@ -8,7 +8,7 @@ import requests
 import xarray as xr
 from scipy.io import loadmat
 
-from component_vis.factor_tools import construct_cp_tensor
+from component_vis._utils import construct_cp_tensor
 
 __all__ = ["load_aminoacids", "load_oslo_city_bike", "download_city_bike"]
 

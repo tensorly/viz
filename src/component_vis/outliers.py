@@ -2,8 +2,7 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 
-from ._utils import _alias_mode_axis, is_iterable
-from .factor_tools import construct_cp_tensor
+from ._utils import _alias_mode_axis, construct_cp_tensor, is_iterable
 from .xarray_wrapper import is_dataframe, is_xarray
 
 _LEVERAGE_NAME = "Leverage score"

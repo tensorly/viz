@@ -4,7 +4,7 @@ import pytest
 import xarray as xr
 
 import component_vis.data
-from component_vis.factor_tools import construct_cp_tensor
+from component_vis._utils import construct_cp_tensor
 
 
 @pytest.mark.parametrize("is_labelled", [True, False])

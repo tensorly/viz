@@ -1,10 +1,11 @@
+# TODO: rename module to utils not _utils
 import inspect
 from functools import wraps
 
 import numpy as np
-import xarray
+import xarray as xr
 
-from .xarray_wrapper import _handle_labelled_dataset
+from .xarray_wrapper import _handle_labelled_dataset, is_labelled_cp
 
 
 def _alias_mode_axis():
@@ -58,6 +59,25 @@ def is_iterable(x):
         return True
 
 
+def extract_singleton(x):
+    """Extracts a singleton from an array.
+
+    This is useful whenever XArray or Pandas is used, since many NumPy functions that
+    return a number may return a singleton array instead.
+
+    Parameters
+    ----------
+    x : float, numpy.ndarray, xarray.DataArray or pandas.DataFrame
+        Singleton array to extract value from.
+
+    Returns
+    -------
+    float
+        Singleton value extracted from ``x``.
+    """
+    return np.asarray(x).reshape(-1).item()
+
+
 @_handle_labelled_dataset("tensor", None)
 @_alias_mode_axis()
 def unfold_tensor(tensor, mode, axis=None):
@@ -82,20 +102,102 @@ def unfold_tensor(tensor, mode, axis=None):
     return np.moveaxis(dataset, mode, 0).reshape(dataset.shape[mode], -1)
 
 
-def extract_singleton(x):
-    """Extracts a singleton from an array.
+# TODO: Rename these to be named cp_to_tensor and tucker_to_tensor? or cp_to_dense and tucker_to_dense?
+def construct_cp_tensor(cp_tensor):
+    """Construct a CP tensor, equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
 
-    This is useful whenever XArray or Pandas is used, since many NumPy functions that
-    return a number may return a singleton array instead.
+    If the factor matrices are data frames, then the tensor will be returned as a labelled
+    xarray. Otherwise, it will be returned as a numpy array.
 
     Parameters
     ----------
-    x : float, numpy.ndarray, xarray.DataArray or pandas.DataFrame
-        Singleton array to extract value from.
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
 
     Returns
     -------
-    float
-        Singleton value extracted from ``x``.
+    xarray or np.ndarray
+        Dense tensor represented by the decomposition.
     """
-    return np.asarray(x).reshape(-1).item()
+    # TODO: Reconsider name
+    # TODO: Tests (1 component for example)
+    # TODO: Example with and without labels
+
+    if cp_tensor[0] is None:
+        weights = np.ones(cp_tensor[1][0].shape[1])
+    else:
+        weights = cp_tensor[0].reshape(-1)
+
+    einsum_input = "R"
+    einsum_output = ""
+    for mode in range(len(cp_tensor[1])):
+        idx = chr(ord("a") + mode)
+
+        # We cannot use einsum with letters outside the alphabet
+        if ord(idx) > ord("z"):
+            max_modes = ord("a") - ord("z") - 1
+            raise ValueError(f"Cannot have more than {max_modes} modes. Current components have {len(cp_tensor[1])}.")
+
+        einsum_input += f", {idx}R"
+        einsum_output += idx
+
+    tensor = np.einsum(f"{einsum_input} -> {einsum_output}", weights, *cp_tensor[1])
+
+    if not is_labelled_cp(cp_tensor):
+        return tensor
+
+    # Convert to labelled xarray DataArray:
+    coords_dict = {}
+    dims = []
+    for mode, fm in enumerate(cp_tensor[1]):
+        mode_name = f"Mode {mode}"
+        if fm.index.name is not None:
+            mode_name = fm.index.name
+
+        coords_dict[mode_name] = fm.index.values
+        dims.append(mode_name)
+
+    return xr.DataArray(tensor, dims=dims, coords=coords_dict)
+
+
+def construct_tucker_tensor(tucker_tensor):
+    """Construct a Tucker tensor, equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
+
+    If the factor matrices are data frames, then the tensor will be returned as a labelled
+    xarray. Otherwise, it will be returned as a numpy array.
+
+    Parameters
+    ----------
+    tucker : CPTensor or tuple
+        TensorLy-style TuckerTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+
+    Returns
+    -------
+    xarray or np.ndarray
+        Dense tensor represented by the decomposition.
+    """
+    # TODO: Rename
+    # TODO: Reconsider name
+    # TODO: NEXT Handle dataframes
+    einsum_core = ""
+    einsum_input = ""
+    einsum_output = ""
+
+    for mode in range(len(tucker_tensor[1])):
+        idx = chr(ord("a") + mode)
+        rank_idx = chr(ord("A") + mode)
+
+        # We cannot use einsum with letters outside the alphabet
+        if ord(idx) > ord("z"):
+            max_modes = ord("a") - ord("z")
+            raise ValueError(
+                f"Cannot have more than {max_modes} modes. Current components have {len(tucker_tensor[1])}."
+            )
+
+        einsum_core += rank_idx
+        einsum_input += f", {idx}{rank_idx}"
+        einsum_output += idx
+
+    return np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)

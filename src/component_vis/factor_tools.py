@@ -8,11 +8,13 @@ import numpy as np
 import xarray as xr
 from scipy.optimize import linear_sum_assignment
 
-from component_vis.xarray_wrapper import is_labelled_cp
+from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp, is_labelled_cp
 
 from ._utils import _alias_mode_axis, extract_singleton
+from .model_evaluation import percentage_variation
 
 
+# TODO Move normalise to utils
 @_alias_mode_axis()
 def normalise(x, mode=0, axis=None):
     """Normalise a matrix (or tensor) so all columns (or fibers) have unit norm.
@@ -48,6 +50,88 @@ def normalise(x, mode=0, axis=None):
     norms = np.linalg.norm(x, axis=mode, keepdims=True)
     norms[norms == 0] = 1
     return x / norms
+
+
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
+def normalise_cp_tensor(cp_tensor):
+    """Ensure that the all factor matrices have unit norm, and all weight is stored in the weight-vector
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+
+    Returns
+    -------
+    tuple
+        The scaled CP tensor.
+    """
+    weights, factors = cp_tensor
+    if weights is None:
+        weights = np.ones(factors[0].shape[1])
+
+    weights = weights.copy()
+    new_factors = []
+    for factor in factors:
+        norm = np.linalg.norm(factor, axis=0, keepdims=True)
+        weights *= norm.ravel()
+
+        # If a component vector is zero, then we do not want to divide by zero, and zero / 1 is equal to zero.
+        norm[norm == 0] = 1
+        new_factors.append(factor / norm)
+    return weights, tuple(new_factors)
+
+
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
+def distribute_weights_evenly(cp_tensor):
+    """Ensure that the weight-vector consists of ones and all factor matrices have equal norm
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+
+    Returns
+    -------
+    tuple
+        The scaled CP tensor.
+    """
+    weights, factors = normalise_cp_tensor(cp_tensor)
+    weights = weights ** (1 / len(factors))
+    for factor in factors:
+        factor[:] *= weights
+    weights = np.ones_like(weights)
+    return weights, factors
+
+
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
+@_alias_mode_axis()
+def distribute_weights_in_one_mode(cp_tensor, mode, axis=None):
+    """Normalise all factors and multiply the weights into one mode.
+
+    The CP tensor is scaled so all factor matrices except one have unit norm
+    columns and the weight-vector contains only ones.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+    mode : int
+        Which mode (axis) to store the weights in
+    axis : int (optional)
+        Alias for mode. If this is set, then no value is needed for mode
+
+    Returns
+    -------
+    tuple
+        The scaled CP tensor.
+    """
+    weights, factors = normalise_cp_tensor(cp_tensor)
+    factors[mode][:] *= weights
+    return np.ones_like(weights), factors
 
 
 def cosine_similarity(factor_matrix1, factor_matrix2):
@@ -107,6 +191,7 @@ def _get_linear_sum_assignment_permutation(cost_matrix, allow_smaller_rank):
     return row_index, column_index, permutation
 
 
+# TODO: Rename to get_factor_matrix_permutation
 def get_permutation(factor_matrix1, factor_matrix2, ignore_sign=True, allow_smaller_rank=False):
     r"""Find optimal permutation of the factor matrices
 
@@ -260,8 +345,6 @@ def factor_match_score(
     Factor match score (with weight penalty): 0.95
     Factor match score (without weight penalty): 0.99
     """
-    from .postprocessing import normalise_cp_tensor  # HACK: Refactor to avoid circular imports
-
     # Extract weights and components from decomposition
     weights1, factors1 = normalise_cp_tensor(cp_tensor1)
     weights2, factors2 = normalise_cp_tensor(cp_tensor2)
@@ -374,105 +457,128 @@ def degeneracy_score(cp_tensor):
     return np.asarray(tucker_congruence_scores).min()
 
 
-# TODO: Rename these to be named cp_to_tensor and tucker_to_tensor? or cp_to_dense and tucker_to_dense?
-def construct_cp_tensor(cp_tensor):
-    """Construct a CP tensor, equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
+def _permute_cp_tensor(cp_tensor, permutation):
+    """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.
+    """
+    weights, factors = cp_tensor
 
-    If the factor matrices are data frames, then the tensor will be returned as a labelled
-    xarray. Otherwise, it will be returned as a numpy array.
+    if weights is not None:
+        new_weights = weights.copy()[permutation]
+    else:
+        new_weights = None
+
+    new_factors = [None] * len(factors)
+    for mode, factor in enumerate(factors):
+        new_factor = factor.copy()
+        if hasattr(factor, "values"):
+            new_factor.values[:] = new_factor.values[:, permutation]
+        else:
+            new_factor[:] = new_factor[:, permutation]
+        new_factors[mode] = new_factor
+
+    return new_weights, new_factors
+
+
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
+def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True):
+    """Find the optimal permutation between two CP tensors.
+
+    This function supports two ways of finding the permutation of a CP tensor: Aligning the components
+    with those of a reference CP tensor (if ``reference_cp_tensor`` is not ``None``), or finding the
+    permutation so the components are in descending order with respect to their explained variation
+    (if both ``reference_cp_tensor`` and ``permutation`` is ``None``).
+
+    This function uses the factor match score to compute the optimal permutation between
+    two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
+    may have permuted columns.
 
     Parameters
     ----------
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
+    reference_cp_tensor : CPTensor or tuple (optional)
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument. The tensor
+        that ``cp_tensor`` is aligned with. Either this or the ``permutation``
+        argument must be passed, not both.
+    consider_weights : bool
+        Whether to consider the factor weights when the factor match score is computed.
 
     Returns
     -------
-    xarray or np.ndarray
-        Dense tensor represented by the decomposition.
+    tuple
+        The permutation to use when permuting ``cp_tensor``.
     """
-    # TODO: Reconsider name
-    # TODO: Tests (1 component for example)
-    # TODO: Example with and without labels
-
-    if cp_tensor[0] is None:
-        weights = np.ones(cp_tensor[1][0].shape[1])
+    # TODO: NEXT test for get_cp_permutation
+    if reference_cp_tensor is not None:
+        fms, permutation = factor_match_score(
+            reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,
+        )
     else:
-        weights = cp_tensor[0].reshape(-1)
+        variation = percentage_variation(cp_tensor, method="model")
+        permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
 
-    einsum_input = "R"
-    einsum_output = ""
-    for mode in range(len(cp_tensor[1])):
-        idx = chr(ord("a") + mode)
+    rank = cp_tensor[1][0].shape[1]
+    if len(permutation) != rank:
+        remaining_indices = sorted(set(range(rank)) - set(permutation))
+        permutation = list(permutation) + remaining_indices
 
-        # We cannot use einsum with letters outside the alphabet
-        if ord(idx) > ord("z"):
-            max_modes = ord("a") - ord("z") - 1
-            raise ValueError(f"Cannot have more than {max_modes} modes. Current components have {len(cp_tensor[1])}.")
-
-        einsum_input += f", {idx}R"
-        einsum_output += idx
-
-    tensor = np.einsum(f"{einsum_input} -> {einsum_output}", weights, *cp_tensor[1])
-
-    if not is_labelled_cp(cp_tensor):
-        return tensor
-
-    # Convert to labelled xarray DataArray:
-    coords_dict = {}
-    dims = []
-    for mode, fm in enumerate(cp_tensor[1]):
-        mode_name = f"Mode {mode}"
-        if fm.index.name is not None:
-            mode_name = fm.index.name
-
-        coords_dict[mode_name] = fm.index.values
-        dims.append(mode_name)
-
-    return xr.DataArray(tensor, dims=dims, coords=coords_dict)
+    return permutation
 
 
-def construct_tucker_tensor(tucker_tensor):
-    """Construct a Tucker tensor, equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
+# TODO: Should we name this reference_cp_tensor or target_cp_tensor?
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
+def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True):
+    """Permute the CP tensor
+    
+    This function supports three ways of permuting a CP tensor: Aligning the components
+    with those of a reference CP tensor (if ``reference_cp_tensor`` is not ``None``),
+    permuting the components according to a given permutation (if ``permutation`` is not ``None``)
+    or so the components are in descending order with respect to their explained variation
+    (if both ``reference_cp_tensor`` and ``permutation`` is ``None``).
 
-    If the factor matrices are data frames, then the tensor will be returned as a labelled
-    xarray. Otherwise, it will be returned as a numpy array.
+    This function uses the factor match score to compute the optimal permutation between
+    two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
+    may have permuted columns.
 
     Parameters
     ----------
-    tucker : CPTensor or tuple
-        TensorLy-style TuckerTensor object or tuple with weights as first
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
+    reference_cp_tensor : CPTensor or tuple (optional)
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument. The tensor
+        that ``cp_tensor`` is aligned with. Either this or the ``permutation``
+        argument must be passed, not both.
+    permutation : tuple (optional)
+        Tuple with the column permutations. Either this or the ``reference_cp_tensor``
+        argument must be passed, not both.
+    consider_weights : bool
+        Whether to consider the factor weights when the factor match score is computed.
 
     Returns
     -------
-    xarray or np.ndarray
-        Dense tensor represented by the decomposition.
+    tuple
+        Tuple representing ``cp_tensor`` optimally permuted.
+
+    Raises
+    ------
+    ValueError
+        If neither ``permutation`` nor ``reference_cp_tensor`` is provided
+    ValueError
+        If both ``permutation`` and ``reference_cp_tensor`` is provided
     """
-    # TODO: Rename
-    # TODO: Reconsider name
-    # TODO: NEXT Handle dataframes
-    einsum_core = ""
-    einsum_input = ""
-    einsum_output = ""
+    if permutation is not None and reference_cp_tensor is not None:
+        raise ValueError("Must either provide a permutation, a reference CP tensor or neither. Both is provided")
 
-    for mode in range(len(tucker_tensor[1])):
-        idx = chr(ord("a") + mode)
-        rank_idx = chr(ord("A") + mode)
+    if permutation is None:
+        permutation = get_cp_permutation(
+            cp_tensor=cp_tensor, reference_cp_tensor=reference_cp_tensor, consider_weights=consider_weights,
+        )
 
-        # We cannot use einsum with letters outside the alphabet
-        if ord(idx) > ord("z"):
-            max_modes = ord("a") - ord("z")
-            raise ValueError(
-                f"Cannot have more than {max_modes} modes. Current components have {len(tucker_tensor[1])}."
-            )
-
-        einsum_core += rank_idx
-        einsum_input += f", {idx}{rank_idx}"
-        einsum_output += idx
-
-    return np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)
+    return _permute_cp_tensor(cp_tensor, permutation)
 
 
 def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
@@ -552,9 +658,6 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
         Whether the decompositions are equivalent.
     """
     # TODO: Handle dataframes
-    # TODO: circular import
-    from . import postprocessing  # NOTE: Circular import, but it is fine since module is imported
-
     rank = cp_tensor1[1][0].shape[1]
     num_modes = len(cp_tensor1[1])
 
@@ -567,10 +670,10 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
         if not cp_tensor1[1][mode].shape == cp_tensor2[1][mode].shape:
             return False
 
-    cp_tensor2 = postprocessing.permute_cp_tensor(cp_tensor2, reference_cp_tensor=cp_tensor1)
+    cp_tensor2 = permute_cp_tensor(cp_tensor2, reference_cp_tensor=cp_tensor1)
 
-    cp_tensor1 = postprocessing.normalise_cp_tensor(cp_tensor1)
-    cp_tensor2 = postprocessing.normalise_cp_tensor(cp_tensor2)
+    cp_tensor1 = normalise_cp_tensor(cp_tensor1)
+    cp_tensor2 = normalise_cp_tensor(cp_tensor2)
 
     if not np.allclose(cp_tensor1[0], cp_tensor2[0], rtol=rtol, atol=atol):
         return False

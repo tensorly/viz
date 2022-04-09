@@ -107,13 +107,13 @@ def test_scree_plot_works_with_given_errors(seed):
 
 
 def test_component_scatterplot_labels_dataframes_correctly(seed):
-    shape = (5, 10, 15)
+    shape = (10, 5, 15)
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=True, seed=seed)
 
-    cp_tensor[1][0].index = ["A", "B", "C", "D", "E"]
-    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+    cp_tensor[1][1].index = ["A", "B", "C", "D", "E"]
+    ax = visualisation.component_scatterplot(cp_tensor, mode=1, x_component=0, y_component=1)
 
-    coord_to_label = {(row[0], row[1]): index for index, row in cp_tensor[1][0].iterrows()}
+    coord_to_label = {(row[0], row[1]): index for index, row in cp_tensor[1][1].iterrows()}
     for text in ax.texts:
         pos = text.get_position()
         label = text.get_text()
@@ -121,12 +121,12 @@ def test_component_scatterplot_labels_dataframes_correctly(seed):
 
 
 def test_component_scatterplot_labels_arrays_correctly(seed):
-    shape = (5, 10, 15)
+    shape = (10, 5, 15)
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=False, seed=seed)
 
-    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+    ax = visualisation.component_scatterplot(cp_tensor, mode=1, x_component=0, y_component=1)
 
-    coord_to_label = {(row[0], row[1]): str(i) for i, row in enumerate(cp_tensor[1][0])}
+    coord_to_label = {(row[0], row[1]): str(i) for i, row in enumerate(cp_tensor[1][1])}
     for text in ax.texts:
         pos = text.get_position()
         label = text.get_text()
@@ -134,25 +134,76 @@ def test_component_scatterplot_labels_arrays_correctly(seed):
 
 
 def test_component_scatterplot_has_correct_length(seed):
-    shape = (5, 10, 15)
+    shape = (10, 5, 15)
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=False, seed=seed)
 
-    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+    ax = visualisation.component_scatterplot(cp_tensor, mode=1, x_component=0, y_component=1)
     assert len(ax.texts) == 5
 
 
 @pytest.mark.parametrize("labelled", [True, False])
 def test_component_scatterplot_has_correct_point_locations(seed, labelled):
-    shape = (5, 10, 15)
+    shape = (10, 5, 15)
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=labelled, seed=seed)
 
-    ax = visualisation.component_scatterplot(cp_tensor, mode=0, x_component=0, y_component=1)
+    ax = visualisation.component_scatterplot(cp_tensor, mode=1, x_component=0, y_component=1)
 
     if labelled:
-        data = cp_tensor[1][0].values[:, :2]
+        data = cp_tensor[1][1].values[:, :2]
     else:
-        data = cp_tensor[1][0][:, :2]
+        data = cp_tensor[1][1][:, :2]
 
     patch_collection = ax.collections[0]
     np.testing.assert_allclose(data, patch_collection.get_offsets())
 
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_outlier_plot_has_correct_scatter_point_locations(seed, labelled):
+    # Use the leverage and slab sse functions to compute leverage and slab sse values
+    # Compare with locations where the scatter points are drawn
+    assert False, "Test not written yet"
+
+
+def test_outlier_plot_has_correct_text_labels_with_dataframe(seed):
+    # Use the leverage and slab sse functions to compute leverage and slab sse values
+    # Iterate over texts and check that the label is correct based on the leverage, slab sse and dataframe index
+    assert False, "Test not written yet"
+
+
+def test_outlier_plot_has_correct_text_labels_with_array(seed):
+    # Use the leverage and slab sse functions to compute leverage and slab sse values
+    # Iterate over texts and check that the label is correct based on the leverage, slab sse and array index
+    assert False, "Test not written yet"
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_outlier_plot_has_correct_leverage_thresholds(seed, labelled):
+    # Use the leverage functions to compute leverage values
+    # Use the get_leverage_outlier_threshold function compute leverage thresholds
+    # Set threshold to all the different possible threshold and check that there is a vertical line at the correct locations
+    # Check with multiple threshold types
+    # Check with multiple p-values
+    assert False, "Test not written yet"
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_outlier_plot_has_correct_residual_thresholds(seed, labelled):
+    # Use the slab sse functions to compute slab sse values
+    # Use the get_slab_sse_outlier_threshold function compute slab sse thresholds
+    # Set threshold to all the different possible threshold and check that there is a vertical line at the correct locations
+    # Check with multiple threshold types
+    # Check with multiple p-values
+    assert False, "Test not written yet"
+
+
+def test_components_plot_unlabelled(seed):
+    # Postprocess CP tensor with each possible weight behaviour
+    # Check that the plots have the same values as the postprocessed CP tensor
+    assert False, "Test not written yet"
+
+
+def test_components_plot_labelled(seed):
+    # Postprocess CP tensor with each possible weight behaviour
+    # Check that the plots have the same values as the postprocessed CP tensor
+    # Check that the plots have logical x-labels
+    assert False, "Test not written yet"

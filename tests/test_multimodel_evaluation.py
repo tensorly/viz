@@ -5,9 +5,9 @@ import pytest
 from pytest import approx
 
 import component_vis.multimodel_evaluation as multimodel_evaluation
+from component_vis._utils import construct_cp_tensor
 from component_vis.data import simulated_random_cp_tensor
-from component_vis.factor_tools import check_cp_tensors_equals, construct_cp_tensor
-from component_vis.postprocessing import permute_cp_tensor
+from component_vis.factor_tools import check_cp_tensors_equals, permute_cp_tensor
 
 
 @pytest.mark.parametrize("labelled", [True, False])

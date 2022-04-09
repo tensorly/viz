@@ -6,6 +6,7 @@ import pytest
 import xarray as xr
 
 import component_vis._utils as utils
+import component_vis.factor_tools as factor_tools
 
 
 @pytest.mark.parametrize(
@@ -105,3 +106,84 @@ def test_alias_mode_axis_fails_with_incompatible_functions():
         def func(x, not_mode, not_axis=None):
             return x
 
+
+def test_cp_tensors_equals(rng):
+    # Generate random decomposition
+    A = rng.standard_normal((30, 3))
+    B = rng.standard_normal((20, 3))
+    C = rng.standard_normal((10, 3))
+    w = rng.uniform(size=(3,))
+
+    cp_tensor1 = (w, (A, B, C))
+    cp_tensor2 = (w.copy(), (A.copy(), B.copy(), C.copy()))
+
+    # Check that a decomposition is equal to its copy
+    assert factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor2)
+
+    # Check that the decompositions are not equal if one of the factor matrices differ
+    cp_tensor3 = (w.copy(), (A.copy(), B.copy(), rng.standard_normal((15, 3))))
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor3)
+
+    # Check that two equivalent, but permuted decompositions are not equal
+    permutation = [2, 1, 0]
+    cp_tensor4 = (
+        w[permutation],
+        (A[:, permutation], B[:, permutation], C[:, permutation]),
+    )
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor4)
+
+    # Check that two equivalent decompositions with different weight distributions are not equal
+    cp_tensor5 = factor_tools.distribute_weights_evenly(cp_tensor1)
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor5)
+
+    # Check that two completely different CP tensors are not equal
+    A2 = rng.standard_normal((30, 3))
+    B2 = rng.standard_normal((20, 3))
+    C2 = rng.standard_normal((10, 3))
+    w2 = rng.uniform(size=(3,))
+
+    cp_tensor6 = (w2, (A2, B2, C2))
+    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor6)
+
+
+def test_cp_tensors_equivalent(rng):
+    # Generate random decomposition
+    A = rng.standard_normal((30, 3))
+    B = rng.standard_normal((20, 3))
+    C = rng.standard_normal((10, 3))
+    w = rng.uniform(size=(3,))
+    cp_tensor1 = (w, (A, B, C))
+
+    # Check that a decomposition is equivalent to its copy
+    cp_tensor2 = (w, (A.copy(), B.copy(), C.copy()))
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor2)
+
+    # Check that the decompositions are not equivalent if one of the factor matrices differ
+    cp_tensor3 = (w, (A.copy(), B.copy(), rng.standard_normal((15, 3))))
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor3)
+
+    # Check that two permuted decompositions are equivalent
+    permutation = [2, 1, 0]
+    cp_tensor4 = (
+        w[permutation],
+        (A[:, permutation], B[:, permutation], C[:, permutation]),
+    )
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor4)
+
+    # Check that two decompositions with different weight distributions are equivalent
+    cp_tensor5 = factor_tools.normalise_cp_tensor(cp_tensor1)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor5)
+
+    cp_tensor6 = factor_tools.distribute_weights_evenly(cp_tensor1)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor6)
+
+    cp_tensor7 = factor_tools.distribute_weights_in_one_mode(cp_tensor1, mode=1)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor7)
+
+    # Check that two completely different cp decompositions are not equivalent
+    A2 = rng.standard_normal((30, 3))
+    B2 = rng.standard_normal((20, 3))
+    C2 = rng.standard_normal((10, 3))
+    w2 = rng.uniform(size=(3,))
+    cp_tensor8 = (w2, (A2, B2, C2))
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor8)

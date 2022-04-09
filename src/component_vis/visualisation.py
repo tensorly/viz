@@ -6,8 +6,7 @@ import statsmodels.api as sm
 from matplotlib.lines import Line2D
 
 from . import model_evaluation, postprocessing
-from ._utils import _alias_mode_axis, is_iterable
-from .factor_tools import construct_cp_tensor, factor_match_score
+from ._utils import _alias_mode_axis, construct_cp_tensor, is_iterable
 from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
     _LEVERAGE_NAME,
