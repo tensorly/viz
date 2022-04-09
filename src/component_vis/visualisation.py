@@ -40,7 +40,6 @@ __all__ = [
 # TODO NEXT: Use all of these functions in an example notebook
 
 
-# TODO: Test this function - Ok with list of cp tensors and dict of cp tensors
 def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     """Create scree plot for the given cp tensors.
 
@@ -501,9 +500,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> component_scatterplot(cp_tensor, mode=1)
         >>> plt.show()
     """
-    # TODO: example with svd also maybe?
     # TODO: component scatterplot?
-    # TODO: Handle dataframes
     if ax is None:
         ax = plt.gca()
 
@@ -523,9 +520,6 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
 
     for x, y, s in zip(relevant_factors[:, 0], relevant_factors[:, 1], index):
         ax.text(x, y, s)
-
-    xmin, xmax = ax.get_xlim()
-    ymin, ymax = ax.get_ylim()  # TODO: what do we use these for?
 
     return ax
 
@@ -788,7 +782,6 @@ def component_comparison_plot(
     """
     main_cp_tensor = next(iter(cp_tensors.values()))
     weights, factor_matrices = main_cp_tensor
-    main_legend = next(iter(cp_tensors.keys()))  # TODO: is this not used?
 
     cp_tensors = {
         key: postprocessing.postprocess(
