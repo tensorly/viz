@@ -249,16 +249,16 @@ def postprocess(
     """
     # TODO: Docstring example for postprocess
     # TODO: Unit test for postprocess
-    cp_tensor = permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
+    cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
 
     if weight_behaviour == "ignore":
         pass
     elif weight_behaviour == "normalise":
-        cp_tensor = normalise_cp_tensor(cp_tensor)
+        cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
     elif weight_behaviour == "evenly":
-        cp_tensor = distribute_weights_evenly(cp_tensor)
+        cp_tensor = factor_tools.distribute_weights_evenly(cp_tensor)
     elif weight_behaviour == "one_mode":
-        cp_tensor = distribute_weights_in_one_mode(cp_tensor, weight_mode)
+        cp_tensor = factor_tools.distribute_weights_in_one_mode(cp_tensor, weight_mode)
     else:
         raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
 
