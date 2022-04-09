@@ -156,10 +156,11 @@ def _extract_df_metadata(df):
     return values, metadata
 
 
-# TODO: Test _unlabel_cp_tensor and _relabel_cp_tensor are inverse functions
 def _unlabel_cp_tensor(cp_tensor, optional):
     if cp_tensor is None and optional:
         return None, None
+    elif cp_tensor is None:
+        raise TypeError("cp_tensor cannot be None")
     weights, factors = cp_tensor
 
     # Check that factor matrices are valid
@@ -197,6 +198,8 @@ def _relabel_cp_tensor(cp_tensor, factor_metadata, optional):
 def _unlabel_dataset(dataset, optional):
     if optional and dataset is None:
         return None, None, None
+    elif dataset is None:  # Not optional and dataset is None
+        raise TypeError("Dataset cannot be None")
     if is_xarray(dataset):
         np_dataset = dataset.values
         DatasetType = xr.DataArray
@@ -210,7 +213,6 @@ def _unlabel_dataset(dataset, optional):
         np_dataset = dataset.values
         DatasetType = pd.DataFrame
         dataset_metadata = {
-            "name": dataset.name,
             "index": dataset.index,
             "columns": dataset.columns,
         }
@@ -288,6 +290,32 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
                     out_dataset,
                     out[output_dataset_index + 1 :],
                 )
+            return out
+
+        return func2
+
+    return decorator
+
+
+def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):
+    def decorator(func):
+        _check_is_argument(func, cp_tensor_name)
+
+        @wraps(func)
+        def func2(*args, **kwargs):
+            bound_arguments = signature(func).bind(*args, **kwargs)
+
+            if optional and cp_tensor_name not in bound_arguments.arguments:
+                return func(*bound_arguments.args, **bound_arguments.kwargs)
+
+            cp_tensor = bound_arguments.arguments[cp_tensor_name]  # TODO: validate cp_tensor?
+            weights, factors = cp_tensor
+            if weights is None:
+                rank = factors[0].shape[1]
+                cp_tensor = (np.ones(rank), factors)
+                bound_arguments.arguments[cp_tensor_name] = cp_tensor
+
+            out = func(*bound_arguments.args, **bound_arguments.kwargs)
             return out
 
         return func2
