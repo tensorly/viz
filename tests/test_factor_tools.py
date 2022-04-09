@@ -1,14 +1,24 @@
 import numpy as np
+import pandas as pd
 import pytest
 from pytest import approx
 
 import component_vis.utils as utils
 from component_vis import factor_tools
+from component_vis._module_utils import is_dataframe
+from component_vis.data import simulated_random_cp_tensor
 
 
-def test_factor_match_score(rng):
-    A = rng.standard_normal((30, 3))
-    B = rng.standard_normal((20, 3))
+def safe_permute(arr, permutation):
+    if is_dataframe(arr):
+        return arr[permutation]
+    return arr[:, permutation]
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_factor_match_score(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((20, 31), 3, seed=seed, labelled=labelled)[0]
+    w, (A, B) = cp_tensor
 
     assert factor_tools.factor_match_score((None, (A, B)), (None, (A, B))) == approx(1)
     assert factor_tools.factor_match_score((None, (A, B)), (None, (2.0 * A, 0.5 * B)),) == approx(1)
@@ -174,14 +184,19 @@ def test_factor_match_score_against_tensortoolbox_four_modes():
     ) == pytest.approx(0.007867447488467, rel=1e-8, abs=1e-10)
 
 
-def test_factor_match_score_permutation(rng):
+@pytest.mark.parametrize("labelled", [True, False])
+def test_factor_match_score_permutation(rng, seed, labelled):
     num_components = 4
-    A = rng.standard_normal((30, num_components))
-    B = rng.standard_normal((20, num_components))
+    cp_tensor = simulated_random_cp_tensor((20, 31), num_components, seed=seed, labelled=labelled)[0]
+    w, (A, B) = cp_tensor
     permutation = rng.permutation(num_components)
 
-    A_permuted = A[:, permutation]
-    B_permuted = B[:, permutation]
+    if labelled:
+        A_permuted = A[permutation]
+        B_permuted = B[permutation]
+    else:
+        A_permuted = A[:, permutation]
+        B_permuted = B[:, permutation]
 
     fms, p = factor_tools.factor_match_score((None, (A_permuted, B_permuted)), (None, (A, B)), return_permutation=True)
     assert fms == approx(1)
@@ -195,11 +210,24 @@ def test_degeneracy_on_degenerate_components():
     assert factor_tools.degeneracy_score((None, (A, B, C))) == pytest.approx(-1)
 
 
-def test_degeneracy_on_orthogonal_components(rng):
+def test_degeneracy_on_orthogonal_components_arrays(rng):
     A = rng.standard_normal(size=(4, 4))
     A_orthogonal = np.linalg.qr(A)[0]
     B = rng.standard_normal(size=(4, 4))
     B_orthogonal = np.linalg.qr(B)[0]
+    assert factor_tools.degeneracy_score((None, (A_orthogonal, B))) == pytest.approx(0)
+    assert factor_tools.degeneracy_score((None, (A, B_orthogonal))) == pytest.approx(0)
+
+
+def test_degeneracy_on_orthogonal_components_dataframes(rng):
+    A = rng.standard_normal(size=(4, 4))
+    A_orthogonal = np.linalg.qr(A)[0]
+    B = rng.standard_normal(size=(4, 4))
+    B_orthogonal = np.linalg.qr(B)[0]
+    A = pd.DataFrame(A)
+    A_orthogonal = pd.DataFrame(A_orthogonal)
+    B = pd.DataFrame(B)
+    B_orthogonal = pd.DataFrame(B_orthogonal)
     assert factor_tools.degeneracy_score((None, (A_orthogonal, B))) == pytest.approx(0)
     assert factor_tools.degeneracy_score((None, (A, B_orthogonal))) == pytest.approx(0)
 
@@ -210,28 +238,32 @@ def test_degeneracy_one_mode(rng):
     assert factor_tools.degeneracy_score((None, (A,))) == pytest.approx(min_crossproduct)
 
 
-def test_get_permutation(rng):
+@pytest.mark.parametrize("labelled", [True, False])
+def test_get_permutation(rng, labelled):
     A = rng.standard_normal((30, 5))
+    if labelled:
+        A = pd.DataFrame(A)
 
     permutation = [2, 1, 0, 4, 3]
-    out_permutation = factor_tools.get_factor_matrix_permutation(A, A[:, permutation])
+    out_permutation = factor_tools.get_factor_matrix_permutation(A, safe_permute(A, permutation))
     assert out_permutation == permutation
 
     subset = [1, 2, 3]
-    out_permutation = factor_tools.get_factor_matrix_permutation(A[:, subset], A)
+    out_permutation = factor_tools.get_factor_matrix_permutation(safe_permute(A, subset), A)
     assert out_permutation == [1, 2, 3, 0, 4]
 
-    out_permutation = factor_tools.get_factor_matrix_permutation(A, A[:, subset], allow_smaller_rank=True)
+    out_permutation = factor_tools.get_factor_matrix_permutation(A, safe_permute(A, subset), allow_smaller_rank=True)
     assert out_permutation == [factor_tools.NO_COLUMN, 0, 1, 2, factor_tools.NO_COLUMN]
 
     subset = [0, 2]
-    out_permutation = factor_tools.get_factor_matrix_permutation(A[:, subset], A)
+    out_permutation = factor_tools.get_factor_matrix_permutation(safe_permute(A, subset), A)
     assert out_permutation == [0, 2, 1, 3, 4]
 
-    out_permutation = factor_tools.get_factor_matrix_permutation(A, A[:, subset], allow_smaller_rank=True)
+    out_permutation = factor_tools.get_factor_matrix_permutation(A, safe_permute(A, subset), allow_smaller_rank=True)
     assert out_permutation == [0, factor_tools.NO_COLUMN, 1, factor_tools.NO_COLUMN, factor_tools.NO_COLUMN]
 
 
+# TOTEST: Make these tests also check dataframes
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
 def test_normalise_cp_tensor_normalises(rng, num_modes):
     factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
@@ -379,3 +411,16 @@ def test_permute_cp_tensor(rng):
 
     # Check that the permutation is equivalent to the unpermuted decomposition
     assert factor_tools.check_cp_tensors_equivalent(cp_tensor, aligned_cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_get_cp_permutation(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[0]
+    w, (A, B, C) = cp_tensor
+
+    permutation = [2, 1, 3, 0]
+    cp_tensor_permuted = (
+        w[permutation],
+        (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
+    )
+    np.testing.assert_equal(factor_tools.get_cp_permutation(cp_tensor, cp_tensor_permuted), permutation)
