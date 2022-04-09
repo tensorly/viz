@@ -2,7 +2,7 @@ import numpy as np
 import scipy.linalg as sla
 
 from . import factor_tools
-from ._utils import is_iterable, unfold_tensor
+from ._utils import _alias_mode_axis, is_iterable, unfold_tensor
 from .model_evaluation import percentage_variation
 from .xarray_wrapper import (
     _SINGLETON,
@@ -232,7 +232,8 @@ def distribute_weights_evenly(cp_tensor):
 
 
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
-def distribute_weights_in_one_mode(cp_tensor, mode):
+@_alias_mode_axis()
+def distribute_weights_in_one_mode(cp_tensor, mode, axis=None):
     """Normalise all factors and multiply the weights into one mode.
 
     The CP tensor is scaled so all factor matrices except one have unit norm
@@ -244,7 +245,9 @@ def distribute_weights_in_one_mode(cp_tensor, mode):
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
     mode : int
-        Which mode to store the weights in
+        Which mode (axis) to store the weights in
+    axis : int (optional)
+        Alias for mode. If this is set, then no value is needed for mode
 
     Returns
     -------

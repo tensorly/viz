@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 
-from ._utils import is_iterable
+from ._utils import _alias_mode_axis, is_iterable
 from .factor_tools import construct_cp_tensor
 from .xarray_wrapper import is_dataframe, is_xarray
 
@@ -29,7 +29,8 @@ def _compute_slabwise_sse(estimated, true, normalise=True, axis=0):
         return SSE
 
 
-def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
+@_alias_mode_axis()
+def compute_slabwise_sse(estimated, true, normalise=True, mode=0, axis=None):
     r"""Compute the (normalised) slabwise SSE along the given mode(s).
 
     For a tensor, :math:`\mathcal{X}`, and an estimated tensor :math:`\hat{\mathcal{X}}`,
@@ -51,9 +52,11 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
         True dataset, if this is an xarray, then the output is too.
     normalise : bool
         Whether the SSE should be scaled so the vector sums to one.
-    axis : int
-        Axis (or axes) that the SSE is computed across (i.e. these are not the ones summed over).
+    mode : int or iterable of ints
+        Mode (or modes) that the SSE is computed across (i.e. these are not the ones summed over).
         The output will still have these axes.
+    axis : int or iterable of ints (optional)
+        Alias for mode. If this is set, then no value for mode can be given
 
     Returns
     -------
@@ -85,7 +88,7 @@ def compute_slabwise_sse(estimated, true, normalise=True, axis=0):
         if estimated.index != true.index:
             raise ValueError("Index of true and estimated matrix must be equal")
 
-    slab_sse = _compute_slabwise_sse(estimated, true, normalise=normalise, axis=axis)
+    slab_sse = _compute_slabwise_sse(estimated, true, normalise=normalise, axis=mode)
     if hasattr(slab_sse, "to_dataframe"):
         slab_sse.name = _SLABWISE_SSE_NAME
     return slab_sse
@@ -121,7 +124,7 @@ def compute_leverage(factor_matrix):
     -------
     leverage : DataFrame or numpy array
         The leverage scores, if the input is a dataframe, then the index is preserved.
-    
+
     Note
     ----
 
@@ -137,7 +140,8 @@ def compute_leverage(factor_matrix):
         return leverage
 
 
-def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
+@_alias_mode_axis()
+def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axis=None):
     f"""Compute the leverage score and (normalised) slabwise SSE along one axis.
 
     # TODO: Write description of how to use compute_outlier_info.
@@ -153,7 +157,10 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
         Dataset that cp_tensor is fitted against.
     normalise_sse : bool
         If true, the slabwise SSE is scaled so it sums to one.
-    axis : int
+    mode : int
+        The mode to compute the outlier info across.
+    axis : int (optional)
+        Alias for mode. If this is set, then no value for mode can be given.
 
     Returns
     -------
@@ -161,10 +168,10 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, axis=0):
         Dataframe with two columns, "{_LEVERAGE_NAME}" and "{_SLABWISE_SSE_NAME}".
     """
     # Add whether suspicious based on rule-of-thumb cutoffs as boolean columns
-    leverage = compute_leverage(cp_tensor[1][axis])
+    leverage = compute_leverage(cp_tensor[1][mode])
 
     estimated_tensor = construct_cp_tensor(cp_tensor)
-    slab_sse = compute_slabwise_sse(estimated_tensor, true_tensor, normalise=normalise_sse, axis=axis)
+    slab_sse = compute_slabwise_sse(estimated_tensor, true_tensor, normalise=normalise_sse, mode=mode)
     if is_xarray(slab_sse):
         slab_sse = pd.DataFrame(slab_sse.to_series())
 
@@ -216,11 +223,11 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     the factor matrices are seldomly normally distributed, so this is also just a rule-of-thumb.
 
     .. note::
-        
+
         Note also that we, with bootstrap estimation, have found that this p-value is only valid for
         large number of components. For smaller number of components, the false positive rate will be higher
         than the specified p-value, even if the components follow a standard normal distribution (see example below).
-    
+
     **Hotelling's T2 statistic**
 
     Yet another way to estimate a p-value is via Hotelling's T-squared statistic :cite:p:`nomikos1995multivariate`.
@@ -415,4 +422,3 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
         return stats.chi2.isf(p_value, h) * g
     else:
         raise ValueError(f"Method must be one of 'two sigma' and 'p-value', not '{method}'.")
-

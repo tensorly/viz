@@ -6,7 +6,7 @@ import statsmodels.api as sm
 from matplotlib.lines import Line2D
 
 from . import model_evaluation, postprocessing
-from ._utils import is_iterable
+from ._utils import _alias_mode_axis, is_iterable
 from .factor_tools import construct_cp_tensor, factor_match_score
 from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
@@ -260,10 +260,17 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     return ax
 
 
-# TODO: mode or axis?
 # TODO: Write more docs, include see also
+@_alias_mode_axis()
 def outlier_plot(
-    cp_tensor, dataset, mode=0, leverage_rule_of_thumbs=None, residual_rule_of_thumbs=None, p_value=0.05, ax=None,
+    cp_tensor,
+    dataset,
+    mode=0,
+    leverage_rule_of_thumbs=None,
+    residual_rule_of_thumbs=None,
+    p_value=0.05,
+    ax=None,
+    axis=None,
 ):
     """Create the leverage-residual scatterplot to detect outliers.
 
@@ -278,7 +285,7 @@ def outlier_plot(
     dataset : np.ndarray or xarray.DataArray
         Dataset to compare with
     mode : int
-        Which mode to create the outlier plot for
+        Which mode (axis) to create the outlier plot for
     leverage_rule_of_thumbs : str or iterable of str
         Rule of thumb(s) used to create lines for detecting outliers based on leverage score. Must be a supported
         argument for ``method`` with :meth:`component_vis.outliers.get_leverage_outlier_threshold`. If
@@ -294,12 +301,14 @@ def outlier_plot(
         then there will be drawn lines for each p-value.
     ax : Matplotlib axes
         Axes to plot outlier plot in. If ``None``, then ``plt.gca()`` is used.
-    
+    axis : int (optional)
+        Alias for mode. If set, then mode cannot be set.
+
     Returns
     -------
     ax : Matplotlib axes
         Axes with outlier plot in
-    
+
     Examples
     --------
     Here is a simple example demonstrating how to use the outlier plot to detect outliers based on the
@@ -345,7 +354,7 @@ def outlier_plot(
     """
     weights, factor_matrices = cp_tensor
 
-    outlier_info = compute_outlier_info(cp_tensor, dataset, axis=mode)
+    outlier_info = compute_outlier_info(cp_tensor, dataset, mode=mode)
 
     if ax is None:
         ax = plt.gca()
@@ -423,7 +432,8 @@ def outlier_plot(
 
 
 @_handle_none_weights_cp_tensor("cp_tensor")
-def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None, **kwargs):
+@_alias_mode_axis()
+def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None, axis=None, **kwargs):
     """Scatterplot of two columns in a factor matrix.
 
     Create a scatterplot with the columns of a factor matrix as feature-vectors.
@@ -447,9 +457,11 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         Component plotted on the y-axis
     ax : Matplotlib axes (Optional)
         Axes to plot the scatterplot in
+    axis : int (optional)
+        Alias for mode. If this is provided, then no value for mode can be provided.
     **kwargs
         Additional keyword arguments passed to ``ax.scatter``.
-    
+
     Returns
     -------
     ax : Matplotlib axes    

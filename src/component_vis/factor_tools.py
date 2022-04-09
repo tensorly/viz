@@ -10,20 +10,23 @@ from scipy.optimize import linear_sum_assignment
 
 from component_vis.xarray_wrapper import is_labelled_cp
 
-from ._utils import extract_singleton
+from ._utils import _alias_mode_axis, extract_singleton
 
 
-def normalise(x, axis=0):
+@_alias_mode_axis()
+def normalise(x, mode=0, axis=None):
     """Normalise a matrix (or tensor) so all columns (or fibers) have unit norm.
 
     Parameters
     ----------
     x : np.ndarray
         Matrix (or vector/tensor) to normalise.
-    axis : int
+    mode : int
         Axis along which to normalise, if 0, then all columns will have unit norm
         and if 1 then all rows will have unit norm. When normalising a tensor, then
         the axis represents the axis whose fibers should have unit norm.
+    axis : int
+        Alias for mode. If this is provided, then no value for mode can be provided.
 
     Returns
     -------
@@ -42,7 +45,7 @@ def normalise(x, axis=0):
     >>> print(np.linalg.norm(matrix_normalized_rows, axis=1))
     array([1., 1., 1.])
     """
-    norms = np.linalg.norm(x, axis=axis, keepdims=True)
+    norms = np.linalg.norm(x, axis=mode, keepdims=True)
     norms[norms == 0] = 1
     return x / norms
 
@@ -158,7 +161,7 @@ def factor_match_score(
     cp_tensor1,
     cp_tensor2,
     consider_weights=True,
-    skip_axis=None,
+    skip_mode=None,
     return_permutation=False,
     absolute_value=True,
     allow_smaller_rank=False,
@@ -209,8 +212,8 @@ def factor_match_score(
         argument and a tuple of components as second argument
     consider_weights : bool (default=True)
         If False, then the weight-penalty is used (second equation above).
-    skip_axis : int or None (default=None)
-        Which axis to skip when computing the FMS. Useful if cross validation
+    skip_mode : int or None (default=None)
+        Which mode to skip when computing the FMS. Useful if cross validation
         or split-half analysis is used.
     return_permutation : bool (default=False)
         Whether or not to return the optimal permutation of the factors
@@ -270,7 +273,7 @@ def factor_match_score(
         if hasattr(factor2, "values"):
             factor2 = factor2.values
 
-        if i == skip_axis:
+        if i == skip_mode:
             continue
         congruence_product *= factor1.T @ factor2
 

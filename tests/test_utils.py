@@ -1,3 +1,5 @@
+from typing import Type
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -56,3 +58,50 @@ def test_extract_singleton(rng):
 
     singleton_xarray_3d = xr.DataArray([[[scalar]]])
     assert utils.extract_singleton(singleton_xarray_3d) == scalar
+
+
+def test_alias_mode_axis_passes_arguments_correctly():
+    @utils._alias_mode_axis()
+    def func(x, mode, axis=None):
+        return mode
+
+    assert func(1, 2) == 2
+    assert func(1, axis=3) == 3
+    with pytest.raises(TypeError):
+        func(1, 2, 3)
+
+    with pytest.raises(TypeError):
+        func(1)
+
+    with pytest.raises(TypeError):
+        func(1, None, None)
+
+    @utils._alias_mode_axis()
+    def func(x, mode=2, axis=None):
+        return mode
+
+    assert func(1, 1) == 1
+    assert func(1, axis=3) == 3
+    with pytest.raises(TypeError):
+        func(1, 1, 3)  # If mode is not equal to its default value, then axis cannot be set
+
+
+def test_alias_mode_axis_fails_with_incompatible_functions():
+    with pytest.raises(TypeError):
+
+        @utils._alias_mode_axis()
+        def func(x, mode, not_axis=None):
+            return x
+
+    with pytest.raises(TypeError):
+
+        @utils._alias_mode_axis()
+        def func(x, not_mode, axis=None):
+            return x
+
+    with pytest.raises(TypeError):
+
+        @utils._alias_mode_axis()
+        def func(x, not_mode, not_axis=None):
+            return x
+
