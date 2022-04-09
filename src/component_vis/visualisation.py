@@ -6,7 +6,7 @@ import statsmodels.api as sm
 from matplotlib.lines import Line2D
 
 from . import model_evaluation, postprocessing
-from ._utils import _alias_mode_axis, construct_cp_tensor, is_iterable
+from ._utils import _alias_mode_axis, cp_to_tensor, is_iterable
 from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
     _LEVERAGE_NAME,
@@ -177,7 +177,7 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
         >>> histogram_of_residuals(est_cp, X)
         >>> plt.show()
     """
-    estimated_dataset = construct_cp_tensor(cp_tensor)
+    estimated_dataset = cp_to_tensor(cp_tensor)
     residuals = (estimated_dataset - dataset).ravel()
 
     if ax is None:
@@ -241,7 +241,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
         >>> residual_qq(est_cp, X)
         >>> plt.show()
     """
-    estimated_dataset = construct_cp_tensor(cp_tensor)
+    estimated_dataset = cp_to_tensor(cp_tensor)
     residuals = (estimated_dataset - dataset).ravel()
 
     if ax is None:

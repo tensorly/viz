@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 
-from ._utils import _alias_mode_axis, construct_cp_tensor, is_iterable
+from ._utils import _alias_mode_axis, cp_to_tensor, is_iterable
 from .xarray_wrapper import is_dataframe, is_xarray
 
 _LEVERAGE_NAME = "Leverage score"
@@ -169,7 +169,7 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axi
     # Add whether suspicious based on rule-of-thumb cutoffs as boolean columns
     leverage = compute_leverage(cp_tensor[1][mode])
 
-    estimated_tensor = construct_cp_tensor(cp_tensor)
+    estimated_tensor = cp_to_tensor(cp_tensor)
     slab_sse = compute_slabwise_sse(estimated_tensor, true_tensor, normalise=normalise_sse, mode=mode)
     if is_xarray(slab_sse):
         slab_sse = pd.DataFrame(slab_sse.to_series())

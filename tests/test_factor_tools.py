@@ -269,10 +269,10 @@ def test_normalise_cp_tensor_does_not_change_tensor(rng, num_modes):
     w = rng.uniform(size=(4,))
 
     cp_tensor = (w, factors)
-    dense_tensor = utils.construct_cp_tensor(cp_tensor)
+    dense_tensor = utils.cp_to_tensor(cp_tensor)
 
     normalised_cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
-    normalised_dense_tensor = utils.construct_cp_tensor(normalised_cp_tensor)
+    normalised_dense_tensor = utils.cp_to_tensor(normalised_cp_tensor)
 
     np.testing.assert_allclose(dense_tensor, normalised_dense_tensor)
 
@@ -283,11 +283,11 @@ def test_distribute_weights_in_one_mode_does_not_change_tensor(rng, num_modes):
     w = rng.uniform(size=(4,))
 
     cp_tensor = (w, factors)
-    dense_tensor = utils.construct_cp_tensor(cp_tensor)
+    dense_tensor = utils.cp_to_tensor(cp_tensor)
 
     for mode in range(num_modes):
         redistributed_cp_tensor = factor_tools.distribute_weights_in_one_mode(cp_tensor, mode)
-        redistributed_dense_tensor = utils.construct_cp_tensor(redistributed_cp_tensor)
+        redistributed_dense_tensor = utils.cp_to_tensor(redistributed_cp_tensor)
         np.testing.assert_allclose(dense_tensor, redistributed_dense_tensor)
 
 
@@ -314,10 +314,10 @@ def test_distribute_weights_evenly_does_not_change_tensor(rng, num_modes):
     w = rng.uniform(size=(4,))
 
     cp_tensor = (w, factors)
-    dense_tensor = utils.construct_cp_tensor(cp_tensor)
+    dense_tensor = utils.cp_to_tensor(cp_tensor)
 
     redistributed_cp_tensor = factor_tools.distribute_weights_evenly(cp_tensor)
-    redistributed_cp_tensor = utils.construct_cp_tensor(redistributed_cp_tensor)
+    redistributed_cp_tensor = utils.cp_to_tensor(redistributed_cp_tensor)
 
     np.testing.assert_allclose(dense_tensor, redistributed_cp_tensor)
 

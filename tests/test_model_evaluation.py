@@ -5,7 +5,7 @@ import tensorly as tl
 from tensorly.random import random_cp
 
 from component_vis import factor_tools, model_evaluation
-from component_vis._utils import construct_cp_tensor, construct_tucker_tensor
+from component_vis._utils import cp_to_tensor, tucker_to_tensor
 
 
 def _estimate_core_tensor(factors, X):
@@ -25,7 +25,7 @@ def test_estimate_core_tensor_against_reference(rng):
     C = rng.standard_normal(size=(6, 3))
     core = rng.standard_normal(size=(3, 3, 3))
     tucker_tensor = (core, (A, B, C))
-    X = construct_tucker_tensor(tucker_tensor)
+    X = tucker_to_tensor(tucker_tensor)
     X += rng.standard_normal(X.shape)
 
     slow_estimate = _estimate_core_tensor((A, B, C), X)
@@ -34,7 +34,7 @@ def test_estimate_core_tensor_against_reference(rng):
     D = rng.standard_normal(size=(7, 3))
     core = rng.standard_normal(size=(3, 3, 3, 3))
     tucker_tensor = (core, (A, B, C, D))
-    X = construct_tucker_tensor(tucker_tensor)
+    X = tucker_to_tensor(tucker_tensor)
     X += rng.standard_normal(X.shape)
     slow_estimate = _estimate_core_tensor((A, B, C, D), X)
     np.testing.assert_allclose(model_evaluation.estimate_core_tensor((A, B, C, D), X).ravel(), slow_estimate)
@@ -46,13 +46,13 @@ def test_estimate_core_tensor_known_tucker(rng):
     C = rng.standard_normal(size=(6, 3))
     core = rng.standard_normal(size=(3, 3, 3))
     tucker_tensor = (core, (A, B, C))
-    X = construct_tucker_tensor(tucker_tensor)
+    X = tucker_to_tensor(tucker_tensor)
     np.testing.assert_allclose(model_evaluation.estimate_core_tensor((A, B, C), X), core)
 
     D = rng.standard_normal(size=(7, 3))
     core = rng.standard_normal(size=(3, 3, 3, 3))
     tucker_tensor = (core, (A, B, C, D))
-    X = construct_tucker_tensor(tucker_tensor)
+    X = tucker_to_tensor(tucker_tensor)
     np.testing.assert_allclose(model_evaluation.estimate_core_tensor((A, B, C, D), X), core)
 
 
@@ -61,19 +61,19 @@ def test_core_consistency_cp_tensor(rng):
     B = rng.standard_normal(size=(5, 3))
     C = rng.standard_normal(size=(6, 3))
     cp_decomposition = (None, (A, B, C))
-    X = construct_cp_tensor(cp_decomposition)
+    X = cp_to_tensor(cp_decomposition)
     cc = model_evaluation.core_consistency(cp_decomposition, X)
     assert cc == pytest.approx(100)
 
     D = rng.standard_normal(size=(7, 3))
     cp_decomposition = (None, (A, B, C, D))
-    X = construct_cp_tensor(cp_decomposition)
+    X = cp_to_tensor(cp_decomposition)
     cc = model_evaluation.core_consistency(cp_decomposition, X)
     assert cc == pytest.approx(100)
 
     w = rng.standard_normal(size=(3))
     cp_decomposition = (w, (A, B, C, D))
-    X = construct_cp_tensor(cp_decomposition)
+    X = cp_to_tensor(cp_decomposition)
     cc = model_evaluation.core_consistency(cp_decomposition, X)
     assert cc == pytest.approx(100)
 
@@ -85,7 +85,7 @@ def test_core_consistency_with_known_tucker(rng):
     core = rng.standard_normal(size=(3, 3, 3))
     tucker_tensor = (core, (A, B, C))
     cp_tensor = (None, (A, B, C))
-    X = construct_tucker_tensor(tucker_tensor)
+    X = tucker_to_tensor(tucker_tensor)
 
     superdiagonal_ones = np.zeros((3, 3, 3))
     for i in range(3):

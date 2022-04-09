@@ -1,11 +1,11 @@
-from distutils import core
-
 import matplotlib
 import numpy as np
 import pytest
 from numpy.testing import assert_allclose, assert_array_equal
 
+import component_vis.outliers as outliers
 from component_vis import model_evaluation, visualisation
+from component_vis._utils import cp_to_tensor
 from component_vis.data import simulated_random_cp_tensor
 
 
@@ -159,9 +159,20 @@ def test_component_scatterplot_has_correct_point_locations(seed, labelled):
 
 @pytest.mark.parametrize("labelled", [True, False])
 def test_outlier_plot_has_correct_scatter_point_locations(seed, labelled):
-    # Use the leverage and slab sse functions to compute leverage and slab sse values
-    # Compare with locations where the scatter points are drawn
-    assert False, "Test not written yet"
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    leverage = outliers.compute_leverage(cp_tensor[1][0])
+    sse = outliers.compute_slabwise_sse(estimated=cp_to_tensor(cp_tensor), true=X, mode=0)
+    if labelled:
+        leverage = leverage.values.ravel()
+        sse = sse.values.ravel()
+
+    ax = visualisation.outlier_plot(cp_tensor, dataset=X, mode=0)
+    x, y = ax.lines[-1].get_data()
+    np.testing.assert_allclose(leverage, x)
+    np.testing.assert_allclose(sse, y)
 
 
 def test_outlier_plot_has_correct_text_labels_with_dataframe(seed):

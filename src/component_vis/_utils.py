@@ -103,7 +103,7 @@ def unfold_tensor(tensor, mode, axis=None):
 
 
 # TODO: Rename these to be named cp_to_tensor and tucker_to_tensor? or cp_to_dense and tucker_to_dense?
-def construct_cp_tensor(cp_tensor):
+def cp_to_tensor(cp_tensor):
     """Construct a CP tensor, equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
 
     If the factor matrices are data frames, then the tensor will be returned as a labelled
@@ -161,7 +161,7 @@ def construct_cp_tensor(cp_tensor):
     return xr.DataArray(tensor, dims=dims, coords=coords_dict)
 
 
-def construct_tucker_tensor(tucker_tensor):
+def tucker_to_tensor(tucker_tensor):
     """Construct a Tucker tensor, equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
 
     If the factor matrices are data frames, then the tensor will be returned as a labelled

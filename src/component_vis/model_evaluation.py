@@ -5,7 +5,7 @@ by comparing it to a data tensor.
 import numpy as np
 import scipy.linalg as sla
 
-from ._utils import construct_cp_tensor
+from ._utils import cp_to_tensor
 from .xarray_wrapper import (
     _handle_labelled_cp,
     _handle_labelled_dataset,
@@ -178,7 +178,7 @@ def sse(cp_tensor, X):
     >>> sse(cp, X)
     18.948918157419186
     """
-    X_hat = construct_cp_tensor(cp_tensor)
+    X_hat = cp_to_tensor(cp_tensor)
     return np.sum((X - X_hat) ** 2)
 
 

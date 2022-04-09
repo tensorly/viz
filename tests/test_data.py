@@ -4,7 +4,7 @@ import pytest
 import xarray as xr
 
 import component_vis.data
-from component_vis._utils import construct_cp_tensor
+from component_vis._utils import cp_to_tensor
 
 
 @pytest.mark.parametrize("is_labelled", [True, False])
@@ -20,7 +20,7 @@ def test_simulated_data_labels_correctly(is_labelled, seed):
 def test_simulated_data_has_correct_noise(noise_level, seed):
     cp_tensor, X = component_vis.data.simulated_random_cp_tensor((5, 6, 7), 3, noise_level=noise_level, seed=seed)
 
-    true_X = construct_cp_tensor(cp_tensor)
+    true_X = cp_to_tensor(cp_tensor)
     relative_error = np.linalg.norm(X - true_X) / np.linalg.norm(true_X)
     assert relative_error == pytest.approx(noise_level)
 

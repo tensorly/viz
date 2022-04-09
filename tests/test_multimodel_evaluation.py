@@ -5,7 +5,7 @@ import pytest
 from pytest import approx
 
 import component_vis.multimodel_evaluation as multimodel_evaluation
-from component_vis._utils import construct_cp_tensor
+from component_vis._utils import cp_to_tensor
 from component_vis.data import simulated_random_cp_tensor
 from component_vis.factor_tools import check_cp_tensors_equals, permute_cp_tensor
 
@@ -42,7 +42,7 @@ def test_get_model_with_lowest_error(rng):
     ]
 
     for i, cp_tensor in enumerate(cp_tensors):
-        dense_tensor = construct_cp_tensor(cp_tensor)
+        dense_tensor = cp_to_tensor(cp_tensor)
         (selected_cp_tensor, selected_index, all_sse,) = multimodel_evaluation.get_model_with_lowest_error(
             cp_tensors, dense_tensor, return_index=True, return_errors=True
         )
@@ -58,14 +58,14 @@ def test_get_model_with_lowest_error(rng):
     for scale in range(1, 10):
         cp_tensors.append((w, (scale * A.copy(), B.copy(), C.copy())))
 
-    X = construct_cp_tensor(cp_tensors[0])
+    X = cp_to_tensor(cp_tensors[0])
     selected_cp_tensor, selected_index, errors = multimodel_evaluation.get_model_with_lowest_error(
         cp_tensors, X, return_errors=True, return_index=True
     )
 
     assert check_cp_tensors_equals(selected_cp_tensor, (w, (A, B, C)))
     for cp_tensor, error in zip(cp_tensors, errors):
-        rel_sse = np.sum((X - construct_cp_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
+        rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
         assert error == approx(rel_sse)
 
     out = multimodel_evaluation.get_model_with_lowest_error(cp_tensors, X, return_errors=False, return_index=False)
@@ -93,7 +93,7 @@ def test_sort_models_by_error(rng):
     for scale in range(1, 10):
         cp_tensors.append((w, (scale * A.copy(), B.copy(), C.copy())))
 
-    X = construct_cp_tensor(cp_tensors[0])
+    X = cp_to_tensor(cp_tensors[0])
 
     shuffled_cp_tensors = cp_tensors.copy()
     shuffle(shuffled_cp_tensors)
@@ -103,7 +103,7 @@ def test_sort_models_by_error(rng):
     assert errors == sorted(errors)
 
     for cp_tensor, error in zip(sorted_cp_tensors, errors):
-        rel_sse = np.sum((X - construct_cp_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
+        rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
         assert error == rel_sse
 
 
@@ -117,7 +117,7 @@ def test_sort_models_by_error_with_identical_decompositions(rng):
         cp_tensors.append((w, (scale * A.copy(), B.copy(), C.copy())))
 
     cp_tensors *= 2  # Repeat list twice to have duplicate entries of the same decomposition
-    X = construct_cp_tensor(cp_tensors[0])
+    X = cp_to_tensor(cp_tensors[0])
 
     sorted_cp_tensors, errors = multimodel_evaluation.sort_models_by_error(cp_tensors, X)
     assert cp_tensors[:9] == sorted_cp_tensors[0::2]

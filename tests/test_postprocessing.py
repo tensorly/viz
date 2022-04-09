@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from component_vis import postprocessing
-from component_vis._utils import construct_cp_tensor
+from component_vis._utils import cp_to_tensor
 
 
 def test_resolve_cp_sign_indeterminacy_does_not_change_tensor(rng):
@@ -12,10 +12,10 @@ def test_resolve_cp_sign_indeterminacy_does_not_change_tensor(rng):
     w = rng.uniform(size=(4,))
 
     cp_tensor = (w, (A, B, C))
-    dense_tensor = construct_cp_tensor(cp_tensor)
+    dense_tensor = cp_to_tensor(cp_tensor)
 
     sign_flipped_cp_tensor = postprocessing.resolve_cp_sign_indeterminacy(cp_tensor, dense_tensor)
-    sign_flipped_dense_tensor = construct_cp_tensor(sign_flipped_cp_tensor)
+    sign_flipped_dense_tensor = cp_to_tensor(sign_flipped_cp_tensor)
 
     np.testing.assert_allclose(dense_tensor, sign_flipped_dense_tensor)
 
@@ -29,7 +29,7 @@ def test_resolve_cp_sign_indeterminacy_flips_negative_components_for_nonnegative
 
     factor_matrices = [A, B, C]
     cp_tensor = (w, factor_matrices)
-    dense_tensor = construct_cp_tensor(cp_tensor)
+    dense_tensor = cp_to_tensor(cp_tensor)
 
     for flip1 in range(3):
         for flip2 in range(3):

@@ -14,7 +14,8 @@ from ._utils import _alias_mode_axis, extract_singleton
 from .model_evaluation import percentage_variation
 
 
-# TODO Move normalise to utils
+# TODO: Move normalise to utils
+# TODO: Consider having factor_matrix_tools and cp_tools
 @_alias_mode_axis()
 def normalise(x, mode=0, axis=None):
     """Normalise a matrix (or tensor) so all columns (or fibers) have unit norm.

@@ -8,7 +8,7 @@ import requests
 import xarray as xr
 from scipy.io import loadmat
 
-from component_vis._utils import construct_cp_tensor
+from ._utils import cp_to_tensor
 
 __all__ = ["load_aminoacids", "load_oslo_city_bike", "download_city_bike"]
 
@@ -215,7 +215,7 @@ def simulated_random_cp_tensor(shape, rank, noise_level=0.1, labelled=False, see
         factors = [pd.DataFrame(factor) for factor in factors]
     cp = weights, factors
 
-    X = construct_cp_tensor(cp)
+    X = cp_to_tensor(cp)
     noise = rng.standard_normal(size=shape)
     X_noisy = X + np.linalg.norm(X) * noise_level * noise / np.linalg.norm(noise)
 
