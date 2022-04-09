@@ -353,7 +353,7 @@ def outlier_plot(
     ax.plot(outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], "o", zorder=1, alpha=0.8)
     ax.set_xlabel("Leverage score")
     ax.set_ylabel("Slabwise SSE")
-    if hasattr(factor_matrices[mode], "index") and factor_matrices[mode].index.name not in {None, ""}:
+    if is_dataframe(factor_matrices[mode]) and factor_matrices[mode].index.name not in {None, ""}:
         title = f"Outlier plot for {factor_matrices[mode].index.name}"
     else:
         title = f"Outlier plot for mode {mode}"
