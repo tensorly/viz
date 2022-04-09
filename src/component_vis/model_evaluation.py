@@ -6,7 +6,11 @@ import numpy as np
 import scipy.linalg as sla
 
 from .factor_tools import construct_cp_tensor
-from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
+from .xarray_wrapper import (
+    _handle_labelled_cp,
+    _handle_labelled_dataset,
+    _handle_none_weights_cp_tensor,
+)
 
 
 @_handle_labelled_dataset("X", None)
@@ -302,6 +306,7 @@ def classification_accuracy(factor_matrix, labels, classifier, metric=None):
 
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_labelled_dataset("X", None, optional=True)
+@_handle_none_weights_cp_tensor("cp_tensor")
 def percentage_variation(cp_tensor, X=None, method="data"):
     r"""Compute the percentage of variation captured by each component.
 
