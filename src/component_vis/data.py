@@ -212,7 +212,9 @@ def simulated_random_cp_tensor(shape, rank, noise_level=0.1, labelled=False, see
     weights = rng.random(size=rank)
     factors = [rng.random(size=(length, rank)) for length in shape]
     if labelled:
-        factors = [pd.DataFrame(factor) for factor in factors]
+        for i, factor in enumerate(factors):
+            factors[i] = pd.DataFrame(factor)
+            factors[i].index.name = f"Mode {i}"
     cp = weights, factors
 
     X = cp_to_tensor(cp)
