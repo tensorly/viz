@@ -414,6 +414,28 @@ def test_permute_cp_tensor(seed, labelled):
 
 
 @pytest.mark.parametrize("labelled", [True, False])
+def test_permute_cp_tensor_pads_factors_correctly(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[0]
+    w, (A, B, C) = cp_tensor
+
+    permutation = [1, 2, 3]
+    cp_tensor_permuted = (
+        w[permutation],
+        (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
+    )
+    aligned_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor_permuted, cp_tensor, allow_smaller_rank=True)
+
+    aligned_weights, aligned_factors = aligned_cp_tensor
+    assert np.all(aligned_weights[1:] == w[1:])
+    for factor1, factor2 in zip(cp_tensor_permuted[1], aligned_factors):
+        if labelled:
+            factor2 = factor2[[1, 2, 3]]
+        else:
+            factor2 = factor2[:, 1:]
+        np.testing.assert_allclose(factor1, factor2)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
 def test_get_cp_permutation(seed, labelled):
     cp_tensor = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[0]
     w, (A, B, C) = cp_tensor
