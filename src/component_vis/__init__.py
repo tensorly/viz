@@ -6,6 +6,7 @@ __version__ = "0.0.1"
 
 
 from . import (
+    data,
     factor_tools,
     model_evaluation,
     multimodel_evaluation,
