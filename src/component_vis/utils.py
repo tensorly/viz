@@ -4,7 +4,7 @@ from functools import wraps
 import numpy as np
 import xarray as xr
 
-from .xarray_wrapper import _handle_labelled_dataset, is_labelled_cp
+from .xarray_wrapper import _handle_labelled_dataset, is_labelled_cp, is_labelled_tucker
 
 
 def _alias_mode_axis():
@@ -174,7 +174,22 @@ def tucker_to_tensor(tucker_tensor):
         einsum_input += f", {idx}{rank_idx}"
         einsum_output += idx
 
-    return np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)
+    tensor = np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)
+    if not is_labelled_tucker(tucker_tensor):
+        return tensor
+
+    # Convert to labelled xarray DataArray:
+    coords_dict = {}
+    dims = []
+    for mode, fm in enumerate(tucker_tensor[1]):
+        mode_name = f"Mode {mode}"
+        if fm.index.name is not None:
+            mode_name = fm.index.name
+
+        coords_dict[mode_name] = fm.index.values
+        dims.append(mode_name)
+
+    return xr.DataArray(tensor, dims=dims, coords=coords_dict)
 
 
 @_alias_mode_axis()

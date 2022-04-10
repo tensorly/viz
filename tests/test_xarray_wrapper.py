@@ -18,6 +18,7 @@ from component_vis.xarray_wrapper import (
     _unlabel_dataset,
     get_data,
     is_labelled_cp,
+    is_labelled_tucker,
     label_cp_tensor,
 )
 
@@ -36,6 +37,22 @@ def test_is_labelled_cp(rng):
     partially_labelled_factors[0] = pd.DataFrame(partially_labelled_factors[0])
     with pytest.raises(TypeError):
         is_labelled_cp((weights, partially_labelled_factors))
+
+
+def test_is_labelled_tucker(rng):
+    rank = 3
+    shape = (10, 20, 30)
+    core = rng.random(size=[rank, rank, rank])
+    factors = [rng.random(size=(length, rank)) for length in shape]
+    assert not is_labelled_tucker((core, factors))
+
+    labelled_factors = [pd.DataFrame(factor) for factor in factors]
+    assert is_labelled_tucker((core, labelled_factors))
+
+    partially_labelled_factors = [rng.random(size=(length, rank)) for length in shape]
+    partially_labelled_factors[0] = pd.DataFrame(partially_labelled_factors[0])
+    with pytest.raises(TypeError):
+        is_labelled_tucker((core, partially_labelled_factors))
 
 
 @pytest.mark.parametrize("is_labelled", [True, False])

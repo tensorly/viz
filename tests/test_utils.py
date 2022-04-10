@@ -1,10 +1,15 @@
+from cProfile import label
+
 import numpy as np
 import pandas as pd
 import pytest
+import tensorly as tl
 import xarray as xr
 
 import component_vis.factor_tools as factor_tools
 import component_vis.utils as utils
+from component_vis._module_utils import is_xarray
+from component_vis.data import simulated_random_cp_tensor
 
 
 def test_extract_singleton(rng):
@@ -161,3 +166,30 @@ def test_cp_tensors_equivalent(rng):
     w2 = rng.uniform(size=(3,))
     cp_tensor8 = (w2, (A2, B2, C2))
     assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor8)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_cp_to_tensor(seed, labelled):
+    cp_tensor, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=seed, labelled=labelled)
+    weights, factors = cp_tensor
+    if labelled:
+        factors = [fm.values for fm in factors]
+
+    np.testing.assert_allclose(tl.cp_tensor.cp_to_tensor((weights, factors)), utils.cp_to_tensor(cp_tensor))
+    assert labelled == is_xarray(utils.cp_to_tensor(cp_tensor))
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_tucker_to_tensor(rng, seed, labelled):
+    cp_tensor, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=seed, labelled=labelled)
+    core_array = rng.standard_normal((3, 3, 3))
+    weights, factors = cp_tensor
+    tucker_tensor = core_array, factors
+
+    if labelled:
+        factors = [fm.values for fm in factors]
+
+    np.testing.assert_allclose(
+        tl.tucker_tensor.tucker_to_tensor((core_array, factors)), utils.tucker_to_tensor(tucker_tensor)
+    )
+    assert labelled == is_xarray(utils.tucker_to_tensor(tucker_tensor))

@@ -76,13 +76,13 @@ def get_data(x):
 
 
 def is_labelled_cp(cp_tensor):
-    """Check if a dataframe is labelled or not
+    """Check if a cp tensor is labelled or not
 
     Arguments
     ---------
     cp_tensor : tuple
         TensorLy-style CPTensor object or tuple with weights as first
-        argument and a tuple of components as second argument
+        argument and an iterable of factor matrices as second argument
 
     Returns
     -------
@@ -108,6 +108,28 @@ def is_labelled_cp(cp_tensor):
             f"{num_dataframes} out of {len(cp_tensor[1])} factor matrices are labelled (are data frames)."
             + " All or none should be labelled."
         )
+
+
+def is_labelled_tucker(tucker_tensor):
+    """Check if a Tucker tensor is labelled or not
+
+    Arguments
+    ---------
+    tucker_tensor : tuple
+        TensorLy-style TuckerTensor object or tuple with the core array as the
+        first argument and an iterable of factor matrices as second argument
+
+    Returns
+    -------
+    bool
+        Whether the factor matrices are labelled or not
+
+    Raises
+    ------
+    TypeError
+        If only some of the factor matrices are labelled (i.e. not none or all).
+    """
+    return is_labelled_cp(tucker_tensor)  # The weights are not considered for cp, neither is the core array for tucker
 
 
 def _check_is_argument(func, arg_name):
