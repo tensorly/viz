@@ -11,7 +11,9 @@ from component_vis.data import simulated_random_cp_tensor
 
 def safe_permute(arr, permutation):
     if is_dataframe(arr):
-        return arr[permutation]
+        out = arr.copy()[permutation]
+        out.columns = arr.columns[: len(permutation)]
+        return out
     return arr[:, permutation]
 
 
@@ -263,19 +265,16 @@ def test_get_permutation(rng, labelled):
     assert out_permutation == [0, factor_tools.NO_COLUMN, 1, factor_tools.NO_COLUMN, factor_tools.NO_COLUMN]
 
 
-# TOTEST: Make these tests also check dataframes
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_normalise_cp_tensor_normalises(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-
-    cp_tensor = (None, factors)
+@pytest.mark.parametrize("labelled", [True, False])
+def test_normalise_cp_tensor_normalises(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
     normalised_cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
 
     for factor_matrix in normalised_cp_tensor[1]:
         np.testing.assert_allclose(np.linalg.norm(factor_matrix, axis=0), 1)
 
-    w = rng.uniform(size=(4,))
-    cp_tensor = (w, factors)
+    cp_tensor = (None, cp_tensor[1])
     normalised_cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
 
     for factor_matrix in normalised_cp_tensor[1]:
@@ -283,24 +282,29 @@ def test_normalise_cp_tensor_normalises(rng, num_modes):
 
 
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_normalise_cp_tensor_works_with_zero_valued_column(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-    factors[0][:, 0] = 0
+@pytest.mark.parametrize("labelled", [True, False])
+def test_normalise_cp_tensor_works_with_zero_valued_column(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
+    factors = cp_tensor[1]
+    if labelled:
+        factors[0][0] = 0
+    else:
+        factors[0][:, 0] = 0
 
-    w = rng.uniform(size=(4,))
-    cp_tensor = (w, factors)
     normalised_cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
 
     assert normalised_cp_tensor[0][0] == 0
-    np.testing.assert_allclose(normalised_cp_tensor[1][0][:, 0], 0)
+    if labelled:
+        np.testing.assert_allclose(normalised_cp_tensor[1][0][0], 0)
+    else:
+        np.testing.assert_allclose(normalised_cp_tensor[1][0][:, 0], 0)
 
 
+@pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_normalise_cp_tensor_does_not_change_tensor(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-    w = rng.uniform(size=(4,))
+def test_normalise_cp_tensor_does_not_change_tensor(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
 
-    cp_tensor = (w, factors)
     dense_tensor = utils.cp_to_tensor(cp_tensor)
 
     normalised_cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
@@ -309,12 +313,11 @@ def test_normalise_cp_tensor_does_not_change_tensor(rng, num_modes):
     np.testing.assert_allclose(dense_tensor, normalised_dense_tensor)
 
 
+@pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_distribute_weights_in_one_mode_does_not_change_tensor(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-    w = rng.uniform(size=(4,))
+def test_distribute_weights_in_one_mode_does_not_change_tensor(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
 
-    cp_tensor = (w, factors)
     dense_tensor = utils.cp_to_tensor(cp_tensor)
 
     for mode in range(num_modes):
@@ -323,12 +326,11 @@ def test_distribute_weights_in_one_mode_does_not_change_tensor(rng, num_modes):
         np.testing.assert_allclose(dense_tensor, redistributed_dense_tensor)
 
 
+@pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_distribute_weights_in_one_mode_distributes_correctly(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-    w = rng.uniform(size=(4,))
+def test_distribute_weights_in_one_mode_distributes_correctly(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
 
-    cp_tensor = (w, factors)
     for mode in range(num_modes):
         new_weights, new_factors = factor_tools.distribute_weights_in_one_mode(cp_tensor, mode)
         np.testing.assert_allclose(new_weights, np.ones_like(new_weights))
@@ -336,16 +338,15 @@ def test_distribute_weights_in_one_mode_distributes_correctly(rng, num_modes):
         for i, new_factor_matrix in enumerate(new_factors):
             if i != mode:
                 np.testing.assert_allclose(
-                    np.linalg.norm(new_factor_matrix, axis=0), np.ones_like(new_factor_matrix[0]),
+                    np.linalg.norm(new_factor_matrix, axis=0), 1,
                 )
 
 
+@pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_distribute_weights_evenly_does_not_change_tensor(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-    w = rng.uniform(size=(4,))
+def test_distribute_weights_evenly_does_not_change_tensor(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
 
-    cp_tensor = (w, factors)
     dense_tensor = utils.cp_to_tensor(cp_tensor)
 
     redistributed_cp_tensor = factor_tools.distribute_weights_evenly(cp_tensor)
@@ -354,12 +355,10 @@ def test_distribute_weights_evenly_does_not_change_tensor(rng, num_modes):
     np.testing.assert_allclose(dense_tensor, redistributed_cp_tensor)
 
 
+@pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize("num_modes", [2, 3, 4])
-def test_distribute_weights_evenly(rng, num_modes):
-    factors = [rng.standard_normal((10 + i, 4)) for i in range(num_modes)]
-    w = rng.uniform(size=(4,))
-
-    cp_tensor = (w, factors)
+def test_distribute_weights_evenly(seed, num_modes, labelled):
+    cp_tensor, X = simulated_random_cp_tensor([10 + i for i in range(num_modes)], 3, labelled=labelled, seed=seed)
 
     new_weights, new_factors = factor_tools.distribute_weights_evenly(cp_tensor)
     for i in range(1, num_modes):
@@ -367,7 +366,8 @@ def test_distribute_weights_evenly(rng, num_modes):
     np.testing.assert_allclose(new_weights, np.ones_like(new_weights))
 
 
-def test_permute_cp_tensor(rng):
+@pytest.mark.parametrize("labelled", [True, False])
+def test_permute_cp_tensor(seed, labelled):
     """Test for permutation of CP tensors
 
     Create a rank-3 CP tensor and a copy of it that is permuted, then test if postprocessing.permute_cp_tensor
@@ -380,17 +380,13 @@ def test_permute_cp_tensor(rng):
     to the 2-component model and check that the first two components are the two components present in the
     two-component model
     """
-    A = rng.standard_normal((10, 4))
-    B = rng.standard_normal((11, 4))
-    C = rng.standard_normal((12, 4))
-    w = rng.uniform(size=(4,))
-
-    cp_tensor = (w, (A, B, C))
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[0]
+    w, (A, B, C) = cp_tensor
 
     permutation = [2, 1, 3, 0]
     cp_tensor_permuted = (
         w[permutation],
-        (A[:, permutation], B[:, permutation], C[:, permutation]),
+        (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
     )
     cp_tensor_permuted_back = factor_tools.permute_cp_tensor(cp_tensor_permuted, cp_tensor)
     assert factor_tools.check_cp_tensors_equals(cp_tensor_permuted_back, cp_tensor)
@@ -399,7 +395,7 @@ def test_permute_cp_tensor(rng):
     permutation_2comp = [1, 3]
     cp_tensor_permuted2 = (
         w[permutation_2comp],
-        (A[:, permutation_2comp], B[:, permutation_2comp], C[:, permutation_2comp]),
+        (safe_permute(A, permutation_2comp), safe_permute(B, permutation_2comp), safe_permute(C, permutation_2comp)),
     )
     aligned_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, cp_tensor_permuted2)
 
@@ -407,7 +403,11 @@ def test_permute_cp_tensor(rng):
 
     assert np.all(aligned_weights[:2] == cp_tensor_permuted2[0])
     for factor1, factor2 in zip(cp_tensor_permuted2[1], aligned_factors):
-        np.testing.assert_allclose(factor1, factor2[:, :2])
+        if labelled:
+            factor2 = factor2[[0, 1]]
+        else:
+            factor2 = factor2[:, :2]
+        np.testing.assert_allclose(factor1, factor2)
 
     # Check that the permutation is equivalent to the unpermuted decomposition
     assert factor_tools.check_cp_tensors_equivalent(cp_tensor, aligned_cp_tensor)
