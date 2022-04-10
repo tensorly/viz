@@ -213,14 +213,9 @@ def test_outlier_plot_has_correct_text_labels_with_array(seed):
         assert index == int(text.get_text())
 
 
-@pytest.mark.parametrize(
-    "labelled,method,p_value",
-    list(
-        itertools.product(
-            [True, False], ["huber lower", "huber higher", "hw lower", "hw higher", "p-value", "hotelling"], [0.1, 0.5]
-        )
-    ),
-)
+@pytest.mark.parametrize("labelled", [True, False])
+@pytest.mark.parametrize("method", ["huber lower", "huber higher", "hw lower", "hw higher", "p-value", "hotelling"])
+@pytest.mark.parametrize("p_value", [0.1, 0.5])
 def test_outlier_plot_has_correct_leverage_threshold(seed, labelled, method, p_value):
     shape = (10, 5, 15)
     rank = 3
@@ -235,16 +230,11 @@ def test_outlier_plot_has_correct_leverage_threshold(seed, labelled, method, p_v
     assert all(x == pytest.approx(threshold) for x in ax.lines[-1].get_xdata())
 
 
+@pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize(
-    "labelled,methods,p_value",
-    list(
-        itertools.product(
-            [True, False],
-            [["huber lower", "p-value"], ["huber higher", "hw lower"], ["p-value", "hotelling"]],
-            [0.1, 0.5],
-        )
-    ),
+    "methods", [["huber lower", "p-value"], ["huber higher", "hw lower"], ["p-value", "hotelling"]]
 )
+@pytest.mark.parametrize("p_value", [0.1, 0.5])
 def test_outlier_plot_has_multiple_correct_leverage_threshold_methods(seed, labelled, methods, p_value):
     shape = (10, 5, 15)
     rank = 3
@@ -260,10 +250,9 @@ def test_outlier_plot_has_multiple_correct_leverage_threshold_methods(seed, labe
         assert all(x == pytest.approx(threshold) for x in ax.lines[-1 - i].get_xdata())
 
 
-@pytest.mark.parametrize(
-    "labelled,method,p_values",
-    list(itertools.product([True, False], ["p-value", "hotelling"], [[0.1, 0.5], [0.1, 0.2, 0.3]],)),
-)
+@pytest.mark.parametrize("labelled", [True, False])
+@pytest.mark.parametrize("method", ["p-value", "hotelling"])
+@pytest.mark.parametrize("p_values", [[0.1, 0.5], [0.1, 0.2, 0.3]])
 def test_outlier_plot_has_multiple_correct_leverage_threshold_p_values(seed, labelled, method, p_values):
     shape = (10, 5, 15)
     rank = 3
