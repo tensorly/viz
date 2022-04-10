@@ -1,5 +1,3 @@
-import itertools
-
 import matplotlib
 import numpy as np
 import pytest
@@ -268,14 +266,19 @@ def test_outlier_plot_has_multiple_correct_leverage_threshold_p_values(seed, lab
         assert all(x == pytest.approx(threshold) for x in ax.lines[-1 - i].get_xdata())
 
 
+# TOTEST: test with multiple methods and p_values
 @pytest.mark.parametrize("labelled", [True, False])
-def test_outlier_plot_has_correct_residual_thresholds(seed, labelled):
-    # Use the slab sse functions to compute slab sse values
-    # Use the get_slab_sse_outlier_threshold function compute slab sse thresholds
-    # Set threshold to all the different possible threshold and check that there is a line at the correct locations
-    # Check with multiple threshold types
-    # Check with multiple p-values
-    assert False, "Test not written yet"
+@pytest.mark.parametrize("method", ["p-value", "two sigma"])
+@pytest.mark.parametrize("p_value", [0.1, 0.5])
+def test_outlier_plot_has_correct_residual_thresholds(seed, labelled, method, p_value):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    sse = outliers.compute_slabwise_sse(estimated=cp_to_tensor(cp_tensor), true=X, mode=0)
+    threshold = outliers.get_slab_sse_outlier_threshold(sse, method, p_value=p_value)
+    ax = visualisation.outlier_plot(cp_tensor, X, mode=0, p_value=p_value, residual_rule_of_thumbs=method)
+    assert all(y == pytest.approx(threshold) for y in ax.lines[-1].get_ydata())
 
 
 def test_components_plot_unlabelled(seed):
