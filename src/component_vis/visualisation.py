@@ -791,13 +791,43 @@ def component_comparison_plot(
         ... }
         >>> component_comparison_plot(cp_tensors, row="component")
         >>> plt.show()
+
+    If not all decompositions have the same number of components, then the components will be aligned
+    with the first (reference) decomposition in the ``cp_tensors``-dictionary. If one of the subsequent
+    decompositions have fewer components than the reference decomposition, then the columns will be
+    aligned correctly, and if one of them has more, then the additional components will be ignored.
+    .. plot::
+        :context: close-figs
+        :include-source:
+
+        >>> import matplotlib.pyplot as plt
+        >>> from component_vis.data import simulated_random_cp_tensor
+        >>> from component_vis.factor_tools import permute_cp_tensor
+        >>> from component_vis.postprocessing import postprocess
+        >>> from component_vis.visualisation import component_comparison_plot
+        >>>
+        >>> four_components = simulated_random_cp_tensor((5, 6, 7), 4, noise_level=0.5, seed=42)[0]
+        >>> three_components = permute_cp_tensor(four_components, permutation=[0, 1, 2])
+        >>> two_components = permute_cp_tensor(four_components, permutation=[0, 2])
+        >>> # Plot the decomposition
+        >>> cp_tensors = {
+        ...     "True": three_components,  # Reference decomposition
+        ...     "subset": two_components,  # Only component 0 and 2
+        ...     "superset": four_components,  # All components in reference plus one additional
+        ... }
+        >>> component_comparison_plot(cp_tensors, row="model")
+        >>> plt.show()
     """
     main_cp_tensor = next(iter(cp_tensors.values()))
     weights, factor_matrices = main_cp_tensor
 
     cp_tensors = {
         key: postprocessing.postprocess(
-            value, reference_cp_tensor=main_cp_tensor, weight_behaviour=weight_behaviour, weight_mode=weight_mode
+            value,
+            reference_cp_tensor=main_cp_tensor,
+            weight_behaviour=weight_behaviour,
+            weight_mode=weight_mode,
+            allow_smaller_rank=True,
         )
         for key, value in cp_tensors.items()
     }
@@ -805,6 +835,7 @@ def component_comparison_plot(
     num_components = len(weights.reshape(-1))
     num_modes = len(factor_matrices)
     num_models = len(cp_tensors)
+    ref_name = next(iter(cp_tensors.keys()))
 
     if row == "model":
         num_rows = num_models
@@ -816,6 +847,12 @@ def component_comparison_plot(
     fig, axes = plt.subplots(num_rows, num_modes, figsize=(16, num_rows * 9 / num_modes))
     for model_num, (model_name, cp_tensor) in enumerate(cp_tensors.items()):
         weights, factor_matrices = cp_tensor
+        if factor_matrices[0].shape[1] > num_components:
+            warn(
+                f"The {model_name} decomposition has a higher rank than the reference {ref_name} decomposition."
+                + f" Therefore, only the subset of columns in {model_name} that correspond to columns in"
+                + f" {ref_name} will be plotted."
+            )
         for mode, factor_matrix in enumerate(factor_matrices):
             for component_num in range(num_components):
                 if row == "model":
