@@ -139,13 +139,16 @@ def _check_is_argument(func, arg_name):
     raise ValueError(f"{arg_name} is not an argument of {func}")
 
 
-def _extract_df_metadata(df):
+def _extract_df_metadata(df, preserve_columns=True):
     values = df.values
-    metadata = {"index": df.index, "columns": df.columns}
+    if preserve_columns:
+        metadata = {"index": df.index, "columns": df.columns}
+    else:
+        metadata = {"index": df.index}
     return values, metadata
 
 
-def _unlabel_cp_tensor(cp_tensor, optional):
+def _unlabel_cp_tensor(cp_tensor, optional, preserve_columns):
     if cp_tensor is None and optional:
         return None, None
     elif cp_tensor is None:
@@ -164,7 +167,7 @@ def _unlabel_cp_tensor(cp_tensor, optional):
     unlabelled_factors = []
     factor_metadata = []
     for factor in factors:
-        factor, metadata = _extract_df_metadata(factor)
+        factor, metadata = _extract_df_metadata(factor, preserve_columns=preserve_columns)
         unlabelled_factors.append(factor)
         factor_metadata.append(metadata)
     return (weights, unlabelled_factors), factor_metadata
@@ -182,6 +185,24 @@ def _relabel_cp_tensor(cp_tensor, factor_metadata, optional):
     for factor, metadata in zip(factors, factor_metadata):
         labelled_factors.append(pd.DataFrame(factor, **metadata))
     return weights, labelled_factors
+
+
+def _unlabel_factor_matrix(factor_matrix, optional, preserve_columns):
+    if factor_matrix is None and optional:
+        return None, None
+    if not is_dataframe(factor_matrix):
+        return factor_matrix, None
+    return _extract_df_metadata(factor_matrix, preserve_columns=preserve_columns)
+
+
+def _relabel_factor_matrix(factor_matrix, factor_metadata, optional):
+    if factor_matrix is None and optional:
+        return
+
+    if factor_metadata is None:
+        return factor_matrix
+
+    return pd.DataFrame(factor_matrix, **factor_metadata)
 
 
 def _unlabel_dataset(dataset, optional):
@@ -221,7 +242,7 @@ def _relabel_dataset(np_dataset, DatasetType, dataset_metadata, optional):
 _SINGLETON = object()
 
 
-def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
+def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False, preserve_columns=True):
     def decorator(func):
         _check_is_argument(func, cp_tensor_name)
 
@@ -230,7 +251,9 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False):
             bound_arguments = signature(func).bind(*args, **kwargs)
 
             cp_tensor = bound_arguments.arguments.get(cp_tensor_name, None)
-            cp_tensor_unlabelled, cp_tensor_metadata = _unlabel_cp_tensor(cp_tensor, optional=optional)
+            cp_tensor_unlabelled, cp_tensor_metadata = _unlabel_cp_tensor(
+                cp_tensor, optional=optional, preserve_columns=preserve_columns
+            )
 
             bound_arguments.arguments[cp_tensor_name] = cp_tensor_unlabelled
             out = func(*bound_arguments.args, **bound_arguments.kwargs)
@@ -285,7 +308,7 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
     return decorator
 
 
-def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):
+def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):  # TODO: Move to _module_utils?
     def decorator(func):
         _check_is_argument(func, cp_tensor_name)
 
@@ -312,3 +335,38 @@ def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):
 
 
 # TODO: Make a _handle_labelled_factor_matrix decorator
+def _handle_labelled_factor_matrix(
+    factor_matrix_name, output_factor_matrix_index, optional=False, preserve_columns=True
+):
+    def decorator(func):
+        _check_is_argument(func, factor_matrix_name)
+
+        @wraps(func)
+        def func2(*args, **kwargs):
+            bound_arguments = signature(func).bind(*args, **kwargs)
+
+            factor_matrix = bound_arguments.arguments.get(factor_matrix_name, None)
+
+            factor_matrix_unlabelled, factor_matrix_metadata = _unlabel_factor_matrix(
+                factor_matrix, optional=optional, preserve_columns=preserve_columns
+            )
+
+            bound_arguments.arguments[factor_matrix_name] = factor_matrix_unlabelled
+            out = func(*bound_arguments.args, **bound_arguments.kwargs)
+
+            if output_factor_matrix_index is _SINGLETON:
+                out = _relabel_factor_matrix(out, factor_matrix_metadata, optional=optional)
+            elif output_factor_matrix_index is not None:
+                out_factor_matrix = _relabel_factor_matrix(
+                    out[output_factor_matrix_index], factor_matrix_metadata, optional=optional,
+                )
+                out = (
+                    *out[:output_factor_matrix_index],
+                    out_factor_matrix,
+                    *out[output_factor_matrix_index + 1 :],
+                )
+            return out
+
+        return func2
+
+    return decorator

@@ -11,11 +11,14 @@ from component_vis.xarray_wrapper import (
     _SINGLETON,
     _check_is_argument,
     _handle_labelled_cp,
+    _handle_labelled_factor_matrix,
     _handle_none_weights_cp_tensor,
     _relabel_cp_tensor,
     _relabel_dataset,
+    _relabel_factor_matrix,
     _unlabel_cp_tensor,
     _unlabel_dataset,
+    _unlabel_factor_matrix,
     get_data,
     is_labelled_cp,
     is_labelled_tucker,
@@ -61,8 +64,8 @@ def test_handle_labelled_cp_no_return_wrapping(is_labelled, seed):
 
     @_handle_labelled_cp("cp_tensor", None, optional=False)
     def no_return_wrapping(a, cp_tensor):  # Two inputs to check that the correct argument is handled
-        b = cp_tensor[1][0][0, 0]  # This will not work if factors are dataframes
-        return b, cp_tensor
+        assert not is_labelled_cp(cp_tensor)
+        return 1, cp_tensor
 
     number, unlabelled = no_return_wrapping(1, cp_tensor)
     for mode in range(3):
@@ -76,15 +79,16 @@ def test_handle_labelled_cp_singleton_return_wrapping(is_labelled, seed):
 
     @_handle_labelled_cp("cp_tensor", _SINGLETON, optional=False)
     def singelton_wrapping(a, cp_tensor):  # Two inputs to check that the correct argument is handled
-        b = cp_tensor[1][0][0, 0]  # noqa
+        assert not is_labelled_cp(cp_tensor)
         return cp_tensor
 
     labelled = singelton_wrapping(1, cp_tensor)
     for mode in range(3):
-        assert np.all(cp_tensor[1][mode] == labelled[1][mode])
+        assert is_dataframe(labelled[1][mode]) == is_labelled
         if is_labelled:
-            assert is_dataframe(labelled[1][mode])
-            assert np.all(cp_tensor[1][mode].index == labelled[1][mode].index)
+            pd.testing.assert_frame_equal(cp_tensor[1][mode], labelled[1][mode])
+        else:
+            np.testing.assert_array_equal(cp_tensor[1][mode], labelled[1][mode])
 
 
 @pytest.mark.parametrize("is_labelled", [True, False])
@@ -93,19 +97,20 @@ def test_handle_labelled_cp_return_wrapping(is_labelled, seed):
 
     @_handle_labelled_cp("cp_tensor", 1, optional=False)
     def output_wrapping(a, cp_tensor):  # Two inputs to check that the correct argument is handled
-        b = cp_tensor[1][0][0, 0]
-        return b, cp_tensor
+        assert not is_labelled_cp(cp_tensor)
+        return 1, cp_tensor
 
     number, labelled = output_wrapping(1, cp_tensor)
     for mode in range(3):
-        assert np.all(cp_tensor[1][mode] == labelled[1][mode])
+        assert is_dataframe(labelled[1][mode]) == is_labelled
         if is_labelled:
-            assert is_dataframe(labelled[1][mode])
-            assert np.all(cp_tensor[1][mode].index == labelled[1][mode].index)
+            pd.testing.assert_frame_equal(cp_tensor[1][mode], labelled[1][mode])
+        else:
+            np.testing.assert_array_equal(cp_tensor[1][mode], labelled[1][mode])
 
 
 @pytest.mark.parametrize("is_labelled", [True, False])
-def test_handle_optional_input(is_labelled, seed):
+def test_handle_labelled_cp_optional_input(is_labelled, seed):
     cp_tensor, X = simulated_random_cp_tensor((3, 2, 3), 2, labelled=is_labelled, seed=seed)
 
     @_handle_labelled_cp("cp_tensor", _SINGLETON, optional=True)
@@ -116,24 +121,24 @@ def test_handle_optional_input(is_labelled, seed):
 
     labelled = output_wrapping(1, cp_tensor)
     for mode in range(3):
-        assert np.all(cp_tensor[1][mode] == labelled[1][mode])
+        assert is_dataframe(labelled[1][mode]) == is_labelled
         if is_labelled:
-            assert is_dataframe(labelled[1][mode])
-            assert np.all(cp_tensor[1][mode].index == labelled[1][mode].index)
+            pd.testing.assert_frame_equal(cp_tensor[1][mode], labelled[1][mode])
+        else:
+            np.testing.assert_array_equal(cp_tensor[1][mode], labelled[1][mode])
 
 
-def test_label_cp_tensor_xarray(seed):
+def test_label_cp_tensor_with_xarray(seed):
     cp_tensor, X = simulated_random_cp_tensor((3, 2, 3), 2, labelled=True, seed=seed)
 
     unlabelled_cp = (cp_tensor[0], [factor.values for factor in cp_tensor[1]])
     labelled_cp = label_cp_tensor(unlabelled_cp, X)
     for mode in range(3):
         assert isinstance(labelled_cp[1][mode], pd.DataFrame)
-        assert np.all(labelled_cp[1][mode].values == cp_tensor[1][mode].values)
-        assert np.all(labelled_cp[1][mode].index == cp_tensor[1][mode].index)
+        pd.testing.assert_frame_equal(labelled_cp[1][mode], cp_tensor[1][mode])
 
 
-def test_label_cp_tensor_dataframe(seed):
+def test_label_cp_tensor_with_dataframe(seed):
     cp_tensor, X = simulated_random_cp_tensor((3, 2), 2, labelled=True, seed=seed)
     X_df = pd.DataFrame(X.values, index=X.coords["Mode 0"], columns=X.coords["Mode 1"])
 
@@ -141,8 +146,7 @@ def test_label_cp_tensor_dataframe(seed):
     labelled_cp = label_cp_tensor(unlabelled_cp, X_df)
     for mode in range(2):
         assert isinstance(labelled_cp[1][mode], pd.DataFrame)
-        assert np.all(labelled_cp[1][mode].values == cp_tensor[1][mode].values)
-        assert np.all(labelled_cp[1][mode].index == cp_tensor[1][mode].index)
+        pd.testing.assert_frame_equal(labelled_cp[1][mode], cp_tensor[1][mode])
 
 
 def test_label_cp_tensor_array(seed):
@@ -201,9 +205,9 @@ def test_unlabel_cp_tensor_fails_for_mix_of_labelled_and_unlabelled_factor_matri
 
     invalid_cp_tensor = (cp_tensor[0], (cp_tensor[1][0], cp_tensor[1][1].values, cp_tensor[1][2]))
     with pytest.raises(ValueError):
-        _unlabel_cp_tensor(invalid_cp_tensor, False)
+        _unlabel_cp_tensor(invalid_cp_tensor, False, preserve_columns=False)
     with pytest.raises(TypeError):
-        _unlabel_cp_tensor(None, False)
+        _unlabel_cp_tensor(None, False, preserve_columns=False)
 
 
 def test_unlabel_none_dataset():
@@ -246,7 +250,7 @@ def test_unlabel_and_relabel_cp_tensor_inverse(seed):
     # First unlabel, so relabel
     shape = (10, 20, 30)
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=True, seed=seed)
-    unlabelled_cp_tensor, cp_tensor_metadata = _unlabel_cp_tensor(cp_tensor, False)
+    unlabelled_cp_tensor, cp_tensor_metadata = _unlabel_cp_tensor(cp_tensor, False, preserve_columns=True)
     relabelled_cp_tensor = _relabel_cp_tensor(unlabelled_cp_tensor, cp_tensor_metadata, False)
 
     assert is_labelled_cp(relabelled_cp_tensor)
@@ -255,7 +259,9 @@ def test_unlabel_and_relabel_cp_tensor_inverse(seed):
         pd.testing.assert_frame_equal(factor_matrix, relabelled_factor_matrix)
 
     # Unlabelling relabeled cp_tensor
-    unlabelled_cp_tensor_again, cp_tensor_metadata_again = _unlabel_cp_tensor(relabelled_cp_tensor, False)
+    unlabelled_cp_tensor_again, cp_tensor_metadata_again = _unlabel_cp_tensor(
+        relabelled_cp_tensor, False, preserve_columns=True
+    )
     assert not is_labelled_cp(unlabelled_cp_tensor_again)
     np.testing.assert_array_equal(unlabelled_cp_tensor[0], unlabelled_cp_tensor_again[0])
     for unlabelled_factor_matrix1, unlabelled_factor_matrix2 in zip(
@@ -298,7 +304,8 @@ def test_unlabel_and_relabel_dataset_inverse(seed):
     np.testing.assert_array_equal(unlabelled_dataset_again, unlabelled_dataset)
 
 
-@pytest.mark.parametrize("is_labelled,rank", list(itertools.product((True, False), [1, 2, 3, 4])))
+@pytest.mark.parametrize("is_labelled", [True, False])
+@pytest.mark.parametrize("rank", [1, 2, 3, 4])
 def test_handle_none_weights_cp_tensor(is_labelled, rank, seed):
     @_handle_none_weights_cp_tensor("cp_tensor")
     def return_weights(cp_tensor):
@@ -313,3 +320,100 @@ def test_handle_none_weights_cp_tensor(is_labelled, rank, seed):
 
     out_weights = return_weights((None, cp_tensor[1]))
     np.testing.assert_array_equal(out_weights, np.ones(rank))
+
+
+def test_unlabel_and_relabel_factor_matrix_inverse(rng):
+    factor_matrix = pd.DataFrame(rng.standard_normal((10, 3)), index=rng.permutation(10))
+    unlabelled_factor_matrix, factor_matrix_metadata = _unlabel_factor_matrix(
+        factor_matrix, False, preserve_columns=True
+    )
+    relabelled_factor_matrix = _relabel_factor_matrix(unlabelled_factor_matrix, factor_matrix_metadata, False)
+
+    assert is_dataframe(relabelled_factor_matrix)
+    pd.testing.assert_frame_equal(factor_matrix, relabelled_factor_matrix)
+
+    # Unlabelling relabeled cp_tensor
+    unlabelled_factor_matrix_again, factor_matrix_metadata_again = _unlabel_factor_matrix(
+        relabelled_factor_matrix, False, preserve_columns=True
+    )
+    assert not is_dataframe(unlabelled_factor_matrix_again)
+    np.testing.assert_array_equal(unlabelled_factor_matrix, unlabelled_factor_matrix_again)
+    assert factor_matrix_metadata == factor_matrix_metadata_again
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_factor_matrix_singleton_return_wrapping(is_labelled, rng):
+    factor_matrix = rng.uniform(size=(10, 4))
+    if is_labelled:
+        factor_matrix = pd.DataFrame(factor_matrix)
+
+    @_handle_labelled_factor_matrix("factor_matrix", _SINGLETON, optional=False)
+    def singelton_wrapping(a, factor_matrix):  # Two inputs to check that the correct argument is handled
+        assert not is_dataframe(factor_matrix)
+        return factor_matrix
+
+    labelled = singelton_wrapping(1, factor_matrix)
+    assert is_dataframe(labelled) == is_labelled
+
+    if is_labelled:
+        pd.testing.assert_frame_equal(factor_matrix, labelled)
+    else:
+        np.testing.assert_array_equal(factor_matrix, labelled)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_factor_matrix_no_return_wrapping(is_labelled, rng):
+    factor_matrix = rng.uniform(size=(10, 4))
+    if is_labelled:
+        factor_matrix = pd.DataFrame(factor_matrix)
+
+    @_handle_labelled_factor_matrix("factor_matrix", None, optional=False)
+    def no_return_wrapping(a, factor_matrix):  # Two inputs to check that the correct argument is handled
+        assert not is_labelled_cp(factor_matrix)
+        return 1, factor_matrix
+
+    number, unlabelled = no_return_wrapping(1, factor_matrix)
+    for mode in range(3):
+        assert not is_dataframe(unlabelled[1][mode])
+        np.testing.assert_array_equal(factor_matrix, unlabelled)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_factor_matrix_return_wrapping(is_labelled, rng):
+    factor_matrix = rng.uniform(size=(10, 4))
+    if is_labelled:
+        factor_matrix = pd.DataFrame(factor_matrix)
+
+    @_handle_labelled_factor_matrix("factor_matrix", 1, optional=False)
+    def output_wrapping(a, factor_matrix):  # Two inputs to check that the correct argument is handled
+        assert not is_dataframe(factor_matrix)
+        b = factor_matrix[0, 0]
+        return b, factor_matrix
+
+    number, labelled = output_wrapping(1, factor_matrix)
+    assert is_dataframe(labelled) == is_labelled
+
+    if is_labelled:
+        pd.testing.assert_frame_equal(factor_matrix, labelled)
+    else:
+        np.testing.assert_array_equal(factor_matrix, labelled)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_factor_matrix_optional_input(is_labelled, rng):
+    factor_matrix = rng.uniform(size=(10, 4))
+    if is_labelled:
+        factor_matrix = pd.DataFrame(factor_matrix)
+
+    @_handle_labelled_factor_matrix("factor_matrix", _SINGLETON, optional=True)
+    def output_wrapping(a, factor_matrix=None):  # Two inputs to check that the correct argument is handled
+        return factor_matrix
+
+    assert output_wrapping(1, None) is None
+
+    labelled = output_wrapping(1, factor_matrix)
+    assert is_dataframe(factor_matrix) == is_labelled
+    if is_labelled:
+        pd.testing.assert_frame_equal(factor_matrix, labelled)
+    else:
+        np.testing.assert_array_equal(factor_matrix, labelled)
