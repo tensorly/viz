@@ -338,8 +338,6 @@ def factor_match_score(
     if not return_permutation:
         return congruence_product.mean()
 
-    permutation = np.zeros_like(row_index)
-    permutation[row_index] = column_index
     return congruence_product.mean(), permutation
 
 
@@ -417,30 +415,39 @@ def degeneracy_score(cp_tensor):
     return np.asarray(tucker_congruence_scores).min()
 
 
+# TODO: Handle labelled cp?
+# TODO: Add nan columns
 def _permute_cp_tensor(cp_tensor, permutation):
     """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.
     """
     weights, factors = cp_tensor
 
     if weights is not None:
-        new_weights = weights.copy()[permutation]
+        new_weights = np.zeros(len(permutation))
+        for i, p in enumerate(permutation):
+            if p == NO_COLUMN:
+                new_weights[i] = np.nan
+            else:
+                new_weights[i] = weights[p]
     else:
         new_weights = None
 
     new_factors = [None] * len(factors)
     for mode, factor in enumerate(factors):
-        new_factor = factor.copy()
-        if hasattr(factor, "values"):
-            new_factor.values[:] = new_factor.values[:, permutation]
-        else:
-            new_factor[:] = new_factor[:, permutation]
+        new_factor = np.zeros((factor.shape[0], len(permutation)))
+        for i, p in enumerate(permutation):
+            if p == NO_COLUMN:
+                new_factor[:, i] = np.nan
+            else:
+                new_factor[:, i] = factor[:, p]
+
         new_factors[mode] = new_factor
 
     return new_weights, new_factors
 
 
 @_handle_labelled_cp("cp_tensor", None)
-def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True):
+def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True, allow_smaller_rank=False):
     """Find the optimal permutation between two CP tensors.
 
     This function supports two ways of finding the permutation of a CP tensor: Aligning the components
@@ -473,22 +480,29 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
     # TOTEST: get_cp_permutation
     if reference_cp_tensor is not None:
         fms, permutation = factor_match_score(
-            reference_cp_tensor, cp_tensor, consider_weights=consider_weights, return_permutation=True,
+            reference_cp_tensor,
+            cp_tensor,
+            consider_weights=consider_weights,
+            return_permutation=True,
+            allow_smaller_rank=allow_smaller_rank,
         )
+        rank = cp_tensor[1][0].shape[1]
+        target_rank = reference_cp_tensor[1][0].shape[1]
+
+        if rank > target_rank:  # There are more components in the tensor to permute than the reference tensor
+            remaining_indices = sorted(set(range(rank)) - set(permutation))
+            permutation = list(permutation) + remaining_indices
     else:
         variation = percentage_variation(cp_tensor, method="model")
         permutation = sorted(range(len(variation)), key=lambda i: -variation[i])
 
-    rank = cp_tensor[1][0].shape[1]
-    if len(permutation) != rank:
-        remaining_indices = sorted(set(range(rank)) - set(permutation))
-        permutation = list(permutation) + remaining_indices
-
     return permutation
 
 
-@_handle_labelled_cp("cp_tensor", _SINGLETON)
-def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True):
+@_handle_labelled_cp("cp_tensor", _SINGLETON, preserve_columns=False)
+def permute_cp_tensor(
+    cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True, allow_smaller_rank=False
+):
     """Permute the CP tensor
 
     This function supports three ways of permuting a CP tensor: Aligning the components
@@ -534,7 +548,10 @@ def permute_cp_tensor(cp_tensor, reference_cp_tensor=None, permutation=None, con
 
     if permutation is None:
         permutation = get_cp_permutation(
-            cp_tensor=cp_tensor, reference_cp_tensor=reference_cp_tensor, consider_weights=consider_weights,
+            cp_tensor=cp_tensor,
+            reference_cp_tensor=reference_cp_tensor,
+            consider_weights=consider_weights,
+            allow_smaller_rank=allow_smaller_rank,
         )
 
     return _permute_cp_tensor(cp_tensor, permutation)

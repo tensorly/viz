@@ -188,6 +188,7 @@ def postprocess(
     flip_method="transpose",
     weight_behaviour="normalise",
     weight_mode=-1,
+    allow_smaller_rank=False,
 ):
     """Standard postprocessing of a CP decomposition.
 
@@ -242,6 +243,10 @@ def postprocess(
     weight_mode : int (optional)
         Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
 
+    allow_smaller_rank : bool (default=False)
+        If True, then a low rank decomposition can be permuted against one with higher rank. The "missing columns"
+        are padded by nan values
+
     Returns
     -------
     CPTensor
@@ -249,7 +254,9 @@ def postprocess(
     """
     # TODOC: postprocess
     # TOTEST: postprocess
-    cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, reference_cp_tensor=reference_cp_tensor)
+    cp_tensor = factor_tools.permute_cp_tensor(
+        cp_tensor, reference_cp_tensor=reference_cp_tensor, allow_smaller_rank=allow_smaller_rank
+    )
 
     if weight_behaviour == "ignore":
         pass
