@@ -88,7 +88,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         >>> for rank in range(1, 5):
         ...     cp_tensors[f"{rank} components"] = parafac(dataset, rank, random_state=1)
         >>>
-        >>> scree_plot(cp_tensors, dataset)
+        >>> ax = scree_plot(cp_tensors, dataset)
         >>> plt.show()
 
     Scree plots for fit and core consistency in the same figure
@@ -108,15 +108,15 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         ...     cp_tensors[rank] = parafac(dataset, rank, random_state=1)
         >>>
         >>> fig, axes = plt.subplots(1, 2, figsize=(8, 2), tight_layout=True)
-        >>> scree_plot(cp_tensors, dataset, ax=axes[0])
-        >>> scree_plot(cp_tensors, dataset, metric="Core consistency", ax=axes[1])
+        >>> ax = scree_plot(cp_tensors, dataset, ax=axes[0])
+        >>> ax = scree_plot(cp_tensors, dataset, metric="Core consistency", ax=axes[1])
         >>> # Names are converted to lowercase and spaces are converted to underlines when fetching metric-function,
         >>> # so "Core consistency" becomes getattr(component_vis.model_evaluation, "core_consistency")
         >>>
         >>> for ax in axes:
-        ...     ax.set_xlabel("Number of components")
-        ...     ax.set_xticks(list(cp_tensors.keys()))
-        >>> axes[1].set_ylim((0, 105))
+        ...     xlabel = ax.set_xlabel("Number of components")
+        ...     xticks = ax.set_xticks(list(cp_tensors.keys()))
+        >>> limits = axes[1].set_ylim((0, 105))
         >>> plt.show()
     """
     if ax is None:
@@ -174,6 +174,7 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> histogram_of_residuals(est_cp, X)
+        <AxesSubplot:title={'center':'Histogram of residuals'}, xlabel='Standardised residuals', ylabel='Frequency'>
         >>> plt.show()
     """
     estimated_dataset = cp_to_tensor(cp_tensor)
@@ -238,6 +239,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> residual_qq(est_cp, X)
+        <AxesSubplot:title={'center':'QQ-plot of residuals'}, xlabel='Theoretical Quantiles', ylabel='Sample Quantiles'>
         >>> plt.show()
     """
     estimated_dataset = cp_to_tensor(cp_tensor)
@@ -330,6 +332,7 @@ def outlier_plot(
         >>> outlier_plot(
         ...     cp, data, leverage_rule_of_thumbs='p-value', residual_rule_of_thumbs='p-value', p_value=[0.05, 0.01]
         ... )
+        <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
 
     We can also provide multiple types of rule-of-thumbs
@@ -352,6 +355,7 @@ def outlier_plot(
         >>> outlier_plot(
         ...     cp, data, leverage_rule_of_thumbs=['huber lower', 'hw higher'], residual_rule_of_thumbs='two sigma'
         ... )
+        <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
     """
     weights, factor_matrices = cp_tensor
@@ -481,6 +485,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor = random_cp(shape=(5,10,15), rank=2)
         >>> component_scatterplot(cp_tensor, mode=0)
+        <AxesSubplot:title={'center':'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
         >>> plt.show()
 
     Eexample with PCA of a real stock dataset
@@ -512,6 +517,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>>
         >>> # Visualise the components with components_plot
         >>> component_scatterplot(cp_tensor, mode=1)
+        <AxesSubplot:title={'center':'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
         >>> plt.show()
     """
     if ax is None:
@@ -582,6 +588,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=42)
         >>> est_cp = parafac(X, 3)
         >>> core_element_plot(est_cp, X)
+        <AxesSubplot:title={'center':'Core consistency: 99.8'}, xlabel='Core element', ylabel='Value'>
         >>> plt.show()
     """
     weights, factors = cp_tensor
@@ -669,7 +676,7 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         >>> from component_vis.visualisation import components_plot
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor = random_cp(shape=(5,10,15), rank=3)
-        >>> components_plot(cp_tensor)
+        >>> fig, axes = components_plot(cp_tensor)
         >>> plt.show()
 
     Full example with PCA of a real stock dataset
@@ -704,16 +711,9 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         ...                             plot_kwargs=[{}, {'marker': 'o', 'linewidth': 0}])
         >>> plt.show()
     """
-    if weight_behaviour == "ignore":
-        weights, factor_matrices = cp_tensor
-    elif weight_behaviour == "normalise":
-        weights, factor_matrices = factor_tools.normalise_cp_tensor(cp_tensor)
-    elif weight_behaviour == "evenly":
-        weights, factor_matrices = factor_tools.distribute_weights_evenly(cp_tensor)
-    elif weight_behaviour == "one_mode":
-        weights, factor_matrices = factor_tools.distribute_weights_in_one_mode(cp_tensor, weight_mode)
-    else:
-        raise ValueError("weight_behaviour must be either 'ignore', 'normalise' or 'one_mode'")
+    weights, factor_matrices = factor_tools.distribute_weights(
+        cp_tensor, weight_behaviour=weight_behaviour, weight_mode=weight_mode
+    )
 
     num_components = len(weights.reshape(-1))
     num_modes = len(factor_matrices)
@@ -789,13 +789,14 @@ def component_comparison_plot(
         ...     "CP": parafac(X, 3),
         ...     "NN CP": non_negative_parafac_hals(X, 3),
         ... }
-        >>> component_comparison_plot(cp_tensors, row="component")
+        >>> fig, axes = component_comparison_plot(cp_tensors, row="component")
         >>> plt.show()
 
     If not all decompositions have the same number of components, then the components will be aligned
     with the first (reference) decomposition in the ``cp_tensors``-dictionary. If one of the subsequent
     decompositions have fewer components than the reference decomposition, then the columns will be
     aligned correctly, and if one of them has more, then the additional components will be ignored.
+
     .. plot::
         :context: close-figs
         :include-source:
@@ -815,7 +816,7 @@ def component_comparison_plot(
         ...     "subset": two_components,  # Only component 0 and 2
         ...     "superset": four_components,  # All components in reference plus one additional
         ... }
-        >>> component_comparison_plot(cp_tensors, row="model")
+        >>> fig, axes = component_comparison_plot(cp_tensors, row="model")
         >>> plt.show()
     """
     main_cp_tensor = next(iter(cp_tensors.values()))
@@ -944,7 +945,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         ...     errs.append(parafac(dataset, 3, n_iter_max=500, return_errors=True, init="random", random_state=rng)[1])
         >>>
         >>> # Plot the diganostic plots
-        >>> optimisation_diagnostic_plots(errs, 500)
+        >>> fig, axes = optimisation_diagnostic_plots(errs, 500)
         >>> plt.show()
 
 
@@ -971,7 +972,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         ...     errs.append(parafac(dataset, 3, n_iter_max=50, return_errors=True, init="random", random_state=rng)[1])
         >>>
         >>> # Plot the diganostic plots
-        >>> optimisation_diagnostic_plots(errs, 50)
+        >>> fig, axes = optimisation_diagnostic_plots(errs, 50)
         >>> plt.show()
     """
     fig, axes = plt.subplots(1, 2, figsize=(16, 4.5))
