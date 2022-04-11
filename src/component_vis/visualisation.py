@@ -5,7 +5,7 @@ import numpy as np
 import statsmodels.api as sm
 from matplotlib.lines import Line2D
 
-from . import model_evaluation, postprocessing
+from . import factor_tools, model_evaluation, postprocessing
 from ._module_utils import is_dataframe, is_iterable
 from .model_evaluation import estimate_core_tensor, percentage_variation
 from .outliers import (
@@ -707,11 +707,11 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     if weight_behaviour == "ignore":
         weights, factor_matrices = cp_tensor
     elif weight_behaviour == "normalise":
-        weights, factor_matrices = postprocessing.normalise_cp_tensor(cp_tensor)
+        weights, factor_matrices = factor_tools.normalise_cp_tensor(cp_tensor)
     elif weight_behaviour == "evenly":
-        weights, factor_matrices = postprocessing.distribute_weights_evenly(cp_tensor)
+        weights, factor_matrices = factor_tools.distribute_weights_evenly(cp_tensor)
     elif weight_behaviour == "one_mode":
-        weights, factor_matrices = postprocessing.distribute_weights_in_one_mode(cp_tensor, weight_mode)
+        weights, factor_matrices = factor_tools.distribute_weights_in_one_mode(cp_tensor, weight_mode)
     else:
         raise ValueError("weight_behaviour must be either 'ignore', 'normalise' or 'one_mode'")
 
