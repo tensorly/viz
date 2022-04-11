@@ -217,12 +217,12 @@ def normalise(x, mode=0, axis=None):
     >>> random_matrix = np.random.random_sample((3, 4))
     >>> matrix_normalized_cols = normalise(random_matrix, axis=0)
     >>> print(np.linalg.norm(matrix_normalized_cols, axis=0))
-    array([1., 1., 1., 1.])
+    [1. 1. 1. 1.]
 
     >>> random_matrix = np.random.random_sample((3, 4))
     >>> matrix_normalized_rows = normalise(random_matrix, axis=1)
     >>> print(np.linalg.norm(matrix_normalized_rows, axis=1))
-    array([1., 1., 1.])
+    [1. 1. 1.]
     """
     norms = np.linalg.norm(x, axis=mode, keepdims=True)
     norms[norms == 0] = 1

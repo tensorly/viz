@@ -330,7 +330,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     >>> fprs = [compute_hotelling_false_positive_rate(10, 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval
     >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0746, 0.0842]
+    95% confidence interval for the false positive rate: [0.0738, 0.0833]
 
     But if we increase the number of samples, then the estimate is good again
 
@@ -467,6 +467,7 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
     >>> slab_sse = [compute_false_positive_rate((200, 20, 10), 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
     >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
+    95% confidence interval for the false positive rate: [0.0494, 0.0507]
     """
     # TODOC: example for get_slab_sse_outlier_threshold
     std = np.std(slab_sse, ddof=ddof)
