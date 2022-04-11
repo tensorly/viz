@@ -281,6 +281,38 @@ def test_outlier_plot_has_correct_residual_thresholds(seed, labelled, method, p_
     assert all(y == pytest.approx(threshold) for y in ax.lines[-1].get_ydata())
 
 
+@pytest.mark.parametrize("labelled", [True, False])
+@pytest.mark.parametrize("methods", [["p-value", "two sigma"]])
+@pytest.mark.parametrize("p_value", [0.1, 0.5])
+def test_outlier_plot_has_correct_residual_thresholds_methods(seed, labelled, methods, p_value):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    sse = outliers.compute_slabwise_sse(estimated=cp_to_tensor(cp_tensor), true=X, mode=0)
+    ax = visualisation.outlier_plot(cp_tensor, X, mode=0, p_value=p_value, residual_rule_of_thumbs=methods)
+
+    for i, method in enumerate(methods[::-1]):
+        threshold = outliers.get_slab_sse_outlier_threshold(sse, method, p_value=p_value)
+        assert all(y == pytest.approx(threshold) for y in ax.lines[-1 - i].get_ydata())
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+@pytest.mark.parametrize("method", ["p-value"])
+@pytest.mark.parametrize("p_values", [[0.1, 0.5], [0.1, 0.2, 0.3]])
+def test_outlier_plot_has_correct_residual_thresholds_p_values(seed, labelled, method, p_values):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+
+    sse = outliers.compute_slabwise_sse(estimated=cp_to_tensor(cp_tensor), true=X, mode=0)
+    ax = visualisation.outlier_plot(cp_tensor, X, mode=0, p_value=p_values, residual_rule_of_thumbs=method)
+
+    for i, p_value in enumerate(p_values[::-1]):
+        threshold = outliers.get_slab_sse_outlier_threshold(sse, method, p_value=p_value)
+        assert all(y == pytest.approx(threshold) for y in ax.lines[-1 - i].get_ydata())
+
+
 def test_components_plot_unlabelled(seed):
     # Postprocess CP tensor with each possible weight behaviour
     # Check that the plots have the same values as the postprocessed CP tensor
