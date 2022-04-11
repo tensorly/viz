@@ -9,11 +9,9 @@ from component_vis._module_utils import is_dataframe, is_labelled_dataset, is_xa
 from component_vis.data import simulated_random_cp_tensor
 from component_vis.xarray_wrapper import (
     _SINGLETON,
-    _check_is_argument,
     _handle_labelled_cp,
     _handle_labelled_dataset,
     _handle_labelled_factor_matrix,
-    _handle_none_weights_cp_tensor,
     _relabel_cp_tensor,
     _relabel_dataset,
     _relabel_factor_matrix,
@@ -189,17 +187,6 @@ def test_get_data(rng):
         np.testing.assert_array_equal(get_data(data), X)
         assert isinstance(get_data(data), np.ndarray)
 
-
-def test_check_is_argument():
-    def dummy_function(argument1, argument2):
-        return argument1 + argument2
-
-    assert _check_is_argument(dummy_function, "argument1") is None
-
-    with pytest.raises(ValueError):
-        _check_is_argument(dummy_function, "argument3")
-
-
 def test_unlabel_cp_tensor_fails_for_mix_of_labelled_and_unlabelled_factor_matrices(seed):
     shape = (10, 20, 30)
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=True, seed=seed)
@@ -303,24 +290,6 @@ def test_unlabel_and_relabel_dataset_inverse(seed):
     unlabelled_dataset_again, DatasetType_again, dataset_metadata_again = _unlabel_dataset(labelled_dataset, False)
     assert isinstance(unlabelled_dataset_again, np.ndarray)
     np.testing.assert_array_equal(unlabelled_dataset_again, unlabelled_dataset)
-
-
-@pytest.mark.parametrize("is_labelled", [True, False])
-@pytest.mark.parametrize("rank", [1, 2, 3, 4])
-def test_handle_none_weights_cp_tensor(is_labelled, rank, seed):
-    @_handle_none_weights_cp_tensor("cp_tensor")
-    def return_weights(cp_tensor):
-        assert cp_tensor[0] is not None
-        return cp_tensor[0]
-
-    shape = (10, 20, 30)
-    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=is_labelled, seed=seed)
-
-    out_weights = return_weights(cp_tensor)
-    np.testing.assert_array_equal(out_weights, cp_tensor[0])
-
-    out_weights = return_weights((None, cp_tensor[1]))
-    np.testing.assert_array_equal(out_weights, np.ones(rank))
 
 
 def test_unlabel_and_relabel_factor_matrix_inverse(rng):

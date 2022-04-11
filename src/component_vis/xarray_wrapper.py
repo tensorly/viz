@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from ._module_utils import is_dataframe, is_xarray
+from ._module_utils import _check_is_argument, is_dataframe, is_xarray
 
 
 def _label_factor_matrices(factor_matrices, dataset):
@@ -130,13 +130,6 @@ def is_labelled_tucker(tucker_tensor):
         If only some of the factor matrices are labelled (i.e. not none or all).
     """
     return is_labelled_cp(tucker_tensor)  # The weights are not considered for cp, neither is the core array for tucker
-
-
-def _check_is_argument(func, arg_name):
-    sig = signature(func)
-    if arg_name in sig.parameters:
-        return
-    raise ValueError(f"{arg_name} is not an argument of {func}")
 
 
 def _extract_df_metadata(df, preserve_columns=True):
@@ -301,32 +294,6 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
                     out_dataset,
                     *out[output_dataset_index + 1 :],
                 )
-            return out
-
-        return func2
-
-    return decorator
-
-
-def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):  # TODO: Move to _module_utils?
-    def decorator(func):
-        _check_is_argument(func, cp_tensor_name)
-
-        @wraps(func)
-        def func2(*args, **kwargs):
-            bound_arguments = signature(func).bind(*args, **kwargs)
-
-            if optional and cp_tensor_name not in bound_arguments.arguments:
-                return func(*bound_arguments.args, **bound_arguments.kwargs)
-
-            cp_tensor = bound_arguments.arguments[cp_tensor_name]  # TODO: validate cp_tensor?
-            weights, factors = cp_tensor
-            if weights is None:
-                rank = factors[0].shape[1]
-                cp_tensor = (np.ones(rank), factors)
-                bound_arguments.arguments[cp_tensor_name] = cp_tensor
-
-            out = func(*bound_arguments.args, **bound_arguments.kwargs)
             return out
 
         return func2
