@@ -95,6 +95,54 @@ def distribute_weights_in_one_mode(cp_tensor, mode, axis=None):
     return np.ones_like(weights), factors
 
 
+def distribute_weights(cp_tensor, weight_behaviour, weight_mode=0):
+    """Utility to distribute the weights of a CP tensor.
+
+    Arguments
+    ---------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+    weight_behaviour : {"ignore", "normalise", "evenly", "one_mode"} (default="normalise")
+        How to handle the component weights.
+
+         * ``"ignore"`` - Do nothing
+         * ``"normalise"`` - Normalise all factor matrices
+         * ``"evenly"`` - All factor matrices have equal norm
+         * ``"one_mode"`` - The weight is allocated in one mode, all other factor matrices have unit norm columns.
+
+    weight_mode : int (optional)
+        Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
+
+    Returns
+    -------
+    tuple
+        The scaled CP tensor.
+
+    See Also
+    --------
+    normalise_cp_tensor : Give all component vectors unit norm
+    distribute_weights_evenly : Give all component vectors the same norm and set the weight-array to one.
+    distribute_weights_in_one_mode : Keep all the weights in one factor matrix and set the weight-array to one.
+
+    Raises
+    ------
+    ValueError
+        If ``weight_behaviour`` is not one of ``"ignore"``, ``"normalise"``, ``"evenly"`` or ``"one_mode"``.
+    """
+    # TOTEST: distribute_weights
+    if weight_behaviour == "ignore":
+        return cp_tensor
+    elif weight_behaviour == "normalise":
+        return normalise_cp_tensor(cp_tensor)
+    elif weight_behaviour == "evenly":
+        return distribute_weights_evenly(cp_tensor)
+    elif weight_behaviour == "one_mode":
+        return distribute_weights_in_one_mode(cp_tensor, weight_mode)
+    else:
+        raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
+
+
 def cosine_similarity(factor_matrix1, factor_matrix2):
     r"""The average cosine similarity (Tucker congruence) with optimal column permutation.
 
@@ -288,21 +336,21 @@ def factor_match_score(
     Examples
     --------
     >>> import numpy as np
-    ... from component_vis.factor_tools import factor_match_score
-    ... from tensorly.decomposition import parafac
-    ... from tensorly.random import random_cp
-    ... # Construct random cp tensor with TensorLy
-    ... cp_tensor = random_cp(shape=(4,5,6), rank=3, random_state=42)
-    ... X = cp_tensor.to_tensor()
-    ... # Add noise
-    ... X_noisy = X + 0.05*np.random.RandomState(0).standard_normal(size=X.shape)
-    ... # Decompose with TensorLy and compute FMS
-    ... estimated_cp_tensor = parafac(X_noisy, rank=3, random_state=42)
-    ... fms_with_weight_penalty = factor_match_score(cp_tensor, estimated_cp_tensor, consider_weights=True)
-    ... fms_without_weight_penalty = factor_match_score(cp_tensor, estimated_cp_tensor, consider_weights=False)
-    ... print(f"Factor match score (with weight penalty): {fms_with_weight_penalty:.2f}")
-    ... print(f"Factor match score (without weight penalty): {fms_without_weight_penalty:.2f}")
+    >>> from component_vis.factor_tools import factor_match_score
+    >>> from tensorly.decomposition import parafac
+    >>> from tensorly.random import random_cp
+    >>> # Construct random cp tensor with TensorLy
+    >>> cp_tensor = random_cp(shape=(4,5,6), rank=3, random_state=42)
+    >>> X = cp_tensor.to_tensor()
+    >>> # Add noise
+    >>> X_noisy = X + 0.05*np.random.RandomState(0).standard_normal(size=X.shape)
+    >>> # Decompose with TensorLy and compute FMS
+    >>> estimated_cp_tensor = parafac(X_noisy, rank=3, random_state=42)
+    >>> fms_with_weight_penalty = factor_match_score(cp_tensor, estimated_cp_tensor, consider_weights=True)
+    >>> print(f"Factor match score (with weight penalty): {fms_with_weight_penalty:.2f}")
     Factor match score (with weight penalty): 0.95
+    >>> fms_without_weight_penalty = factor_match_score(cp_tensor, estimated_cp_tensor, consider_weights=False)
+    >>> print(f"Factor match score (without weight penalty): {fms_without_weight_penalty:.2f}")
     Factor match score (without weight penalty): 0.99
     """
     # Extract weights and components from decomposition
@@ -580,6 +628,37 @@ def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
     -------
     bool
         Whether the decompositions are equal.
+
+
+    Examples
+    --------
+    ``check_cp_tensors_equivalent`` checks if two CP tensors represent the same dense tensor
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.factor_tools import check_cp_tensors_equivalent
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> cp_tensor2, dataset2 = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> check_cp_tensors_equivalent(cp_tensor, cp_tensor2)
+    True
+
+    Normalising a ``cp_tensor`` changes its values, but not which dense tensor it represents
+
+    >>> from component_vis.factor_tools import normalise_cp_tensor
+    >>> normalised_cp_tensor = normalise_cp_tensor(cp_tensor)
+    >>> check_cp_tensors_equivalent(cp_tensor, normalised_cp_tensor)
+    True
+
+    Permutations will also make the numerical values of the``cp_tensor`` change but not the
+    dense tensor it represents
+
+    >>> from component_vis.factor_tools import permute_cp_tensor
+    >>> check_cp_tensors_equivalent(cp_tensor, permute_cp_tensor(cp_tensor, permutation=[1, 2, 0]))
+    True
+
+    See Also
+    --------
+    check_cp_tensors_equals : Function for checking if two CP tensors have the same
+	numerical value (have equal weights and factor matrices)
     """
     # TODO: Handle dataframes
     rank = cp_tensor1[1][0].shape[1]
@@ -632,6 +711,42 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
     -------
     bool
         Whether the decompositions are equivalent.
+
+
+    Examples
+    --------
+    ``check_cp_tensors_equals`` checks for strict equality of the factor matrices and
+    weights.
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.factor_tools import check_cp_tensors_equals
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> check_cp_tensors_equals(cp_tensor, cp_tensor)
+    True
+
+    But it does not check the identity of the decompositions, only their numerical values
+
+    >>> cp_tensor2, dataset2 = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> check_cp_tensors_equals(cp_tensor, cp_tensor2)
+    True
+
+    Normalising a ``cp_tensor`` changes its values, so then we do not have strict equality
+    of the factor matrices, even though the decomposition is equivalent
+
+    >>> from component_vis.factor_tools import normalise_cp_tensor
+    >>> normalised_cp_tensor = normalise_cp_tensor(cp_tensor)
+    >>> check_cp_tensors_equals(cp_tensor, normalised_cp_tensor)
+    False
+
+    Permutations will also make the numerical values of the``cp_tensor`` change
+
+    >>> from component_vis.factor_tools import permute_cp_tensor
+    >>> check_cp_tensors_equals(cp_tensor, permute_cp_tensor(cp_tensor, permutation=[1, 2, 0]))
+    False
+
+    See Also
+    --------
+    check_cp_tensors_equivalent : Function for checking if two CP tensors represent the same dense tensor.
     """
     # TODO: Handle dataframes
     rank = cp_tensor1[1][0].shape[1]
