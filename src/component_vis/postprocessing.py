@@ -201,8 +201,8 @@ def postprocess(
     unit norm.
 
     If a dataset is provided, then the sign indeterminacy is resolved and if the
-    dataset is labelled (i.e. is an xarray), then the factor matrices of the CP
-    tensor is labelled too.
+    dataset is labelled (i.e. is an xarray or a dataframe), then the factor matrices
+    of the CP tensor is labelled too.
 
     This function is equivalent to calling
 
