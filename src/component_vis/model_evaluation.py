@@ -106,17 +106,18 @@ def core_consistency(cp_tensor, X, normalised=False):
     and select the one with the lowest SSE (to account for local minima) before computing the
     core consistency.
 
-    >>> cp_tensor = tensorly.random.random_cp(shape=(4,5,6), rank=3, random_state=42)
-    ... X = cp_tensor.to_tensor()
-    ... # Fit many CP models with different number of components
-    ... for rank in range(1, 5):
-    ...     decomposition = tl.decomposition.parafac(X, rank=rank, random_state=42)
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from tensorly.decomposition import parafac
+    >>> cp_tensor, X = simulated_random_cp_tensor((10,11,12), 3, seed=42)
+    >>> # Fit many CP models with different number of components
+    >>> for rank in range(1, 5):
+    ...     decomposition = parafac(X, rank=rank, random_state=42)
     ...     cc = core_consistency(decomposition, X, normalised=True)
-    ...     print(f"No. components: {rank} - core consistency: {cc}")
-    No. components: 1 - core consistency: 100.0
-    No. components: 2 - core consistency: 99.99971253658768
-    No. components: 3 - core consistency: 99.99977773119056
-    No. components: 4 - core consistency: -1.4210854715202004e-14
+    ...     print(f"No. components: {rank} - core consistency: {cc:.0f}")
+    No. components: 1 - core consistency: 100
+    No. components: 2 - core consistency: 100
+    No. components: 3 - core consistency: 81
+    No. components: 4 - core consistency: 0
 
     Notes
     -----
@@ -349,18 +350,17 @@ def percentage_variation(cp_tensor, X=None, method="data"):
         element is the fit computed against the model.
     """
     # TODOC: Examples for percentage_variation
-    # TOTEST: Unit tests for percentage_variation. Use orthogonal components in all modes
-    # TOTEST: Unit test for percentage_variation - Should sum to 100
-    # FIXME: There is something wrong here...
+    # TOTEST: Unit test for percentage_variation - Should sum to 100 if method is model
+    # TOTEST: Unit test for percentage_variation - Should sum to 100 if method is data and there is no noise
     weights, factor_matrices = cp_tensor
     rank = factor_matrices[0].shape[1]
     if weights is not None:
-        ssc = weights.copy()
+        ssc = weights ** 2
     else:
         ssc = np.ones(rank)
 
     for factor_matrix in factor_matrices:
-        ssc = np.sum(ssc * np.abs(factor_matrix) ** 2)
+        ssc = np.sum(ssc * np.abs(factor_matrix) ** 2, axis=0)
 
     if method == "data":
         if X is None:
