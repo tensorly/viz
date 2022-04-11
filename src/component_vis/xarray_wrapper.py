@@ -297,9 +297,9 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
                     out[output_dataset_index], DatasetType, dataset_metadata, optional=optional
                 )
                 out = (
-                    out[:output_dataset_index],
+                    *out[:output_dataset_index],
                     out_dataset,
-                    out[output_dataset_index + 1 :],
+                    *out[output_dataset_index + 1 :],
                 )
             return out
 
@@ -334,7 +334,6 @@ def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):  # TODO: Mov
     return decorator
 
 
-# TODO: Make a _handle_labelled_factor_matrix decorator
 def _handle_labelled_factor_matrix(
     factor_matrix_name, output_factor_matrix_index, optional=False, preserve_columns=True
 ):

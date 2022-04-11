@@ -5,12 +5,13 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-from component_vis._module_utils import is_dataframe
+from component_vis._module_utils import is_dataframe, is_labelled_dataset, is_xarray
 from component_vis.data import simulated_random_cp_tensor
 from component_vis.xarray_wrapper import (
     _SINGLETON,
     _check_is_argument,
     _handle_labelled_cp,
+    _handle_labelled_dataset,
     _handle_labelled_factor_matrix,
     _handle_none_weights_cp_tensor,
     _relabel_cp_tensor,
@@ -348,11 +349,11 @@ def test_handle_labelled_factor_matrix_singleton_return_wrapping(is_labelled, rn
         factor_matrix = pd.DataFrame(factor_matrix)
 
     @_handle_labelled_factor_matrix("factor_matrix", _SINGLETON, optional=False)
-    def singelton_wrapping(a, factor_matrix):  # Two inputs to check that the correct argument is handled
+    def singleton_wrapping(a, factor_matrix):  # Two inputs to check that the correct argument is handled
         assert not is_dataframe(factor_matrix)
         return factor_matrix
 
-    labelled = singelton_wrapping(1, factor_matrix)
+    labelled = singleton_wrapping(1, factor_matrix)
     assert is_dataframe(labelled) == is_labelled
 
     if is_labelled:
@@ -417,3 +418,58 @@ def test_handle_labelled_factor_matrix_optional_input(is_labelled, rng):
         pd.testing.assert_frame_equal(factor_matrix, labelled)
     else:
         np.testing.assert_array_equal(factor_matrix, labelled)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_dataset_singleton_return_wrapping(is_labelled, seed):
+
+    dataset = simulated_random_cp_tensor((3, 2, 3), 2, labelled=is_labelled, seed=seed)[1]
+
+    @_handle_labelled_dataset("dataset", _SINGLETON, optional=False)
+    def singleton_wrapping(a, dataset):  # Two inputs to check that the correct argument is handled
+        assert not is_labelled_dataset(dataset)
+        return dataset
+
+    labelled = singleton_wrapping(1, dataset)
+    assert is_labelled_dataset(dataset) == is_labelled
+
+    if is_xarray(dataset):
+        xr.testing.assert_identical(dataset, labelled)
+    if is_dataframe(dataset):
+        pd.testing.assert_frame_equal(dataset, labelled)
+    else:
+        np.testing.assert_array_equal(dataset, labelled)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_dataset_no_return_wrapping(is_labelled, seed):
+    dataset = simulated_random_cp_tensor((3, 2, 3), 2, labelled=is_labelled, seed=seed)[1]
+
+    @_handle_labelled_dataset("dataset", None, optional=False)
+    def no_return_wrapping(a, dataset):  # Two inputs to check that the correct argument is handled
+        assert not is_labelled_dataset(dataset)
+        return 1, dataset
+
+    number, unlabelled = no_return_wrapping(1, dataset)
+    assert not is_labelled_dataset(unlabelled)
+    np.testing.assert_array_equal(dataset, unlabelled)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_handle_labelled_dataset_return_wrapping(is_labelled, seed):
+    dataset = simulated_random_cp_tensor((3, 2, 3), 2, labelled=is_labelled, seed=seed)[1]
+
+    @_handle_labelled_dataset("dataset", 1, optional=False)
+    def output_wrapping(a, dataset):  # Two inputs to check that the correct argument is handled
+        assert not is_labelled_dataset(dataset)
+        return 1, dataset
+
+    number, labelled = output_wrapping(1, dataset)
+    assert is_labelled_dataset(labelled) == is_labelled
+
+    if is_dataframe(labelled):
+        pd.testing.assert_frame_equal(dataset, labelled)
+    if is_xarray(labelled):
+        xr.testing.assert_identical(dataset, labelled)
+    else:
+        np.testing.assert_array_equal(dataset, labelled)
