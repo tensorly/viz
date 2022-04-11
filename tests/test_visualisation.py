@@ -6,6 +6,7 @@ from numpy.testing import assert_array_equal
 import component_vis.outliers as outliers
 from component_vis import model_evaluation, visualisation
 from component_vis.data import simulated_random_cp_tensor
+from component_vis.postprocessing import postprocess
 from component_vis.utils import cp_to_tensor
 
 
@@ -313,14 +314,53 @@ def test_outlier_plot_has_correct_residual_thresholds_p_values(seed, labelled, m
         assert all(y == pytest.approx(threshold) for y in ax.lines[-1 - i].get_ydata())
 
 
-def test_components_plot_unlabelled(seed):
-    # Postprocess CP tensor with each possible weight behaviour
-    # Check that the plots have the same values as the postprocessed CP tensor
-    assert False, "Test not written yet"
+@pytest.mark.parametrize("weight_behaviour", ["ignore", "normalise", "evenly", "one_mode"])
+@pytest.mark.parametrize("labelled", [True, False])
+def test_components_plot_plots_correct_components(seed, weight_behaviour, labelled):
+    shape = (10, 5, 15)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)
+    postprocessed = postprocess(cp_tensor, weight_behaviour=weight_behaviour, permute=False)
+
+    fig, axes = visualisation.components_plot(cp_tensor, weight_behaviour=weight_behaviour)
+    for factor_matrix, ax in zip(postprocessed[1], axes):
+        for r, line in enumerate(ax.lines):
+            np.testing.assert_allclose(line.get_ydata(), factor_matrix[:, r])
 
 
-def test_components_plot_labelled(seed):
+@pytest.mark.parametrize("weight_behaviour", ["ignore", "normalise", "evenly", "one_mode"])
+def test_components_plot_labelled_has_good_xticks(seed, weight_behaviour):
     # Postprocess CP tensor with each possible weight behaviour
     # Check that the plots have the same values as the postprocessed CP tensor
     # Check that the plots have logical x-labels
-    assert False, "Test not written yet"
+    shape = (3, 4, 5)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=True, seed=seed)
+    cp_tensor[1][0].index = ["A1", "A2", "A3"]
+    cp_tensor[1][1].index = ["B1", "B2", "B3", "B4"]
+    cp_tensor[1][2].index = ["C1", "C2", "C3", "C4", "C5"]
+
+    fig, axes = visualisation.components_plot(cp_tensor, weight_behaviour=weight_behaviour)
+    for i, ax in enumerate(axes):
+        index = cp_tensor[1][i].index
+        tick_number = 0
+        for tick in ax.get_xticklabels():
+            tick_out_of_bounds = tick.get_position()[0] < ax.get_xlim()[0] or tick.get_position()[0] > ax.get_xlim()[1]
+            if tick.get_text() == "" or tick_out_of_bounds:
+                continue
+            assert tick.get_text() == index[tick_number]
+            tick_number += 1
+        assert tick_number == len(index)
+
+
+def test_components_plot_invalid_weight_behaviour(seed):
+    cp_tensor, X = simulated_random_cp_tensor((3, 4, 5), 3, labelled=True, seed=seed)
+    with pytest.raises(ValueError):
+        visualisation.components_plot(cp_tensor, weight_behaviour="invalid weight behaviour")
+
+
+def test_component_comparison_plot_invalid_row(seed):
+    cp_tensor1, X1 = simulated_random_cp_tensor((3, 4, 5), 3, labelled=True, seed=seed)
+    cp_tensor2, X2 = simulated_random_cp_tensor((3, 4, 5), 3, labelled=True, seed=seed)
+    with pytest.raises(ValueError):
+        visualisation.component_comparison_plot({"model1": cp_tensor1, "model2": cp_tensor2}, row="invalid row")
