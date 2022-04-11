@@ -411,6 +411,62 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
     threshold : float
         Threshold value, data points with a higher SSE than the threshold are suspicious
         and may be outliers.
+
+    Examples
+    --------
+    Here, we see that the p-value gives a good cutoff if the noise is normally distributed
+
+    We start by importing the tools we'll need
+
+    >>> import numpy as np
+    >>> from scipy.stats import bootstrap
+    >>> from component_vis.outliers import compute_slabwise_sse, get_slab_sse_outlier_threshold
+    >>> from component_vis.utils import cp_to_tensor
+
+    Then, we create a function to compute the false positive rate. This will be useful for our
+    bootstrap estimate for the true false positive rate.
+
+    >>> def compute_false_positive_rate(shape, num_components, p_value):
+    ...     A = np.random.standard_normal((shape[0], num_components))
+    ...     B = np.random.standard_normal((shape[1], num_components))
+    ...     C = np.random.standard_normal((shape[2], num_components))
+    ...
+    ...     X = cp_to_tensor((None, [A, B, C]))
+    ...     noisy_X = X + np.random.standard_normal(shape)*5
+    ...
+    ...
+    ...
+    ...     sse = compute_slabwise_sse(X, noisy_X)
+    ...     th = get_slab_sse_outlier_threshold(sse, method="p-value", p_value=p_value)
+    ...     return (sse > th).mean()
+
+    Finally, we estimate the 95% confidence interval of the false positive rate to validate
+    that it is approximately correct.
+
+    >>> np.random.seed(0)
+    >>> n_samples = 1_000
+    >>> slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.05) for _ in range(n_samples)],
+    >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
+    95% confidence interval for the false positive rate: [0.0434, 0.0474]
+
+    We see that the 95% confidence interval lies just below our goal of 0.05! Let's also try
+    with a false positive rate of 0.1
+
+    >>> slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.1) for _ in range(n_samples)],
+    >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
+    95% confidence interval for the false positive rate: [0.0972, 0.1021]
+
+    Here we see that the false positive rate is sufficiently estimated. It may have been too low
+    above since we either did not have enough samples in the first mode (which we compute) the
+    false positive rate for). With only 20 samples, it will be difficult to correctly estimate a
+    false positive rate of 0.05. If we increase the number of samples to 200 instead, we see that
+    the false positive rate is within our expected bounds.
+
+    >>> slab_sse = [compute_false_positive_rate((200, 20, 10), 5, 0.05) for _ in range(n_samples)],
+    >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
     """
     # TODOC: example for get_slab_sse_outlier_threshold
     std = np.std(slab_sse, ddof=ddof)
