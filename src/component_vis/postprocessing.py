@@ -1,3 +1,5 @@
+from warnings import warn
+
 import numpy as np
 import scipy.linalg as sla
 
@@ -183,11 +185,12 @@ def postprocess(
     cp_tensor,
     dataset=None,
     reference_cp_tensor=None,
+    permute=True,
     resolve_mode=None,
     unresolved_mode=-1,
     flip_method="transpose",
     weight_behaviour="normalise",
-    weight_mode=-1,
+    weight_mode=0,
     allow_smaller_rank=False,
 ):
     """Standard postprocessing of a CP decomposition.
@@ -197,8 +200,8 @@ def postprocess(
     factor matrices are aligned with the columns of ``reference_cp_tensor``'s
     factor matrices.
 
-    Next, the CP tensor is normalised so the columns of all factor matrices have
-    unit norm.
+    Next, the factor matrices of the CP tensor are scaled according the the specified
+    weight behaviour (default is normalised).
 
     If a dataset is provided, then the sign indeterminacy is resolved and if the
     dataset is labelled (i.e. is an xarray or a dataframe), then the factor matrices
@@ -207,7 +210,7 @@ def postprocess(
     This function is equivalent to calling
 
      * ``permute_cp_tensor``
-     * ``normalise_cp_tensor``
+     * ``distribute_weights``
      * ``resolve_cp_sign_indeterminacy``
      * ``label_cp_tensor``
 
@@ -215,11 +218,14 @@ def postprocess(
     ----------
     cp_tensor : CPTensor or tuple
         CPTensor to postprocess
+    dataset : ndarray or xarray (optional)
+        Dataset the CP tensor represents
     reference_cp_tensor : CPTensor or tuple (optional)
         If provided, then the tensor whose factors we align the CP tensor's
         columns with.
-    dataset : ndarray or xarray (optional)
-        Dataset the CP tensor represents
+    permute : bool
+        If ``True``, then the factors are permuted in descending weight order if
+        ``reference_cp_tensor`` is ``None``.
     resolve_mode : int, iterable or None
         Mode(s) whose factor matrix should be aligned with the data. If
         None, then the sign should be corrected for all modes except the
@@ -251,23 +257,25 @@ def postprocess(
     -------
     CPTensor
         The post processed CPTensor.
-    """
-    # TODOC: postprocess
-    # TOTEST: postprocess
-    cp_tensor = factor_tools.permute_cp_tensor(
-        cp_tensor, reference_cp_tensor=reference_cp_tensor, allow_smaller_rank=allow_smaller_rank
-    )
 
-    if weight_behaviour == "ignore":
-        pass
-    elif weight_behaviour == "normalise":
-        cp_tensor = factor_tools.normalise_cp_tensor(cp_tensor)
-    elif weight_behaviour == "evenly":
-        cp_tensor = factor_tools.distribute_weights_evenly(cp_tensor)
-    elif weight_behaviour == "one_mode":
-        cp_tensor = factor_tools.distribute_weights_in_one_mode(cp_tensor, weight_mode)
-    else:
-        raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
+    See Also
+    --------
+    component_vis.factor_tools.permute_cp_tensor
+    component_vis.factor_tools.distribute_weights
+    component_vis.postprocessing.resolve_cp_sign_indeterminacy
+    component_vis.xarray_wrapper.label_cp_tensor
+    """
+    # TODOC: postprocess example
+    # TOTEST: postprocess
+    if not permute and reference_cp_tensor is not None:
+        warn("``permute=False`` is ignored if a reference CP tensor is provided.")
+
+    if permute or reference_cp_tensor is not None:
+        cp_tensor = factor_tools.permute_cp_tensor(
+            cp_tensor, reference_cp_tensor=reference_cp_tensor, allow_smaller_rank=allow_smaller_rank
+        )
+
+    cp_tensor = factor_tools.distribute_weights(cp_tensor, weight_behaviour=weight_behaviour, weight_mode=weight_mode)
 
     if dataset is not None:
         cp_tensor = resolve_cp_sign_indeterminacy(
