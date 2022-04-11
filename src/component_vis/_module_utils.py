@@ -54,3 +54,8 @@ def is_dataframe(x):
         ``True`` if x is a data frame, ``False`` otherwise.
     """
     return isinstance(x, pd.DataFrame)
+
+
+def is_labelled_dataset(x):
+    # TODOC: is_labelled_Dataset
+    return is_dataframe(x) or is_xarray(x)
