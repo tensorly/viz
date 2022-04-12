@@ -32,7 +32,21 @@ class RemoteZip:
 
 
 def load_aminoacids():
-    # TODOC: load_aminoacids
+    """Load the Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro :cite:p:`bro1997parafac`.
+
+    This is a fluoresence spectroscopy dataset well suited for PARAFAC analysis.
+    The data stems from five samples with different amounts of the aminoacids tyrosine, tryptophan and phenylalanine.
+
+    See here for more information about the data:
+        http://models.life.ku.dk/Amino_Acid_fluo
+    Or archived version here:
+        https://web.archive.org/web/20210413050155/http://models.life.ku.dk/Amino_Acid_fluo
+
+    Returns
+    -------
+    xarray.DataArray
+        The Aminoacids dataset
+    """
     print('Loading Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro')
     aminoacids_zip = RemoteZip("http://models.life.ku.dk/sites/default/files/Amino_Acid_fluo.zip")
     matlab_variables = loadmat(aminoacids_zip.extract_file("amino.mat"))
@@ -226,3 +240,4 @@ def simulated_random_cp_tensor(shape, rank, noise_level=0.1, labelled=False, see
 
 # TODO: Add more example datasets
 # TODO: Enron data
+# TOTEST: data.py
