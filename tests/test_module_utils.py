@@ -5,6 +5,9 @@ import xarray as xr
 
 import component_vis._module_utils as cv_utils
 from component_vis.data import simulated_random_cp_tensor
+from component_vis.factor_tools import check_cp_tensors_equals
+from component_vis.utils import cp_to_tensor
+from component_vis.xarray_wrapper import is_labelled_cp
 
 
 @pytest.mark.parametrize(
@@ -79,3 +82,73 @@ def test_handle_none_weights_cp_tensor_works_with_optional_argument(is_labelled,
 
     with pytest.raises(TypeError):
         return_weights()
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+@pytest.mark.parametrize("rank", [1, 2, 3, 4])
+@pytest.mark.parametrize("shape", [(10, 20), (10, 20, 30), (10, 20, 30, 40), (10, 20, 30, 40, 50)])
+def test_validate_cp_tensor_accepts_valid_decompositions(is_labelled, rank, shape, seed):
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=is_labelled, seed=seed)
+    validated_cp_tensor = cv_utils.validate_cp_tensor(cp_tensor)
+
+    assert check_cp_tensors_equals(cp_tensor, validated_cp_tensor)
+    assert is_labelled_cp(cp_tensor) == is_labelled_cp(validated_cp_tensor)
+    if is_labelled:
+        xr.testing.assert_identical(cp_to_tensor(cp_tensor), cp_to_tensor(validated_cp_tensor))
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_validate_cp_tensor_accepts_none_weights(is_labelled, seed):
+    shape = (10, 20, 30)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=is_labelled, seed=seed)
+    cp_tensor_none_weight = None, cp_tensor[1]
+    validated_cp_tensor = cv_utils.validate_cp_tensor(cp_tensor_none_weight)
+
+    assert check_cp_tensors_equals(cp_tensor_none_weight, validated_cp_tensor)
+    assert is_labelled_cp(cp_tensor_none_weight) == is_labelled_cp(validated_cp_tensor)
+    if is_labelled:
+        xr.testing.assert_identical(cp_to_tensor(cp_tensor_none_weight), cp_to_tensor(validated_cp_tensor))
+
+
+@pytest.mark.parametrize("num_columns", [(2, 2, 3), (2, 3, 2), (3, 2, 2, 3)])
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_validate_cp_tensor_raises_with_different_ranks(rng, is_labelled, num_columns):
+    factor_matrices = []
+    for i, rank in enumerate(num_columns):
+        factor_matrices.append(rng.uniform(size=(10 * (i + 1), rank)))
+
+    cp_tensor = np.ones(len(num_columns)), factor_matrices
+    with pytest.raises(ValueError):
+        cv_utils.validate_cp_tensor(cp_tensor)
+
+
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_validate_cp_tensor_raises_with_wrong_weight_shape(seed, is_labelled):
+    shape = (10, 20, 30)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=is_labelled, seed=seed)
+
+    invalid_value_weights = [np.ones(2), np.ones(4), np.ones((3, 2))]
+    for weights in invalid_value_weights:
+        invalid_values_cp_tensor = weights, cp_tensor[1]
+        with pytest.raises(ValueError):
+            cv_utils.validate_cp_tensor(invalid_values_cp_tensor)
+
+    invalid_type_weights = [[1, 2, 3], 1.0, 10, (2, 3)]
+    for weights in invalid_type_weights:
+        invalid_type_cp_tensor = weights, cp_tensor[1]
+        with pytest.raises(TypeError):
+            cv_utils.validate_cp_tensor(invalid_type_cp_tensor)
+
+
+@pytest.mark.parametrize("factor_matrix_shape", [(3, 2, 1), (3, 3, 3)])
+@pytest.mark.parametrize("is_labelled", [True, False])
+def test_validate_cp_tensor_raises_with_wrong_factor_matrix_array_dim(rng, seed, is_labelled, factor_matrix_shape):
+    shape = (10, 20, 30)
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=is_labelled, seed=seed)
+    invalid_factor_matrix = rng.uniform(size=factor_matrix_shape)
+    invalid_cp_tensor = cp_tensor[0], (invalid_factor_matrix, cp_tensor[1][1], cp_tensor[1][2])
+    with pytest.raises(ValueError):
+        cv_utils.validate_cp_tensor(invalid_cp_tensor)

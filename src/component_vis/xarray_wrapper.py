@@ -1,11 +1,17 @@
 from functools import wraps
 from inspect import signature
+from warnings import warn
 
 import numpy as np
 import pandas as pd
 import xarray as xr
 
-from ._module_utils import _check_is_argument, is_dataframe, is_xarray
+from ._module_utils import (
+    _check_is_argument,
+    is_dataframe,
+    is_xarray,
+    validate_cp_tensor,
+)
 
 
 def _label_factor_matrices(factor_matrices, dataset):
@@ -48,6 +54,13 @@ def label_cp_tensor(cp_tensor, dataset):
     CPTensor
         Tuple on the CPTensor format, except that the factor matrices are data frames.
     """
+    if is_labelled_cp(cp_tensor) and is_labelled_dataset(dataset):
+        warn(
+            "Both the CP tensor and the dataset is labelled, the labels from the cp tensor will be overwritten "
+            + " with the labels from the dataset."
+        )
+        cp_tensor = _unlabel_cp_tensor(cp_tensor, optional=False, preserve_columns=True)[0]
+
     if is_xarray(dataset) or is_dataframe(dataset):
         return (cp_tensor[0], _label_factor_matrices(cp_tensor[1], dataset))
     elif isinstance(dataset, np.ndarray):
@@ -130,6 +143,12 @@ def is_labelled_tucker(tucker_tensor):
         If only some of the factor matrices are labelled (i.e. not none or all).
     """
     return is_labelled_cp(tucker_tensor)  # The weights are not considered for cp, neither is the core array for tucker
+
+
+def is_labelled_dataset(x):
+    # TODOC: is_labelled_dataset
+    # TOTEST: is_labeled_dataset
+    return is_dataframe(x) or is_xarray(x)
 
 
 def _extract_df_metadata(df, preserve_columns=True):
@@ -244,6 +263,9 @@ def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False, 
             bound_arguments = signature(func).bind(*args, **kwargs)
 
             cp_tensor = bound_arguments.arguments.get(cp_tensor_name, None)
+            if cp_tensor is not None:
+                validate_cp_tensor(cp_tensor)
+
             cp_tensor_unlabelled, cp_tensor_metadata = _unlabel_cp_tensor(
                 cp_tensor, optional=optional, preserve_columns=preserve_columns
             )

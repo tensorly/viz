@@ -158,17 +158,12 @@ def tucker_to_tensor(tucker_tensor):
     einsum_core = ""
     einsum_input = ""
     einsum_output = ""
+    if len(tucker_tensor[1]) > 16:
+        raise ValueError("NumPy's einsum function doesn't support forming dense Tucker arrays with more than 16 modes.")
 
     for mode in range(len(tucker_tensor[1])):
         idx = chr(ord("a") + mode)
         rank_idx = chr(ord("A") + mode)
-
-        # We cannot use einsum with letters outside the alphabet
-        if ord(idx) > ord("z"):
-            max_modes = ord("a") - ord("z")
-            raise ValueError(
-                f"Cannot have more than {max_modes} modes. Current components have {len(tucker_tensor[1])}."
-            )
 
         einsum_core += rank_idx
         einsum_input += f", {idx}{rank_idx}"

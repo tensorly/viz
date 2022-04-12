@@ -267,7 +267,6 @@ def test_outlier_plot_has_multiple_correct_leverage_threshold_p_values(seed, lab
         assert all(x == pytest.approx(threshold) for x in ax.lines[-1 - i].get_xdata())
 
 
-# TOTEST: test with multiple methods and p_values
 @pytest.mark.parametrize("labelled", [True, False])
 @pytest.mark.parametrize("method", ["p-value", "two sigma"])
 @pytest.mark.parametrize("p_value", [0.1, 0.5])
@@ -325,7 +324,10 @@ def test_components_plot_plots_correct_components(seed, weight_behaviour, labell
     fig, axes = visualisation.components_plot(cp_tensor, weight_behaviour=weight_behaviour)
     for factor_matrix, ax in zip(postprocessed[1], axes):
         for r, line in enumerate(ax.lines):
-            np.testing.assert_allclose(line.get_ydata(), factor_matrix[:, r])
+            if labelled:
+                np.testing.assert_allclose(line.get_ydata(), factor_matrix[r])
+            else:
+                np.testing.assert_allclose(line.get_ydata(), factor_matrix[:, r])
 
 
 @pytest.mark.parametrize("weight_behaviour", ["ignore", "normalise", "evenly", "one_mode"])

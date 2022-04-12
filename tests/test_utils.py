@@ -191,3 +191,90 @@ def test_tucker_to_tensor(rng, seed, labelled):
         tl.tucker_tensor.tucker_to_tensor((core_array, factors)), utils.tucker_to_tensor(tucker_tensor)
     )
     assert labelled == is_xarray(utils.tucker_to_tensor(tucker_tensor))
+
+
+def test_cp_to_tensor_many_modes(rng):
+    rank = 3
+    weights = np.ones(rank)
+    factor_matrices = []
+    for mode in range(25):
+        factor_matrices.append(rng.uniform(size=(1, rank)))
+
+    cp_tensor = weights, factor_matrices
+    tensor = utils.cp_to_tensor(cp_tensor=cp_tensor)
+    assert tensor.ndim == 25
+
+
+def test_cp_to_tensor_too_many_modes(rng):
+    rank = 3
+    weights = np.ones(rank)
+    factor_matrices = []
+    for mode in range(27):
+        factor_matrices.append(rng.uniform(size=(1, rank)))
+
+    cp_tensor = weights, factor_matrices
+    with pytest.raises(ValueError):
+        utils.cp_to_tensor(cp_tensor=cp_tensor)
+
+
+def test_tucker_to_tensor_too_many_modes(rng):
+    rank = 1
+    core = np.ones([rank] * 27)
+    factor_matrices = []
+    for mode in range(27):
+        factor_matrices.append(rng.uniform(size=(1, rank)))
+
+    tucker_tensor = core, factor_matrices
+    with pytest.raises(ValueError):
+        utils.tucker_to_tensor(tucker_tensor=tucker_tensor)
+
+
+def test_tucker_to_tensor_many_modes(rng):
+    rank = 1
+    dim = 16
+    core = np.ones([rank] * dim)
+    factor_matrices = []
+    for mode in range(dim):
+        factor_matrices.append(rng.uniform(size=(1, rank)))
+
+    tucker_tensor = core, factor_matrices
+    tensor = utils.tucker_to_tensor(tucker_tensor=tucker_tensor)
+    assert tensor.ndim == dim
+
+
+def test_cp_to_tensor_known_decomposition():
+    A = np.arange(4).reshape(2, 2)
+    B = A.T
+    C = np.arange(6).reshape(3, 2)
+
+    # fmt: off
+    tensor = np.array([
+        [[ 2,  6, 10],   # noqa
+         [ 3,  9, 15]],  # noqa
+
+        [[ 6, 18, 30],   # noqa
+         [ 9, 31, 53]]   # noqa
+    ])
+    # fmt: on
+
+    np.testing.assert_array_equal(utils.cp_to_tensor((None, [A, B, C])), tensor)
+    np.testing.assert_array_equal(utils.cp_to_tensor((np.array([2, 2]), [A, B, C])), 2 * tensor)
+
+
+def test_tucker_to_tensor_known_decomposition():
+    A = np.arange(4).reshape(2, 2)
+    B = A.T
+    C = np.arange(6).reshape(3, 2)
+    core = np.arange(8).reshape(2, 2, 2)
+
+    # fmt: off
+    tensor = np.array([
+        [[ 14,  66, 118],   # noqa
+         [ 26, 122, 218]],  # noqa
+
+        [[ 54, 250, 446],   # noqa
+         [ 98, 450, 802]]   # noqa
+    ])
+    # fmt: on
+
+    np.testing.assert_array_equal(utils.tucker_to_tensor((core, [A, B, C])), tensor)

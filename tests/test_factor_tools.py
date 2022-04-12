@@ -388,7 +388,7 @@ def test_permute_cp_tensor(seed, labelled):
         w[permutation],
         (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
     )
-    cp_tensor_permuted_back = factor_tools.permute_cp_tensor(cp_tensor_permuted, cp_tensor)
+    cp_tensor_permuted_back = factor_tools.permute_cp_tensor(cp_tensor_permuted, reference_cp_tensor=cp_tensor)
     assert factor_tools.check_cp_tensors_equals(cp_tensor_permuted_back, cp_tensor)
 
     # Check permutation comparing against fewer components
@@ -397,7 +397,7 @@ def test_permute_cp_tensor(seed, labelled):
         w[permutation_2comp],
         (safe_permute(A, permutation_2comp), safe_permute(B, permutation_2comp), safe_permute(C, permutation_2comp)),
     )
-    aligned_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, cp_tensor_permuted2)
+    aligned_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, reference_cp_tensor=cp_tensor_permuted2)
 
     aligned_weights, aligned_factors = aligned_cp_tensor
 
@@ -423,7 +423,9 @@ def test_permute_cp_tensor_pads_factors_correctly(seed, labelled):
         w[permutation],
         (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
     )
-    aligned_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor_permuted, cp_tensor, allow_smaller_rank=True)
+    aligned_cp_tensor = factor_tools.permute_cp_tensor(
+        cp_tensor_permuted, reference_cp_tensor=cp_tensor, allow_smaller_rank=True
+    )
 
     aligned_weights, aligned_factors = aligned_cp_tensor
     assert np.all(aligned_weights[1:] == w[1:])

@@ -494,6 +494,7 @@ def _permute_cp_tensor(cp_tensor, permutation):
     return new_weights, new_factors
 
 
+@_handle_labelled_cp("reference_cp_tensor", None, optional=True)
 @_handle_labelled_cp("cp_tensor", None)
 def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True, allow_smaller_rank=False):
     """Find the optimal permutation between two CP tensors.
@@ -525,7 +526,6 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
     tuple
         The permutation to use when permuting ``cp_tensor``.
     """
-    # TOTEST: get_cp_permutation
     if reference_cp_tensor is not None:
         fms, permutation = factor_match_score(
             reference_cp_tensor,
@@ -549,7 +549,7 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
 
 @_handle_labelled_cp("cp_tensor", _SINGLETON, preserve_columns=False)
 def permute_cp_tensor(
-    cp_tensor, reference_cp_tensor=None, permutation=None, consider_weights=True, allow_smaller_rank=False
+    cp_tensor, permutation=None, reference_cp_tensor=None, consider_weights=True, allow_smaller_rank=False
 ):
     """Permute the CP tensor
 
@@ -568,13 +568,13 @@ def permute_cp_tensor(
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
+    permutation : tuple (optional)
+        Tuple with the column permutations. Either this or the ``reference_cp_tensor``
+        argument must be passed, not both.
     reference_cp_tensor : CPTensor or tuple (optional)
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument. The tensor
         that ``cp_tensor`` is aligned with. Either this or the ``permutation``
-        argument must be passed, not both.
-    permutation : tuple (optional)
-        Tuple with the column permutations. Either this or the ``reference_cp_tensor``
         argument must be passed, not both.
     consider_weights : bool
         Whether to consider the factor weights when the factor match score is computed.

@@ -10,6 +10,8 @@ from .xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
+    is_labelled_cp,
+    is_labelled_dataset,
     label_cp_tensor,
 )
 
@@ -143,9 +145,9 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
     """
     if unresolved_mode < 0:
         unresolved_mode = dataset.ndim + unresolved_mode
-    if unresolved_mode > dataset.ndim or unresolved_mode < 0:
+    if unresolved_mode >= dataset.ndim or unresolved_mode < 0:
         raise ValueError("`unresolved_mode` must be between `-dataset.ndim` and `dataset.ndim-1`.")
-    if is_iterable(resolve_mode) and unresolved_mode in resolve_mode:
+    if resolve_mode == unresolved_mode or (is_iterable(resolve_mode) and unresolved_mode in resolve_mode):
         raise ValueError("The unresolved mode cannot be resolved.")
 
     if resolve_mode is None:
@@ -180,7 +182,6 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
 
 
 @_handle_labelled_cp("reference_cp_tensor", None, optional=True)
-@_handle_labelled_cp("cp_tensor", None)
 def postprocess(
     cp_tensor,
     dataset=None,
@@ -265,8 +266,14 @@ def postprocess(
     component_vis.postprocessing.resolve_cp_sign_indeterminacy
     component_vis.xarray_wrapper.label_cp_tensor
     """
+    # 12 Options:
+    # Unlabelled cp_tensor, unlabelled reference, no dataset
+    # Unlabelled cp_tensor, unlabelled reference, labelled dataset
+    # Unlabelled cp_tensor, unlabelled reference, unlabelled dataset
+    # Labelled cp_tensor, unlabelled reference, no dataset
+    # Labelled cp_tensor, unlabelled reference, labelled dataset  - Potential X
+    # Labelled cp_tensor, unlabelled reference, unlabelled dataset
     # TODOC: postprocess example
-    # TOTEST: postprocess
     if not permute and reference_cp_tensor is not None:
         warn("``permute=False`` is ignored if a reference CP tensor is provided.")
 
@@ -281,6 +288,9 @@ def postprocess(
         cp_tensor = resolve_cp_sign_indeterminacy(
             cp_tensor, dataset, resolve_mode=resolve_mode, unresolved_mode=unresolved_mode, method=flip_method,
         )
+
         cp_tensor = label_cp_tensor(cp_tensor, dataset)
+
+    # FIXME: what to do if user sends in labeled cp_tensor and no reference dataset?
 
     return cp_tensor

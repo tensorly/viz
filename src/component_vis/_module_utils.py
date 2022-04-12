@@ -60,11 +60,6 @@ def is_dataframe(x):
     return isinstance(x, pd.DataFrame)
 
 
-def is_labelled_dataset(x):
-    # TODOC: is_labelled_Dataset
-    return is_dataframe(x) or is_xarray(x)
-
-
 def _check_is_argument(func, arg_name):
     sig = signature(func)
     if arg_name in sig.parameters:
@@ -84,7 +79,7 @@ def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):
                 return func(*bound_arguments.args, **bound_arguments.kwargs)
 
             cp_tensor = bound_arguments.arguments.get(cp_tensor_name, None)  # TODO: validate cp_tensor?
-            weights, factors = cp_tensor
+            weights, factors = validate_cp_tensor(cp_tensor)
             if weights is None:
                 rank = factors[0].shape[1]
                 cp_tensor = (np.ones(rank), factors)
@@ -96,3 +91,29 @@ def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):
         return func2
 
     return decorator
+
+
+def validate_cp_tensor(cp_tensor):
+    weights, factors = cp_tensor
+    rank = factors[0].shape[1]
+    for i, factor in enumerate(factors):
+        if factor.ndim != 2:
+            raise ValueError(
+                f"All factor matrices should have two dimensions, but factor[{i}] has shape {factor.shape}."
+            )
+
+        # Check that all factor matrices have the same rank
+        if factor.shape[1] != rank:
+            raise ValueError(
+                "All factor matrices should have the same number of columns. However factors[0] has shape"
+                + f" {factors[0].shape} and factors[{i}] has shape {factor.shape}."
+            )
+
+    if weights is not None:
+        if not isinstance(weights, np.ndarray):
+            raise TypeError(f"The weights must be a numpy array, not {type(weights)}")
+        if len(weights) != rank:
+            raise ValueError("The weights should have the same length as the number of columns in the factor matrices.")
+        if weights.ndim != 1:
+            raise ValueError(f"The weights must be 1d array, {weights.ndim} != 1 ")
+    return cp_tensor

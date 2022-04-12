@@ -109,10 +109,20 @@ def compute_leverage(factor_matrix):
     If a given sample, :math:`i`, has a high leverage score, then it likely has a strong
     influence on the model.
 
-    # TODOC: More description with some mathematical properties (e.g. sums to the rank) and interpretations
+    The leverage scores sum to the number of components for our model. Moreover, if a data point
+    has a leverage score equal to 1, then removing the row from :math:`A` that corresponds
+    to that data point will reduce the rank of :math:`A` by 1. The leverage can therefore be
+    thought of as a measure of how many components a model "devotes" to each data point.
+    # TODO: cite
 
-    If the factor matrix is a dataframe (i.e. has an index), then the output is
-    also a dataframe with that index. Otherwise, the output is a NumPy array.
+    Another way of interpreting the leverage score is as a measure of how "similar" a data point
+    is to the rest. If a data point has a leverage of 1, then there is no other similar data points.
+    Likewise, if a data point has a leverage of 0.5, then there is one other "similar" data point
+    (in some weighted sense), and a leverage of 0.2 means that there are five other "similar" data
+    points.  # TODO: cite
+
+    If the factor matrix is a dataframe, then the output is also a dataframe with that index. Otherwise,
+    the output is a NumPy array.
 
     Parameters
     ----------
@@ -206,7 +216,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     **Hoaglin and Welch's heuristic for selecting outliers**
 
     In :cite:p:`belsley1980regression` (page 17), :cite:authors:`belsley1980regression`, show that if
-    the factor matrix is normally distributed, then we can scale leverage, we obtain a Fisher-distributed
+    the factor matrix is normally distributed, then we can scale leverage to obtain a Fisher-distributed
     random variable. Specifically, we have that :math:`(n - r)[h_i - (1/n)]/[(1 - h_i)(r - 1)]` follows
     a Fisher distribution with :math:`(r-1)` and :math:`(n-r)` degrees of freedom. While the factor matrix
     seldomly follows a normal distribution, :cite:authors:`belsley1980regression` still argues that this
@@ -469,7 +479,6 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
     >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
     95% confidence interval for the false positive rate: [0.0494, 0.0507]
     """
-    # TODOC: example for get_slab_sse_outlier_threshold
     std = np.std(slab_sse, ddof=ddof)
     mean = np.mean(slab_sse)
     if method == "two sigma":

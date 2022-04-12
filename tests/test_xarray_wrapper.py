@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-from component_vis._module_utils import is_dataframe, is_labelled_dataset, is_xarray
+from component_vis._module_utils import is_dataframe, is_xarray
 from component_vis.data import simulated_random_cp_tensor
 from component_vis.xarray_wrapper import (
     _SINGLETON,
@@ -20,6 +20,7 @@ from component_vis.xarray_wrapper import (
     _unlabel_factor_matrix,
     get_data,
     is_labelled_cp,
+    is_labelled_dataset,
     is_labelled_tucker,
     label_cp_tensor,
 )
@@ -137,6 +138,12 @@ def test_label_cp_tensor_with_xarray(seed):
         pd.testing.assert_frame_equal(labelled_cp[1][mode], cp_tensor[1][mode])
 
 
+def test_label_cp_tensor_warns_when_cp_tensor_and_dataset_both_are_labelled(seed):
+    cp_tensor, X = simulated_random_cp_tensor((3, 2, 3), 2, labelled=True, seed=seed)
+    with pytest.warns(UserWarning):
+        label_cp_tensor(cp_tensor, X)
+
+
 def test_label_cp_tensor_with_dataframe(seed):
     cp_tensor, X = simulated_random_cp_tensor((3, 2), 2, labelled=True, seed=seed)
     X_df = pd.DataFrame(X.values, index=X.coords["Mode 0"], columns=X.coords["Mode 1"])
@@ -186,6 +193,7 @@ def test_get_data(rng):
     for data in [X, X_df, X_xr]:
         np.testing.assert_array_equal(get_data(data), X)
         assert isinstance(get_data(data), np.ndarray)
+
 
 def test_unlabel_cp_tensor_fails_for_mix_of_labelled_and_unlabelled_factor_matrices(seed):
     shape = (10, 20, 30)
