@@ -5,7 +5,7 @@ import xarray as xr
 
 import component_vis._module_utils as cv_utils
 from component_vis.data import simulated_random_cp_tensor
-from component_vis.factor_tools import check_cp_tensors_equals
+from component_vis.factor_tools import check_cp_tensor_equal
 from component_vis.utils import cp_to_tensor
 from component_vis.xarray_wrapper import is_labelled_cp
 
@@ -91,7 +91,7 @@ def test_validate_cp_tensor_accepts_valid_decompositions(is_labelled, rank, shap
     cp_tensor, X = simulated_random_cp_tensor(shape, rank, labelled=is_labelled, seed=seed)
     validated_cp_tensor = cv_utils.validate_cp_tensor(cp_tensor)
 
-    assert check_cp_tensors_equals(cp_tensor, validated_cp_tensor)
+    assert check_cp_tensor_equal(cp_tensor, validated_cp_tensor)
     assert is_labelled_cp(cp_tensor) == is_labelled_cp(validated_cp_tensor)
     if is_labelled:
         xr.testing.assert_identical(cp_to_tensor(cp_tensor), cp_to_tensor(validated_cp_tensor))
@@ -105,7 +105,7 @@ def test_validate_cp_tensor_accepts_none_weights(is_labelled, seed):
     cp_tensor_none_weight = None, cp_tensor[1]
     validated_cp_tensor = cv_utils.validate_cp_tensor(cp_tensor_none_weight)
 
-    assert check_cp_tensors_equals(cp_tensor_none_weight, validated_cp_tensor)
+    assert check_cp_tensor_equal(cp_tensor_none_weight, validated_cp_tensor)
     assert is_labelled_cp(cp_tensor_none_weight) == is_labelled_cp(validated_cp_tensor)
     if is_labelled:
         xr.testing.assert_identical(cp_to_tensor(cp_tensor_none_weight), cp_to_tensor(validated_cp_tensor))

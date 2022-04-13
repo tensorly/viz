@@ -6,7 +6,7 @@ import pytest
 
 from component_vis import factor_tools, postprocessing
 from component_vis.data import simulated_random_cp_tensor
-from component_vis.factor_tools import check_cp_tensors_equals, distribute_weights
+from component_vis.factor_tools import check_cp_tensor_equal, distribute_weights
 from component_vis.utils import cp_to_tensor
 
 
@@ -111,26 +111,26 @@ def test_postprocess_only_permutes_when_it_should(labelled, seed):
 
     # Set permute=False and check that the decomposition is permuted by postprocess
     postprocessed_cp_tensor = postprocessing.postprocess(cp_tensor, weight_behaviour="ignore", permute=False)
-    assert check_cp_tensors_equals(postprocessed_cp_tensor, cp_tensor)
+    assert check_cp_tensor_equal(postprocessed_cp_tensor, cp_tensor)
 
     # Set permute=True and compare with manually permuted
     postprocessed_cp_tensor = postprocessing.postprocess(cp_tensor, weight_behaviour="ignore", permute=True)
     manually_permuted_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, permutation=[3, 2, 1, 0])
-    assert check_cp_tensors_equals(postprocessed_cp_tensor, manually_permuted_cp_tensor)
+    assert check_cp_tensor_equal(postprocessed_cp_tensor, manually_permuted_cp_tensor)
 
     # Compare with reference CP tensor
     manually_permuted_cp_tensor = factor_tools.permute_cp_tensor(cp_tensor, permutation=[1, 0, 3, 2])
     postprocessed_cp_tensor = postprocessing.postprocess(
         cp_tensor, reference_cp_tensor=manually_permuted_cp_tensor, weight_behaviour="ignore"
     )
-    assert check_cp_tensors_equals(postprocessed_cp_tensor, manually_permuted_cp_tensor)
+    assert check_cp_tensor_equal(postprocessed_cp_tensor, manually_permuted_cp_tensor)
 
     # Compare with reference CP tensor, setting permute=False
     with pytest.warns(UserWarning):
         postprocessed_cp_tensor = postprocessing.postprocess(
             cp_tensor, reference_cp_tensor=manually_permuted_cp_tensor, weight_behaviour="ignore", permute=False
         )
-    assert check_cp_tensors_equals(postprocessed_cp_tensor, manually_permuted_cp_tensor)
+    assert check_cp_tensor_equal(postprocessed_cp_tensor, manually_permuted_cp_tensor)
 
 
 @pytest.mark.parametrize("labelled", [True, False])
@@ -140,4 +140,4 @@ def test_postprocess_distributes_weights_correctly(weight_behaviour, labelled, s
     postprocessed_cp_tensor = postprocessing.postprocess(cp_tensor, weight_behaviour=weight_behaviour, permute=False)
     distributed_cp_tensor = factor_tools.distribute_weights(cp_tensor, weight_behaviour=weight_behaviour)
 
-    assert check_cp_tensors_equals(postprocessed_cp_tensor, distributed_cp_tensor)
+    assert check_cp_tensor_equal(postprocessed_cp_tensor, distributed_cp_tensor)

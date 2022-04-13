@@ -95,11 +95,11 @@ def test_cp_tensors_equals(rng):
     cp_tensor2 = (w.copy(), (A.copy(), B.copy(), C.copy()))
 
     # Check that a decomposition is equal to its copy
-    assert factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor2)
+    assert factor_tools.check_cp_tensor_equal(cp_tensor1, cp_tensor2)
 
     # Check that the decompositions are not equal if one of the factor matrices differ
     cp_tensor3 = (w.copy(), (A.copy(), B.copy(), rng.standard_normal((15, 3))))
-    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor3)
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor1, cp_tensor3)
 
     # Check that two equivalent, but permuted decompositions are not equal
     permutation = [2, 1, 0]
@@ -107,11 +107,11 @@ def test_cp_tensors_equals(rng):
         w[permutation],
         (A[:, permutation], B[:, permutation], C[:, permutation]),
     )
-    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor4)
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor1, cp_tensor4)
 
     # Check that two equivalent decompositions with different weight distributions are not equal
     cp_tensor5 = factor_tools.distribute_weights_evenly(cp_tensor1)
-    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor5)
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor1, cp_tensor5)
 
     # Check that two completely different CP tensors are not equal
     A2 = rng.standard_normal((30, 3))
@@ -120,7 +120,7 @@ def test_cp_tensors_equals(rng):
     w2 = rng.uniform(size=(3,))
 
     cp_tensor6 = (w2, (A2, B2, C2))
-    assert not factor_tools.check_cp_tensors_equals(cp_tensor1, cp_tensor6)
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor1, cp_tensor6)
 
 
 def test_cp_tensors_equivalent(rng):

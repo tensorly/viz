@@ -7,7 +7,7 @@ from pytest import approx
 import component_vis.multimodel_evaluation as multimodel_evaluation
 from component_vis.utils import cp_to_tensor
 from component_vis.data import simulated_random_cp_tensor
-from component_vis.factor_tools import check_cp_tensors_equals, permute_cp_tensor
+from component_vis.factor_tools import check_cp_tensor_equal, permute_cp_tensor
 
 
 @pytest.mark.parametrize("labelled", [True, False])
@@ -46,7 +46,7 @@ def test_get_model_with_lowest_error(rng):
         (selected_cp_tensor, selected_index, all_sse,) = multimodel_evaluation.get_model_with_lowest_error(
             cp_tensors, dense_tensor, return_index=True, return_errors=True
         )
-        assert check_cp_tensors_equals(selected_cp_tensor, cp_tensor)
+        assert check_cp_tensor_equal(selected_cp_tensor, cp_tensor)
         assert i == selected_index
         assert all_sse[i] == approx(0)
 
@@ -63,7 +63,7 @@ def test_get_model_with_lowest_error(rng):
         cp_tensors, X, return_errors=True, return_index=True
     )
 
-    assert check_cp_tensors_equals(selected_cp_tensor, (w, (A, B, C)))
+    assert check_cp_tensor_equal(selected_cp_tensor, (w, (A, B, C)))
     for cp_tensor, error in zip(cp_tensors, errors):
         rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
         assert error == approx(rel_sse)
