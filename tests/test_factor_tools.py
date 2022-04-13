@@ -7,6 +7,7 @@ import component_vis.utils as utils
 from component_vis import factor_tools
 from component_vis._module_utils import is_dataframe
 from component_vis.data import simulated_random_cp_tensor
+from component_vis.xarray_wrapper import _unlabel_cp_tensor
 
 
 def safe_permute(arr, permutation):
@@ -389,7 +390,7 @@ def test_permute_cp_tensor(seed, labelled):
         (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
     )
     cp_tensor_permuted_back = factor_tools.permute_cp_tensor(cp_tensor_permuted, reference_cp_tensor=cp_tensor)
-    assert factor_tools.check_cp_tensors_equals(cp_tensor_permuted_back, cp_tensor)
+    assert factor_tools.check_cp_tensor_equal(cp_tensor_permuted_back, cp_tensor)
 
     # Check permutation comparing against fewer components
     permutation_2comp = [1, 3]
@@ -414,21 +415,31 @@ def test_permute_cp_tensor(seed, labelled):
 
 
 @pytest.mark.parametrize("labelled", [True, False])
-def test_permute_cp_tensor_pads_factors_correctly(seed, labelled):
+@pytest.mark.parametrize("include_weights", [True, False])
+def test_permute_cp_tensor_pads_factors_correctly(seed, labelled, include_weights):
     cp_tensor = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[0]
     w, (A, B, C) = cp_tensor
 
     permutation = [1, 2, 3]
+
+    if include_weights:
+        permuted_weights = w[permutation]
+    else:
+        w = None
+        permuted_weights = None
+
     cp_tensor_permuted = (
-        w[permutation],
+        permuted_weights,
         (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
     )
     aligned_cp_tensor = factor_tools.permute_cp_tensor(
-        cp_tensor_permuted, reference_cp_tensor=cp_tensor, allow_smaller_rank=True
+        cp_tensor_permuted, reference_cp_tensor=(w, [A, B, C]), allow_smaller_rank=True
     )
 
     aligned_weights, aligned_factors = aligned_cp_tensor
-    assert np.all(aligned_weights[1:] == w[1:])
+    if include_weights:
+        assert np.all(aligned_weights[1:] == w[1:])
+
     for factor1, factor2 in zip(cp_tensor_permuted[1], aligned_factors):
         if labelled:
             factor2 = factor2[[1, 2, 3]]
@@ -448,3 +459,198 @@ def test_get_cp_permutation(seed, labelled):
         (safe_permute(A, permutation), safe_permute(B, permutation), safe_permute(C, permutation)),
     )
     np.testing.assert_equal(factor_tools.get_cp_permutation(cp_tensor, cp_tensor_permuted), permutation)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensor_equal_none_weights(seed, labelled):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=labelled)[0]
+    w, (A, B, C) = cp_tensor
+    cp_tensor_weight_one = np.ones(rank), (A, B, C)
+    cp_tensor_weight_none = None, (A, B, C)
+
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor_weight_none, cp_tensor_weight_one)
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor_weight_one, cp_tensor_weight_none)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensor_equal_different_rank(seed, labelled):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=labelled)[0]
+    w, factors = cp_tensor
+
+    new_factors = []
+    for factor in factors:
+        new_factor = safe_permute(factor, [0, 1, 2])
+        new_factors.append(new_factor)
+
+    new_cp_tensor = w[:-1], new_factors
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor, new_cp_tensor)
+    assert not factor_tools.check_cp_tensor_equal(new_cp_tensor, cp_tensor)
+
+
+def test_check_cp_tensor_equal_labelled_unlabelled(seed):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=True)[0]
+    unlabelled_cp_tensor, metadata = _unlabel_cp_tensor(cp_tensor, optional=False, preserve_columns=True)
+
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor, unlabelled_cp_tensor)
+    assert not factor_tools.check_cp_tensor_equal(unlabelled_cp_tensor, cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensor_equal_different_factors(rng, seed, labelled):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=labelled)[0]
+    w, factors = cp_tensor
+
+    new_factors = []
+    for factor in factors:
+        new_factor = factor.copy()
+        # Change one of the components
+        new_component = rng.uniform(size=(factor.shape[0]))
+        if labelled:
+            new_factor[0] = new_component
+        else:
+            new_factor[:, 0] = new_component
+        new_factors.append(new_factor)
+
+    new_cp_tensor = w, new_factors
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor, new_cp_tensor)
+    assert not factor_tools.check_cp_tensor_equal(new_cp_tensor, cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensor_equal_different_dims(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12, 13), 4, seed=seed, labelled=labelled)[0]
+    w, factors = cp_tensor
+    new_cp_tensor = w, factors[1:]
+    assert not factor_tools.check_cp_tensor_equal(cp_tensor, new_cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensors_equivalent_none_weights(seed, labelled):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=labelled)[0]
+    w, (A, B, C) = cp_tensor
+    cp_tensor_weight_one = np.ones(rank), (A, B, C)
+    cp_tensor_weight_none = None, (A, B, C)
+
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor_weight_none, cp_tensor_weight_one)
+    assert factor_tools.check_cp_tensors_equivalent(cp_tensor_weight_one, cp_tensor_weight_none)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensors_equivalent_different_rank(seed, labelled):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=labelled)[0]
+    w, factors = cp_tensor
+
+    new_factors = []
+    for factor in factors:
+        new_factor = safe_permute(factor, [0, 1, 2])
+        new_factors.append(new_factor)
+
+    new_cp_tensor = w[:-1], new_factors
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor, new_cp_tensor)
+    assert not factor_tools.check_cp_tensors_equivalent(new_cp_tensor, cp_tensor)
+
+
+def test_check_cp_tensors_equivalent_labelled_unlabelled(seed):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=True)[0]
+    unlabelled_cp_tensor, metadata = _unlabel_cp_tensor(cp_tensor, optional=False, preserve_columns=True)
+
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor, unlabelled_cp_tensor)
+    assert not factor_tools.check_cp_tensors_equivalent(unlabelled_cp_tensor, cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensors_equivalent_different_factors(rng, seed, labelled):
+    rank = 4
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank, seed=seed, labelled=labelled)[0]
+    w, factors = cp_tensor
+
+    new_factors = []
+    for factor in factors:
+        new_factor = factor.copy()
+        # Change one of the components
+        new_component = rng.uniform(size=(factor.shape[0]))
+        if labelled:
+            new_factor[0] = new_component
+        else:
+            new_factor[:, 0] = new_component
+        new_factors.append(new_factor)
+
+    new_cp_tensor = w, new_factors
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor, new_cp_tensor)
+    assert not factor_tools.check_cp_tensors_equivalent(new_cp_tensor, cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensors_equivalent_different_dims(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12, 13), 4, seed=seed, labelled=labelled)[0]
+    w, factors = cp_tensor
+    new_cp_tensor = w, factors[1:]
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor, new_cp_tensor)
+
+
+def test_get_linear_sum_assignment_permutation_raises_when_smaller_rank_and_not_allow_smaller_rank(rng):
+    cost_matrix = rng.uniform(size=(10, 8))
+    with pytest.raises(ValueError):
+        factor_tools._get_linear_sum_assignment_permutation(cost_matrix, allow_smaller_rank=False)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_factor_match_score_skip_mode(seed, labelled):
+
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12, 13), 4, seed=seed, labelled=labelled)[0]
+    for mode, factor_matrix in enumerate(cp_tensor[1]):
+        if labelled:
+            # what to do here?
+            new_factor_matrix = factor_matrix.loc[5:]
+        else:
+            new_factor_matrix = factor_matrix[5:]
+        new_factors = cp_tensor[1].copy()
+        new_factors[mode] = new_factor_matrix
+        new_cp_tensor = cp_tensor[0], new_factors
+        assert factor_tools.factor_match_score(cp_tensor, new_cp_tensor, skip_mode=mode) == approx(1)
+        new_cp_tensor_different_weights = None, new_factors
+        assert factor_tools.factor_match_score(cp_tensor, new_cp_tensor_different_weights, skip_mode=mode) == approx(1)
+
+    # Create a CP tensor
+    # For each mode:
+    # Create a copy of the CP tensor, but where the factor matrix in the current mode is replaced with another that has the same number of components, but different number of rows
+    # Compute FMS, it should be 1
+    # Change the weights of the copy
+    # Compute FMS, it should still be 1 (weights cannot be considered if skip mode is given)
+    # assert True, "Not implemented yet"
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_factor_match_score_warns_if_consider_weights_and_skip_mode(seed, labelled):
+    cp_tensor1 = simulated_random_cp_tensor((10, 11, 12, 13), 4, seed=seed, labelled=labelled)[0]
+    cp_tensor2 = simulated_random_cp_tensor((10, 11, 12, 13), 4, seed=seed + 1, labelled=labelled)[0]
+
+    with pytest.warns(UserWarning):
+        assert factor_tools.factor_match_score(cp_tensor1, cp_tensor2, skip_mode=0, consider_weights=True)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_cosine_similarity(rng, labelled):
+    A = rng.uniform(size=(10, 20))
+    if labelled:
+        A = pd.DataFrame(A)
+
+    assert factor_tools.cosine_similarity(A, A) == pytest.approx(1)
+    assert factor_tools.cosine_similarity(A, 2 * A) == pytest.approx(1)
+    assert factor_tools.cosine_similarity(2 * A, A) == pytest.approx(1)
+    # TODO: Add some known matrices?
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_permute_cp_tensor_raises_for_both_permutation_and_reference(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)[0]
+    ref_cp_tensor = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)[0]
+    with pytest.raises(ValueError):
+        factor_tools.permute_cp_tensor(cp_tensor, permutation=[0, 2, 1], reference_cp_tensor=ref_cp_tensor)

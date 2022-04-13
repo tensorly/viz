@@ -4,12 +4,23 @@ tensors. The module contains functions that are useful for inspecting tensor fac
 models. For example, computing how similar two factorisations are, checking if two decompositions
 are equivalent, or simply generating a dense tensor from a (possibly) labelled decomposition.
 """
+from warnings import warn
+
 import numpy as np
+import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
-from component_vis.xarray_wrapper import _SINGLETON
+from component_vis.xarray_wrapper import (
+    _SINGLETON,
+    _handle_labelled_cp,
+    _handle_labelled_factor_matrix,
+)
 
-from ._module_utils import _handle_none_weights_cp_tensor
+from ._module_utils import (
+    _handle_none_weights_cp_tensor,
+    is_dataframe,
+    validate_cp_tensor,
+)
 from .model_evaluation import percentage_variation
 from .utils import _alias_mode_axis, extract_singleton, normalise
 
@@ -144,6 +155,9 @@ def distribute_weights(cp_tensor, weight_behaviour, weight_mode=0):
         raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
 
 
+# TODO: handle dataframes?
+@_handle_labelled_factor_matrix("factor_matrix2", None)
+@_handle_labelled_factor_matrix("factor_matrix1", None)
 def cosine_similarity(factor_matrix1, factor_matrix2):
     r"""The average cosine similarity (Tucker congruence) with optimal column permutation.
 
@@ -354,6 +368,14 @@ def factor_match_score(
     >>> print(f"Factor match score (without weight penalty): {fms_without_weight_penalty:.2f}")
     Factor match score (without weight penalty): 0.99
     """
+    if skip_mode is not None and consider_weights:
+        warn(
+            "Cannot consider weights when a mode is skipped due to the scaling indeterminacy of PARAFAC models."
+            + " consider_weights will therefore be set to False. To supress this warning, specify"
+            + " consider_weights=False when calling factor_match_score with skip_mode not equal to None."
+        )
+        consider_weights = False
+
     # Extract weights and components from decomposition
     weights1, factors1 = normalise_cp_tensor(cp_tensor1)
     weights2, factors2 = normalise_cp_tensor(cp_tensor2)
@@ -414,13 +436,13 @@ def degeneracy_score(cp_tensor):
         \frac{\mathbf{x}^\mathsf{T} \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.
 
     Furthermore, the magnitude of the degenerate components are unbounded and
-    will approach infinity as the number iterations increase.
+    will approach infinity as the number of iterations increase.
 
     Degenerate solutions typically signify that the decomposition is unreliable,
-    and that one should take care before interpreting the components. Degeneracy
+    and one should take care before interpreting the components. Degeneracy
     can, in fact, be a sign that the PARAFAC problem is ill-posed. There are certain
-    tensors where there are no solution to the least squares problem solved to fit
-    PARAFAC models. And in those cases, the "optimal", but unobtainable PARAFAC
+    tensors where there are no solutions to the least squares problem to needed to fit
+    PARAFAC models. And in those cases, the "optimal" but unobtainable PARAFAC
     decomposition will have component vectors with infinite norm that point in
     opposite directions :cite:p:`krijnen2008non`.
 
@@ -430,7 +452,7 @@ def degeneracy_score(cp_tensor):
      * Decreasing the convergence tolerance or increasing the number of iterations
      * Imposing non-negativity constraints in all modes
      * Imposing orthogonality constraints in at least one mode
-     * Changing number of components
+     * Changing the number of components
 
     Both non-negativity constraints and orthogonality constraints will
     remove the potential ill-posedness of the CP model. We can, in fact,
@@ -450,13 +472,13 @@ def degeneracy_score(cp_tensor):
     .. note::
 
         There are other kinds of degeneracies too. For example three-component
-        degeneracies, which manifests in two components of increasing magnitude
-        and one other component that is equal to the negative sum of the former
+        degeneracies, which manifests as two components of increasing magnitude
+        and one other component equal to the negative sum of the former
         two :cite:p:`paatero2000construction,stegeman2006degeneracy`. However, it
         is the two-component degeneracy that is most commonly discussed in the
         litterature :cite:p:`bro1997parafac,zijlstra2002degenerate,krijnen2008non`.
         Still, if three or more components display weights that have a much higher
-        magnitude than the data, then there is a reason to be concerned.
+        magnitude than the data, there is a reason to be concerned.
 
     Parameters
     ----------
@@ -473,7 +495,7 @@ def degeneracy_score(cp_tensor):
         :cite:p:`bro1997parafac`).
     """
     # TODOC: Example for degeneracy_score
-    # TODOC: There may be some more cites in Paatero 2000
+    # TODOC: There may be some more relevant cites in Paatero 2000
     weights, factors = cp_tensor
     rank = factors[0].shape[1]
     tucker_congruence_scores = np.ones(shape=(rank, rank))
@@ -486,6 +508,7 @@ def degeneracy_score(cp_tensor):
 
 # TODO: Handle labelled cp?
 # TODO: Add nan columns
+# TODO: handle none weights decorator?
 def _permute_cp_tensor(cp_tensor, permutation):
     """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.
     """
@@ -626,7 +649,88 @@ def permute_cp_tensor(
     return _permute_cp_tensor(cp_tensor, permutation)
 
 
-def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
+def check_factor_matrix_equal(factor_matrix1, factor_matrix2, ignore_labels=False):
+    """Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.
+
+    This function is similar to ``numpy.allclose``, but works on both labelled and unlabelled factor
+    matrices. If the factor matrices are labelled, then the data frame index and columns are also
+    compared (unless ``ignore_labels=True``).
+
+    Parameters
+    ----------
+    factor_matrix1 : numpy.ndarray or pandas.DataFrame
+        Labelled or unlabelled factor matrix
+    cp_tensor2 : CPTensor or tuple
+        Labelled or unlabelled factor matrix
+    rtol : float
+        Relative tolerance (see ``numpy.allclose``)
+    atol : float
+        Absolute tolerance (see ``numpy.allclose``)
+    ignore_labels : bool
+        If True, then labels (i.e. DataFrame column names and indices) can differ.
+
+    Returns
+    -------
+    bool
+        Whether the decompositions are equivalent.
+
+    Examples
+    --------
+    ``check_factor_matrix_equal`` checks if two factor matrices are exactly the same.
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> import numpy as np
+    >>> A = np.arange(6).reshape(3, 2).astype(float)
+    >>> B = A.copy()
+    >>> check_factor_matrix_equal(A, B)
+    True
+
+    If they are only the same up to round off errors, then this function returns ``False``
+
+    >>> check_factor_matrix_equal(A, B + 1e-10)
+    False
+
+    If we make only one of them into a DataFrame, then the factor matrices are not equal
+
+    >>> import pandas as pd
+    >>> A_labelled = pd.DataFrame(A)
+    >>> check_factor_matrix_equal(A_labelled, B)
+    False
+    >>> check_factor_matrix_equal(B, A_labelled)
+    False
+
+    If we turn B into a DataFrame too, it passes again
+
+    >>> B_labelled = pd.DataFrame(A)
+    >>> check_factor_matrix_equal(A_labelled, B_labelled)
+    True
+
+    The index is checked for equality, so if we change the index of ``B_labelled``, then
+    the factor matrices are not equal
+
+    >>> B_labelled.index += 1
+    >>> check_factor_matrix_equal(A_labelled, B_labelled)
+    False
+
+    However, we can disable checking the labels by using the ``ignore_labels`` argument
+
+    >>> check_factor_matrix_equal(A_labelled, B_labelled, ignore_labels=True)
+    True
+    """
+    if is_dataframe(factor_matrix1) != is_dataframe(factor_matrix2) and not ignore_labels:
+        return False
+    if ignore_labels and is_dataframe(factor_matrix1):
+        factor_matrix1 = factor_matrix1.values
+    if ignore_labels and is_dataframe(factor_matrix2):
+        factor_matrix2 = factor_matrix2.values
+
+    if is_dataframe(factor_matrix1):
+        return factor_matrix1.equals(factor_matrix2)
+
+    return np.array_equal(factor_matrix1, factor_matrix2)
+
+
+def check_cp_tensor_equal(cp_tensor1, cp_tensor2, ignore_labels=False):
     """Check if the factor matrices and weights are equal.
 
     This will check if the factor matrices and weights are exactly equal
@@ -644,12 +748,186 @@ def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
     cp_tensor2 : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
+    ignore_labels : bool
+        If True, then labels (i.e. DataFrame column names and indices) can differ.
 
     Returns
     -------
     bool
         Whether the decompositions are equal.
 
+    Examples
+    --------
+    ``check_cp_tensor_equal`` checks for strict equality of the factor matrices and
+    weights.
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.factor_tools import check_cp_tensor_equal
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> check_cp_tensor_equal(cp_tensor, cp_tensor)
+    True
+
+    But it does not check the identity of the decompositions, only their numerical values
+
+    >>> cp_tensor2, dataset2 = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> check_cp_tensor_equal(cp_tensor, cp_tensor2)
+    True
+
+    Normalising a ``cp_tensor`` changes its values, so then we do not have strict equality
+    of the factor matrices, even though the decomposition is equivalent
+
+    >>> from component_vis.factor_tools import normalise_cp_tensor
+    >>> normalised_cp_tensor = normalise_cp_tensor(cp_tensor)
+    >>> check_cp_tensor_equal(cp_tensor, normalised_cp_tensor)
+    False
+
+    Permutations will also make the numerical values of the``cp_tensor`` change
+
+    >>> from component_vis.factor_tools import permute_cp_tensor
+    >>> check_cp_tensor_equal(cp_tensor, permute_cp_tensor(cp_tensor, permutation=[1, 2, 0]))
+    False
+
+    See Also
+    --------
+    check_cp_tensor_equal : Function for checking if two CP tensors have the same
+	numerical value (have equal weights and factor matrices)
+    """
+    validate_cp_tensor(cp_tensor1)
+    validate_cp_tensor(cp_tensor2)
+
+    rank = cp_tensor1[1][0].shape[1]
+    num_modes = len(cp_tensor1[1])
+
+    if rank != cp_tensor2[1][0].shape[1]:
+        return False
+    if num_modes != len(cp_tensor2[1]):
+        return False
+
+    # Check weights
+    if cp_tensor1[0] is None and cp_tensor2[0] is not None:
+        return False
+    if cp_tensor1[0] is not None and cp_tensor2[0] is None:
+        return False
+    if not np.all(cp_tensor1[0] == cp_tensor2[0]):
+        return False
+
+    for mode in range(num_modes):
+        if not check_factor_matrix_equal(cp_tensor1[1][mode], cp_tensor2[1][mode], ignore_labels=ignore_labels):
+            return False
+    return True
+
+
+def check_factor_matrix_close(factor_matrix1, factor_matrix2, rtol=1e-5, atol=1e-8, ignore_labels=False):
+    """Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.
+
+    This function is similar to ``numpy.allclose``, but works on both labelled and unlabelled factor
+    matrices. If the factor matrices are labelled, then the data frame index and columns are also
+    compared (unless ``ignore_labels=True``).
+
+    Parameters
+    ----------
+    factor_matrix1 : numpy.ndarray or pandas.DataFrame
+        Labelled or unlabelled factor matrix
+    cp_tensor2 : CPTensor or tuple
+        Labelled or unlabelled factor matrix
+    rtol : float
+        Relative tolerance (see ``numpy.allclose``)
+    atol : float
+        Absolute tolerance (see ``numpy.allclose``)
+    ignore_labels : bool
+        If True, then labels (i.e. DataFrame column names and indices) can differ.
+
+    Returns
+    -------
+    bool
+        Whether the decompositions are equivalent.
+
+    Examples
+    --------
+    ``check_factor_matrix_close`` checks if two factor matrices are close up to round off errors.
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> import numpy as np
+    >>> A = np.arange(6).reshape(3, 2).astype(float)
+    >>> B = A + 1e-10
+    >>> check_factor_matrix_close(A, B)
+    True
+
+    If we make only one of them into a DataFrame, then the factor matrices are not close
+
+    >>> import pandas as pd
+    >>> A_labelled = pd.DataFrame(A)
+    >>> check_factor_matrix_close(A_labelled, B)
+    False
+    >>> check_factor_matrix_close(B, A_labelled)
+    False
+
+    If we turn B into a DataFrame too, it passes again
+
+    >>> B_labelled = pd.DataFrame(A)
+    >>> check_factor_matrix_close(A_labelled, B_labelled)
+    True
+
+    The index is checked for equality, so if we change the index of ``B_labelled``, then
+    the factor matrices are not close
+
+    >>> B_labelled.index += 1
+    >>> check_factor_matrix_close(A_labelled, B_labelled)
+    False
+
+    However, we can disable checking the labels by using the ``ignore_labels`` argument
+
+    >>> check_factor_matrix_close(A_labelled, B_labelled, ignore_labels=True)
+    True
+    """
+    if is_dataframe(factor_matrix1) != is_dataframe(factor_matrix2) and not ignore_labels:
+        return False
+    if ignore_labels and is_dataframe(factor_matrix1):
+        factor_matrix1 = factor_matrix1.values
+    if ignore_labels and is_dataframe(factor_matrix2):
+        factor_matrix2 = factor_matrix2.values
+
+    if is_dataframe(factor_matrix1):
+        try:
+            pd.testing.assert_frame_equal(factor_matrix1, factor_matrix2, rtol=rtol, atol=atol)
+        except AssertionError:
+            return False
+        else:
+            return True
+
+    return np.allclose(factor_matrix1, factor_matrix2, rtol=rtol, atol=atol)
+
+
+@_handle_none_weights_cp_tensor("cp_tensor1")
+@_handle_none_weights_cp_tensor("cp_tensor2")
+def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ignore_labels=False):
+    """Check if the decompositions are equivalent
+
+    This will check if the factor matrices and weights are equivalent. That is
+    if they represent the same tensor. This differs from checking equality in
+    the sense that if ``cp_tensor2`` contain the same factors as ``cp_tensor1``,
+    but permuted, or with the weights distributed differently between the
+    modes, then they are not equal, but equivalent.
+
+    Parameters
+    ----------
+    cp_tensor1 : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    cp_tensor2 : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    rtol : float
+        Relative tolerance (see ``numpy.allclose``)
+    atol : float
+        Absolute tolerance (see ``numpy.allclose``)
+    ignore_labels : bool
+        If True, then labels (i.e. DataFrame column names and indices) can differ.
+
+    Returns
+    -------
+    bool
+        Whether the decompositions are equivalent.
 
     Examples
     --------
@@ -678,98 +956,11 @@ def check_cp_tensors_equals(cp_tensor1, cp_tensor2):
 
     See Also
     --------
-    check_cp_tensors_equals : Function for checking if two CP tensors have the same
-	numerical value (have equal weights and factor matrices)
-    """
-    # TODO: Handle dataframes
-    rank = cp_tensor1[1][0].shape[1]
-    num_modes = len(cp_tensor1[1])
-
-    if rank != cp_tensor2[1][0].shape[1]:
-        return False
-    if num_modes != len(cp_tensor2[1]):
-        return False
-
-    # Check weights
-    if cp_tensor1[0] is None and cp_tensor2[0] is not None:
-        return False
-    if cp_tensor1[0] is not None and cp_tensor2[0] is None:
-        return False
-    if not np.all(cp_tensor1[0] == cp_tensor2[0]):
-        return False
-
-    for mode in range(num_modes):
-        if not cp_tensor1[1][mode].shape == cp_tensor2[1][mode].shape:
-            return False
-        if not np.all(cp_tensor1[1][mode] == cp_tensor2[1][mode]):
-            return False
-    return True
-
-
-def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
-    """Check if the decompositions are equivalent
-
-    This will check if the factor matrices and weights are equivalent. That is
-    if they represent the same tensor. This differs from checking equality in
-    the sense that if ``cp_tensor2`` contain the same factors as ``cp_tensor1``,
-    but permuted, or with the weights distributed differently between the
-    modes, then they are not equal, but equivalent.
-
-    Parameters
-    ----------
-    cp_tensor1 : CPTensor or tuple
-        TensorLy-style CPTensor object or tuple with weights as first
-        argument and a tuple of components as second argument
-    cp_tensor2 : CPTensor or tuple
-        TensorLy-style CPTensor object or tuple with weights as first
-        argument and a tuple of components as second argument
-    rtol : float
-        Relative tolerance (see ``numpy.allclose``)
-    atol : float
-        Absolute tolerance (see ``numpy.allclose``)
-
-    Returns
-    -------
-    bool
-        Whether the decompositions are equivalent.
-
-
-    Examples
-    --------
-    ``check_cp_tensors_equals`` checks for strict equality of the factor matrices and
-    weights.
-
-    >>> from component_vis.data import simulated_random_cp_tensor
-    >>> from component_vis.factor_tools import check_cp_tensors_equals
-    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
-    >>> check_cp_tensors_equals(cp_tensor, cp_tensor)
-    True
-
-    But it does not check the identity of the decompositions, only their numerical values
-
-    >>> cp_tensor2, dataset2 = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
-    >>> check_cp_tensors_equals(cp_tensor, cp_tensor2)
-    True
-
-    Normalising a ``cp_tensor`` changes its values, so then we do not have strict equality
-    of the factor matrices, even though the decomposition is equivalent
-
-    >>> from component_vis.factor_tools import normalise_cp_tensor
-    >>> normalised_cp_tensor = normalise_cp_tensor(cp_tensor)
-    >>> check_cp_tensors_equals(cp_tensor, normalised_cp_tensor)
-    False
-
-    Permutations will also make the numerical values of the``cp_tensor`` change
-
-    >>> from component_vis.factor_tools import permute_cp_tensor
-    >>> check_cp_tensors_equals(cp_tensor, permute_cp_tensor(cp_tensor, permutation=[1, 2, 0]))
-    False
-
-    See Also
-    --------
     check_cp_tensors_equivalent : Function for checking if two CP tensors represent the same dense tensor.
     """
-    # TODO: Handle dataframes
+    validate_cp_tensor(cp_tensor1)
+    validate_cp_tensor(cp_tensor2)
+
     rank = cp_tensor1[1][0].shape[1]
     num_modes = len(cp_tensor1[1])
 
@@ -790,7 +981,9 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8):
     if not np.allclose(cp_tensor1[0], cp_tensor2[0], rtol=rtol, atol=atol):
         return False
     for mode in range(num_modes):
-        if not np.allclose(cp_tensor1[1][mode], cp_tensor2[1][mode], rtol=rtol, atol=atol):
+        if not check_factor_matrix_close(
+            cp_tensor1[1][mode], cp_tensor2[1][mode], rtol=rtol, atol=atol, ignore_labels=ignore_labels
+        ):
             return False
 
     return True
