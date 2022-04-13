@@ -7,8 +7,9 @@ are equivalent, or simply generating a dense tensor from a (possibly) labelled d
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
-from component_vis.xarray_wrapper import _SINGLETON, _handle_labelled_cp
+from component_vis.xarray_wrapper import _SINGLETON
 
+from ._module_utils import _handle_none_weights_cp_tensor
 from .model_evaluation import percentage_variation
 from .utils import _alias_mode_axis, extract_singleton, normalise
 
@@ -392,9 +393,10 @@ def factor_match_score(
 def degeneracy_score(cp_tensor):
     r"""Compute the degeneracy score for a given decomposition.
 
-    PARAFAC models can be degenerate. For a third order tensor, this
-    means that the triple cosine of two components can approach -1.
-    That is
+    PARAFAC models can be degenerate, which is a sign that we should
+    be careful before interpreting that model. For a third order tensor,
+    this generally manifests in a triple cosine of two components that
+    approach -1. That is
 
     .. math::
 
@@ -412,21 +414,28 @@ def degeneracy_score(cp_tensor):
         \frac{\mathbf{x}^\mathsf{T} \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.
 
     Furthermore, the magnitude of the degenerate components are unbounded and
-    may approach infinity.
+    will approach infinity as the number iterations increase.
 
     Degenerate solutions typically signify that the decomposition is unreliable,
-    and that one should take care before interpreting the components.
+    and that one should take care before interpreting the components. Degeneracy
+    can, in fact, be a sign that the PARAFAC problem is ill-posed. There are certain
+    tensors where there are no solution to the least squares problem solved to fit
+    PARAFAC models. And in those cases, the "optimal", but unobtainable PARAFAC
+    decomposition will have component vectors with infinite norm that point in
+    opposite directions :cite:p:`krijnen2008non`.
 
     There are several strategies to avoid degenerate solutions:
 
      * Fitting models with more random initialisations
      * Decreasing the convergence tolerance or increasing the number of iterations
-     * Imposing non-negativity constraints
-     * Change number of components
+     * Imposing non-negativity constraints in all modes
+     * Imposing orthogonality constraints in at least one mode
+     * Changing number of components
 
-    The latter of these strategies work well for data where non-negativity
-    constraints are sensible, as non-negative tensor decompositions cannot
-    be degenerate.
+    Both non-negativity constraints and orthogonality constraints will
+    remove the potential ill-posedness of the CP model. We can, in fact,
+    not obtain degenerate solutions when we impose such constriants
+    :cite:p:`krijnen2008non`
 
     To measure degeneracy, we compute the degeneracy score, which is the
     minimum triple cosine (for a third-order tensor). A score close to
@@ -436,6 +445,18 @@ def degeneracy_score(cp_tensor):
 
     For more information about degeneracy for component models see
     :cite:p:`zijlstra2002degenerate` and :cite:p:`bro1997parafac`.
+
+
+    .. note::
+
+        There are other kinds of degeneracies too. For example three-component
+        degeneracies, which manifests in two components of increasing magnitude
+        and one other component that is equal to the negative sum of the former
+        two :cite:p:`paatero2000construction,stegeman2006degeneracy`. However, it
+        is the two-component degeneracy that is most commonly discussed in the
+        litterature :cite:p:`bro1997parafac,zijlstra2002degenerate,krijnen2008non`.
+        Still, if three or more components display weights that have a much higher
+        magnitude than the data, then there is a reason to be concerned.
 
     Parameters
     ----------
@@ -452,7 +473,7 @@ def degeneracy_score(cp_tensor):
         :cite:p:`bro1997parafac`).
     """
     # TODOC: Example for degeneracy_score
-    # TODOC: Add cite about ill-posedness and how it spawns degenerate solutions
+    # TODOC: There may be some more cites in Paatero 2000
     weights, factors = cp_tensor
     rank = factors[0].shape[1]
     tucker_congruence_scores = np.ones(shape=(rank, rank))
