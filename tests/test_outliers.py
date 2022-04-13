@@ -1,7 +1,14 @@
 import numpy as np
 import pytest
 
-from component_vis.outliers import compute_leverage, compute_slabwise_sse
+from component_vis import factor_tools
+from component_vis.data import simulated_random_cp_tensor
+from component_vis.outliers import (
+    compute_leverage,
+    compute_slabwise_sse,
+    get_leverage_outlier_threshold,
+    get_slab_sse_outlier_threshold,
+)
 
 
 # TODO: test with xarrays as well. should we have some parameterization of fixture or something to test xarrays as well
@@ -43,3 +50,66 @@ def test_slabwise_sse_sum_equals_total_sse(rng):
     slab_sse = compute_slabwise_sse(tensor1, tensor2, normalise=False)
     total_sse = np.sum((tensor1 - tensor2) ** 2)
     assert np.sum(slab_sse) == pytest.approx(total_sse)
+
+
+def test_slab_leverage_threshold_invalid_method(rng):
+    # Test that value error is raised when method is not among:
+    # 'huber lower', 'huber higher', 'hw lower', 'hw higher', 'p-value', and 'hotelling'
+
+    N, R = 10, 3
+    A = rng.standard_normal(size=(N, R))
+    leverage = compute_leverage(A)
+    with pytest.raises(ValueError):
+        get_leverage_outlier_threshold(leverage, method="invalid method")
+
+
+def test_slab_leverage_threshold_p_value_one_component(rng):
+    # Test that value error is raised when rank is 1 and method is p_value
+    N, R = 10, 1
+    A = rng.standard_normal(size=(N, R))
+    leverage = compute_leverage(A)
+    with pytest.raises(ValueError):
+        get_leverage_outlier_threshold(leverage, method="p-value")
+
+
+def test_slab_leverage_threshold_p_value_too_large_rank(rng):
+    # Test that value error is raised when I=10, rank is 10 and method is p_value
+    N, R = 10, 10
+    A = rng.standard_normal(size=(N, R))
+    leverage = compute_leverage(A)
+    with pytest.raises(ValueError):
+        get_leverage_outlier_threshold(leverage, method="p-value")
+
+
+def test_slab_leverage_threshold_hotelling_too_large_rank(rng):
+    # Create random 10 component CP tensor with I=11
+    # Compute leverages in first mode
+    # Test that value error is raised when method is p_value
+    N, R = 11, 10
+    A = rng.standard_normal(size=(N, R))
+    leverage = compute_leverage(A)
+    with pytest.raises(ValueError):
+        get_leverage_outlier_threshold(leverage, method="hotelling")
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_slab_sse_threshold_invalid_method(seed, labelled):
+    # Test that value error is raised when method is not 'two sigma' or 'p-value'
+    X1 = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[1]
+    X2 = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[1]
+    sse = compute_slabwise_sse(X1, X2)
+    with pytest.raises(ValueError):
+        get_slab_sse_outlier_threshold(sse, method="invalid method")
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_check_cp_tensors_equivalent_same_weights_different_components(seed, labelled):
+
+    cp_tensor1 = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[0]
+    cp_tensor2 = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed + 1, labelled=labelled)[0]
+    cp_tensor2 = factor_tools.permute_cp_tensor(cp_tensor2, reference_cp_tensor=cp_tensor1)
+    cp_tensor1 = factor_tools.normalise_cp_tensor(cp_tensor1)
+    cp_tensor2 = factor_tools.normalise_cp_tensor(cp_tensor2)
+
+    cp_tensor3 = cp_tensor1[0], cp_tensor2[1]  # same weights as cp_tensor1, but different components
+    assert not factor_tools.check_cp_tensors_equivalent(cp_tensor1, cp_tensor3)

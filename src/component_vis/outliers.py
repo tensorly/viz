@@ -349,8 +349,8 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
     95% confidence interval for the false positive rate: [0.0494, 0.0515]
     """
-    num_samples = len(leverage_scores)
-    num_components = np.sum(leverage_scores)
+    num_samples = int(round(len(leverage_scores)))
+    num_components = int(round(np.sum(leverage_scores)))
 
     method = method.lower()
     if method == "huber lower":
@@ -369,14 +369,18 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
         if n <= p:
             raise ValueError("Cannot use P-value when there are fewer samples than components.")
 
+        # TODO: Try with n - p - 1, and try maths too compare with hotelling
         F = stats.f.isf(p_value, p - 1, n - p)
         F_scale = F * (p - 1) / (n - p)
         # Solve the equation (h + (1/n)) / (1 - h) = F_scale:
         return (F_scale + (1 / n)) / (1 + F_scale)
     elif method == "hotelling":
         I, R = num_samples, num_components
+        if I <= R + 1:
+            raise ValueError("Cannot use Hotelling P-value when there are fewer samples than components minus one.")
+
         F = stats.f.isf(p_value, R, I - R - 1)
-        B = (R / (I - R - 1)) * F / (1 + (R / (I - R - 1)) * F)
+        B = F * (R / (I - R - 1)) / (1 + (R / (I - R - 1)) * F)
         # Remove the square compared to Nomikos & MacGregor since the leverage is:
         #  A(AtA)^-1 At,
         # not
@@ -389,7 +393,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
         )
 
 
-def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddof=1):
+def get_slab_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05, ddof=1):
     r"""Compute rule-of-thumb threshold values for suspicious residuals.
 
     One way to determine possible outliers is to examine how well the model describes
@@ -412,7 +416,7 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p_value", p_value=0.05, ddo
     Parameters
     ----------
     slab_sse : np.ndarray or pd.DataFrame
-    method : {"two_sigma", "p_value"}
+    method : {"two_sigma", "p-value"}
     p_value : float (optional, default=0.05)
         If ``method="p-value"``, then this is the p-value used for the cut-off.
 
