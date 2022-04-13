@@ -12,6 +12,9 @@ from .utils import cp_to_tensor
 
 __all__ = ["load_aminoacids", "load_oslo_city_bike", "download_city_bike"]
 
+DATASET_PARENT = Path(__file__).parent / "datasets"
+DOWNLOADED_PARENT = DATASET_PARENT / "downloads"
+
 
 class RemoteZip:
     def __init__(self, url):
@@ -31,7 +34,7 @@ class RemoteZip:
         return {filename: self.extract_file(filename) for filename in self.contents}
 
 
-def load_aminoacids():
+def load_aminoacids(save_data=True):
     """Load the Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro :cite:p:`bro1997parafac`.
 
     This is a fluoresence spectroscopy dataset well suited for PARAFAC analysis.
@@ -42,12 +45,27 @@ def load_aminoacids():
     Or archived version here:
         https://web.archive.org/web/20210413050155/http://models.life.ku.dk/Amino_Acid_fluo
 
+    Arguments
+    ---------
+    save_data : bool (default=True)
+        If ``True``, then the dataset is saved in ``component_vis.data.DOWNLOAD_PARENT`` to avoid having to download
+        it in the future.
+
     Returns
     -------
     xarray.DataArray
         The Aminoacids dataset
     """
-    print('Loading Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro')
+    print("Loading Aminoacids dataset from:")
+    print(
+        "Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems,"
+        + " 1997, 38, 149-171"
+    )
+
+    filename = DOWNLOADED_PARENT / "aminoacids.nc4"
+    if filename.is_file():
+        return xr.open_dataarray(filename)
+
     aminoacids_zip = RemoteZip("http://models.life.ku.dk/sites/default/files/Amino_Acid_fluo.zip")
     matlab_variables = loadmat(aminoacids_zip.extract_file("amino.mat"))
 
@@ -62,7 +80,13 @@ def load_aminoacids():
     }
     dims = ["Sample", "Excitation frequency", "Emission frequency"]
 
-    return xr.DataArray(X, dims=dims, coords=coords_dict)
+    data = xr.DataArray(X, dims=dims, coords=coords_dict)
+
+    if save_data:
+        DOWNLOADED_PARENT.mkdir(exist_ok=True, parents=True)
+        data.to_netcdf(filename)
+
+    return data
 
 
 def load_oslo_city_bike():
@@ -89,7 +113,7 @@ def load_oslo_city_bike():
         and hour of day. There are also three metadata-coordinates along the "Bike station ID"-axis containing
         latitudes, longitudes and station names.
     """
-    nc4_file = Path(__file__).parent / "datasets/oslo_bike.nc4"
+    nc4_file = DATASET_PARENT / "oslo_bike.nc4"
     return xr.load_dataarray(nc4_file)
 
 
