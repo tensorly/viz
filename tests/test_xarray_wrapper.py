@@ -147,6 +147,8 @@ def test_label_cp_tensor_warns_when_cp_tensor_and_dataset_both_are_labelled(seed
 def test_label_cp_tensor_with_dataframe(seed):
     cp_tensor, X = simulated_random_cp_tensor((3, 2), 2, labelled=True, seed=seed)
     X_df = pd.DataFrame(X.values, index=X.coords["Mode 0"], columns=X.coords["Mode 1"])
+    X_df.index.name = "Mode 0"
+    X_df.columns.name = "Mode 1"
 
     unlabelled_cp = (cp_tensor[0], [factor.values for factor in cp_tensor[1]])
     labelled_cp = label_cp_tensor(unlabelled_cp, X_df)
