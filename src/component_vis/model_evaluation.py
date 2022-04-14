@@ -346,11 +346,7 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     >>> highest_error = predictive_power(cp_tensor, Y, linear_regression, metric=max_error)
     >>> print(f"The maximum error is {highest_error:.2f}")
     The maximum error is 0.00
-
-
     """
-    # TOTEST: test for predictive_power
-    # TODOC: example for predictive_power
     factor_matrix = cp_tensor[1][mode]
     sklearn_estimator.fit(factor_matrix, y)
     if metric is None:

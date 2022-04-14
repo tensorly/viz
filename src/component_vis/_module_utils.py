@@ -40,7 +40,6 @@ def is_xarray(x):
     bool
         ``True`` if x is an xarray data array, ``False`` otherwise.
     """
-    # TODO: Is this how we want to check?
     return isinstance(x, xr.DataArray)
 
 
@@ -78,7 +77,7 @@ def _handle_none_weights_cp_tensor(cp_tensor_name, optional=False):
             if optional and cp_tensor_name not in bound_arguments.arguments:
                 return func(*bound_arguments.args, **bound_arguments.kwargs)
 
-            cp_tensor = bound_arguments.arguments.get(cp_tensor_name, None)  # TODO: validate cp_tensor?
+            cp_tensor = bound_arguments.arguments.get(cp_tensor_name, None)
             weights, factors = validate_cp_tensor(cp_tensor)
             if weights is None:
                 rank = factors[0].shape[1]

@@ -522,9 +522,6 @@ def degeneracy_score(cp_tensor):
     return np.asarray(tucker_congruence_scores).min()
 
 
-# TODO: Handle labelled cp?
-# TODO: Add nan columns
-# TODO: handle none weights decorator?
 def _permute_cp_tensor(cp_tensor, permutation):
     """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.
     """
