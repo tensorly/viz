@@ -309,6 +309,45 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     -------
     float
         Score based on the estimator's performance.
+
+    Example
+    -------
+    ``predictive_power`` can be useful to evaluate the predictive power of a CP decomposition.
+    To illustrate this, we start by creating a simulated CP tensor and a variable we want to
+    predict that is linearly related to one of the factor matrices.
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> import numpy as np
+    >>> rng = np.random.default_rng(0)
+    >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=rng)
+    >>> weights, (A, B, C) = cp_tensor
+    >>> regression_coefficients = rng.standard_normal((5, 1))
+    >>> Y = A @ regression_coefficients
+
+    Next, we fit a PARAFAC model to this data
+
+    >>> from tensorly.decomposition import parafac
+    >>> est_cp_tensor = parafac(X, 5)
+
+    Finally, we see how well the estimated decomposition can describe our target variable, ``Y``.
+    This will use the :math:`R^2`-coefficient for scoring, as that is the default scoring method
+    for linear models.
+
+    >>> from sklearn.linear_model import LinearRegression
+    >>> from component_vis.model_evaluation import predictive_power
+    >>> linear_regression = LinearRegression()
+    >>> r_squared = predictive_power(cp_tensor, Y, linear_regression)
+    >>> print(f"The R^2 coefficient is {r_squared:.2f}")
+    The R^2 coefficient is 1.00
+
+    We can also specify our own scoring function
+
+    >>> from sklearn.metrics import max_error
+    >>> highest_error = predictive_power(cp_tensor, Y, linear_regression, metric=max_error)
+    >>> print(f"The maximum error is {highest_error:.2f}")
+    The maximum error is 0.00
+
+
     """
     # TOTEST: test for predictive_power
     # TODOC: example for predictive_power
