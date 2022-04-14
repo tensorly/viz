@@ -1,3 +1,5 @@
+"""This module contains utilities for seamlessly handling DataFrames as factor matrices and XArray DataArrays as data
+"""
 from functools import wraps
 from inspect import signature
 from warnings import warn
@@ -12,6 +14,15 @@ from ._module_utils import (
     is_xarray,
     validate_cp_tensor,
 )
+
+__all__ = [
+    "is_dataframe",
+    "is_xarray",
+    "is_labelled_dataset",
+    "is_labelled_cp",
+    "is_labelled_tucker",
+    "label_cp_tensor",
+]
 
 
 def _label_factor_matrices(factor_matrices, dataset):
@@ -160,6 +171,7 @@ def _extract_df_metadata(df, preserve_columns=True):
     return values, metadata
 
 
+# TODO: Make public
 def _unlabel_cp_tensor(cp_tensor, optional, preserve_columns):
     if cp_tensor is None and optional:
         return None, None

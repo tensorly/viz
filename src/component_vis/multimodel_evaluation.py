@@ -7,6 +7,12 @@ from . import model_evaluation
 from .factor_tools import factor_match_score
 from .utils import extract_singleton
 
+__all__ = [
+    "similarity_evaluation",
+    "get_model_with_lowest_error",
+    "sort_models_by_error",
+]
+
 
 def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=None, **kwargs):
     r"""Compute similarities between ``cp_tensor`` and all ``comparison_cp_tensors``.

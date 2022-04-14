@@ -9,6 +9,16 @@ from ._module_utils import _handle_none_weights_cp_tensor
 from .utils import _alias_mode_axis, cp_to_tensor
 from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 
+__all__ = [
+    "estimate_core_tensor",
+    "core_consistency",
+    "sse",
+    "relative_sse",
+    "fit",
+    "predictive_power",
+    "percentage_variation",
+]
+
 
 @_handle_labelled_dataset("X", None)
 def estimate_core_tensor(factors, X):

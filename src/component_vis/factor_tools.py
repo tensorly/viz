@@ -24,6 +24,23 @@ from ._module_utils import (
 from .model_evaluation import percentage_variation
 from .utils import _alias_mode_axis, extract_singleton, normalise
 
+__all__ = [
+    "normalise_cp_tensor",
+    "distribute_weights_evenly",
+    "distribute_weights_in_one_mode",
+    "distribute_weights",
+    "cosine_similarity",
+    "get_factor_matrix_permutation",
+    "factor_match_score",
+    "degeneracy_score",
+    "get_cp_permutation",
+    "permute_cp_tensor",
+    "check_factor_matrix_equal",
+    "check_cp_tensor_equal",
+    "check_factor_matrix_close",
+    "check_cp_tensors_equivalent",
+]
+
 
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
 def normalise_cp_tensor(cp_tensor):
@@ -155,7 +172,6 @@ def distribute_weights(cp_tensor, weight_behaviour, weight_mode=0):
         raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
 
 
-# TODO: handle dataframes?
 @_handle_labelled_factor_matrix("factor_matrix2", None)
 @_handle_labelled_factor_matrix("factor_matrix1", None)
 def cosine_similarity(factor_matrix1, factor_matrix2):

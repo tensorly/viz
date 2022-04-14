@@ -28,6 +28,7 @@ __all__ = [
     "components_plot",
     "component_comparison_plot",
     "optimisation_diagnostic_plots",
+    "percentage_variation_plots",
 ]
 
 

@@ -10,13 +10,12 @@ from .xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
-    is_labelled_cp,
-    is_labelled_dataset,
     label_cp_tensor,
 )
 
+__all__ = ["resolve_cp_sign_indeterminacy", "postprocess"]
 
-# TODO: Fix naming, what is resolve mode and what is flip mode?
+
 @_handle_labelled_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", _SINGLETON)
 def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresolved_mode=-1, method="transpose"):
@@ -266,13 +265,6 @@ def postprocess(
     component_vis.postprocessing.resolve_cp_sign_indeterminacy
     component_vis.xarray_wrapper.label_cp_tensor
     """
-    # 12 Options:
-    # Unlabelled cp_tensor, unlabelled reference, no dataset
-    # Unlabelled cp_tensor, unlabelled reference, labelled dataset
-    # Unlabelled cp_tensor, unlabelled reference, unlabelled dataset
-    # Labelled cp_tensor, unlabelled reference, no dataset
-    # Labelled cp_tensor, unlabelled reference, labelled dataset  - Potential X
-    # Labelled cp_tensor, unlabelled reference, unlabelled dataset
     # TODOC: postprocess example
     if not permute and reference_cp_tensor is not None:
         warn("``permute=False`` is ignored if a reference CP tensor is provided.")

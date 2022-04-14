@@ -8,6 +8,14 @@ from .utils import _alias_mode_axis, cp_to_tensor
 _LEVERAGE_NAME = "Leverage score"
 _SLABWISE_SSE_NAME = "Slabwise SSE"
 
+__all__ = [
+    "compute_slabwise_sse",
+    "compute_leverage",
+    "compute_outlier_info",
+    "get_leverage_outlier_threshold",
+    "get_slab_sse_outlier_threshold",
+]
+
 
 def _compute_leverage(factor_matrix):
     A = factor_matrix

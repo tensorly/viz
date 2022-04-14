@@ -4,7 +4,10 @@ from functools import wraps
 import numpy as np
 import xarray as xr
 
+from ._module_utils import validate_cp_tensor
 from .xarray_wrapper import _handle_labelled_dataset, is_labelled_cp, is_labelled_tucker
+
+__all__ = ["extract_singleton", "unfold_tensor", "cp_to_tensor", "tucker_to_tensor", "normalise"]
 
 
 def _alias_mode_axis():
@@ -81,7 +84,9 @@ def unfold_tensor(tensor, mode, axis=None):
 
 
 def cp_to_tensor(cp_tensor):
-    """Construct a CP tensor, equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
+    """Convert a CP tensor to a dense array.
+
+    This function is equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
 
     If the factor matrices are data frames, then the tensor will be returned as a labelled
     xarray. Otherwise, it will be returned as a numpy array.
@@ -97,8 +102,8 @@ def cp_to_tensor(cp_tensor):
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
     """
-    # TOTEST: (1 component for example)
     # TODOC: Example with and without labels
+    cp_tensor = validate_cp_tensor(cp_tensor)
 
     if cp_tensor[0] is None:
         weights = np.ones(cp_tensor[1][0].shape[1])
@@ -138,7 +143,9 @@ def cp_to_tensor(cp_tensor):
 
 
 def tucker_to_tensor(tucker_tensor):
-    """Construct a Tucker tensor, equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
+    """Convert a Tucker tensor to a dense array.
+
+    This function is equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
 
     If the factor matrices are data frames, then the tensor will be returned as a labelled
     xarray. Otherwise, it will be returned as a numpy array.
@@ -154,7 +161,6 @@ def tucker_to_tensor(tucker_tensor):
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
     """
-    # TODO: NEXT Handle dataframes
     einsum_core = ""
     einsum_input = ""
     einsum_output = ""
