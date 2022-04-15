@@ -10,6 +10,7 @@ from .xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
+    add_factor_metadata,
     label_cp_tensor,
 )
 
@@ -192,6 +193,7 @@ def postprocess(
     weight_behaviour="normalise",
     weight_mode=0,
     allow_smaller_rank=False,
+    include_metadata=False,
 ):
     """Standard postprocessing of a CP decomposition.
 
@@ -248,10 +250,12 @@ def postprocess(
 
     weight_mode : int (optional)
         Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
-
     allow_smaller_rank : bool (default=False)
-        If True, then a low rank decomposition can be permuted against one with higher rank. The "missing columns"
+        If ``True``, then a low rank decomposition can be permuted against one with higher rank. The "missing columns"
         are padded by nan values
+    include_metadata : bool (default=True)
+        If ``True``, then the factor metadata will be added as columns in the factor matrices.
+    
 
     Returns
     -------
@@ -283,6 +287,9 @@ def postprocess(
 
         cp_tensor = label_cp_tensor(cp_tensor, dataset)
 
-    # FIXME: what to do if user sends in labeled cp_tensor and no reference dataset?
+    if include_metadata and dataset is not None:
+        cp_tensor = add_factor_metadata(cp_tensor, dataset)
+    elif include_metadata:
+        warn("Cannot include metadata when there is no provided dataset")
 
     return cp_tensor
