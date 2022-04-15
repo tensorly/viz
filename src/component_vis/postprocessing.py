@@ -2,6 +2,7 @@ from warnings import warn
 
 import numpy as np
 import scipy.linalg as sla
+from importlib_metadata import metadata
 
 from . import factor_tools
 from ._module_utils import is_iterable
@@ -10,10 +11,11 @@ from .xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
+    add_factor_metadata,
     label_cp_tensor,
 )
 
-__all__ = ["resolve_cp_sign_indeterminacy", "postprocess"]
+__all__ = ["resolve_cp_sign_indeterminacy", "postprocess", "factor_matrix_to_tidy"]
 
 
 @_handle_labelled_dataset("dataset", None)
@@ -192,6 +194,7 @@ def postprocess(
     weight_behaviour="normalise",
     weight_mode=0,
     allow_smaller_rank=False,
+    include_metadata=False,
 ):
     """Standard postprocessing of a CP decomposition.
 
@@ -248,10 +251,12 @@ def postprocess(
 
     weight_mode : int (optional)
         Which mode to have the component weights in (only used if ``weight_behaviour="one_mode"``)
-
     allow_smaller_rank : bool (default=False)
-        If True, then a low rank decomposition can be permuted against one with higher rank. The "missing columns"
+        If ``True``, then a low rank decomposition can be permuted against one with higher rank. The "missing columns"
         are padded by nan values
+    include_metadata : bool (default=True)
+        If ``True``, then the factor metadata will be added as columns in the factor matrices.
+    
 
     Returns
     -------
@@ -283,6 +288,187 @@ def postprocess(
 
         cp_tensor = label_cp_tensor(cp_tensor, dataset)
 
-    # FIXME: what to do if user sends in labeled cp_tensor and no reference dataset?
+    if include_metadata and dataset is not None:
+        cp_tensor = add_factor_metadata(cp_tensor, dataset)
+    elif include_metadata:
+        warn("Cannot include metadata when there is no provided dataset")
 
     return cp_tensor
+
+
+def factor_matrix_to_tidy(factor_matrix, var_name="Component", value_name="Signal", id_vars=None):
+    """Convert a factor matrix into a tidy dataset, for use with Plotly Express.
+    
+    If we convert a factor matrix into a tidy dataset (or long table), then we get a table on the form
+
+    .. list-table:: Tidy format factor matrix
+        :widths: 25 25 25
+        :header-rows: 1
+
+        * - Index
+          - Component
+          - Signal
+        * - 0
+          - 0
+          - 0.1
+        * - 1
+          - 0
+          - 0.5
+        * - ...
+          - ...
+          - ...
+        * - 38
+          - 2
+          - 0.7
+        * - 39
+          - 2
+          - 0.2
+    
+    The component vectors are all stacked on top of each other, with a separate column that specifies which
+    component each row belongs to. This function can also preserve metadata, which is signified by columns
+    that have non-integer column names. For example, if we have a dataframe on the form
+
+    .. list-table:: Factor matrix with metadata
+        :widths: 25 25 25 25 25 25
+        :header-rows: 1
+
+        * - Index
+          - 0
+          - 1
+          - 2
+          - lat
+          - lon
+        * - 0
+          - 0.1
+          - 0.2
+          - 0.5
+          - 59.91273
+          - 10.74609
+        * - 1
+          - 0.5
+          - 0.2
+          - 0.1
+          - 63.43049
+          - 10.39506
+        * - ...
+          - ...
+          - ...
+          - ...
+          - ...
+          - ...
+        * - 5
+          - 0.2
+          - 0.1
+          - 0.3
+          - 60.39299
+          - 5.32415
+        * - 5
+          - 0.0
+          - 0.2
+          - 0.1
+          - 58.97005
+          - 5.73332
+
+    and convert it into a tidy format factor matrix, then we get a table on the form
+
+    .. list-table:: Tidy format factor matrix with metadata
+        :widths: 25 25 25 25 25
+        :header-rows: 1
+
+        * - Index
+          - lat
+          - lon
+          - Component
+          - Signal
+        * - 0
+          - 59.91273
+          - 10.74609
+          - 0
+          - 0.1
+        * - 1
+          - 63.43049
+          - 10.39506
+          - 0
+          - 0.5
+        * - ...
+          - ...
+          - ...
+          - ...
+          - ...
+        * - 4
+          - 69.6489
+          - 18.95508
+          - 2
+          - 0.0
+        * - 5
+          - 58.97005
+          - 5.73332
+          - 2
+          - 0.1
+
+    Parameters
+    ----------
+    factor_matrix : pd.DataFrame
+        A labelled factor matrix potentially with metadata columns
+    var_name : str
+        Name of the column that specifies which component each row belongs to
+    value_name : str
+        Name of the column that holds the magnitude of each component entry
+    id_vars : iterable or None (default=None)
+        Which columns to interpret as metadata. The columns not specified here are considered as the components.
+        If ``id_vars is None``, then all columns with non-integer names are considered metadata columns.
+    
+    Returns
+    -------
+    pd.DataFrame
+        Tidy format factor matrix
+    
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import pandas as pd
+    >>> from component_vis.postprocessing import factor_matrix_to_tidy
+    >>> rng = np.random.default_rng(0)
+    >>> factor_matrix = pd.DataFrame(rng.uniform(size=(10, 3)))
+    >>> factor_matrix.head()
+              0         1         2
+    0  0.636962  0.269787  0.040974
+    1  0.016528  0.813270  0.912756
+    2  0.606636  0.729497  0.543625
+    3  0.935072  0.815854  0.002739
+    4  0.857404  0.033586  0.729655
+    >>> tidy_factor_matrix = factor_matrix_to_tidy(factor_matrix)
+    >>> tidy_factor_matrix.head()
+       index Component    Signal
+    0      0         0  0.636962
+    1      1         0  0.016528
+    2      2         0  0.606636
+    3      3         0  0.935072
+    4      4         0  0.857404
+    >>> factor_matrix_with_metadata = factor_matrix.copy()
+    >>> factor_matrix_with_metadata["Metadata"] = rng.uniform(size=10)
+    >>> factor_matrix_with_metadata.head()
+              0         1         2  Metadata
+    0  0.636962  0.269787  0.040974  0.688447
+    1  0.016528  0.813270  0.912756  0.388921
+    2  0.606636  0.729497  0.543625  0.135097
+    3  0.935072  0.815854  0.002739  0.721488
+    4  0.857404  0.033586  0.729655  0.525354
+    >>> tidy_factor_matrix_with_metadata = factor_matrix_to_tidy(factor_matrix_with_metadata)
+    >>> tidy_factor_matrix_with_metadata.head()
+       Metadata  index Component    Signal
+    0  0.688447      0         0  0.636962
+    1  0.388921      1         0  0.016528
+    2  0.135097      2         0  0.606636
+    3  0.721488      3         0  0.935072
+    4  0.525354      4         0  0.857404
+    """
+    factor_matrix = factor_matrix.reset_index()
+    if id_vars is None:
+        id_vars = set()
+        for column in factor_matrix.columns:
+            if type(column) != int:
+                id_vars.add(column)
+
+    return factor_matrix.melt(var_name=var_name, value_name=value_name, id_vars=id_vars)
+
