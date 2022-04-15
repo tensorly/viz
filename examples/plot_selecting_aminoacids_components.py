@@ -20,7 +20,7 @@ import component_vis
 # initialisations.
 
 
-def fit_many_nn_parafac(X, num_components, num_inits=5):
+def fit_many_parafac(X, num_components, num_inits=5):
     return [
         parafac(
             X,
@@ -55,7 +55,7 @@ for i, sample in enumerate(aminoacids):
 models = {}
 for rank in [1, 2, 3, 4, 5]:
     print(f"{rank} components")
-    models[rank] = fit_many_nn_parafac(aminoacids.data, rank, num_inits=5)
+    models[rank] = fit_many_parafac(aminoacids.data, rank, num_inits=5)
 
 ###############################################################################
 # Sort the initialisation by their SSE
@@ -171,6 +171,20 @@ for i, (rank, model) in enumerate(selected_models.items()):
     component_vis.visualisation.core_element_plot(model, aminoacids.data, ax=axes[i])
 
 plt.show()
+
+###############################################################################
+# Split-half analysis
+# ^^^^^^^^^^^^^^^^^^^
+#
+# Another way to select the number of components is with *split-half analysis*. With split-half analysis, we
+# divide the dataset in to along one mode, and fit two different models, one for each split. Then, we compare
+# the similarity of the decomposition for the modes where we did not perform the split.
+#
+# For split-half analysis, it is important to choose a split that makes sense. We need to expect that all
+# components will be present in both splits! In this case, we only have five samples, and reducing the number
+# of samples even further can make it difficult to find the correct decomposition. We will therefore not use
+# split-half analysis here. Instead, we devote a separate example for split-half analysis.
+
 
 ###############################################################################
 # Component plots
