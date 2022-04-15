@@ -1,5 +1,3 @@
-import itertools
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -18,6 +16,7 @@ from component_vis.xarray_wrapper import (
     _unlabel_cp_tensor,
     _unlabel_dataset,
     _unlabel_factor_matrix,
+    add_factor_metadata,
     get_data,
     is_labelled_cp,
     is_labelled_dataset,
@@ -219,12 +218,11 @@ def test_relabel_none_dataset():
     assert _relabel_dataset(None, None, None, True) is None
 
 
-# TODO: test for ndarray and dataframe also?
 def test_relabel_dataset_xarray(rng):
     shape = (10, 20, 30)
     X = rng.random(size=shape)
 
-    DatasetType = xr.DataArray
+    dataset_constructor = xr.DataArray
     metadata = {
         "name": "A dataset",
         "dims": ("first mode", "second mode", "third mode"),
@@ -234,14 +232,40 @@ def test_relabel_dataset_xarray(rng):
             "third mode": list(range(shape[2])),
         },
     }
-    labelled_dataset = _relabel_dataset(X, DatasetType=DatasetType, dataset_metadata=metadata, optional=False)
-    assert isinstance(labelled_dataset, DatasetType)
+    labelled_dataset = _relabel_dataset(
+        X, dataset_constructor=dataset_constructor, dataset_metadata=metadata, optional=False
+    )
+    assert isinstance(labelled_dataset, dataset_constructor)
     np.testing.assert_array_equal(labelled_dataset, X)
     assert labelled_dataset.name == metadata["name"]
     assert labelled_dataset.dims == metadata["dims"]
 
     for key in metadata["coords"]:
         np.testing.assert_array_equal(labelled_dataset.coords[key], metadata["coords"][key])
+
+
+def test_relabel_dataset_ndarray(rng):
+    shape = (10, 20, 30)
+    X = rng.random(size=shape)
+
+    labelled_dataset = _relabel_dataset(X, dataset_constructor=np.array, dataset_metadata={}, optional=False)
+    assert isinstance(labelled_dataset, np.ndarray)
+    np.testing.assert_array_equal(labelled_dataset, X)
+
+
+def test_relabel_dataset_dataframe(rng):
+    shape = (10, 20)
+    X = rng.random(size=shape)
+
+    metadata = {
+        "index": list(range(shape[0])),
+        "columns": list(range(shape[1])),
+    }
+    labelled_dataset = _relabel_dataset(X, dataset_constructor=pd.DataFrame, dataset_metadata=metadata, optional=False)
+    assert isinstance(labelled_dataset, pd.DataFrame)
+    np.testing.assert_array_equal(labelled_dataset, X)
+    assert all(labelled_dataset.index == metadata["index"])
+    assert all(labelled_dataset.columns == metadata["columns"])
 
 
 def test_unlabel_and_relabel_cp_tensor_inverse(seed):
@@ -274,14 +298,16 @@ def test_unlabel_and_relabel_dataset_inverse(seed):
     shape = (10, 20, 30)
     cp_tensor, labelled_dataset = simulated_random_cp_tensor(shape, 3, labelled=True, seed=seed)
 
-    unlabelled_dataset, DatasetType, dataset_metadata = _unlabel_dataset(labelled_dataset, False)
+    unlabelled_dataset, dataset_constructor, dataset_metadata = _unlabel_dataset(labelled_dataset, False)
     relabelled_dataset = _relabel_dataset(
-        unlabelled_dataset, DatasetType=DatasetType, dataset_metadata=dataset_metadata, optional=False
+        unlabelled_dataset, dataset_constructor=dataset_constructor, dataset_metadata=dataset_metadata, optional=False
     )
     assert isinstance(relabelled_dataset, xr.DataArray)
     xr.testing.assert_identical(labelled_dataset, relabelled_dataset)
 
-    unlabelled_dataset_again, DatasetType_again, dataset_metadata_again = _unlabel_dataset(labelled_dataset, False)
+    unlabelled_dataset_again, dataset_constructor_again, dataset_metadata_again = _unlabel_dataset(
+        labelled_dataset, False
+    )
     assert isinstance(unlabelled_dataset_again, np.ndarray)
     np.testing.assert_array_equal(unlabelled_dataset_again, unlabelled_dataset)
 
@@ -290,14 +316,16 @@ def test_unlabel_and_relabel_dataset_inverse(seed):
     cp_tensor, X = simulated_random_cp_tensor(shape, 3, labelled=True, seed=seed)
     labelled_dataset = pd.DataFrame(X.values, index=X.coords["Mode 0"], columns=X.coords["Mode 1"])
 
-    unlabelled_dataset, DatasetType, dataset_metadata = _unlabel_dataset(labelled_dataset, False)
+    unlabelled_dataset, dataset_constructor, dataset_metadata = _unlabel_dataset(labelled_dataset, False)
     relabelled_dataset = _relabel_dataset(
-        unlabelled_dataset, DatasetType=DatasetType, dataset_metadata=dataset_metadata, optional=False
+        unlabelled_dataset, dataset_constructor=dataset_constructor, dataset_metadata=dataset_metadata, optional=False
     )
     assert isinstance(relabelled_dataset, pd.DataFrame)
     pd.testing.assert_frame_equal(labelled_dataset, relabelled_dataset)
 
-    unlabelled_dataset_again, DatasetType_again, dataset_metadata_again = _unlabel_dataset(labelled_dataset, False)
+    unlabelled_dataset_again, dataset_constructor_again, dataset_metadata_again = _unlabel_dataset(
+        labelled_dataset, False
+    )
     assert isinstance(unlabelled_dataset_again, np.ndarray)
     np.testing.assert_array_equal(unlabelled_dataset_again, unlabelled_dataset)
 
@@ -452,3 +480,17 @@ def test_handle_labelled_dataset_return_wrapping(is_labelled, seed):
         xr.testing.assert_identical(dataset, labelled)
     else:
         np.testing.assert_array_equal(dataset, labelled)
+
+
+def test_add_factor_metadata_raises_for_unlabelled_cp(seed):
+    cp_tensor_no_labels, dataset_no_labels = simulated_random_cp_tensor((3, 2, 3), 2, labelled=False, seed=seed)
+    cp_tensor_labels, dataset_labels = simulated_random_cp_tensor((3, 2, 3), 2, labelled=True, seed=seed)
+    with pytest.raises(ValueError):
+        add_factor_metadata(cp_tensor_no_labels, dataset_labels)
+
+
+def test_add_factor_metadata_raises_for_unlabelled_dataset(seed):
+    cp_tensor_no_labels, dataset_no_labels = simulated_random_cp_tensor((3, 2, 3), 2, labelled=False, seed=seed)
+    cp_tensor_labels, dataset_labels = simulated_random_cp_tensor((3, 2, 3), 2, labelled=True, seed=seed)
+    with pytest.raises(ValueError):
+        add_factor_metadata(cp_tensor_labels, dataset_no_labels)
