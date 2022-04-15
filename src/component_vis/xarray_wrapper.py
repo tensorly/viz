@@ -25,14 +25,83 @@ __all__ = [
 ]
 
 
+def add_factor_metadata(cp_tensor, dataset):
+    """Adds the additional coordinates along each dataset dimension as new columns in the factor matrices.
+
+    The coordinates of xarray DataArrays can contain metadata. For each dimension, there may be additional
+    coordinates that are not used for indexing purposes. This function will iterate over all modes of
+    a dataset and a labelled CP tensor and add the additional coordinates as new columns in the factor
+    matrices.
+
+    Arguments
+    ---------
+    cp_tensor : labelled CP Tensor
+    dataset : xarray.DataArray
+
+    Returns
+    -------
+    tuple
+        CP-tensor like tuple where the factor matrices are augmented with additional metadata.
+
+    Examples
+    --------
+    >>> from component_vis.data import load_oslo_city_bike
+    >>> from component_vis.postprocessing import postprocess
+    >>> from component_vis.xarray_wrapper import add_factor_metadata
+    >>> from tensorly.decomposition import parafac
+    >>> bikes = load_oslo_city_bike()
+    >>> bikes.coords
+    Coordinates:
+      * End station name  (End station name) object '7 Juni Plassen' ... 'Økernve...
+        lat               (End station name) float64 59.92 59.93 ... 59.93 59.92
+        lon               (End station name) float64 10.73 10.75 ... 10.8 10.78
+      * Hour              (Hour) int32 0 1 2 3 4 5 6 7 8 ... 16 17 18 19 20 21 22 23
+      * Month             (Month) int32 1 2 3 4 5 6 7 8 9 10 11 12
+      * Day of week       (Day of week) int32 0 1 2 3 4 5 6
+      * Year              (Year) int32 2020 2021
+
+    We see that the ``End station name`` dimension has two additional columns: ``lat`` and ``lon``.
+    These contain metadata about the end station coordinates, and it can be useful to have these
+    columns also in the factor matrices. To do this, we first fit a PARAFAC model to the dataset,
+    then we postprocess it to label the CP tensor and finally, we add the metadata information
+
+    >>> cp = parafac(bikes.data, 3, init="random")
+    >>> cp_labelled = postprocess(cp, bikes)
+    >>> print(cp_labelled[1][0].columns)
+    RangeIndex(start=0, stop=3, step=1)
+    >>> cp_with_metadata = add_factor_metadata(cp_labelled, bikes)
+    >>> print(cp_with_metadata[1][0].columns)
+    Index([0, 1, 2, 'lat', 'lon'], dtype='object')
+
+    We see that when we add the metadata, then the latitude and longitude columns are added
+    to the dataframe.
+    """
+    if not is_labelled_cp(cp_tensor):
+        raise ValueError("The CP tensor must be labelled with the same labels as the dataset.")
+    if not is_labelled_dataset(dataset):
+        raise ValueError("The dataset must be labelled with the same labels as the CP tensor.")
+
+    weights, factor_matrices = cp_tensor
+    factors_with_metadata = [None] * len(factor_matrices)
+    for mode, factor_matrix in enumerate(factor_matrices):
+        dim_name = factor_matrix.index.name
+        coords = dataset.coords[dim_name]
+        metadata = pd.DataFrame({name: coords.coords[name].to_pandas() for name in coords.coords})
+        metadata = metadata.drop(dim_name, axis=1)
+        factors_with_metadata[mode] = factor_matrix.join(metadata)
+    return weights, factors_with_metadata
+
+
 def _label_factor_matrices(factor_matrices, dataset):
     if is_xarray(dataset):
+
+        def xarray_to_pandas_index(dataset, dim_name):
+            return dataset.coords[dim_name].xindexes[dim_name].to_pandas_index()
+
         factor_matrices = [
-            pd.DataFrame(factor_matrix, index=dataset.coords[dim_name].values)
+            pd.DataFrame(factor_matrix, index=xarray_to_pandas_index(dataset, dim_name))
             for factor_matrix, dim_name in zip(factor_matrices, dataset.dims)
         ]
-        for factor_matrix, dim_name in zip(factor_matrices, dataset.dims):
-            factor_matrix.index.name = dim_name
     elif is_dataframe(dataset) and len(factor_matrices) == 2:
         factor_matrices = [
             pd.DataFrame(factor_matrices[0], index=dataset.index),
@@ -157,7 +226,21 @@ def is_labelled_tucker(tucker_tensor):
 
 
 def is_labelled_dataset(x):
-    # TODOC: is_labelled_dataset
+    """Returns True if the dataset is labelled (is a DataFrame or DataArray).
+
+    This function is the same as writing ``is_dataframe(x) or is_xarray(x)``.
+
+    Parameters
+    ----------
+    x
+        Variable to check
+
+    Returns
+    -------
+    bool
+        Whether ``x`` is labelled or not.
+
+    """
     # TOTEST: is_labeled_dataset
     return is_dataframe(x) or is_xarray(x)
 
