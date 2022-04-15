@@ -1,10 +1,11 @@
-Welcome to component_vis's documentation!
-=========================================
+Component model visualisation
+=============================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   auto_examples/index
    api
    installation
 

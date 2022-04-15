@@ -21,9 +21,12 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))
+import plotly.io as pio
 
 import component_vis
+
+pio.renderers.default = "sphinx_gallery"
+
 
 # -- General configuration ---------------------------------------------
 
@@ -36,12 +39,19 @@ import component_vis
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
-    #'sphinx.ext.napoleon'
     "matplotlib.sphinxext.plot_directive",
     "numpydoc",
     "sphinxcontrib.bibtex",
+    "sphinx_gallery.gen_gallery",
 ]
+sphinx_gallery_conf = {
+    "examples_dirs": "../examples",  # path to your example scripts
+    "gallery_dirs": "auto_examples",  # path to where to save gallery generated output
+    "remove_config_comments": True,
+}
+
 bibtex_bibfiles = ["refs.bib"]
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
