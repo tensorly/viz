@@ -28,7 +28,7 @@ __all__ = [
     "components_plot",
     "component_comparison_plot",
     "optimisation_diagnostic_plots",
-    "percentage_variation_plots",
+    "percentage_variation_plot",
 ]
 
 
@@ -354,6 +354,14 @@ def outlier_plot(
         ... )
         <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
+
+    See Also
+    --------
+    component_vis.outliers.compute_outlier_info
+    component_vis.outliers.compute_leverage
+    component_vis.outliers.compute_slabwise_sse
+    component_vis.outliers.get_leverage_outlier_threshold
+    component_vis.outliers.get_slab_sse_outlier_threshold
     """
     weights, factor_matrices = cp_tensor
 
@@ -1027,12 +1035,73 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     return fig, axes
 
 
-def percentage_variation_plots(
-    cp_tensor, dataset=None, method="data", ax=None,
+def percentage_variation_plot(
+    cp_tensor, dataset=None, method="model", ax=None,
 ):
     """Bar chart showing the percentage of variation explained by each of the components.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    dataset : np.ndarray or xarray.DataArray
+        Dataset to compare with, only needed if ``method="data"`` or ``method="both"``.
+    model : {"model", "data", "both"} (default="model")
+        Whether the percentage variation should be computed based on the model, data or both.
+    ax : matplotlib axes
+        Axes to draw the plot in
+
+    Returns
+    -------
+    matplotlib axes
+        Axes with the plot in
+
+    Examples
+    --------
+
+    By default, we get the percentage of variation in the model each component explains
+
+    .. plot::
+        :context: close-figs
+        :include-source:
+
+        >>> from component_vis.visualisation import percentage_variation_plot
+        >>> from component_vis.data import simulated_random_cp_tensor
+        >>> import matplotlib.pyplot as plt
+        >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
+        >>> percentage_variation_plot(cp_tensor)
+        <AxesSubplot:xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        >>> plt.show()
+
+    We can also get the percentage of variation in the data that each component explains
+
+    .. plot::
+        :context: close-figs
+        :include-source:
+
+        >>> from component_vis.visualisation import percentage_variation_plot
+        >>> from component_vis.data import simulated_random_cp_tensor
+        >>> import matplotlib.pyplot as plt
+        >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
+        >>> percentage_variation_plot(cp_tensor, dataset, method="data")
+        <AxesSubplot:xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        >>> plt.show()
+
+    Or both the variation in the data and in the model
+
+    .. plot::
+        :context: close-figs
+        :include-source:
+
+        >>> from component_vis.visualisation import percentage_variation_plot
+        >>> from component_vis.data import simulated_random_cp_tensor
+        >>> import matplotlib.pyplot as plt
+        >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
+        >>> percentage_variation_plot(cp_tensor, dataset, method="both")
+        <AxesSubplot:xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        >>> plt.show()
     """
-    # TODOC: percentage_variation_plots
     if ax is None:
         ax = plt.gca()
 
