@@ -160,7 +160,6 @@ def distribute_weights(cp_tensor, weight_behaviour, weight_mode=0):
     ValueError
         If ``weight_behaviour`` is not one of ``"ignore"``, ``"normalise"``, ``"evenly"`` or ``"one_mode"``.
     """
-    # TOTEST: distribute_weights
     if weight_behaviour == "ignore":
         return cp_tensor
     elif weight_behaviour == "normalise":
@@ -510,8 +509,30 @@ def degeneracy_score(cp_tensor):
         a degenerate solution. A score of -0.85 is an indication of a
         troublesome model :cite:p:`krijnen1993analysis` (as cited in
         :cite:p:`bro1997parafac`).
+
+    Examples
+    --------
+    We begin by constructing a random simulated cp tensor and compute the degeneracy score
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.factor_tools import degeneracy_score
+    >>> cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank=3, seed=0)[0]
+    >>> degeneracy_score(cp_tensor)
+    0.34752738150003254
+
+    We see that (as expected) the random cp_tensor is not very degenerate. To simulate
+    a tensor with two-component degeneracy, we can, for example, replace one of the
+    components with a flipped copy of another component
+
+    >>> w, (A, B, C) = cp_tensor
+    >>> A[:,1] = -A[:, 0]
+    >>> B[:,1] = -B[:, 0]
+    >>> C[:,1] = -C[:, 0]
+    >>> degeneracy_score(cp_tensor)
+    -0.9999999999999998
+
+    We see that this modified cp_tensor is degenerate.
     """
-    # TODOC: Example for degeneracy_score
     # TODOC: There may be some more relevant cites in Paatero 2000
     weights, factors = cp_tensor
     rank = factors[0].shape[1]
@@ -803,8 +824,7 @@ def check_cp_tensor_equal(cp_tensor1, cp_tensor2, ignore_labels=False):
 
     See Also
     --------
-    check_cp_tensor_equal : Function for checking if two CP tensors have the same
-	numerical value (have equal weights and factor matrices)
+    check_cp_tensors_equivalent : Function for checking if two CP tensors represent the same dense tensor.
     """
     validate_cp_tensor(cp_tensor1)
     validate_cp_tensor(cp_tensor2)
@@ -970,7 +990,8 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
 
     See Also
     --------
-    check_cp_tensors_equivalent : Function for checking if two CP tensors represent the same dense tensor.
+    check_cp_tensor_equivalent : Function for checking if two CP tensors have the same
+        numerical value (have equal weights and factor matrices)
     """
     validate_cp_tensor(cp_tensor1)
     validate_cp_tensor(cp_tensor2)
