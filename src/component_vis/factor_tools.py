@@ -518,7 +518,7 @@ def degeneracy_score(cp_tensor):
     >>> from component_vis.factor_tools import degeneracy_score
     >>> cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank=3, seed=0)[0]
     >>> print(f"Degeneracy score: {degeneracy_score(cp_tensor):.2f}")
-    0.35
+    Degeneracy score: 0.35
 
     We see that (as expected) the random cp_tensor is not very degenerate. To simulate
     a tensor with two-component degeneracy, we can, for example, replace one of the
@@ -529,7 +529,7 @@ def degeneracy_score(cp_tensor):
     >>> B[:,1] = -B[:, 0]
     >>> C[:,1] = -C[:, 0]
     >>> print(f"Degeneracy score: {degeneracy_score(cp_tensor):.2f}")
-    -1.00
+    Degeneracy score: -1.00
 
     We see that this modified cp_tensor is degenerate.
     """

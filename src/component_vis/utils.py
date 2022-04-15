@@ -100,8 +100,8 @@ def cp_norm(cp_tensor):
     >>> cp_tensor = simulated_random_cp_tensor((30, 10, 10), rank=5, seed=0)[0]
     >>> norm_fast = cp_norm(cp_tensor)
     >>> norm_slow = np.linalg.norm(cp_to_tensor(cp_tensor))
-    >>> norm_fast - norm_slow
-    0.0
+    >>> print(f"Difference in norm: {abs(norm_fast - norm_slow):.2f}")
+    Difference in norm: 0.00
     """
     weights, factor_matrices = cp_tensor
     model_norm = weights[:, np.newaxis] * weights[np.newaxis, :]
