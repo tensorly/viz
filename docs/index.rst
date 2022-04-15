@@ -5,9 +5,9 @@ Component model visualisation
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    auto_examples/index
    api
-   installation
 
 Indices and tables
 ==================
