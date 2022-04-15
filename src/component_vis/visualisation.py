@@ -722,7 +722,7 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
     if plot_kwargs is None:
         plot_kwargs = [{}] * num_modes
 
-    fig, axes = plt.subplots(1, num_modes, figsize=(16, 9 / num_modes))
+    fig, axes = plt.subplots(1, num_modes, figsize=(16, 9 / num_modes), tight_layout=True)
 
     for mode, factor_matrix in enumerate(factor_matrices):
         if hasattr(factor_matrix, "plot"):
@@ -846,7 +846,7 @@ def component_comparison_plot(
     else:
         raise ValueError("Row must be either 'model' or 'component'")
 
-    fig, axes = plt.subplots(num_rows, num_modes, figsize=(16, num_rows * 9 / num_modes))
+    fig, axes = plt.subplots(num_rows, num_modes, figsize=(16, num_rows * 9 / num_modes), tight_layout=True)
     for model_num, (model_name, cp_tensor) in enumerate(cp_tensors.items()):
         weights, factor_matrices = cp_tensor
         if factor_matrices[0].shape[1] > num_components:
@@ -972,11 +972,11 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> for i in range(10):
         ...     errs.append(parafac(dataset, 3, n_iter_max=50, return_errors=True, init="random", random_state=rng)[1])
         >>>
-        >>> # Plot the diganostic plots
+        >>> # Plot the diagnostic plots
         >>> fig, axes = optimisation_diagnostic_plots(errs, 50)
         >>> plt.show()
     """
-    fig, axes = plt.subplots(1, 2, figsize=(16, 4.5))
+    fig, axes = plt.subplots(1, 2, figsize=(16, 4.5), tight_layout=True)
 
     selected_init = None
     lowest_error = np.inf
