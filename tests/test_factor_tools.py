@@ -607,7 +607,6 @@ def test_factor_match_score_skip_mode(seed, labelled):
     cp_tensor = simulated_random_cp_tensor((10, 11, 12, 13), 4, seed=seed, labelled=labelled)[0]
     for mode, factor_matrix in enumerate(cp_tensor[1]):
         if labelled:
-            # what to do here?
             new_factor_matrix = factor_matrix.loc[5:]
         else:
             new_factor_matrix = factor_matrix[5:]
@@ -617,14 +616,6 @@ def test_factor_match_score_skip_mode(seed, labelled):
         assert factor_tools.factor_match_score(cp_tensor, new_cp_tensor, skip_mode=mode) == approx(1)
         new_cp_tensor_different_weights = None, new_factors
         assert factor_tools.factor_match_score(cp_tensor, new_cp_tensor_different_weights, skip_mode=mode) == approx(1)
-
-    # Create a CP tensor
-    # For each mode:
-    # Create a copy of the CP tensor, but where the factor matrix in the current mode is replaced with another that has the same number of components, but different number of rows
-    # Compute FMS, it should be 1
-    # Change the weights of the copy
-    # Compute FMS, it should still be 1 (weights cannot be considered if skip mode is given)
-    # assert True, "Not implemented yet"
 
 
 @pytest.mark.parametrize("labelled", [True, False])
@@ -676,3 +667,24 @@ def test_percentage_variation_warns_dataset_given_method_model(seed, labelled):
     with pytest.warns(UserWarning):
         factor_tools.percentage_variation(cp_tensor, X=X, method="model")
 
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_distribute_weights(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)[0]
+
+    cp_weights_ignored = factor_tools.distribute_weights(cp_tensor, "ignore")
+    assert factor_tools.check_cp_tensor_equal(cp_weights_ignored, cp_tensor)
+
+    cp_weights_normalised = factor_tools.distribute_weights(cp_tensor, "normalise")
+    assert factor_tools.check_cp_tensor_equal(cp_weights_normalised, factor_tools.normalise_cp_tensor(cp_tensor))
+
+    cp_weights_evenly = factor_tools.distribute_weights(cp_tensor, "evenly")
+    assert factor_tools.check_cp_tensor_equal(cp_weights_evenly, factor_tools.distribute_weights_evenly(cp_tensor))
+
+    for mode in range(len(cp_tensor[1])):
+        cp_weights_one_mode = factor_tools.distribute_weights(cp_tensor, "one_mode", weight_mode=mode)
+        assert factor_tools.check_cp_tensor_equal(
+            cp_weights_one_mode, factor_tools.distribute_weights_in_one_mode(cp_tensor, mode=mode)
+        )
+    with pytest.raises(ValueError):
+        factor_tools.distribute_weights(cp_tensor, "invalid weight behaviour")
