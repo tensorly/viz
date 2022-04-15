@@ -1,5 +1,7 @@
 TODO
 .VSCodeCounter
+.idea
+auto_examples/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
