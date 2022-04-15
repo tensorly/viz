@@ -17,5 +17,6 @@ ComponentVis — Utilities for visualising component models
     :target: https://github.com/psf/black
 
 
-Package to visualise component-based decomposition models such as PARAFAC, PCA and NMF
+Package to visualise component-based decomposition models such as PARAFAC, PCA and NMF. The documentation
+is available on `ReadTheDocs <https://component-vis.readthedocs.io/en/latest/?badge=latest>`_.
 
