@@ -9,6 +9,10 @@ ComponentVis — Utilities for visualising component models
     :target: https://codecov.io/gh/MarieRoald/component-vis
     :alt: Coverage
 
+.. image:: https://readthedocs.org/projects/component-vis/badge/?version=latest
+        :target: https://component-vis.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
 
