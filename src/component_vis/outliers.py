@@ -146,7 +146,6 @@ def compute_leverage(factor_matrix):
         The leverage score is related to the Hotelling T2-statistic (or D-statistic), which
         is equal to a scaled version of leverage computed based on centered factor matrices.
     """
-    # TODOC: complete the docstring for compute leverage
     # TODOC: example for compute_leverage
     leverage = _compute_leverage(factor_matrix)
 

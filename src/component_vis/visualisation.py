@@ -7,6 +7,7 @@ from matplotlib.lines import Line2D
 
 from . import factor_tools, model_evaluation, postprocessing
 from ._module_utils import _handle_none_weights_cp_tensor, is_dataframe, is_iterable
+from ._xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 from .model_evaluation import estimate_core_tensor
 from .outliers import (
     _LEVERAGE_NAME,
@@ -16,7 +17,6 @@ from .outliers import (
     get_slabwise_sse_outlier_threshold,
 )
 from .utils import _alias_mode_axis, cp_to_tensor
-from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 
 __all__ = [
     "scree_plot",
@@ -499,7 +499,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> import plotly.express as px
-        >>> from component_vis.xarray_wrapper import label_cp_tensor
+        >>> from component_vis.postprocessing import label_cp_tensor
         >>> from component_vis.visualisation import component_scatterplot
         >>>
         >>> # Load data and convert to xarray
@@ -690,7 +690,7 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> import plotly.express as px
-        >>> from component_vis.xarray_wrapper import label_cp_tensor
+        >>> from component_vis.postprocessing import label_cp_tensor
         >>> from component_vis.visualisation import components_plot
         >>>
         >>> # Load data and convert to xarray

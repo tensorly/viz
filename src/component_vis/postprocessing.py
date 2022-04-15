@@ -6,16 +6,22 @@ from importlib_metadata import metadata
 
 from . import factor_tools
 from ._module_utils import is_iterable
-from .utils import unfold_tensor
-from .xarray_wrapper import (
+from ._xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
     add_factor_metadata,
     label_cp_tensor,
 )
+from .utils import unfold_tensor
 
-__all__ = ["resolve_cp_sign_indeterminacy", "postprocess", "factor_matrix_to_tidy"]
+__all__ = [
+    "resolve_cp_sign_indeterminacy",
+    "postprocess",
+    "factor_matrix_to_tidy",
+    "add_factor_metadata",
+    "label_cp_tensor",
+]
 
 
 @_handle_labelled_dataset("dataset", None)
@@ -256,7 +262,7 @@ def postprocess(
         are padded by nan values
     include_metadata : bool (default=True)
         If ``True``, then the factor metadata will be added as columns in the factor matrices.
-    
+
 
     Returns
     -------
@@ -268,7 +274,7 @@ def postprocess(
     component_vis.factor_tools.permute_cp_tensor
     component_vis.factor_tools.distribute_weights
     component_vis.postprocessing.resolve_cp_sign_indeterminacy
-    component_vis.xarray_wrapper.label_cp_tensor
+    component_vis.postprocessing.label_cp_tensor
     """
     # TODOC: postprocess example
     if not permute and reference_cp_tensor is not None:
@@ -298,7 +304,7 @@ def postprocess(
 
 def factor_matrix_to_tidy(factor_matrix, var_name="Component", value_name="Signal", id_vars=None):
     """Convert a factor matrix into a tidy dataset, for use with Plotly Express.
-    
+
     If we convert a factor matrix into a tidy dataset (or long table), then we get a table on the form
 
     .. list-table:: Tidy format factor matrix
@@ -323,7 +329,7 @@ def factor_matrix_to_tidy(factor_matrix, var_name="Component", value_name="Signa
         * - 39
           - 2
           - 0.2
-    
+
     The component vectors are all stacked on top of each other, with a separate column that specifies which
     component each row belongs to. This function can also preserve metadata, which is signified by columns
     that have non-integer column names. For example, if we have a dataframe on the form
@@ -417,12 +423,12 @@ def factor_matrix_to_tidy(factor_matrix, var_name="Component", value_name="Signa
     id_vars : iterable or None (default=None)
         Which columns to interpret as metadata. The columns not specified here are considered as the components.
         If ``id_vars is None``, then all columns with non-integer names are considered metadata columns.
-    
+
     Returns
     -------
     pd.DataFrame
         Tidy format factor matrix
-    
+
     Examples
     --------
     >>> import numpy as np
@@ -469,6 +475,6 @@ def factor_matrix_to_tidy(factor_matrix, var_name="Component", value_name="Signa
         for column in factor_matrix.columns:
             if type(column) != int:
                 id_vars.add(column)
+    id_vars = sorted(id_vars)
 
     return factor_matrix.melt(var_name=var_name, value_name=value_name, id_vars=id_vars)
-

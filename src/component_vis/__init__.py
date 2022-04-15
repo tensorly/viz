@@ -5,13 +5,4 @@ __email__ = "roald.marie@gmail.com"
 __version__ = "0.0.1"
 
 
-from . import (
-    data,
-    factor_tools,
-    model_evaluation,
-    multimodel_evaluation,
-    outliers,
-    postprocessing,
-    visualisation,
-    xarray_wrapper,
-)
+from . import data, factor_tools, model_evaluation, multimodel_evaluation, outliers, postprocessing, visualisation

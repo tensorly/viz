@@ -6,8 +6,8 @@ from pytest import approx
 import component_vis.utils as utils
 from component_vis import factor_tools
 from component_vis._module_utils import is_dataframe
+from component_vis._xarray_wrapper import _unlabel_cp_tensor
 from component_vis.data import simulated_random_cp_tensor
-from component_vis.xarray_wrapper import _unlabel_cp_tensor
 
 
 def safe_permute(arr, permutation):

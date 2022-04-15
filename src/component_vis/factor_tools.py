@@ -10,18 +10,14 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
-from component_vis.xarray_wrapper import (
+from component_vis._xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
     _handle_labelled_factor_matrix,
 )
 
-from ._module_utils import (
-    _handle_none_weights_cp_tensor,
-    is_dataframe,
-    validate_cp_tensor,
-)
+from ._module_utils import _handle_none_weights_cp_tensor, is_dataframe, validate_cp_tensor
 from .utils import _alias_mode_axis, cp_norm, extract_singleton, normalise
 
 __all__ = [

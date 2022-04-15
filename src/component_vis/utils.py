@@ -5,14 +5,24 @@ import numpy as np
 import xarray as xr
 
 from ._module_utils import _handle_none_weights_cp_tensor, validate_cp_tensor
-from .xarray_wrapper import (
+from ._xarray_wrapper import (
     _handle_labelled_cp,
     _handle_labelled_dataset,
     is_labelled_cp,
+    is_labelled_dataset,
     is_labelled_tucker,
 )
 
-__all__ = ["extract_singleton", "unfold_tensor", "cp_to_tensor", "tucker_to_tensor", "normalise"]
+__all__ = [
+    "extract_singleton",
+    "unfold_tensor",
+    "cp_to_tensor",
+    "tucker_to_tensor",
+    "normalise",
+    "is_labelled_cp",
+    "is_labelled_tucker",
+    "is_labelled_dataset",
+]
 
 
 def _alias_mode_axis():

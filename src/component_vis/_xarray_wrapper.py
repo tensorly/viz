@@ -8,12 +8,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from ._module_utils import (
-    _check_is_argument,
-    is_dataframe,
-    is_xarray,
-    validate_cp_tensor,
-)
+from ._module_utils import _check_is_argument, is_dataframe, is_xarray, validate_cp_tensor
 
 __all__ = [
     "is_dataframe",
@@ -46,8 +41,7 @@ def add_factor_metadata(cp_tensor, dataset):
     Examples
     --------
     >>> from component_vis.data import load_oslo_city_bike
-    >>> from component_vis.postprocessing import postprocess
-    >>> from component_vis.xarray_wrapper import add_factor_metadata
+    >>> from component_vis.postprocessing import postprocess, add_factor_metadata
     >>> from tensorly.decomposition import parafac
     >>> bikes = load_oslo_city_bike()
     >>> bikes.coords
@@ -254,7 +248,7 @@ def _extract_df_metadata(df, preserve_columns=True):
     return values, metadata
 
 
-# TODO: Make public
+# TODO: Make public?
 def _unlabel_cp_tensor(cp_tensor, optional, preserve_columns):
     if cp_tensor is None and optional:
         return None, None
