@@ -5,18 +5,18 @@ ComponentVis + PlotLy for interactive visualisations
 In this example, we'll see how ComponentVis can be used together with PlotLy Express for easily making thorough interactive visualisations.
 """
 
+###############################################################################
+# Imports and utilities
+# ^^^^^^^^^^^^^^^^^^^^^
 
 import plotly.express as px
 from tensorly.decomposition import non_negative_parafac_hals
 
-###############################################################################
-# Imports and utilities
-# ^^^^^^^^^^^^^^^^^^^^^
 import component_vis
 
 ###############################################################################
-# Since we will fit models with random init, we create a utility function to fit many models.
-# This is useful to avoid bad local minima.
+# To fit CP models, we need to solve a non-convex optimization problem, possibly with local minima. It is therefore useful
+# to fit several models with the same number of components using many different random initialisations.
 
 
 def fit_many_nn_parafac(X, num_components, num_inits=5):
