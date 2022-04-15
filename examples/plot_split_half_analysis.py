@@ -55,7 +55,7 @@ def fit_many_parafac(X, num_components, num_inits=5):
 #
 # We start with some simulated data, since then, we know exactly how many components we have.
 
-cp_tensor, dataset = component_vis.data.simulated_random_cp_tensor((30, 40, 50), 4, noise_level=0.5, labelled=True)
+cp_tensor, dataset = component_vis.data.simulated_random_cp_tensor((30, 40, 50), 4, noise_level=0.2, labelled=True)
 
 
 ###############################################################################
