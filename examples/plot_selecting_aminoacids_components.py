@@ -2,7 +2,7 @@
 Selecting the number of components in PARAFAC models
 ----------------------------------------------------
 
-In this example, we will look at some method for selecting the number of components for a PARAFAC model.
+In this example, we will look at some methods for selecting the number of components for a PARAFAC model.
 """
 
 ###############################################################################
