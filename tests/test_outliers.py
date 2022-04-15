@@ -11,12 +11,11 @@ from component_vis.outliers import (
 )
 
 
-# TODO: test with xarrays as well. should we have some parameterization of fixture or something to test xarrays as well
-def test_leverage(rng):
-    # TODO: Find more properties of leverages
+def test_leverage_length(rng):
     N, R = 10, 3
     A = rng.standard_normal(size=(N, R))
-    compute_leverage(A)
+    leverage = compute_leverage(A)
+    assert len(leverage) == N
 
 
 def test_leverage_known_matrix():
