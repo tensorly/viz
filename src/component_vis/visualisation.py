@@ -7,7 +7,7 @@ from matplotlib.lines import Line2D
 
 from . import factor_tools, model_evaluation, postprocessing
 from ._module_utils import _handle_none_weights_cp_tensor, is_dataframe, is_iterable
-from .model_evaluation import estimate_core_tensor, percentage_variation
+from .model_evaluation import estimate_core_tensor
 from .outliers import (
     _LEVERAGE_NAME,
     _SLABWISE_SSE_NAME,
@@ -1037,7 +1037,7 @@ def percentage_variation_plots(
         ax = plt.gca()
 
     labels = {"data": "Percentage of data", "model": "Percentage of model"}
-    variation = percentage_variation(cp_tensor, dataset, method=method)
+    variation = factor_tools.percentage_variation(cp_tensor, dataset, method=method)
     if method == "both":
         data_var, model_var = variation
         ax.bar(np.arange(len(data_var)) - 0.2, data_var, width=0.4, label=labels["data"])

@@ -4,8 +4,13 @@ from functools import wraps
 import numpy as np
 import xarray as xr
 
-from ._module_utils import validate_cp_tensor
-from .xarray_wrapper import _handle_labelled_dataset, is_labelled_cp, is_labelled_tucker
+from ._module_utils import _handle_none_weights_cp_tensor, validate_cp_tensor
+from .xarray_wrapper import (
+    _handle_labelled_cp,
+    _handle_labelled_dataset,
+    is_labelled_cp,
+    is_labelled_tucker,
+)
 
 __all__ = ["extract_singleton", "unfold_tensor", "cp_to_tensor", "tucker_to_tensor", "normalise"]
 
@@ -59,6 +64,44 @@ def extract_singleton(x):
     return np.asarray(x).reshape(-1).item()
 
 
+@_handle_none_weights_cp_tensor("cp_tensor")
+@_handle_labelled_cp("cp_tensor", None)
+def cp_norm(cp_tensor):
+    r"""Efficiently compute the Frobenius norm of a possibly labelled CP tensor.
+
+    The norm for an :math:`R`-component :math:`I \times J \times K` CP tensor is
+    computed in :math:`O((I + J + K)R^2)` flops instead of :math:`O(IJKR)` flops.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument.
+
+    Returns
+    -------
+    float : The norm of the CP tensor
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.utils import cp_norm, cp_to_tensor
+    >>> cp_tensor = simulated_random_cp_tensor((30, 10, 10), rank=5, seed=0)[0]
+    >>> norm_fast = cp_norm(cp_tensor)
+    >>> norm_slow = np.linalg.norm(cp_to_tensor(cp_tensor))
+    >>> norm_fast - norm_slow
+    0.0
+    """
+    weights, factor_matrices = cp_tensor
+    model_norm = weights[:, np.newaxis] * weights[np.newaxis, :]
+
+    for fm in factor_matrices:
+        model_norm *= np.conjugate(fm.T) @ fm
+
+    return np.sqrt(model_norm.sum())
+
+
 @_handle_labelled_dataset("tensor", None)
 @_alias_mode_axis()
 def unfold_tensor(tensor, mode, axis=None):
@@ -101,8 +144,22 @@ def cp_to_tensor(cp_tensor):
     -------
     xarray or np.ndarray
         Dense tensor represented by the decomposition.
+
+    Examples
+    --------
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.utils import cp_to_tensor
+    >>> unlabelled_cp_tensor = simulated_random_cp_tensor((10, 20, 30), 5, labelled=False, seed=0)[0]
+    >>> unlabelled_X = cp_to_tensor(unlabelled_cp_tensor)
+    >>> type(unlabelled_X)
+    <class 'numpy.ndarray'>
+    >>> labelled_cp_tensor = simulated_random_cp_tensor((10, 20, 30), 5, labelled=True, seed=0)[0]
+    >>> labelled_X = cp_to_tensor(labelled_cp_tensor)
+    >>> type(labelled_X)
+    <class 'xarray.core.dataarray.DataArray'>
+    >>> np.array_equal(unlabelled_X, labelled_X.data)
+    True
     """
-    # TODOC: Example with and without labels
     cp_tensor = validate_cp_tensor(cp_tensor)
 
     if cp_tensor[0] is None:

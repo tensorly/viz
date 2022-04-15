@@ -654,3 +654,25 @@ def test_permute_cp_tensor_raises_for_both_permutation_and_reference(seed, label
     ref_cp_tensor = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)[0]
     with pytest.raises(ValueError):
         factor_tools.permute_cp_tensor(cp_tensor, permutation=[0, 2, 1], reference_cp_tensor=ref_cp_tensor)
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_percentage_variation_invalid_method(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)[0]
+    with pytest.raises(ValueError):
+        factor_tools.percentage_variation(cp_tensor, method="invalid method")
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_percentage_variation_method_data_no_dataset(seed, labelled):
+    cp_tensor = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)[0]
+    with pytest.raises(TypeError):
+        factor_tools.percentage_variation(cp_tensor, method="data")
+
+
+@pytest.mark.parametrize("labelled", [True, False])
+def test_percentage_variation_warns_dataset_given_method_model(seed, labelled):
+    cp_tensor, X = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)
+    with pytest.warns(UserWarning):
+        factor_tools.percentage_variation(cp_tensor, X=X, method="model")
+

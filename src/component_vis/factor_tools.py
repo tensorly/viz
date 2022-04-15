@@ -13,6 +13,7 @@ from scipy.optimize import linear_sum_assignment
 from component_vis.xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
+    _handle_labelled_dataset,
     _handle_labelled_factor_matrix,
 )
 
@@ -21,8 +22,7 @@ from ._module_utils import (
     is_dataframe,
     validate_cp_tensor,
 )
-from .model_evaluation import percentage_variation
-from .utils import _alias_mode_axis, extract_singleton, normalise
+from .utils import _alias_mode_axis, cp_norm, extract_singleton, normalise
 
 __all__ = [
     "normalise_cp_tensor",
@@ -39,6 +39,7 @@ __all__ = [
     "check_cp_tensor_equal",
     "check_factor_matrix_close",
     "check_cp_tensors_equivalent",
+    "percentage_variation",
 ]
 
 
@@ -1000,3 +1001,110 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
             return False
 
     return True
+
+
+@_handle_labelled_cp("cp_tensor", None)
+@_handle_labelled_dataset("X", None, optional=True)
+@_handle_none_weights_cp_tensor("cp_tensor")
+def percentage_variation(cp_tensor, X=None, method="model"):
+    r"""Compute the percentage of variation captured by each component.
+
+    The (possible) non-orthogonality of CP factor matrices makes it less straightforward
+    to estimate the amount of variation captured by each component, compared to a model with
+    orthogonal factors. To estimate the amount of variation captured by a single component,
+    we therefore use the following formula:
+
+    .. math::
+
+        \text{fit}_i = \frac{\text{SS}_i}{SS_\mathbf{\mathcal{X}}}
+
+    where :math:`\text{SS}_i` is the squared norm of the tensor constructed using only the
+    i-th component, and :math:`SS_\mathbf{\mathcal{X}}` is the squared norm of the data
+    tensor :cite:p:`plstoolbox.varcap`. If ``method="data"``, then :math:`SS_\mathbf{\mathcal{X}}`
+    is the squared norm of the tensor constructed from the CP tensor using all factor matrices.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    X : np.ndarray
+        Data tensor that the cp_tensor is fitted against
+    method : {"data", "model", "both"} (default="model")
+        Which method to use for computing the fit.
+
+    Returns
+    -------
+    fit : float or tuple
+        The fit (depending on the method). If ``method="both"``, then a tuple is returned
+        where the first element is the fit computed against the data tensor and the second
+        element is the fit computed against the model.
+
+    Examples
+    --------
+    There are two ways of computing the percentage variation. One method is to divide by the variation
+    in the data, giving us the percentage variation of the data captured by each component. This
+    approach will not necessarily sum to 100 since
+
+     1. the model will not explain all the variation.
+     2. the components are likely not orthogonal
+
+    Alternatively, we can divide by the variation in the model, which will give us the contribution
+    of each component to the model. However, this may also not sum to 100 since the components may
+    not be orthogonal.
+
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.factor_tools import percentage_variation
+    >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=0)
+    >>> print(percentage_variation(cp_tensor).astype(int))
+    [11  2  0  0 39]
+    >>> print(percentage_variation(cp_tensor, X, method="data").astype(int))
+    [11  2  0  0 37]
+
+    We see that the variation captured for each component sums to 50 when we compare with the
+    data and 52 when we compare with the model. These low numbers are because the components
+    are not orthogonal, which means that the magnitude of the data is not equal to the sum
+    of the magnitudes of each component. We can also compute the percentage variation with
+    the model and the data simultaneously:
+
+    >>> percent_var_data, percent_var_model = percentage_variation(cp_tensor, X, method="both")
+    >>> print(percent_var_data.astype(int))
+    [11  2  0  0 37]
+    >>> print(percent_var_model.astype(int))
+    [11  2  0  0 39]
+
+    If noise level is 0, both methods should give the same variantion percentages:
+
+    >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.0, seed=1)
+    >>> percent_var_data, percent_var_model = percentage_variation(cp_tensor, X, method="both")
+    >>> print(percent_var_data.astype(int))
+    [ 3 11  0 34  1]
+    >>> print(f"Sum of variation: {percent_var_data.sum():.0f}")
+    Sum of variation: 51
+    >>> print(percent_var_model.astype(int))
+    [ 3 11  0 34  1]
+    >>> print(f"Sum of variation: {percent_var_model.sum():.0f}")
+    Sum of variation: 51
+    """
+    weights, factor_matrices = cp_tensor
+    ssc = weights ** 2
+
+    if X is not None and method == "model":
+        warn(
+            'Dataset provided but method="model", so it is not used. To compute the variation'
+            + ' captured in the data, use method="data" or method="both".'
+        )
+
+    for factor_matrix in factor_matrices:
+        ssc = ssc * np.sum(np.abs(factor_matrix) ** 2, axis=0)
+
+    if method == "data":
+        if X is None:
+            raise TypeError("The dataset must be provided if method='data'")
+        return 100 * ssc / np.sum(X ** 2)
+    elif method == "model":
+        return 100 * ssc / (cp_norm(cp_tensor) ** 2)
+    elif method == "both":
+        return 100 * ssc / np.sum(X ** 2), 100 * ssc / (cp_norm(cp_tensor) ** 2)
+    else:
+        raise ValueError("Method must be either 'data', 'model' or 'both")

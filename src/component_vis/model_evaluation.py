@@ -16,7 +16,6 @@ __all__ = [
     "relative_sse",
     "fit",
     "predictive_power",
-    "percentage_variation",
 ]
 
 
@@ -352,65 +351,3 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     if metric is None:
         return sklearn_estimator.score(factor_matrix, y)
     return metric(y, sklearn_estimator.predict(factor_matrix))
-
-
-@_handle_labelled_cp("cp_tensor", None)
-@_handle_labelled_dataset("X", None, optional=True)
-@_handle_none_weights_cp_tensor("cp_tensor")
-def percentage_variation(cp_tensor, X=None, method="data"):
-    r"""Compute the percentage of variation captured by each component.
-
-    The (possible) non-orthogonality of CP factor matrices makes it less straightforward
-    to estimate the amount of variation captured by each component, compared to a model with
-    orthogonal factors. To estimate the amount of variation captured by a single component,
-    we therefore use the following formula:
-
-    .. math::
-
-        \text{fit}_i = \frac{\text{SS}_i}{SS_\mathbf{\mathcal{X}}}
-
-    where :math:`\text{SS}_i` is the squared norm of the tensor constructed using only the
-    i-th component, and :math:`SS_\mathbf{\mathcal{X}}` is the squared norm of the data
-    tensor. If ``method="data"``, then :math:`SS_\mathbf{\mathcal{X}}` is the squared
-    norm of the tensor constructed from the CP tensor using all factor matrices.
-
-    Parameters
-    ----------
-    cp_tensor : CPTensor or tuple
-        TensorLy-style CPTensor object or tuple with weights as first
-        argument and a tuple of components as second argument
-    X : np.ndarray
-        Data tensor that the cp_tensor is fitted against
-    method : {"data", "model", "both"}
-        Which method to use for computing the fit.
-
-    Returns
-    -------
-    fit : float or tuple
-        The fit (depending on the method). If ``method="both"``, then a tuple is returned
-        where the first element is the fit computed against the data tensor and the second
-        element is the fit computed against the model.
-    """
-    # TODOC: Examples for percentage_variation
-    # TOTEST: Unit test for percentage_variation - Should sum to 100 if method is model
-    # TOTEST: Unit test for percentage_variation - Should sum to 100 if method is data and there is no noise
-    weights, factor_matrices = cp_tensor
-    rank = factor_matrices[0].shape[1]
-    if weights is not None:
-        ssc = weights ** 2
-    else:
-        ssc = np.ones(rank)
-
-    for factor_matrix in factor_matrices:
-        ssc = np.sum(ssc * np.abs(factor_matrix) ** 2, axis=0)
-
-    if method == "data":
-        if X is None:
-            raise TypeError("The dataset must be provided if ``method='data'``")
-        return 100 * ssc / np.sum(X ** 2)
-    elif method == "model":
-        return 100 * ssc / np.sum(ssc)
-    elif method == "both":
-        return 100 * ssc / np.sum(X ** 2), 100 * ssc / np.sum(ssc)
-    else:
-        raise ValueError("Method must be either 'data', 'model' or 'both")
