@@ -319,7 +319,7 @@ def _unlabel_dataset(dataset, optional):
         raise TypeError("Dataset cannot be None")
     if is_xarray(dataset):
         np_dataset = dataset.values
-        DatasetType = xr.DataArray
+        dataset_constructor = xr.DataArray
         dataset_metadata = {
             "name": dataset.name,
             "coords": dataset.coords,
@@ -328,22 +328,22 @@ def _unlabel_dataset(dataset, optional):
         }
     elif is_dataframe(dataset):
         np_dataset = dataset.values
-        DatasetType = pd.DataFrame
+        dataset_constructor = pd.DataFrame
         dataset_metadata = {
             "index": dataset.index,
             "columns": dataset.columns,
         }
     else:
         np_dataset = dataset
-        DatasetType = np.array
+        dataset_constructor = np.array
         dataset_metadata = {}
-    return np_dataset, DatasetType, dataset_metadata
+    return np_dataset, dataset_constructor, dataset_metadata
 
 
-def _relabel_dataset(np_dataset, DatasetType, dataset_metadata, optional):
+def _relabel_dataset(np_dataset, dataset_constructor, dataset_metadata, optional):
     if optional and np_dataset is None:
         return
-    return DatasetType(np_dataset, **dataset_metadata)
+    return dataset_constructor(np_dataset, **dataset_metadata)
 
 
 _SINGLETON = object()
@@ -395,16 +395,16 @@ def _handle_labelled_dataset(dataset_name, output_dataset_index, optional=False)
             if optional and dataset_name not in bound_arguments.arguments:
                 return func(*bound_arguments.args, **bound_arguments.kwargs)
             dataset = bound_arguments.arguments[dataset_name]
-            dataset_unlabelled, DatasetType, dataset_metadata = _unlabel_dataset(dataset, optional=optional)
+            dataset_unlabelled, dataset_constructor, dataset_metadata = _unlabel_dataset(dataset, optional=optional)
 
             bound_arguments.arguments[dataset_name] = dataset_unlabelled
             out = func(*bound_arguments.args, **bound_arguments.kwargs)
 
             if output_dataset_index is _SINGLETON:
-                out = _relabel_dataset(out, DatasetType, dataset_metadata, optional=optional)
+                out = _relabel_dataset(out, dataset_constructor, dataset_metadata, optional=optional)
             elif output_dataset_index is not None:
                 out_dataset = _relabel_dataset(
-                    out[output_dataset_index], DatasetType, dataset_metadata, optional=optional
+                    out[output_dataset_index], dataset_constructor, dataset_metadata, optional=optional
                 )
                 out = (
                     *out[:output_dataset_index],
