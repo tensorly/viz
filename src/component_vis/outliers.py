@@ -115,19 +115,18 @@ def compute_leverage(factor_matrix):
 
     that is, the :math:`i`-th diagonal entry of the matrix :math:`\left[A \left(A^T A\right)^{-1} A^T\right]`.
     If a given sample, :math:`i`, has a high leverage score, then it likely has a strong
-    influence on the model.
+    influence on the model. A good overview of the leverage score is :cite:p:`velleman1981efficient`.
 
     The leverage scores sum to the number of components for our model. Moreover, if a data point
     has a leverage score equal to 1, then removing the row from :math:`A` that corresponds
     to that data point will reduce the rank of :math:`A` by 1. The leverage can therefore be
-    thought of as a measure of how many components a model "devotes" to each data point.
-    # TODO: cite
+    thought of as a measure of how many components a model "devotes" to each data point :cite:p:`belsley1980regression`.
 
     Another way of interpreting the leverage score is as a measure of how "similar" a data point
     is to the rest. If a data point has a leverage of 1, then there is no other similar data points.
     Likewise, if a data point has a leverage of 0.5, then there is one other "similar" data point
     (in some weighted sense), and a leverage of 0.2 means that there are five other "similar" data
-    points.  # TODO: cite
+    points :cite:p:`huber2009robust`.
 
     If the factor matrix is a dataframe, then the output is also a dataframe with that index. Otherwise,
     the output is a NumPy array.
@@ -142,12 +141,12 @@ def compute_leverage(factor_matrix):
     leverage : DataFrame or numpy array
         The leverage scores, if the input is a dataframe, then the index is preserved.
 
-    Note
-    ----
+    .. note::
 
-    The leverage score is related to the Hotelling T2-statistic (or D-statistic), which
-    is equal to a scaled version of leverage computed based on centered factor matrices.
+        The leverage score is related to the Hotelling T2-statistic (or D-statistic), which
+        is equal to a scaled version of leverage computed based on centered factor matrices.
     """
+    # TODOC: complete the docstring for compute leverage
     # TODOC: example for compute_leverage
     leverage = _compute_leverage(factor_matrix)
 
@@ -159,9 +158,7 @@ def compute_leverage(factor_matrix):
 
 @_alias_mode_axis()
 def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axis=None):
-    f"""Compute the leverage score and (normalised) slabwise SSE along one axis.
-
-    # TODOC: Write description of how to use compute_outlier_info.
+    """Compute the leverage score and (normalised) slabwise SSE along one axis.
 
     These metrics are often plotted against each other to discover outliers.
 
@@ -182,8 +179,9 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axi
     Returns
     -------
     DataFrame
-        Dataframe with two columns, "{_LEVERAGE_NAME}" and "{_SLABWISE_SSE_NAME}".
+        Dataframe with two columns, "Leverage score" and "Slabwise SSE".
     """
+    # TODOC: complete the avoce docstring
     # Add whether suspicious based on rule-of-thumb cutoffs as boolean columns
     leverage = compute_leverage(cp_tensor[1][mode])
 
