@@ -13,7 +13,7 @@ __all__ = [
     "compute_leverage",
     "compute_outlier_info",
     "get_leverage_outlier_threshold",
-    "get_slab_sse_outlier_threshold",
+    "get_slabwise_sse_outlier_threshold",
 ]
 
 
@@ -180,6 +180,13 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axi
     -------
     DataFrame
         Dataframe with two columns, "Leverage score" and "Slabwise SSE".
+
+    See Also
+    --------
+    compute_leverage : More information about the leverage score is given in this docstring
+    compute_slabwise_sse : More information about the slabwise SSE is given in this docstring
+    get_leverage_outlier_threshold : Cutoff for selecting potential outliers based on the leverage
+    compute_slabwise_sse : Cutoff for selecting potential outliers based on the slabwise SSE
     """
     # TODOC: complete the avoce docstring
     # Add whether suspicious based on rule-of-thumb cutoffs as boolean columns
@@ -399,7 +406,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
         )
 
 
-def get_slab_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05, ddof=1):
+def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05, ddof=1):
     r"""Compute rule-of-thumb threshold values for suspicious residuals.
 
     One way to determine possible outliers is to examine how well the model describes
@@ -440,7 +447,7 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05, ddo
 
     >>> import numpy as np
     >>> from scipy.stats import bootstrap
-    >>> from component_vis.outliers import compute_slabwise_sse, get_slab_sse_outlier_threshold
+    >>> from component_vis.outliers import compute_slabwise_sse, get_slabwise_sse_outlier_threshold
     >>> from component_vis.utils import cp_to_tensor
 
     Then, we create a function to compute the false positive rate. This will be useful for our
@@ -457,7 +464,7 @@ def get_slab_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05, ddo
     ...
     ...
     ...     sse = compute_slabwise_sse(X, noisy_X)
-    ...     th = get_slab_sse_outlier_threshold(sse, method="p-value", p_value=p_value)
+    ...     th = get_slabwise_sse_outlier_threshold(sse, method="p-value", p_value=p_value)
     ...     return (sse > th).mean()
 
     Finally, we estimate the 95% confidence interval of the false positive rate to validate

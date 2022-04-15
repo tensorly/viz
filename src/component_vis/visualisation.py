@@ -13,7 +13,7 @@ from .outliers import (
     _SLABWISE_SSE_NAME,
     compute_outlier_info,
     get_leverage_outlier_threshold,
-    get_slab_sse_outlier_threshold,
+    get_slabwise_sse_outlier_threshold,
 )
 from .utils import _alias_mode_axis, cp_to_tensor
 from .xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
@@ -30,9 +30,6 @@ __all__ = [
     "optimisation_diagnostic_plots",
     "percentage_variation_plot",
 ]
-
-
-# TODOC: Examples in docstrings
 
 
 def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
@@ -257,7 +254,6 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     return ax
 
 
-# TODOC: Include see also for outlier plot
 @_alias_mode_axis()
 def outlier_plot(
     cp_tensor,
@@ -290,7 +286,7 @@ def outlier_plot(
         method.
     residual_rule_of_thumbs : str or iterable of str
         Rule of thumb(s) used to create lines for detecting outliers based on residuals. Must be a supported
-        argument for ``method`` with :meth:`component_vis.outliers.get_slab_sse_outlier_threshold`. If
+        argument for ``method`` with :meth:`component_vis.outliers.get_slabwise_sse_outlier_threshold`. If
         ``residual_rule_of_thumbs`` is an iterable of strings, then multiple lines will be drawn, one for each
         method.
     p_value : float or iterable of float
@@ -361,7 +357,7 @@ def outlier_plot(
     component_vis.outliers.compute_leverage
     component_vis.outliers.compute_slabwise_sse
     component_vis.outliers.get_leverage_outlier_threshold
-    component_vis.outliers.get_slab_sse_outlier_threshold
+    component_vis.outliers.get_slabwise_sse_outlier_threshold
     """
     weights, factor_matrices = cp_tensor
 
@@ -426,7 +422,7 @@ def outlier_plot(
                 p_values = [None]  # We still need something to iterate over even if it doesn't use the p-value
 
             for p in p_values:
-                threshold = get_slab_sse_outlier_threshold(
+                threshold = get_slabwise_sse_outlier_threshold(
                     outlier_info[f"{_SLABWISE_SSE_NAME}"], method=residual_rule_of_thumb, p_value=p
                 )
                 if residual_rule_of_thumb == "p-value":

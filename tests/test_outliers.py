@@ -7,7 +7,7 @@ from component_vis.outliers import (
     compute_leverage,
     compute_slabwise_sse,
     get_leverage_outlier_threshold,
-    get_slab_sse_outlier_threshold,
+    get_slabwise_sse_outlier_threshold,
 )
 
 
@@ -98,7 +98,7 @@ def test_slab_sse_threshold_invalid_method(seed, labelled):
     X2 = simulated_random_cp_tensor((10, 11, 12), 4, seed=seed, labelled=labelled)[1]
     sse = compute_slabwise_sse(X1, X2)
     with pytest.raises(ValueError):
-        get_slab_sse_outlier_threshold(sse, method="invalid method")
+        get_slabwise_sse_outlier_threshold(sse, method="invalid method")
 
 
 @pytest.mark.parametrize("labelled", [True, False])
