@@ -187,7 +187,7 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axi
     get_leverage_outlier_threshold : Cutoff for selecting potential outliers based on the leverage
     compute_slabwise_sse : Cutoff for selecting potential outliers based on the slabwise SSE
     """
-    # TODOC: complete the avoce docstring
+    # TODOC: Example for compute_outlier_info
     # Add whether suspicious based on rule-of-thumb cutoffs as boolean columns
     leverage = compute_leverage(cp_tensor[1][mode])
 
