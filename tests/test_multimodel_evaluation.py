@@ -5,18 +5,16 @@ import pytest
 from pytest import approx
 
 import component_vis.multimodel_evaluation as multimodel_evaluation
-from component_vis.utils import cp_to_tensor
 from component_vis.data import simulated_random_cp_tensor
 from component_vis.factor_tools import check_cp_tensor_equal, permute_cp_tensor
+from component_vis.utils import cp_to_tensor
 
 
 @pytest.mark.parametrize("labelled", [True, False])
-def test_similarity_evaluation(rng, labelled):
+def test_similarity_evaluation(rng, labelled, seed):
     rank = 5
     shape = (10, 20, 30)
-    cp_tensors = [
-        simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=rng.randint(0, 1000))[0] for _ in range(5)
-    ]
+    cp_tensors = [simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed + i)[0] for i in range(5)]
     similarity = multimodel_evaluation.similarity_evaluation(cp_tensors[0], cp_tensors)
     assert similarity[0] == approx(1)  # Check that it is equal to itself
     for sim in similarity[1:]:
@@ -34,12 +32,11 @@ def test_similarity_evaluation(rng, labelled):
         assert sim == approx(1)
 
 
-# TODO: Use the simulated dataset function to test both with and without labels
-def test_get_model_with_lowest_error(rng):
-    cp_tensors = [
-        (None, (rng.standard_normal((10, 3)), rng.standard_normal((20, 3)), rng.standard_normal((30, 3)),),)
-        for i in range(5)
-    ]
+@pytest.mark.parametrize("labelled", [True, False])
+def test_get_model_with_lowest_error(rng, labelled, seed):
+    rank = 3
+    shape = (10, 20, 30)
+    cp_tensors = [simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed + i)[0] for i in range(5)]
 
     for i, cp_tensor in enumerate(cp_tensors):
         dense_tensor = cp_to_tensor(cp_tensor)
@@ -50,10 +47,7 @@ def test_get_model_with_lowest_error(rng):
         assert i == selected_index
         assert all_sse[i] == approx(0)
 
-    A = rng.standard_normal((30, 3))
-    B = rng.standard_normal((20, 3))
-    C = rng.standard_normal((10, 3))
-    w = rng.uniform(size=(3,))
+    w, (A, B, C) = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)[0]
     cp_tensors = []
     for scale in range(1, 10):
         cp_tensors.append((w, (scale * A.copy(), B.copy(), C.copy())))
@@ -84,11 +78,11 @@ def test_get_model_with_lowest_error(rng):
     np.testing.assert_allclose(out[2], errors)
 
 
-def test_sort_models_by_error(rng):
-    A = rng.standard_normal((30, 3))
-    B = rng.standard_normal((20, 3))
-    C = rng.standard_normal((10, 3))
-    w = rng.uniform(size=(3,))
+@pytest.mark.parametrize("labelled", [True, False])
+def test_sort_models_by_error(seed, labelled):
+    rank = 3
+    shape = (10, 20, 30)
+    w, (A, B, C) = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)[0]
     cp_tensors = []
     for scale in range(1, 10):
         cp_tensors.append((w, (scale * A.copy(), B.copy(), C.copy())))
@@ -107,11 +101,11 @@ def test_sort_models_by_error(rng):
         assert error == rel_sse
 
 
-def test_sort_models_by_error_with_identical_decompositions(rng):
-    A = rng.standard_normal((30, 3))
-    B = rng.standard_normal((20, 3))
-    C = rng.standard_normal((10, 3))
-    w = rng.uniform(size=(3,))
+@pytest.mark.parametrize("labelled", [True, False])
+def test_sort_models_by_error_with_identical_decompositions(seed, labelled):
+    rank = 3
+    shape = (10, 20, 30)
+    w, (A, B, C) = simulated_random_cp_tensor(shape, rank, labelled=labelled, seed=seed)[0]
     cp_tensors = []
     for scale in range(1, 10):
         cp_tensors.append((w, (scale * A.copy(), B.copy(), C.copy())))
