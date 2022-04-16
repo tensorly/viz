@@ -1,4 +1,6 @@
 """
+.. _split-half:
+
 Split-half analysis for selecting the number of components
 ----------------------------------------------------------
 

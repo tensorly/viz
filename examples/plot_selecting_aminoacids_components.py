@@ -128,7 +128,7 @@ plt.show()
 ###############################################################################
 # Scree plot of fit and core consistency
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Another common strategy for determining the number of components is the fit and core consistency score. The fit
+# Another common strategy for determining the number of components is the fit and core consistency diagnostic. The fit
 # measures how well the model describes the data. By plotting this value for each rank choice, we can see how much
 # additional components improve the model fit. We are looking for a "shoulder" where the fit increase slows down,
 # indicating that the added complexity of a higher rank model does not actually add much in terms of modelling
@@ -173,6 +173,10 @@ for i, (rank, model) in enumerate(selected_models.items()):
 plt.show()
 
 ###############################################################################
+# For more information about the core consistency and core element plot, see the
+# :ref:`core consistency example <core-consistency>`.
+
+###############################################################################
 # Split-half analysis
 # ^^^^^^^^^^^^^^^^^^^
 #
@@ -183,7 +187,7 @@ plt.show()
 # For split-half analysis, it is important to choose a split that makes sense. We need to expect that all
 # components will be present in both splits! In this case, we only have five samples, and reducing the number
 # of samples even further can make it difficult to find the correct decomposition. We will therefore not use
-# split-half analysis here. Instead, we devote a separate example for split-half analysis.
+# split-half analysis here. Instead, we have devoted a :ref:`separate example for split-half analysis <split-half>`.
 
 
 ###############################################################################
