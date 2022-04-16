@@ -1,5 +1,6 @@
 from warnings import warn
 
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
@@ -25,6 +26,7 @@ __all__ = [
     "outlier_plot",
     "component_scatterplot",
     "core_element_plot",
+    "core_element_heatmap",
     "components_plot",
     "component_comparison_plot",
     "optimisation_diagnostic_plots",
@@ -544,7 +546,6 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
     return ax
 
 
-# TODO: Core element heatmaps
 @_handle_none_weights_cp_tensor("cp_tensor")
 def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     """Scatter plot with the elements of the optimal core tensor for a given CP tensor.
@@ -635,6 +636,158 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     ax.set_title(f"Core consistency: {core_consistency:.1f}")
 
     return ax
+
+
+def _srgb_to_luminance(srgb):
+    """Return the Y of XYZ.
+    
+    Computed based on a preview of the IEC 61966-2-1:1999/AMD1:2003 standard. Downloaded
+    from https://www.sis.se/api/document/preview/562720/ (archived version:
+    https://web.archive.org/web/20200608215908/https://www.sis.se/api/document/preview/562720/).
+
+    Arguments
+    ---------
+    srgb : np.ndarray
+        Non-linear sRGB signal
+    
+    Returns
+    -------
+    np.ndarray
+        Array with luminance (Y) values.
+    """
+    srgb_linear = np.where(srgb < 0.04045, srgb / 12.92, ((srgb + 0.055) / 1.055) ** 2.4)
+    return srgb_linear @ np.array([0.2126, 0.7152, 0.0722])
+
+
+def _get_core_tensor_index(slab_idx, slice_mode):
+    slices = []
+    slice_strs = []
+    for mode in range(3):
+        if mode == slice_mode:
+            slices.append(slab_idx)
+            slice_strs.append(str(slab_idx))
+        else:
+            slices.append(slice(None))
+            slice_strs.append(":")
+    slice_str = ", ".join(slice_strs)
+
+    return tuple(slices), slice_str
+
+
+def _apply_cmap(selected_slab, vmax):
+    cmap = cm.get_cmap("coolwarm")
+    scaled_slab = (selected_slab + vmax) / (2 * vmax)
+    scaled_slab[scaled_slab > 1] = 1
+    scaled_slab[scaled_slab < 0] = 0
+    return cmap(scaled_slab)[..., :-1]
+
+
+def _get_text_color(bg_rgb):
+    luminance = _srgb_to_luminance(bg_rgb)
+    if luminance > 0.408:
+        return "0.15"
+    else:
+        return "white"
+
+
+@_handle_none_weights_cp_tensor("cp_tensor")
+def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, text_kwargs=None, text_fmt=".2f"):
+    """Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.
+
+    It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which
+    components that are modelling multi-linear behaviour and which are not. For example, a component that models noise is
+    more likely to have strong interactions with the other components compared to a component that have a meaningful
+    interpretation. In the core element heatmap, this is shown as rows, columns and/or slabs that have high entries compared
+    to the diagonal.
+
+    If the data follows a PARAFAC model perfectly, then there should only be one non-zero entry per slice. For the :math:`r`-th
+    slice, the :math:`(r, r)`-th entry will be 1 and all others will be 0.
+
+    .. note::
+
+        The core element heatmap can only be plotted for third-order tensors.
+
+    Parameters
+    ----------
+    cp_tensor : CPTensor or tuple
+        TensorLy-style CPTensor object or tuple with weights as first
+        argument and a tuple of components as second argument
+    dataset : np.ndarray or xarray.DataArray
+        The dataset the CP tensor models.
+    slice_mode : {0, 1, 2} (default=0)
+        Which mode to slice the core tensor across.
+    vmax : float (default=None)
+        The maximum value for the colormap (a diverging colormap with center at 0 will be used).
+        If ``None``, then the maximum entry in the core tensor is used.
+    annotate : bool (default=True)
+        If ``True``, then the value of the core tensor is plotted too.
+    text_kwargs : dict (default=None)
+        Additional keyword arguments used for plotting the text. Can for example be used to set the font size.
+    text_fmt : str (default=".2f")
+        Formatting string used for annotating.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+    axes : ndarray(dtype=matplotlib.axes.Axes)
+
+
+    Examples
+    --------
+    .. plot::
+        :context: close-figs
+        :include-source:
+
+        >>> from component_vis.visualisation import core_element_heatmap
+        >>> from component_vis.data import simulated_random_cp_tensor
+        >>> import matplotlib.pyplot as plt
+        >>> cp_tensor, dataset = simulated_random_cp_tensor((20, 30, 40), 3, seed=0)
+        >>> fig, axes = core_element_heatmap(cp_tensor, dataset)
+        >>> plt.show()
+    """
+    weights, factors = cp_tensor
+    if len(factors) != 3:
+        raise ValueError("Can only create a core element heatmap for third order tensors.")
+
+    # Multiply weights into components so diagonal should be one
+    A = factors[0].copy()
+    A *= weights
+    factors = tuple((A, *factors[1:]))
+
+    # Estimate core tensor
+    core_tensor = estimate_core_tensor(factors, dataset)
+    num_components = core_tensor.shape[0]
+
+    fig, axes = plt.subplots(1, num_components, figsize=(3 * num_components, 3), sharex=True, sharey=True)
+
+    if vmax is None:
+        vmax = np.abs(core_tensor).max()
+
+    if text_kwargs is None:
+        text_kwargs = {}
+
+    for slab, ax in enumerate(axes):
+        slices, slice_str = _get_core_tensor_index(slab, slice_mode)
+        selected_slab = core_tensor[slices]
+        image = _apply_cmap(selected_slab, vmax)
+        ax.imshow(image)
+
+        if annotate:
+            for index, value in np.ndenumerate(selected_slab):
+                ax.text(
+                    *index[::-1],  # Reverse since matrix index is (y, x), not (x, y)
+                    f"{value:{text_fmt}}",
+                    verticalalignment="center",
+                    horizontalalignment="center",
+                    color=_get_text_color(image[index]),
+                    **text_kwargs,
+                )
+
+        ax.set_xticks(np.arange(num_components))
+        ax.set_yticks(np.arange(num_components))
+        ax.set_title(f"core_tensor[{slice_str}]")
+
+    return fig, axes
 
 
 @_handle_none_weights_cp_tensor("cp_tensor")
