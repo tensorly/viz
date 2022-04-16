@@ -45,8 +45,8 @@ def load_aminoacids(save_data=True):
     Or archived version here:
         https://web.archive.org/web/20210413050155/http://models.life.ku.dk/Amino_Acid_fluo
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     save_data : bool (default=True)
         If ``True``, then the dataset is saved in ``component_vis.data.DOWNLOAD_PARENT`` to avoid having to download
         it in the future.

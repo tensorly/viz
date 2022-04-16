@@ -128,8 +128,8 @@ def distribute_weights_in_one_mode(cp_tensor, mode, axis=None):
 def distribute_weights(cp_tensor, weight_behaviour, weight_mode=0):
     """Utility to distribute the weights of a CP tensor.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument.
