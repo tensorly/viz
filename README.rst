@@ -1,8 +1,8 @@
 =========================================================
 ComponentVis — Utilities for visualising component models
 =========================================================
-.. image:: https://github.com/MarieRoald/component-vis/actions/workflows/Tests.yml/badge.svg
-    :target: https://github.com/MarieRoald/component-vis/actions/workflows/Tests.yml
+.. image:: https://github.com/MarieRoald/component-vis/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/MarieRoald/component-vis/actions/workflows/tests.yml
     :alt: Tests
 
 .. image:: https://codecov.io/gh/MarieRoald/component-vis/branch/master/graph/badge.svg?token=BYEME3G8KG
