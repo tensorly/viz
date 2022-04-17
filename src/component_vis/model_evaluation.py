@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 """
 This module contains functions used to evaluate a single tensor factorisation model
 by comparing it to a data tensor.

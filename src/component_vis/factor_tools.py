@@ -1,9 +1,16 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 """
 This module contains most functions that only work on tensor factorisation models, not data
 tensors. The module contains functions that are useful for inspecting tensor factorisation
 models. For example, computing how similar two factorisations are, checking if two decompositions
 are equivalent, or simply generating a dense tensor from a (possibly) labelled decomposition.
 """
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 from warnings import warn
 
 import numpy as np

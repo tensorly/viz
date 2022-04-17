@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 from warnings import warn
 
 import matplotlib.cm as cm

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 import zipfile
 from io import BytesIO
 from pathlib import Path

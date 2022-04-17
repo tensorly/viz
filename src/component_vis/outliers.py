@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 import numpy as np
 import pandas as pd
 import scipy.stats as stats

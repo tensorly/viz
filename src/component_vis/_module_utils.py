@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 from functools import wraps
 from inspect import signature
 

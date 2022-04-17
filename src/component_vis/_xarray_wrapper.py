@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
 """This module contains utilities for seamlessly handling DataFrames as factor matrices and XArray DataArrays as data
 """
+
+__author__ = "Marie Roald & Yngve Mardal Moe"
+
 from functools import wraps
 from inspect import signature
 from warnings import warn
@@ -8,7 +12,12 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from ._module_utils import _check_is_argument, is_dataframe, is_xarray, validate_cp_tensor
+from ._module_utils import (
+    _check_is_argument,
+    is_dataframe,
+    is_xarray,
+    validate_cp_tensor,
+)
 
 __all__ = [
     "is_dataframe",
