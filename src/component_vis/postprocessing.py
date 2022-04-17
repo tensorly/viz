@@ -2,7 +2,6 @@ from warnings import warn
 
 import numpy as np
 import scipy.linalg as sla
-from importlib_metadata import metadata
 
 from . import factor_tools
 from ._module_utils import is_iterable
