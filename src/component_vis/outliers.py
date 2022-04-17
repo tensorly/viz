@@ -74,9 +74,8 @@ def compute_slabwise_sse(estimated, true, normalise=True, mode=0, axis=None):
     slab_sse : xarray or numpy array
         The (normalised) slabwise SSE, if true tensor input is an xarray array,
         then the returned tensor is too.
-
-    TODOC: example for compute_slabwise_sse
     """
+    # TODOC: example for compute_slabwise_sse
     # Check that dimensions match up.
     if is_xarray(estimated) and is_xarray(true):
         if estimated.dims != true.dims:
@@ -109,16 +108,17 @@ def compute_leverage(factor_matrix):
     r"""Compute the leverage score of the given factor matrix.
 
     The leverage score is a measure of how much "influence" a slab (often representing a sample)
-    has on a tensor factorisation model. For example, if we have a CP model, :math:`[A, B, C]`,
-    where the :math:`A`-matrix represents the samples, then the sample-mode leverage score is
-    defined as
+    has on a tensor factorisation model. To compute the leverage score for the different slabs,
+    we only need the factor matrix for the selected mode. If the selected mode is represented
+    by :math:`\mathbf{A}`, then the leverage score is defined as
 
     .. math::
 
-        l_i = \left[A \left(A^T A\right)^{-1} A^T\right]_{ii},
+        h_i = \left[\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T\right]_{ii},
 
-    that is, the :math:`i`-th diagonal entry of the matrix :math:`\left[A \left(A^T A\right)^{-1} A^T\right]`.
-    If a given sample, :math:`i`, has a high leverage score, then it likely has a strong
+    that is, the :math:`i`-th diagonal entry of the matrix
+    :math:`\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T`.
+    If a given slab, :math:`i`, has a high leverage score, then it likely has a strong
     influence on the model. A good overview of the leverage score is :cite:p:`velleman1981efficient`.
 
     The leverage scores sum to the number of components for our model. Moreover, if a data point
