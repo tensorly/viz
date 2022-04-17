@@ -265,8 +265,8 @@ def outlier_plot(
     cp_tensor,
     dataset,
     mode=0,
-    leverage_rule_of_thumbs=None,
-    residual_rule_of_thumbs=None,
+    leverage_rules_of_thumb=None,
+    residual_rules_of_thumb=None,
     p_value=0.05,
     ax=None,
     axis=None,
@@ -285,18 +285,18 @@ def outlier_plot(
         Dataset to compare with
     mode : int
         Which mode (axis) to create the outlier plot for
-    leverage_rule_of_thumbs : str or iterable of str
+    leverage_rules_of_thumb : str or iterable of str
         Rule of thumb(s) used to create lines for detecting outliers based on leverage score. Must be a supported
         argument for ``method`` with :meth:`component_vis.outliers.get_leverage_outlier_threshold`. If
-        ``leverage_rule_of_thumbs`` is an iterable of strings, then multiple lines will be drawn, one for each
+        ``leverage_rules_of_thumb`` is an iterable of strings, then multiple lines will be drawn, one for each
         method.
-    residual_rule_of_thumbs : str or iterable of str
+    residual_rules_of_thumb : str or iterable of str
         Rule of thumb(s) used to create lines for detecting outliers based on residuals. Must be a supported
         argument for ``method`` with :meth:`component_vis.outliers.get_slabwise_sse_outlier_threshold`. If
-        ``residual_rule_of_thumbs`` is an iterable of strings, then multiple lines will be drawn, one for each
+        ``residual_rules_of_thumb`` is an iterable of strings, then multiple lines will be drawn, one for each
         method.
     p_value : float or iterable of float
-        p-value(s) to use for both the leverage and residual rule of thumbs. If an iterable of floats is used,
+        p-value(s) to use for both the leverage and residual rules of thumb. If an iterable of floats is used,
         then there will be drawn lines for each p-value.
     ax : Matplotlib axes
         Axes to plot outlier plot in. If ``None``, then ``plt.gca()`` is used.
@@ -329,12 +329,12 @@ def outlier_plot(
         >>> cp = postprocess(cp, dataset=data, )
         >>>
         >>> outlier_plot(
-        ...     cp, data, leverage_rule_of_thumbs='p-value', residual_rule_of_thumbs='p-value', p_value=[0.05, 0.01]
+        ...     cp, data, leverage_rules_of_thumb='p-value', residual_rules_of_thumb='p-value', p_value=[0.05, 0.01]
         ... )
         <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
 
-    We can also provide multiple types of rule-of-thumbs
+    We can also provide multiple types of rules of thumb
 
     .. plot::
         :context: close-figs
@@ -352,7 +352,7 @@ def outlier_plot(
         >>> cp = postprocess(cp, dataset=data, )
         >>>
         >>> outlier_plot(
-        ...     cp, data, leverage_rule_of_thumbs=['huber lower', 'hw higher'], residual_rule_of_thumbs='two sigma'
+        ...     cp, data, leverage_rules_of_thumb=['huber lower', 'hw higher'], residual_rules_of_thumb='two sigma'
         ... )
         <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
@@ -385,11 +385,11 @@ def outlier_plot(
         ax.text(x, y, s, zorder=0)
     # Vertical lines for leverage based rule-of-thumb thresholds
     leverage_thresholds = {}
-    if leverage_rule_of_thumbs is not None:
-        if isinstance(leverage_rule_of_thumbs, str):
-            leverage_rule_of_thumbs = [leverage_rule_of_thumbs]
+    if leverage_rules_of_thumb is not None:
+        if isinstance(leverage_rules_of_thumb, str):
+            leverage_rules_of_thumb = [leverage_rules_of_thumb]
 
-        for leverage_rule_of_thumb in leverage_rule_of_thumbs:
+        for leverage_rule_of_thumb in leverage_rules_of_thumb:
             if leverage_rule_of_thumb in {"p-value", "hotelling"} and not is_iterable(p_value):
                 p_values = [p_value]
             elif leverage_rule_of_thumb in {"p-value", "hotelling"}:
@@ -415,11 +415,11 @@ def outlier_plot(
         ax.axvline(value, label=key, **next(ax._get_lines.prop_cycler))
 
     residual_thresholds = {}
-    if residual_rule_of_thumbs is not None:
-        if isinstance(residual_rule_of_thumbs, str):
-            residual_rule_of_thumbs = [residual_rule_of_thumbs]
+    if residual_rules_of_thumb is not None:
+        if isinstance(residual_rules_of_thumb, str):
+            residual_rules_of_thumb = [residual_rules_of_thumb]
 
-        for residual_rule_of_thumb in residual_rule_of_thumbs:
+        for residual_rule_of_thumb in residual_rules_of_thumb:
             if residual_rule_of_thumb == "p-value" and not is_iterable(p_value):
                 p_values = [p_value]
             elif residual_rule_of_thumb == "p-value":
@@ -644,7 +644,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
 
 def _srgb_to_luminance(srgb):
     """Return the Y of XYZ.
-    
+
     Computed based on a preview of the IEC 61966-2-1:1999/AMD1:2003 standard. Downloaded
     from https://www.sis.se/api/document/preview/562720/ (archived version:
     https://web.archive.org/web/20200608215908/https://www.sis.se/api/document/preview/562720/).
@@ -653,7 +653,7 @@ def _srgb_to_luminance(srgb):
     ---------
     srgb : np.ndarray
         Non-linear sRGB signal
-    
+
     Returns
     -------
     np.ndarray

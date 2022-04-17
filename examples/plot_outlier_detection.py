@@ -4,7 +4,7 @@ r"""
 Outlier detection with PARAFAC
 ------------------------------
 
-There are two metrics that are commonly used for detecting outliers in PARAFAC models: *leverage* and *residuals*. 
+There are two metrics that are commonly used for detecting outliers in PARAFAC models: *leverage* and *residuals*.
 
 Residuals
 ^^^^^^^^^
@@ -30,10 +30,10 @@ we only need the factor matrix for the sample mode. If the sample mode is repres
 then the leverage score is defined as
 
 .. math::
-    
+
     h_i = \left[\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T\right]_{ii},
 
-that is, the :math:`i`-th diagonal entry of the matrix 
+that is, the :math:`i`-th diagonal entry of the matrix
 :math:`\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T`.
 
 Examples with code
@@ -290,8 +290,8 @@ plt.show()
 component_vis.visualisation.outlier_plot(
     first_attempt,
     X,
-    leverage_rule_of_thumbs=["p-value", "hotelling", "huber higher", "huber lower", "hw lower", "hw higher"],
-    residual_rule_of_thumbs=["p-value", "two sigma"],
+    leverage_rules_of_thumb=["p-value", "hotelling", "huber higher", "huber lower", "hw lower", "hw higher"],
+    residual_rules_of_thumb=["p-value", "two sigma"],
 )
 plt.show()
 
