@@ -987,7 +987,7 @@ def component_comparison_plot(
         for key, value in cp_tensors.items()
     }
 
-    num_components = len(weights.reshape(-1))
+    num_components = factor_matrices[0].shape[1]
     num_modes = len(factor_matrices)
     num_models = len(cp_tensors)
     ref_name = next(iter(cp_tensors.keys()))
@@ -1001,7 +1001,7 @@ def component_comparison_plot(
 
     fig, axes = plt.subplots(num_rows, num_modes, figsize=(16, num_rows * 9 / num_modes), tight_layout=True)
     for model_num, (model_name, cp_tensor) in enumerate(cp_tensors.items()):
-        weights, factor_matrices = cp_tensor
+        factor_matrices = cp_tensor[1]  # The weights are handled by the above postprocessing
         if factor_matrices[0].shape[1] > num_components:
             warn(
                 f"The {model_name} decomposition has a higher rank than the reference {ref_name} decomposition."
@@ -1043,7 +1043,10 @@ def component_comparison_plot(
     for row_idx in range(num_rows - 1):
         for mode in range(num_modes):
             ax = axes[row_idx, mode]
+            xlim = ax.get_xlim()  # Necessary to supress FixedLocator warning
+            ax.set_xticks(ax.get_xticks())  # Necessary to supress FixedLocator warning
             ax.set_xticklabels(["" for _ in ax.get_xticks()])
+            ax.set_xlim(xlim)  # Necessary to supress FixedLocator warning
             ax.set_xlabel("")
     return fig, axes
 
