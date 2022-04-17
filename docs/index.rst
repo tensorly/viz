@@ -5,7 +5,9 @@ Component model visualisation
    :maxdepth: 2
    :caption: Contents:
 
+   about_tensors
    installation
+   contributing
    auto_examples/index
    api
 
