@@ -66,7 +66,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"component_vis"
+project = u"ComponentVis"
 copyright = u"2021, Marie Roald & Yngve Mardal Moe"
 author = u"Marie Roald & Yngve Mardal Moe"
 
@@ -144,7 +144,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "component_vis.tex", u"component_vis Documentation", u"Marie Roald", "manual",),
+    (master_doc, "component_vis.tex", u"ComponentVis Documentation", u"Marie Roald", "manual",),
 ]
 
 
@@ -152,7 +152,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "component_vis", u"component_vis Documentation", [author], 1)]
+man_pages = [(master_doc, "ComponentVis", u"ComponentVis Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------
@@ -163,11 +163,11 @@ man_pages = [(master_doc, "component_vis", u"component_vis Documentation", [auth
 texinfo_documents = [
     (
         master_doc,
-        "component_vis",
-        u"component_vis Documentation",
+        "ComponentVis",
+        u"ComponentVis Documentation",
         author,
-        "component_vis",
-        "One line description of project.",
-        "Miscellaneous",
+        "ComponentVis",
+        "Utilities for analysing component models.",
+        # "Miscellaneous",
     ),
 ]
