@@ -37,8 +37,8 @@ def add_factor_metadata(cp_tensor, dataset):
     a dataset and a labelled CP tensor and add the additional coordinates as new columns in the factor
     matrices.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     cp_tensor : labelled CP Tensor
     dataset : xarray.DataArray
 
