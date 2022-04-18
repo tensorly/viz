@@ -25,9 +25,9 @@ Documentation
 The documentation
 is available on `ReadTheDocs <https://componentvis.readthedocs.io/en/latest/?badge=latest>`_ and includes
 
-* A primer on tensors, tensor factorisations and the notation we use
-* An example gallery
-* The API reference
+* A `primer on tensors <https://componentvis.readthedocs.io/en/latest/about_tensors.html#what-are-tensors-and-tensor-decompositions>`_, `tensor factorisations <https://componentvis.readthedocs.io/en/latest/about_tensors.html#what-are-tensor-factorisations>`_ and the `notation we use <https://componentvis.readthedocs.io/en/latest/about_tensors.html#notation>`_
+* `An example gallery <https://componentvis.readthedocs.io/en/latest/auto_examples/index.html>`_
+* `The API reference <https://componentvis.readthedocs.io/en/latest/api.html>`_
  
 
 Dependencies
@@ -100,7 +100,7 @@ This example uses TensorLy to fit five three-component PARAFAC models to the dat
 #. convert the factor matrices into Pandas DataFrames with logical indices,
 #. and plot the components using matplotlib.
 
-All these steps are described with references to the literature.
+All these steps are described in the `API documentation <https://componentvis.readthedocs.io/en/latest/api.html>`_ with references to the literature.
 
 Testing
 -------
