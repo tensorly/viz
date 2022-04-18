@@ -504,6 +504,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> import pandas as pd
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
+        >>> import plotly.express as px
         >>> from component_vis.postprocessing import label_cp_tensor
         >>> from component_vis.visualisation import component_scatterplot
         >>>
@@ -845,6 +846,7 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         >>> import pandas as pd
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
+        >>> import plotly.express as px
         >>> from component_vis.postprocessing import label_cp_tensor
         >>> from component_vis.visualisation import components_plot
         >>>
