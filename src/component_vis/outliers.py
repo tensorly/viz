@@ -231,14 +231,15 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
 
     **Hoaglin and Welch's heuristic for selecting outliers**
 
-    In :cite:p:`belsley1980regression` (page 17), :cite:authors:`belsley1980regression`, show that if
-    the factor matrix is normally distributed, then we can scale leverage to obtain a Fisher-distributed
-    random variable. Specifically, we have that :math:`(n - r)[h_i - (1/n)]/[(1 - h_i)(r - 1)]` follows
-    a Fisher distribution with :math:`(r-1)` and :math:`(n-r)` degrees of freedom. While the factor matrix
+    In :cite:p:`hoaglin1978hat`, :cite:authors:`hoaglin1978hat` state that :math:`2r/n` is a good cutoff
+    for selecting samples that may be outliers. This choice is elaborated in :cite:p:`belsley1980regression`
+    (page 17), where :cite:authors:`belsley1980regression` also propose :math:`3r/n` as a cutoff when
+    :math:`r < 6` and :math:`n-r > 12`. They also defend thee cut-offs by proving that if the factor matrices
+    are normally distributed, then :math:`(n - r)[h_i - (1/n)]/[(1 - h_i)(r - 1)]` follows a Fisher
+    distribution with :math:`(r-1)` and :math:`(n-r)` degrees of freedom. While the factor matrix
     seldomly follows a normal distribution, :cite:authors:`belsley1980regression` still argues that this
-    can be a good starting point for cut-off values of suspicious data points. They therefore say that
-    :math:`2r/n` is a good cutoff in general and that :math:`3r/n` is a good cutoff when :math:`r < 6`
-    and :math:`n-r > 12`.
+    can be a good starting point for cut-off values of suspicious data points. Based on reasonable choices for
+    :math:`n` and :math:`r`, they arive at the heuristics above.
 
     **Leverage p-value**
 
@@ -255,12 +256,12 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
 
     **Hotelling's T2 statistic**
 
-    Yet another way to estimate a p-value is via Hotelling's T-squared statistic :cite:p:`nomikos1995multivariate`.
-    The key here is to notice that if the factor matrices are normally distributed with zero mean, then
-    the leverage is equivalent to a scaled version of the Hotelling's T-squared statistic. This is commonly
-    used in PCA, where the data often is centered beforehand, which leads to components with zero mean (in the
-    mode the data is centered across). Again, note that the elements of the factor matrices are seldomly normally
-    distributed, so this is also just a rule-of-thumb.
+    Yet another way to estimate a p-value is via Hotelling's T-squared statistic :cite:p:`jackson1980principal`
+    (see also :cite:p:`nomikos1995multivariate`). The key here is to notice that if the factor matrices are
+    normally distributed with zero mean, then the leverage is equivalent to a scaled version of the Hotelling's
+    T-squared statistic. This is commonly used in PCA, where the data often is centered beforehand, which leads
+    to components with zero mean (in the mode the data is centered across). Again, note that the elements of the
+    factor matrices are seldomly normally distributed, so this is also just a rule-of-thumb.
 
     .. note::
 
@@ -423,7 +424,7 @@ def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05,
     :math:`\text{SSE}_i^2 \sim g\chi^2_h`, where :math:`g = \frac{\sigma^2}{2\mu}`,
     :math:`h = \frac{\mu}{g} = \frac{2\mu^2}{\sigma^2}`, and :math:`\mu` is the
     average slabwise SSE and :math:`\sigma^2` is the variance of the slabwise
-    SSE :cite:p:`nomikos1995multivariate`.
+    SSE :cite:p:`box1954some`.
 
     Another rule-of-thumb follows from :cite:p:`naes2002user` (p. 187), which states
     that two times the standard deviation of the slabwise SSE can be used for
