@@ -93,12 +93,12 @@ Example
 
 This example uses TensorLy to fit five three-component PARAFAC models to the data. Then it uses ComponentVis to:
 
-1. Select the model that gave the lowest reconstruction error,
-1. normalise the component vectors, storing their magnitude in a separate weight-vector,
-1. permute the components in descending weight (i.e. signal strength) order,
-1. flip the components so they point in a logical direction compared to the data,
-1. convert the factor matrices into Pandas DataFrames with logical indices,
-1. and plot the components using matplotlib.
+#. Select the model that gave the lowest reconstruction error,
+#. normalise the component vectors, storing their magnitude in a separate weight-vector,
+#. permute the components in descending weight (i.e. signal strength) order,
+#. flip the components so they point in a logical direction compared to the data,
+#. convert the factor matrices into Pandas DataFrames with logical indices,
+#. and plot the components using matplotlib.
 
 All these steps are described with references to the literature.
 
