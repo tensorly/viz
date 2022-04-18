@@ -52,7 +52,7 @@ matrix factorisation, we describe a matrix, :math:`\mathbf{X}`, as the outer pro
 
     \mathbf{X} \approx \mathbf{A} \mathbf{B}^\mathsf{T},
 
-where :math`\mathbf{A}` and :math:`\mathbf{B}` are *factor matrices* that contain the patterns along the rows and
+where :math:`\mathbf{A}` and :math:`\mathbf{B}` are *factor matrices* that contain the patterns along the rows and
 columns of :math:`\mathbf{X}`. The first column of :math:`\mathbf{A}` and :math:`\mathbf{B}` are called the first
 component, the second column is called the second component and so forth.
 
