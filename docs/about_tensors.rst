@@ -25,18 +25,18 @@ Notation
 
 Above, we see an illustration of the notation used in ComponentVis.
 We represent dense tensors either as NumPy arrays,
-Pandas DataFrames or XArray data arrays with the name ``dataset``.
+Pandas DataFrames or xarray DataArrays with the name ``dataset``.
 PARAFAC (or CP or CPD) models are represented by a tuple, where the first element is a vector of weights,
 one for each component, and the second element is a list of factor matrices, one for each mode.
 This form is compatible with TensorLy, and we have also taken care to give variables
 on this form the name ``cp_tensor`` to match TensorLy.
 
 In ComponentVis, we also use the terms *labelled* and *unlabelled* dataset and decompositions.
-A labelled dataset is either a Pandas DataFrames or a XArray data array.
-By using Pandas and XArray objects, we keep the metadata together with the dataset,
+A labelled dataset is either a Pandas DataFrames or a xarray DataArray.
+By using Pandas and xarray objects, we keep the metadata together with the dataset,
 making it easier to produce rich visualisations later.
 Similarly, a labelled decomposition is a decomposition where the factor matrices are stored as Pandas DataFrames
-with an index equal to the coordinates along the corresponding mode of the XArray data array.
+with an index equal to the coordinates along the corresponding mode of the xarray DataArray.
 ComponentVis can seamlessly work with both labelled and unlabelled data and decompositions,
 but we recommend using the labelled variant whenever possible.
 

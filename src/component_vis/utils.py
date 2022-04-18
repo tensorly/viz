@@ -62,7 +62,7 @@ def _alias_mode_axis():
 def extract_singleton(x):
     """Extracts a singleton from an array.
 
-    This is useful whenever XArray or Pandas is used, since many NumPy functions that
+    This is useful whenever xarray or Pandas is used, since many NumPy functions that
     return a number may return a singleton array instead.
 
     Parameters
@@ -145,7 +145,7 @@ def cp_to_tensor(cp_tensor):
 
     This function is equivalent to ``cp_to_tensor`` in TensorLy, but supports dataframes.
 
-    If the factor matrices are data frames, then the tensor will be returned as a labelled
+    If the factor matrices are DataFrames, then the tensor will be returned as a labelled
     xarray. Otherwise, it will be returned as a numpy array.
 
     Parameters
@@ -218,7 +218,7 @@ def tucker_to_tensor(tucker_tensor):
 
     This function is equivalent to ``tucker_to_tensor`` in TensorLy, but supports dataframes.
 
-    If the factor matrices are data frames, then the tensor will be returned as a labelled
+    If the factor matrices are DataFrames, then the tensor will be returned as a labelled
     xarray. Otherwise, it will be returned as a numpy array.
 
     Parameters
