@@ -1,3 +1,5 @@
+.. _about-tensors:
+
 What are tensors and tensor decompositions?
 ===========================================
 
@@ -18,7 +20,7 @@ Notation
 
 
 .. figure:: figures/cp_tensor.svg
-   :alt: Illustration of a coupled matrix factorization
+   :alt: Illustration of a CP tensor
    :width: 90 %
 
 Above, we see an illustration of the notation used in ComponentVis.
