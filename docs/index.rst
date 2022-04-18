@@ -7,9 +7,9 @@ Component model visualisation
 
    about_tensors
    installation
-   contributing
    auto_examples/index
    api
+   contributing
 
 Indices and tables
 ==================
