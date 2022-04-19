@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""This module contains utilities for seamlessly handling DataFrames as factor matrices and XArray DataArrays as data
+"""This module contains utilities for seamlessly handling DataFrames as factor matrices and xarray DataArrays as data
 """
 
 __author__ = "Marie Roald & Yngve Mardal Moe"
@@ -37,8 +37,8 @@ def add_factor_metadata(cp_tensor, dataset):
     a dataset and a labelled CP tensor and add the additional coordinates as new columns in the factor
     matrices.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     cp_tensor : labelled CP Tensor
     dataset : xarray.DataArray
 
@@ -119,11 +119,11 @@ def _label_factor_matrices(factor_matrices, dataset):
 
 
 def label_cp_tensor(cp_tensor, dataset):
-    """Label the CP tensor by converting the factor matrices into data frames with a sensible index.
+    """Label the CP tensor by converting the factor matrices into DataFrames with a sensible index.
 
-    Convert the factor matrices into Pandas data frames where the data frame indices
+    Convert the factor matrices into Pandas DataFrames where the DataFrame indices
     are given by the coordinate names of an xarray DataArray. If the dataset has only
-    two modes, then it can also be a pandas data frame.
+    two modes, then it can also be a pandas DataFrame.
 
     Parameters
     ----------
@@ -135,7 +135,7 @@ def label_cp_tensor(cp_tensor, dataset):
     Returns
     -------
     CPTensor
-        Tuple on the CPTensor format, except that the factor matrices are data frames.
+        Tuple on the CPTensor format, except that the factor matrices are DataFrames.
     """
     if is_labelled_cp(cp_tensor) and is_labelled_dataset(dataset):
         warn(
@@ -201,7 +201,7 @@ def is_labelled_cp(cp_tensor):
         return True
     else:
         raise TypeError(
-            f"{num_dataframes} out of {len(cp_tensor[1])} factor matrices are labelled (are data frames)."
+            f"{num_dataframes} out of {len(cp_tensor[1])} factor matrices are labelled (are DataFrames)."
             + " All or none should be labelled."
         )
 

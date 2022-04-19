@@ -695,7 +695,7 @@ def check_factor_matrix_equal(factor_matrix1, factor_matrix2, ignore_labels=Fals
     """Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.
 
     This function is similar to ``numpy.allclose``, but works on both labelled and unlabelled factor
-    matrices. If the factor matrices are labelled, then the data frame index and columns are also
+    matrices. If the factor matrices are labelled, then the DataFrame index and columns are also
     compared (unless ``ignore_labels=True``).
 
     Parameters
@@ -862,7 +862,7 @@ def check_factor_matrix_close(factor_matrix1, factor_matrix2, rtol=1e-5, atol=1e
     """Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.
 
     This function is similar to ``numpy.allclose``, but works on both labelled and unlabelled factor
-    matrices. If the factor matrices are labelled, then the data frame index and columns are also
+    matrices. If the factor matrices are labelled, then the DataFrame index and columns are also
     compared (unless ``ignore_labels=True``).
 
     Parameters

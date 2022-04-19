@@ -32,7 +32,7 @@ def is_iterable(x):
 
 
 def is_xarray(x):
-    """Check if ``x`` is an xarray data array.
+    """Check if ``x`` is an xarray DataArray.
 
     Arguments
     ---------
@@ -42,13 +42,13 @@ def is_xarray(x):
     Returns
     -------
     bool
-        ``True`` if x is an xarray data array, ``False`` otherwise.
+        ``True`` if x is an xarray DataArray, ``False`` otherwise.
     """
     return isinstance(x, xr.DataArray)
 
 
 def is_dataframe(x):
-    """Check if ``x`` is a data frame.
+    """Check if ``x`` is a DataFrame.
 
     Arguments
     ---------
@@ -58,7 +58,7 @@ def is_dataframe(x):
     Returns
     -------
     bool
-        ``True`` if x is a data frame, ``False`` otherwise.
+        ``True`` if x is a DataFrame, ``False`` otherwise.
     """
     return isinstance(x, pd.DataFrame)
 
