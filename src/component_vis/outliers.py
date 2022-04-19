@@ -149,8 +149,25 @@ def compute_leverage(factor_matrix):
 
         The leverage score is related to the Hotelling T2-statistic (or D-statistic), which
         is equal to a scaled version of leverage computed based on centered factor matrices.
+
+    Examples
+    --------
+
+    In this example, we compute the leverage of a random factor matrix
+
+    >>> import numpy as np
+    >>> from component_vis.outliers import compute_leverage
+    >>> rng = np.random.default_rng(0)
+    >>> A = rng.standard_normal(size=(5, 2))
+    >>> leverage_scores = compute_leverage(A)
+    >>> for index, leverage in enumerate(leverage_scores):
+    ...     print(f"Sample {index} has leverage score {leverage:.2f}")
+    Sample 0 has leverage score 0.04
+    Sample 1 has leverage score 0.23
+    Sample 2 has leverage score 0.50
+    Sample 3 has leverage score 0.59
+    Sample 4 has leverage score 0.64
     """
-    # TODOC: example for compute_leverage
     leverage = _compute_leverage(factor_matrix)
 
     if is_dataframe(factor_matrix):
