@@ -39,7 +39,7 @@ bike_data
 # Fitting the model
 # ^^^^^^^^^^^^^^^^^
 #
-# We know from the split-half analysis example **TODO** that 3 components are a good choice for this data.
+# We know from the :ref:`split-half analysis example <split-half>` that 3 components is a good choice for this data.
 # Therefore, we fit five model candidates with three components and select the one with the lowest error.
 
 model_candidates = fit_many_nn_parafac(bike_data.data, 3, num_inits=5)
