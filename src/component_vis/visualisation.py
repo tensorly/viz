@@ -269,7 +269,7 @@ def outlier_plot(
     residual_rules_of_thumb=None,
     p_value=0.05,
     ax=None,
-    axis=None,
+    axis=None,  # Alias for mode
 ):
     """Create the leverage-residual scatterplot to detect outliers.
 
@@ -403,7 +403,7 @@ def outlier_plot(
                 )
 
                 if leverage_rule_of_thumb == "p-value":
-                    name = f"p-value: {p}"
+                    name = f"Leverage p-value: {p}"
                 elif leverage_rule_of_thumb == "hotelling":
                     name = f"Hotelling T2 p-value: {p}"
                 else:
@@ -432,7 +432,7 @@ def outlier_plot(
                     outlier_info[f"{_SLABWISE_SSE_NAME}"], method=residual_rule_of_thumb, p_value=p
                 )
                 if residual_rule_of_thumb == "p-value":
-                    name = f"p-value: {p}"
+                    name = f"Residual p-value: {p}"
                 else:
                     name = residual_rule_of_thumb
                 residual_thresholds[name] = threshold
