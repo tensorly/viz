@@ -36,8 +36,40 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     Returns
     -------
     similarity : float
+
+    Example
+    -------
+    In this example, we will fit several PARAFAC models to a simulated dataset and use ``similarity_evaluation`` to
+    compute the similarities between the different fitted models and the model that obtained the lowest error.
+
+    We start by importing the relevant functionality
+
+    >>> from component_vis.multimodel_evaluation import sort_models_by_error, similarity_evaluation
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from tensorly.decomposition import parafac
+
+    Then, we create a random simulated dataset and fit five parafac models to it.
+
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
+    >>> model_candidates = [
+    ...     parafac(dataset, 3, init="random", random_state=i)
+    ...     for i in range(5)
+    ... ]
+
+    Finally, we sort the models by their errors and compute the similarity between each model
+    and the model that obtained the lowest error.
+
+    >>> sorted_model_candidates, errors = sort_models_by_error(model_candidates, dataset)
+    >>> similarities = similarity_evaluation(sorted_model_candidates[0], sorted_model_candidates[1:])
+    >>> for i, s in enumerate(similarities):
+    ...     print(f"Similarity between the model with the lowest loss and the model with the {i+2}. lowest loss: {s:.2}")
+    Similarity between the model with the lowest loss and the model with the 2. lowest loss: 0.99
+    Similarity between the model with the lowest loss and the model with the 3. lowest loss: 0.98
+    Similarity between the model with the lowest loss and the model with the 4. lowest loss: 0.68
+    Similarity between the model with the lowest loss and the model with the 5. lowest loss: 0.42
+
+    We see that the three models with the lowest error were very similar, which indicates that the model is stable.
     """
-    # TODOC: example for similarity_evaluation
     if similarity_metric is None:
         similarity_metric = factor_match_score
 
@@ -78,8 +110,52 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
     list
         List of the error values for all CP tensors in ``cp_tensor`` (in the same
         order as ``cp_tensors``). only returned if ``return_errors=True``
+
+    Examples
+    --------
+    Here, we illustrate how ``get_model_with_lowest_error`` can be used to get the selected model from a collection
+    of model candidates, and how we can also get the errors for all model candidates and the index of the selected
+    initialisation.
+
+    We start by importing the relevant functionality 
+
+    >>> from component_vis.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
+    >>> from component_vis.model_evaluation import relative_sse
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from component_vis.factor_tools import check_cp_tensor_equal
+    >>> from tensorly.decomposition import parafac
+
+    Then, we create a simulated dataset and fit five model candidates using different random initialisations.
+
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, noise_level=0.3, seed=0)
+    >>> model_candidates = [
+    ...     parafac(dataset, 3, init="random", random_state=i)
+    ...     for i in range(5)
+    ... ]
+
+    Once we have the model candidates, we use ``get_model_with_lowest_error``. By default this function will only
+    return the selected model, but in this case, we ask it to return the index of the selected model and the errors
+    of all model candidates.
+
+    >>> model, index, errors = get_model_with_lowest_error(model_candidates, dataset, return_index=True, return_errors=True)
+    >>> print(f"Model {index} has lowest error")
+    Model 3 has lowest error
+
+    We can check that the selected model is the model with the init we got
+
+    >>> check_cp_tensor_equal(model, model_candidates[index])
+    True
+
+    And that it is the model that has the lowest error
+
+    >>> errors[index] == min(errors)
+    True
+
+    And finally that this error is equal to the relative SSE
+
+    >>> errors[index] == relative_sse(model, dataset)
+    True
     """
-    # TODOC: example for get_model_with_lowest_error
     if error_function is None:
         error_function = model_evaluation.relative_sse
 
@@ -127,7 +203,42 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
         is first and highest error is last.
     list of floats
         List of error computed for each CP tensor (in sorted order)
+
+    Examples
+    --------
+    Here, we see how ``sort_models_by_error`` can be useful to get a collection of model candidates in a logical order.
+    
+    We start by importing the relevant functionality.
+    
+    >>> from component_vis.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
+    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from tensorly.decomposition import parafac
+    
+    Then, we simulate a random dataset and fit five model candidates to it.
+
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, noise_level=0.3, seed=0)
+    >>> model_candidates = [
+    ...     parafac(dataset, 3, init="random", random_state=0)
+    ...     for i in range(5)
+    ... ]
+
+    Next, we sort the models by the error. 
+
+    >>> sorted_model_candidates, errors = sort_models_by_error(model_candidates, dataset)
+
+    Now, the first element in sorted_model_candidates should be equal to the model with the lowest error.
+    Let's double check by getting the model with the lowest error, and see which index it has.
+
+    >>> lowest_error_model = get_model_with_lowest_error(model_candidates, dataset)
+    >>> sorted_model_candidates.index(lowest_error_model)
+    0
+
+    Next, we can check if the errors are sorted
+
+    >>> errors == sorted(errors)
+    True
     """
+    # TODOC: text example for sort_models_by_error
     errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function, return_errors=True)[1]
     sorted_errors = sorted(zip(errors, range(len(errors))))
     return (
