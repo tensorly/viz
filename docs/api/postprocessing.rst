@@ -1,4 +1,4 @@
-Post processing
+Post-processing
 ---------------
 
 .. automodule:: component_vis.postprocessing
