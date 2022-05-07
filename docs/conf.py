@@ -105,6 +105,22 @@ todo_include_todos = False
 #
 html_theme = "sphinx_rtd_theme"
 
+html_theme = "tensorly_sphinx_theme"
+
+
+html_theme_options = {
+    "github_url": "https://github.com/marieroald/componentvis",
+    "searchbar_text": "Search in ComponentVis",
+    "nav_links": [
+        ("Introduction", "about_tensors"),
+        ("Installation", "installation"),
+        ("Examples", "auto_examples/index"),
+        ("API", "api"),
+    ],
+    "external_nav_links": [("TensorLy", "https://tensorly.org")],
+}
+html_logo = "_static/logos/logo_tensorly.png"
+
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.

@@ -13,6 +13,7 @@ import pandas as pd
 import xarray as xr
 
 from ._module_utils import (
+    _SINGLETON,
     _check_is_argument,
     is_dataframe,
     is_xarray,
@@ -347,9 +348,6 @@ def _relabel_dataset(np_dataset, dataset_constructor, dataset_metadata, optional
     if optional and np_dataset is None:
         return
     return dataset_constructor(np_dataset, **dataset_metadata)
-
-
-_SINGLETON = object()
 
 
 def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False, preserve_columns=True):
