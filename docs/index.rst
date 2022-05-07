@@ -21,6 +21,7 @@ To get started, take a look at the :ref:`examples` or the :ref:`API`.
    :caption: Contents:
 
    about_tensors
+   tensorly_backends
    installation
    auto_examples/index
    api
