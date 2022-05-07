@@ -26,14 +26,10 @@ To get started, take a look at the :ref:`examples` or the :ref:`API`.
    auto_examples/index
    api
    contributing
+   references
 
 Indices and tables
 ==================
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-References
-==========
-
-.. bibliography::
