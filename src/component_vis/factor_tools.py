@@ -1056,10 +1056,10 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
 
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
-@_handle_labelled_dataset("X", None, optional=True)
-@_handle_tensorly_backends_dataset("X", None)
+@_handle_labelled_dataset("dataset", None, optional=True)
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_none_weights_cp_tensor("cp_tensor")
-def percentage_variation(cp_tensor, X=None, method="model"):
+def percentage_variation(cp_tensor, dataset=None, method="model"):
     r"""Compute the percentage of variation captured by each component.
 
     The (possible) non-orthogonality of CP factor matrices makes it less straightforward
@@ -1081,7 +1081,7 @@ def percentage_variation(cp_tensor, X=None, method="model"):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    X : np.ndarray
+    dataset : np.ndarray
         Data tensor that the cp_tensor is fitted against
     method : {"data", "model", "both"} (default="model")
         Which method to use for computing the fit.
@@ -1142,7 +1142,7 @@ def percentage_variation(cp_tensor, X=None, method="model"):
     weights, factor_matrices = cp_tensor
     ssc = weights ** 2
 
-    if X is not None and method == "model":
+    if dataset is not None and method == "model":
         warn(
             'Dataset provided but method="model", so it is not used. To compute the variation'
             + ' captured in the data, use method="data" or method="both".'
@@ -1152,12 +1152,12 @@ def percentage_variation(cp_tensor, X=None, method="model"):
         ssc = ssc * np.sum(np.abs(factor_matrix) ** 2, axis=0)
 
     if method == "data":
-        if X is None:
+        if dataset is None:
             raise TypeError("The dataset must be provided if method='data'")
-        return 100 * ssc / np.sum(X ** 2)
+        return 100 * ssc / np.sum(dataset ** 2)
     elif method == "model":
         return 100 * ssc / (cp_norm(cp_tensor) ** 2)
     elif method == "both":
-        return 100 * ssc / np.sum(X ** 2), 100 * ssc / (cp_norm(cp_tensor) ** 2)
+        return 100 * ssc / np.sum(dataset ** 2), 100 * ssc / (cp_norm(cp_tensor) ** 2)
     else:
         raise ValueError("Method must be either 'data', 'model' or 'both")

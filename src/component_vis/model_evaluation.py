@@ -23,16 +23,16 @@ __all__ = [
 ]
 
 
-@_handle_labelled_dataset("X", None)
-@_handle_tensorly_backends_dataset("X", None)
-def estimate_core_tensor(factors, X):
+@_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_dataset("dataset", None)
+def estimate_core_tensor(factors, dataset):
     """Efficient estimation of the Tucker core from a factor matrices and a data tensor.
 
     Parameters
     ----------
     factors : tuple
         Tuple of factor matrices used to estimate the core tensor from
-    X : np.ndarray
+    dataset : np.ndarray
         The data tensor that the core tensor is estimated from
 
     Notes
@@ -45,22 +45,22 @@ def estimate_core_tensor(factors, X):
 
     svds = [sla.svd(factor, full_matrices=False) for factor in factors]
     for U, s, Vh in svds[::-1]:
-        X = np.tensordot(U.T, X, (1, X.ndim - 1))
+        dataset = np.tensordot(U.T, dataset, (1, dataset.ndim - 1))
     for U, s, Vh in svds[::-1]:
         s_pinv = s.copy()
         mask = s_pinv != 0
         s_pinv[mask] = 1 / s_pinv[mask]
-        X = np.tensordot(np.diag(s_pinv), X, (1, X.ndim - 1))
+        dataset = np.tensordot(np.diag(s_pinv), dataset, (1, dataset.ndim - 1))
     for U, s, Vh in svds[::-1]:
-        X = np.tensordot(Vh.T, X, (1, X.ndim - 1))
-    return np.ascontiguousarray(X)
+        dataset = np.tensordot(Vh.T, dataset, (1, dataset.ndim - 1))
+    return np.ascontiguousarray(dataset)
 
 
-@_handle_labelled_dataset("X", None)
-@_handle_tensorly_backends_dataset("X", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
-def core_consistency(cp_tensor, X, normalised=False):
+def core_consistency(cp_tensor, dataset, normalised=False):
     r"""Computes the core consistency :cite:p:`bro2003new`
 
     A CP model can be interpreted as a restricted Tucker model, where the
@@ -96,7 +96,7 @@ def core_consistency(cp_tensor, X, normalised=False):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    X : np.ndarray
+    dataset : np.ndarray
         Data tensor that the cp_tensor is fitted against
     normalised : Bool (default=False)
         If True, then the squared frobenius norm of the estimated core tensor
@@ -123,11 +123,11 @@ def core_consistency(cp_tensor, X, normalised=False):
 
     >>> from component_vis.data import simulated_random_cp_tensor
     >>> from tensorly.decomposition import parafac
-    >>> cp_tensor, X = simulated_random_cp_tensor((10,11,12), 3, seed=42)
+    >>> cp_tensor, dataset = simulated_random_cp_tensor((10,11,12), 3, seed=42)
     >>> # Fit many CP models with different number of components
     >>> for rank in range(1, 5):
-    ...     decomposition = parafac(X, rank=rank, random_state=42)
-    ...     cc = core_consistency(decomposition, X, normalised=True)
+    ...     decomposition = parafac(dataset, rank=rank, random_state=42)
+    ...     cc = core_consistency(decomposition, dataset, normalised=True)
     ...     print(f"No. components: {rank} - core consistency: {cc:.0f}")
     No. components: 1 - core consistency: 100
     No. components: 2 - core consistency: 100
@@ -150,8 +150,8 @@ def core_consistency(cp_tensor, X, normalised=False):
     factors = tuple((A, *factors[1:]))
 
     # Estimate core and compare
-    G = estimate_core_tensor(factors, X)
-    T = np.zeros([rank] * X.ndim)
+    G = estimate_core_tensor(factors, dataset)
+    T = np.zeros([rank] * dataset.ndim)
     np.fill_diagonal(T, 1)
     if normalised:
         denom = np.sum(G ** 2)
@@ -161,11 +161,11 @@ def core_consistency(cp_tensor, X, normalised=False):
     return 100 - 100 * np.sum((G - T) ** 2) / denom
 
 
-@_handle_labelled_dataset("X", None)
-@_handle_tensorly_backends_dataset("X", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
-def sse(cp_tensor, X):
+def sse(cp_tensor, dataset):
     """Compute the sum of squared error for a given cp_tensor.
 
     Parameters
@@ -173,13 +173,13 @@ def sse(cp_tensor, X):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    X : ndarray
+    dataset : ndarray
         Tensor approximated by ``cp_tensor``
 
     Returns
     -------
     float
-        The sum of squared error, ``sum((X_hat - X)**2)``, where ``X_hat``
+        The sum of squared error, ``sum((X_hat - dataset)**2)``, where ``X_hat``
         is the dense tensor represented by ``cp_tensor``
 
     Examples
@@ -197,14 +197,14 @@ def sse(cp_tensor, X):
     18.948918157419186
     """
     X_hat = cp_to_tensor(cp_tensor)
-    return np.sum((X - X_hat) ** 2)
+    return np.sum((dataset - X_hat) ** 2)
 
 
-@_handle_labelled_dataset("X", None)
-@_handle_tensorly_backends_dataset("X", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
-def relative_sse(cp_tensor, X, sum_squared_X=None):
+def relative_sse(cp_tensor, dataset, sum_squared_dataset=None):
     """Compute the relative sum of squared error for a given cp_tensor.
 
     Parameters
@@ -212,16 +212,16 @@ def relative_sse(cp_tensor, X, sum_squared_X=None):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    X : ndarray
+    dataset : ndarray
         Tensor approximated by ``cp_tensor``
-    sum_squared_X: float (optional)
-        If ``sum(X**2)`` is already computed, you can optionally provide it
+    sum_squared_dataset: float (optional)
+        If ``sum(dataset**2)`` is already computed, you can optionally provide it
         using this argument to avoid unnecessary recalculation.
 
     Returns
     -------
     float
-        The relative sum of squared error, ``sum((X_hat - X)**2)/sum(X**2)``,
+        The relative sum of squared error, ``sum((X_hat - dataset)**2)/sum(dataset**2)``,
         where ``X_hat`` is the dense tensor represented by ``cp_tensor``
 
     Examples
@@ -238,16 +238,16 @@ def relative_sse(cp_tensor, X, sum_squared_X=None):
     >>> relative_sse(cp, X)
     0.4817407254961442
     """
-    if sum_squared_X is None:
-        sum_squared_x = np.sum(X ** 2)
-    return sse(cp_tensor, X) / sum_squared_x
+    if sum_squared_dataset is None:
+        sum_squared_x = np.sum(dataset ** 2)
+    return sse(cp_tensor, dataset) / sum_squared_x
 
 
-@_handle_labelled_dataset("X", None)
-@_handle_tensorly_backends_dataset("X", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
-def fit(cp_tensor, X, sum_squared_X=None):
+def fit(cp_tensor, dataset, sum_squared_dataset=None):
     """Compute the fit (1-relative sum squared error) for a given cp_tensor.
 
     Parameters
@@ -255,16 +255,16 @@ def fit(cp_tensor, X, sum_squared_X=None):
     cp_tensor : CPTensor or tuple
         TensorLy-style CPTensor object or tuple with weights as first
         argument and a tuple of components as second argument
-    X : ndarray
+    dataset : ndarray
         Tensor approximated by ``cp_tensor``
-    sum_squared_X: float (optional)
-        If ``sum(X**2)`` is already computed, you can optionally provide it
+    sum_squared_dataset: float (optional)
+        If ``sum(dataset**2)`` is already computed, you can optionally provide it
         using this argument to avoid unnecessary recalculation.
 
     Returns
     -------
     float
-        The relative sum of squared error, ``sum((X_hat - X)**2)/sum(X**2)``,
+        The relative sum of squared error, ``sum((X_hat - dataset)**2)/sum(dataset**2)``,
         where ``X_hat`` is the dense tensor represented by ``cp_tensor``
 
     Examples
@@ -287,7 +287,7 @@ def fit(cp_tensor, X, sum_squared_X=None):
     >>> 1 - relative_sse(cp, X)
     0.5182592745038558
     """
-    return 1 - relative_sse(cp_tensor, X, sum_squared_X=sum_squared_X)
+    return 1 - relative_sse(cp_tensor, dataset, sum_squared_dataset=sum_squared_dataset)
 
 
 @_alias_mode_axis()
@@ -325,8 +325,8 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     float
         Score based on the estimator's performance.
 
-    Example
-    -------
+    Examples
+    --------
     ``predictive_power`` can be useful to evaluate the predictive power of a CP decomposition.
     To illustrate this, we start by creating a simulated CP tensor and a variable we want to
     predict that is linearly related to one of the factor matrices.

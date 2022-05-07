@@ -78,7 +78,7 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     ]
 
 
-def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index=False, return_errors=False):
+def get_model_with_lowest_error(cp_tensors, dataset, error_function=None, return_index=False, return_errors=False):
     """Compute reconstruction error for all cp_tensors and return model with lowest error.
 
     This is useful to select the best initialisation if several random
@@ -89,10 +89,10 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
     ----------
     cp_tensors : list of CPTensors
         List of all CP tensors to compare
-    X : ndarray
+    dataset : ndarray
         Dataset modelled by the CP tensors
     error_function : Callable (optional)
-        Callable with the signature ``error_function(cp_tensor, X)``,
+        Callable with the signature ``error_function(cp_tensor, dataset)``,
         that should return a measure of the modelling error (e.g. SSE). Default
         is relative SSE.
     return_index : bool (optional, default=False)
@@ -164,7 +164,7 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
     lowest_sse = np.inf
     all_sse = []
     for i, cp_tensor in enumerate(cp_tensors):
-        sse = error_function(cp_tensor, X)
+        sse = error_function(cp_tensor, dataset)
         all_sse.append(sse)
         if sse < lowest_sse:
             selected_cp_tensor = cp_tensor
@@ -183,17 +183,17 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
         return returns
 
 
-def sort_models_by_error(cp_tensors, X, error_function=None):
+def sort_models_by_error(cp_tensors, dataset, error_function=None):
     """Sort the ``cp_tensors`` by their error so the model with the lowest error is first.
 
     Parameters
     ----------
     cp_tensors : list of CPTensors
         List of all CP tensors
-    X : ndarray
+    dataset : ndarray
         Dataset modelled by the CP tensors
     error_function : Callable (optional)
-        Callable with the signature ``error_function(cp_tensor, X)``,
+        Callable with the signature ``error_function(cp_tensor, dataset)``,
         that should return a measure of the modelling error (e.g. SSE).
 
     Returns
@@ -239,7 +239,7 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
     True
     """
     # TODOC: text example for sort_models_by_error
-    errors = get_model_with_lowest_error(cp_tensors, X, error_function=error_function, return_errors=True)[1]
+    errors = get_model_with_lowest_error(cp_tensors, dataset, error_function=error_function, return_errors=True)[1]
     sorted_errors = sorted(zip(errors, range(len(errors))))
     return (
         [cp_tensors[idx] for _error, idx in sorted_errors],

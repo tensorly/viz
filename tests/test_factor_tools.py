@@ -665,7 +665,7 @@ def test_percentage_variation_method_data_no_dataset(seed, labelled):
 def test_percentage_variation_warns_dataset_given_method_model(seed, labelled):
     cp_tensor, X = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)
     with pytest.warns(UserWarning):
-        factor_tools.percentage_variation(cp_tensor, X=X, method="model")
+        factor_tools.percentage_variation(cp_tensor, dataset=X, method="model")
 
 
 @pytest.mark.parametrize("labelled", [True, False])
