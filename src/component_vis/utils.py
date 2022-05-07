@@ -9,6 +9,7 @@ import numpy as np
 import xarray as xr
 
 from ._module_utils import _handle_none_weights_cp_tensor, validate_cp_tensor
+from ._tl_utils import _handle_tensorly_backends_cp, _handle_tensorly_backends_dataset, _SINGLETON
 from ._xarray_wrapper import (
     _handle_labelled_cp,
     _handle_labelled_dataset,
@@ -80,6 +81,7 @@ def extract_singleton(x):
 
 @_handle_none_weights_cp_tensor("cp_tensor")
 @_handle_labelled_cp("cp_tensor", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def cp_norm(cp_tensor):
     r"""Efficiently compute the Frobenius norm of a possibly labelled CP tensor.
 
@@ -117,6 +119,7 @@ def cp_norm(cp_tensor):
 
 
 @_handle_labelled_dataset("tensor", None)
+@_handle_tensorly_backends_dataset("tensor", _SINGLETON)
 @_alias_mode_axis()
 def unfold_tensor(tensor, mode, axis=None):
     """Unfolds (matricises) a potentially labelled data tensor into a numpy array along given mode.
@@ -140,6 +143,7 @@ def unfold_tensor(tensor, mode, axis=None):
     return np.moveaxis(dataset, mode, 0).reshape(dataset.shape[mode], -1)
 
 
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def cp_to_tensor(cp_tensor):
     """Convert a CP tensor to a dense array.
 
@@ -213,6 +217,7 @@ def cp_to_tensor(cp_tensor):
     return xr.DataArray(tensor, dims=dims, coords=coords_dict)
 
 
+@_handle_tensorly_backends_cp("tucker_tensor", None)
 def tucker_to_tensor(tucker_tensor):
     """Convert a Tucker tensor to a dense array.
 
@@ -265,6 +270,8 @@ def tucker_to_tensor(tucker_tensor):
 
 
 @_alias_mode_axis()
+@_handle_labelled_dataset("x", _SINGLETON)
+@_handle_tensorly_backends_dataset("x", _SINGLETON)
 def normalise(x, mode=0, axis=None):
     """Normalise a matrix (or tensor) so all columns (or fibers) have unit norm.
 

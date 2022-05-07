@@ -37,8 +37,8 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
     -------
     similarity : float
 
-    Example
-    -------
+    Examples
+    --------
     In this example, we will fit several PARAFAC models to a simulated dataset and use ``similarity_evaluation`` to
     compute the similarities between the different fitted models and the model that obtained the lowest error.
 
@@ -117,7 +117,7 @@ def get_model_with_lowest_error(cp_tensors, X, error_function=None, return_index
     of model candidates, and how we can also get the errors for all model candidates and the index of the selected
     initialisation.
 
-    We start by importing the relevant functionality 
+    We start by importing the relevant functionality
 
     >>> from component_vis.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
     >>> from component_vis.model_evaluation import relative_sse
@@ -207,13 +207,13 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
     Examples
     --------
     Here, we see how ``sort_models_by_error`` can be useful to get a collection of model candidates in a logical order.
-    
+
     We start by importing the relevant functionality.
-    
+
     >>> from component_vis.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
     >>> from component_vis.data import simulated_random_cp_tensor
     >>> from tensorly.decomposition import parafac
-    
+
     Then, we simulate a random dataset and fit five model candidates to it.
 
     >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, noise_level=0.3, seed=0)
@@ -222,7 +222,7 @@ def sort_models_by_error(cp_tensors, X, error_function=None):
     ...     for i in range(5)
     ... ]
 
-    Next, we sort the models by the error. 
+    Next, we sort the models by the error.
 
     >>> sorted_model_candidates, errors = sort_models_by_error(model_candidates, dataset)
 

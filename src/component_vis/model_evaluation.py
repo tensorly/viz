@@ -9,7 +9,7 @@ by comparing it to a data tensor.
 import numpy as np
 import scipy.linalg as sla
 
-from ._module_utils import _handle_none_weights_cp_tensor
+from ._tl_utils import _handle_tensorly_backends_cp, _handle_tensorly_backends_dataset, to_numpy
 from ._xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 from .utils import _alias_mode_axis, cp_to_tensor
 
@@ -24,6 +24,7 @@ __all__ = [
 
 
 @_handle_labelled_dataset("X", None)
+@_handle_tensorly_backends_dataset("X", None)
 def estimate_core_tensor(factors, X):
     """Efficient estimation of the Tucker core from a factor matrices and a data tensor.
 
@@ -40,6 +41,8 @@ def estimate_core_tensor(factors, X):
     for 3-way tensors. However, it is straightforward to generalise it to N-way tensors
     by using the inverse tensor product formula in :cite:p:`buis1996efficient`.
     """
+    factors = [to_numpy(factor, cast_labelled=True) for factor in factors]
+
     svds = [sla.svd(factor, full_matrices=False) for factor in factors]
     for U, s, Vh in svds[::-1]:
         X = np.tensordot(U.T, X, (1, X.ndim - 1))
@@ -54,7 +57,9 @@ def estimate_core_tensor(factors, X):
 
 
 @_handle_labelled_dataset("X", None)
+@_handle_tensorly_backends_dataset("X", None)
 @_handle_labelled_cp("cp_tensor", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def core_consistency(cp_tensor, X, normalised=False):
     r"""Computes the core consistency :cite:p:`bro2003new`
 
@@ -157,7 +162,9 @@ def core_consistency(cp_tensor, X, normalised=False):
 
 
 @_handle_labelled_dataset("X", None)
+@_handle_tensorly_backends_dataset("X", None)
 @_handle_labelled_cp("cp_tensor", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def sse(cp_tensor, X):
     """Compute the sum of squared error for a given cp_tensor.
 
@@ -194,7 +201,9 @@ def sse(cp_tensor, X):
 
 
 @_handle_labelled_dataset("X", None)
+@_handle_tensorly_backends_dataset("X", None)
 @_handle_labelled_cp("cp_tensor", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def relative_sse(cp_tensor, X, sum_squared_X=None):
     """Compute the relative sum of squared error for a given cp_tensor.
 
@@ -235,7 +244,9 @@ def relative_sse(cp_tensor, X, sum_squared_X=None):
 
 
 @_handle_labelled_dataset("X", None)
+@_handle_tensorly_backends_dataset("X", None)
 @_handle_labelled_cp("cp_tensor", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def fit(cp_tensor, X, sum_squared_X=None):
     """Compute the fit (1-relative sum squared error) for a given cp_tensor.
 
@@ -280,6 +291,7 @@ def fit(cp_tensor, X, sum_squared_X=None):
 
 
 @_alias_mode_axis()
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=None):
     """Use scikit-learn estimator to evaluate the predictive power of a factor matrix.
 

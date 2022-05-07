@@ -12,6 +12,7 @@ from matplotlib.lines import Line2D
 
 from . import factor_tools, model_evaluation, postprocessing
 from ._module_utils import _handle_none_weights_cp_tensor, is_dataframe, is_iterable
+from ._tl_utils import _handle_tensorly_backends_cp, _handle_tensorly_backends_dataset, to_numpy_cp
 from ._xarray_wrapper import _handle_labelled_cp, _handle_labelled_dataset
 from .model_evaluation import estimate_core_tensor
 from .outliers import (
@@ -137,7 +138,9 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     return ax
 
 
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 @_handle_labelled_cp("cp_tensor", None)
 def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwargs):
     r"""Create a histogram of model residuals (:math:`\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}`).
@@ -195,7 +198,9 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
     return ax
 
 
+@_handle_tensorly_backends_dataset("dataset", None)
 @_handle_labelled_dataset("dataset", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 @_handle_labelled_cp("cp_tensor", None)
 def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     """QQ-plot of the model residuals.
@@ -261,6 +266,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
 
 
 @_alias_mode_axis()
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def outlier_plot(
     cp_tensor,
     dataset,
@@ -445,6 +451,7 @@ def outlier_plot(
 
 
 @_handle_none_weights_cp_tensor("cp_tensor")
+@_handle_tensorly_backends_cp("cp_tensor", None)
 @_alias_mode_axis()
 def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None, axis=None, **kwargs):
     """Scatterplot of two columns in a factor matrix.
@@ -551,6 +558,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
 
 
 @_handle_none_weights_cp_tensor("cp_tensor")
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     """Scatter plot with the elements of the optimal core tensor for a given CP tensor.
 
@@ -695,6 +703,7 @@ def _get_text_color(bg_rgb):
 
 
 @_handle_none_weights_cp_tensor("cp_tensor")
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, text_kwargs=None, text_fmt=".2f"):
     """Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.
 
@@ -795,6 +804,7 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
 
 
 @_handle_none_weights_cp_tensor("cp_tensor")
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
 
@@ -977,6 +987,7 @@ def component_comparison_plot(
         >>> fig, axes = component_comparison_plot(cp_tensors, row="model")
         >>> plt.show()
     """
+    cp_tensors = {key: to_numpy_cp(cp_tensor) for key, cp_tensor in cp_tensors.items()}
     main_cp_tensor = next(iter(cp_tensors.values()))
     weights, factor_matrices = main_cp_tensor
 
@@ -1191,6 +1202,8 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     return fig, axes
 
 
+@_handle_tensorly_backends_dataset("dataset", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def percentage_variation_plot(
     cp_tensor, dataset=None, method="model", ax=None,
 ):
