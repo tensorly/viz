@@ -53,8 +53,8 @@ __all__ = [
 ]
 
 
-@_handle_labelled_cp("cp_tensor", _SINGLETON)
 @_handle_tensorly_backends_cp("cp_tensor", _SINGLETON)
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def normalise_cp_tensor(cp_tensor):
     """Ensure that the all factor matrices have unit norm, and all weight is stored in the weight-vector
 
@@ -85,8 +85,8 @@ def normalise_cp_tensor(cp_tensor):
     return weights, tuple(new_factors)
 
 
-@_handle_labelled_cp("cp_tensor", _SINGLETON)
 @_handle_tensorly_backends_cp("cp_tensor", _SINGLETON)
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def distribute_weights_evenly(cp_tensor):
     """Ensure that the weight-vector consists of ones and all factor matrices have equal norm
 
@@ -109,8 +109,8 @@ def distribute_weights_evenly(cp_tensor):
     return weights, factors
 
 
-@_handle_labelled_cp("cp_tensor", _SINGLETON)
 @_handle_tensorly_backends_cp("cp_tensor", _SINGLETON)
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 @_alias_mode_axis()
 def distribute_weights_in_one_mode(cp_tensor, mode, axis=None):
     """Normalise all factors and multiply the weights into one mode.
@@ -185,10 +185,10 @@ def distribute_weights(cp_tensor, weight_behaviour, weight_mode=0):
         raise ValueError("weight_behaviour must be either 'ignore', 'normalise', 'evenly', or 'one_mode'")
 
 
-@_handle_labelled_factor_matrix("factor_matrix2", None)
-@_handle_labelled_factor_matrix("factor_matrix1", None)
 @_handle_tensorly_backends_dataset("factor_matrix1", None)
 @_handle_tensorly_backends_dataset("factor_matrix2", None)
+@_handle_labelled_factor_matrix("factor_matrix2", None)
+@_handle_labelled_factor_matrix("factor_matrix1", None)
 def cosine_similarity(factor_matrix1, factor_matrix2):
     r"""The average cosine similarity (Tucker congruence) with optimal column permutation.
 
@@ -593,9 +593,8 @@ def _permute_cp_tensor(cp_tensor, permutation):
     return new_weights, new_factors
 
 
-@_handle_labelled_cp("reference_cp_tensor", None, optional=True)
-@_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_cp("cp_tensor", None)
 def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=True, allow_smaller_rank=False):
     """Find the optimal permutation between two CP tensors.
 
@@ -647,8 +646,8 @@ def get_cp_permutation(cp_tensor, reference_cp_tensor=None, consider_weights=Tru
     return permutation
 
 
-@_handle_labelled_cp("cp_tensor", _SINGLETON, preserve_columns=False)
 @_handle_tensorly_backends_cp("cp_tensor", _SINGLETON)
+@_handle_labelled_cp("cp_tensor", _SINGLETON, preserve_columns=False)
 def permute_cp_tensor(
     cp_tensor, permutation=None, reference_cp_tensor=None, consider_weights=True, allow_smaller_rank=False
 ):
@@ -960,10 +959,10 @@ def check_factor_matrix_close(factor_matrix1, factor_matrix2, rtol=1e-5, atol=1e
     return np.allclose(factor_matrix1, factor_matrix2, rtol=rtol, atol=atol)
 
 
-@_handle_none_weights_cp_tensor("cp_tensor1")
-@_handle_none_weights_cp_tensor("cp_tensor2")
 @_handle_tensorly_backends_cp("cp_tensor1", None)
 @_handle_tensorly_backends_cp("cp_tensor2", None)
+@_handle_none_weights_cp_tensor("cp_tensor1")
+@_handle_none_weights_cp_tensor("cp_tensor2")
 def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ignore_labels=False):
     """Check if the decompositions are equivalent
 
@@ -1054,10 +1053,10 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
     return True
 
 
-@_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
-@_handle_labelled_dataset("dataset", None, optional=True)
 @_handle_tensorly_backends_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None, optional=True)
 @_handle_none_weights_cp_tensor("cp_tensor")
 def percentage_variation(cp_tensor, dataset=None, method="model"):
     r"""Compute the percentage of variation captured by each component.

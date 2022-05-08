@@ -28,10 +28,10 @@ __all__ = [
 ]
 
 
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_cp("cp_tensor", _SINGLETON)
 @_handle_tensorly_backends_cp("cp_tensor", _SINGLETON)
+@_handle_labelled_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", _SINGLETON)
 def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresolved_mode=-1, method="transpose"):
     r"""Resolve the sign indeterminacy of CP models.
 
@@ -194,9 +194,9 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
     return cp_tensor[0], tuple(factor_matrices)
 
 
-@_handle_labelled_cp("reference_cp_tensor", None, optional=True)
 @_handle_tensorly_backends_cp("reference_cp_tensor", None, optional=True)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_cp("reference_cp_tensor", None, optional=True)
 def postprocess(
     cp_tensor,
     dataset=None,

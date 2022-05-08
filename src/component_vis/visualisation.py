@@ -139,8 +139,8 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
 
 
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwargs):
     r"""Create a histogram of model residuals (:math:`\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}`).
@@ -199,8 +199,8 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
 
 
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None)
 @_handle_labelled_cp("cp_tensor", None)
 def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     """QQ-plot of the model residuals.
@@ -265,8 +265,8 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     return ax
 
 
-@_alias_mode_axis()
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_alias_mode_axis()
 def outlier_plot(
     cp_tensor,
     dataset,
@@ -450,8 +450,8 @@ def outlier_plot(
     return ax
 
 
-@_handle_none_weights_cp_tensor("cp_tensor")
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_none_weights_cp_tensor("cp_tensor")
 @_alias_mode_axis()
 def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None, axis=None, **kwargs):
     """Scatterplot of two columns in a factor matrix.
@@ -557,8 +557,8 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
     return ax
 
 
-@_handle_none_weights_cp_tensor("cp_tensor")
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_none_weights_cp_tensor("cp_tensor")
 def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     """Scatter plot with the elements of the optimal core tensor for a given CP tensor.
 
@@ -702,8 +702,8 @@ def _get_text_color(bg_rgb):
         return "white"
 
 
-@_handle_none_weights_cp_tensor("cp_tensor")
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_none_weights_cp_tensor("cp_tensor")
 def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, text_kwargs=None, text_fmt=".2f"):
     """Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.
 
@@ -803,8 +803,8 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
     return fig, axes
 
 
-@_handle_none_weights_cp_tensor("cp_tensor")
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_none_weights_cp_tensor("cp_tensor")
 def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot_kwargs=None):
     """Plot the component vectors of a CP model.
 

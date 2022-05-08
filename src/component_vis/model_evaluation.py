@@ -23,8 +23,8 @@ __all__ = [
 ]
 
 
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_dataset("dataset", None)
+@_handle_labelled_dataset("dataset", None)
 def estimate_core_tensor(factors, dataset):
     """Efficient estimation of the Tucker core from a factor matrices and a data tensor.
 
@@ -56,10 +56,10 @@ def estimate_core_tensor(factors, dataset):
     return np.ascontiguousarray(dataset)
 
 
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", None)
 def core_consistency(cp_tensor, dataset, normalised=False):
     r"""Computes the core consistency :cite:p:`bro2003new`
 
@@ -161,10 +161,10 @@ def core_consistency(cp_tensor, dataset, normalised=False):
     return 100 - 100 * np.sum((G - T) ** 2) / denom
 
 
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", None)
 def sse(cp_tensor, dataset):
     """Compute the sum of squared error for a given cp_tensor.
 
@@ -200,10 +200,10 @@ def sse(cp_tensor, dataset):
     return np.sum((dataset - X_hat) ** 2)
 
 
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", None)
 def relative_sse(cp_tensor, dataset, sum_squared_dataset=None):
     """Compute the relative sum of squared error for a given cp_tensor.
 
@@ -243,10 +243,10 @@ def relative_sse(cp_tensor, dataset, sum_squared_dataset=None):
     return sse(cp_tensor, dataset) / sum_squared_x
 
 
-@_handle_labelled_dataset("dataset", None)
 @_handle_tensorly_backends_dataset("dataset", None)
-@_handle_labelled_cp("cp_tensor", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
+@_handle_labelled_dataset("dataset", None)
+@_handle_labelled_cp("cp_tensor", None)
 def fit(cp_tensor, dataset, sum_squared_dataset=None):
     """Compute the fit (1-relative sum squared error) for a given cp_tensor.
 
