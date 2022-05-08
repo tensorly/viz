@@ -52,7 +52,7 @@ def load_aminoacids(save_data=True):
     Parameters
     ----------
     save_data : bool (default=True)
-        If ``True``, then the dataset is saved in ``component_vis.data.DOWNLOAD_PARENT`` to avoid having to download
+        If ``True``, then the dataset is saved in ``tlvis.data.DOWNLOAD_PARENT`` to avoid having to download
         it in the future.
 
     Returns

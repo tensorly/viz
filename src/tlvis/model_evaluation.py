@@ -121,7 +121,7 @@ def core_consistency(cp_tensor, dataset, normalised=False):
     and select the one with the lowest SSE (to account for local minima) before computing the
     core consistency.
 
-    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from tlvis.data import simulated_random_cp_tensor
     >>> from tensorly.decomposition import parafac
     >>> cp_tensor, dataset = simulated_random_cp_tensor((10,11,12), 3, seed=42)
     >>> # Fit many CP models with different number of components
@@ -189,7 +189,7 @@ def sse(cp_tensor, dataset):
 
     >>> import tensorly as tl
     >>> from tensorly.random import random_cp
-    >>> from component_vis.model_evaluation import sse
+    >>> from tlvis.model_evaluation import sse
     >>> rng = tl.check_random_state(0)
     >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
     >>> X = rng.random_sample((4, 5, 6))
@@ -231,7 +231,7 @@ def relative_sse(cp_tensor, dataset, sum_squared_dataset=None):
 
     >>> import tensorly as tl
     >>> from tensorly.random import random_cp
-    >>> from component_vis.model_evaluation import relative_sse
+    >>> from tlvis.model_evaluation import relative_sse
     >>> rng = tl.check_random_state(0)
     >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
     >>> X = rng.random_sample((4, 5, 6))
@@ -274,7 +274,7 @@ def fit(cp_tensor, dataset, sum_squared_dataset=None):
 
     >>> import tensorly as tl
     >>> from tensorly.random import random_cp
-    >>> from component_vis.model_evaluation import fit
+    >>> from tlvis.model_evaluation import fit
     >>> rng = tl.check_random_state(0)
     >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
     >>> X = rng.random_sample((4, 5, 6))
@@ -283,7 +283,7 @@ def fit(cp_tensor, dataset, sum_squared_dataset=None):
 
     We can see that it is equal to 1 - relative SSE
 
-    >>> from component_vis.model_evaluation import relative_sse
+    >>> from tlvis.model_evaluation import relative_sse
     >>> 1 - relative_sse(cp, X)
     0.5182592745038558
     """
@@ -331,7 +331,7 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     To illustrate this, we start by creating a simulated CP tensor and a variable we want to
     predict that is linearly related to one of the factor matrices.
 
-    >>> from component_vis.data import simulated_random_cp_tensor
+    >>> from tlvis.data import simulated_random_cp_tensor
     >>> import numpy as np
     >>> rng = np.random.default_rng(0)
     >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=rng)
@@ -349,7 +349,7 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     for linear models.
 
     >>> from sklearn.linear_model import LinearRegression
-    >>> from component_vis.model_evaluation import predictive_power
+    >>> from tlvis.model_evaluation import predictive_power
     >>> linear_regression = LinearRegression()
     >>> r_squared = predictive_power(cp_tensor, Y, linear_regression)
     >>> print(f"The R^2 coefficient is {r_squared:.2f}")

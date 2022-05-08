@@ -2,7 +2,7 @@
 Working with xarray
 -------------------
 
-ComponentVis recommends storing your datasets as
+TLVis recommends storing your datasets as
 `xarray DataArrays <https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html>`_, which
 supports labelled multi-way datasets, so the metadata is stored together with the dataset in
 one object.

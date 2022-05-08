@@ -279,10 +279,10 @@ def postprocess(
 
     See Also
     --------
-    component_vis.factor_tools.permute_cp_tensor
-    component_vis.factor_tools.distribute_weights
-    component_vis.postprocessing.resolve_cp_sign_indeterminacy
-    component_vis.postprocessing.label_cp_tensor
+    tlvis.factor_tools.permute_cp_tensor
+    tlvis.factor_tools.distribute_weights
+    tlvis.postprocessing.resolve_cp_sign_indeterminacy
+    tlvis.postprocessing.label_cp_tensor
 
     Examples
     --------
@@ -293,11 +293,11 @@ def postprocess(
         :context: close-figs
         :include-source:
 
-        >>> import component_vis
+        >>> import tlvis
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
-        >>> dataset = component_vis.data.load_aminoacids()
+        >>> dataset = tlvis.data.load_aminoacids()
         Loading Aminoacids dataset from:
         Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems, 1997, 38, 149-171
 
@@ -309,7 +309,7 @@ def postprocess(
         We see that after postprocessing, the cp_tensor contains pandas DataFrames
 
         >>> cp_tensor = parafac(dataset.data, 3, init="random", random_state=0)
-        >>> cp_tensor_postprocessed = component_vis.postprocessing.postprocess(cp_tensor, dataset)
+        >>> cp_tensor_postprocessed = tlvis.postprocessing.postprocess(cp_tensor, dataset)
         >>> print(type(cp_tensor[1][0]))
         <class 'numpy.ndarray'>
         >>> print(type(cp_tensor_postprocessed[1][0]))
@@ -326,18 +326,18 @@ def postprocess(
         When we construct a dense tensor from a postprocessed cp_tensor it is constructed
         as an xarray DataArray
 
-        >>> print(type(component_vis.utils.cp_to_tensor(cp_tensor)))
+        >>> print(type(tlvis.utils.cp_to_tensor(cp_tensor)))
         <class 'numpy.ndarray'>
-        >>> print(type(component_vis.utils.cp_to_tensor(cp_tensor_postprocessed)))
+        >>> print(type(tlvis.utils.cp_to_tensor(cp_tensor_postprocessed)))
         <class 'xarray.core.dataarray.DataArray'>
 
         The visualisation of the postprocessed cp_tensor shows that the scaling and sign indeterminacy
         is taken care of and x-xaxis has correct labels and ticks
 
-        >>> fig, ax = component_vis.visualisation.components_plot(cp_tensor)
+        >>> fig, ax = tlvis.visualisation.components_plot(cp_tensor)
         >>> plt.show()
 
-        >>> fig, ax = component_vis.visualisation.components_plot(cp_tensor_postprocessed)
+        >>> fig, ax = tlvis.visualisation.components_plot(cp_tensor_postprocessed)
         >>> plt.show()
 
     """
@@ -497,7 +497,7 @@ def factor_matrix_to_tidy(factor_matrix, var_name="Component", value_name="Signa
     --------
     >>> import numpy as np
     >>> import pandas as pd
-    >>> from component_vis.postprocessing import factor_matrix_to_tidy
+    >>> from tlvis.postprocessing import factor_matrix_to_tidy
     >>> rng = np.random.default_rng(0)
     >>> factor_matrix = pd.DataFrame(rng.uniform(size=(10, 3)))
     >>> factor_matrix.head()

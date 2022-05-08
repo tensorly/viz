@@ -11,7 +11,7 @@ line-length = 120
 known_third_party = []
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --cov=component_vis"
+addopts = "--doctest-modules --cov=tlvis"
 testpaths = [
     "tests",
     "src",

@@ -1,5 +1,5 @@
 Visualisation
 -------------
 
-.. automodule:: component_vis.visualisation
+.. automodule:: tlvis.visualisation
     :members: 

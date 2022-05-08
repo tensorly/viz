@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tensorly.decomposition import parafac
 
-import component_vis
-from component_vis.factor_tools import factor_match_score
-from component_vis.multimodel_evaluation import (
+import tlvis
+from tlvis.factor_tools import factor_match_score
+from tlvis.multimodel_evaluation import (
     get_model_with_lowest_error,
     similarity_evaluation,
 )
@@ -28,7 +28,7 @@ from component_vis.multimodel_evaluation import (
 # Then we create a simulated dataset
 
 rank = 5
-cp_tensor, X = component_vis.data.simulated_random_cp_tensor((10, 15, 20), rank, noise_level=0.05, seed=1)
+cp_tensor, X = tlvis.data.simulated_random_cp_tensor((10, 15, 20), rank, noise_level=0.05, seed=1)
 
 
 ###############################################################################
@@ -48,7 +48,7 @@ first_attempt = get_model_with_lowest_error(estimated_cp_tensors, X)
 
 ###############################################################################
 # To see if we have a good initialisation, we use the optimisation diagnostics plots,
-component_vis.visualisation.optimisation_diagnostic_plots(errors, n_iter_max=100)
+tlvis.visualisation.optimisation_diagnostic_plots(errors, n_iter_max=100)
 plt.show()
 
 ###############################################################################
@@ -86,7 +86,7 @@ second_attempt = get_model_with_lowest_error(estimated_cp_tensors, X)
 ###############################################################################
 # And plot the optimisation diagnostics plot
 
-component_vis.visualisation.optimisation_diagnostic_plots(errors, 1000)
+tlvis.visualisation.optimisation_diagnostic_plots(errors, 1000)
 plt.show()
 
 
@@ -108,12 +108,12 @@ for init in range(10, 20):
     est_cp, rec_errors = parafac(X, rank, n_iter_max=1000, init="random", return_errors=True, random_state=init)
     estimated_cp_tensors.append(est_cp)
     errors.append(np.array(rec_errors) ** 2)  # rec_errors is relative norm error, we want relative SSE
-third_attempt = component_vis.multimodel_evaluation.get_model_with_lowest_error(estimated_cp_tensors, X)
+third_attempt = tlvis.multimodel_evaluation.get_model_with_lowest_error(estimated_cp_tensors, X)
 
 
 ###############################################################################
 # And let's look at the optimisation diagnostics plot
-component_vis.visualisation.optimisation_diagnostic_plots(errors, 1000)
+tlvis.visualisation.optimisation_diagnostic_plots(errors, 1000)
 plt.show()
 
 ###############################################################################
@@ -137,5 +137,5 @@ decompositions = {
     "Second attempt": second_attempt,
     "Third attempt": third_attempt,
 }
-component_vis.visualisation.component_comparison_plot(decompositions, row="component")
+tlvis.visualisation.component_comparison_plot(decompositions, row="component")
 plt.show()

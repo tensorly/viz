@@ -5,8 +5,8 @@ import tensorly as tl
 import tensorly.testing  # noqa
 import xarray as xa
 
-from component_vis import _tl_utils
-from component_vis.data import simulated_random_cp_tensor
+from tlvis import _tl_utils
+from tlvis.data import simulated_random_cp_tensor
 
 TENSORLY_BACKENDS = ["numpy", "pytorch"]  # TODO: Do this programmatically
 

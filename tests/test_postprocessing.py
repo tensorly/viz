@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from component_vis import factor_tools, postprocessing
-from component_vis.data import simulated_random_cp_tensor
-from component_vis.factor_tools import check_cp_tensor_equal, distribute_weights
-from component_vis.utils import cp_to_tensor
+from tlvis import factor_tools, postprocessing
+from tlvis.data import simulated_random_cp_tensor
+from tlvis.factor_tools import check_cp_tensor_equal, distribute_weights
+from tlvis.utils import cp_to_tensor
 
 
 def test_resolve_cp_sign_indeterminacy_does_not_change_tensor(rng):

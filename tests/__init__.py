@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-"""Unit test package for component_vis."""
+"""Unit test package for tlvis."""

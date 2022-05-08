@@ -1,5 +1,5 @@
 Factor tools
 ------------
 
-.. automodule:: component_vis.factor_tools
+.. automodule:: tlvis.factor_tools
     :members:

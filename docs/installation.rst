@@ -8,9 +8,9 @@ Installation
 Stable release
 --------------
 
-To install ComponentVis, run this command in your terminal:
+To install TLVis, run this command in your terminal:
 
 .. code-block:: console
 
-    pip install ComponentVis
+    pip install TLVis
 

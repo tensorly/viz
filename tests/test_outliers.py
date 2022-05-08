@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
 
-from component_vis import factor_tools
-from component_vis.data import simulated_random_cp_tensor
-from component_vis.outliers import (
+from tlvis import factor_tools
+from tlvis.data import simulated_random_cp_tensor
+from tlvis.outliers import (
     compute_leverage,
     compute_slabwise_sse,
     get_leverage_outlier_threshold,

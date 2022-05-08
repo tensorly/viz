@@ -50,8 +50,8 @@ def add_factor_metadata(cp_tensor, dataset):
 
     Examples
     --------
-    >>> from component_vis.data import load_oslo_city_bike
-    >>> from component_vis.postprocessing import postprocess, add_factor_metadata
+    >>> from tlvis.data import load_oslo_city_bike
+    >>> from tlvis.postprocessing import postprocess, add_factor_metadata
     >>> from tensorly.decomposition import parafac
     >>> bikes = load_oslo_city_bike()
     >>> bikes.coords

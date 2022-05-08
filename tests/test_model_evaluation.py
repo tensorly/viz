@@ -4,8 +4,8 @@ import scipy.linalg as sla
 import tensorly as tl
 from tensorly.random import random_cp
 
-from component_vis import model_evaluation
-from component_vis.utils import cp_to_tensor, normalise, tucker_to_tensor
+from tlvis import model_evaluation
+from tlvis.utils import cp_to_tensor, normalise, tucker_to_tensor
 
 
 def _estimate_core_tensor(factors, X):

@@ -1,8 +1,8 @@
 """
-ComponentVis + PlotLy for interactive visualisations
+TLVis + PlotLy for interactive visualisations
 ----------------------------------------------------
 
-In this example, we'll see how ComponentVis can be used together with PlotLy Express for easily making thorough interactive visualisations.
+In this example, we'll see how TLVis can be used together with PlotLy Express for easily making thorough interactive visualisations.
 """
 
 ###############################################################################
@@ -12,7 +12,7 @@ In this example, we'll see how ComponentVis can be used together with PlotLy Exp
 import plotly.express as px
 from tensorly.decomposition import non_negative_parafac_hals
 
-import component_vis
+import tlvis
 
 ###############################################################################
 # To fit CP models, we need to solve a non-convex optimization problem, possibly with local minima. It is therefore useful
@@ -27,7 +27,7 @@ def fit_many_nn_parafac(X, num_components, num_inits=5):
 # Loading the data
 # ^^^^^^^^^^^^^^^^
 
-bike_data = component_vis.data.load_oslo_city_bike()
+bike_data = tlvis.data.load_oslo_city_bike()
 bike_data
 
 
@@ -43,7 +43,7 @@ bike_data
 # Therefore, we fit five model candidates with three components and select the one with the lowest error.
 
 model_candidates = fit_many_nn_parafac(bike_data.data, 3, num_inits=5)
-selected_cp = component_vis.multimodel_evaluation.get_model_with_lowest_error(model_candidates, bike_data)
+selected_cp = tlvis.multimodel_evaluation.get_model_with_lowest_error(model_candidates, bike_data)
 
 ###############################################################################
 # Postprocessing
@@ -54,7 +54,7 @@ selected_cp = component_vis.multimodel_evaluation.get_model_with_lowest_error(mo
 # to include the additional coordinates (i.e. the latitude and longitude) from this DataArray as metadata-columns.
 # To include these as well, we set the ``include_metadata`` flag in ``postprocess`` to ``True``.
 
-cp_with_metadata = component_vis.postprocessing.postprocess(selected_cp, bike_data, include_metadata=True)
+cp_with_metadata = tlvis.postprocessing.postprocess(selected_cp, bike_data, include_metadata=True)
 
 weights, (end_station, year, month, day_of_week, hour) = cp_with_metadata
 
@@ -63,11 +63,11 @@ weights, (end_station, year, month, day_of_week, hour) = cp_with_metadata
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # PlotLy assumes that the data is *tidy*, but factor matrices are not. We have one column per factor matrix, which
-# makes it cumbersome to use with plotly. We therefore have a ``factor_matrix_to_tidy``-function in ``component_vis``
+# makes it cumbersome to use with plotly. We therefore have a ``factor_matrix_to_tidy``-function in ``tlvis``
 # which simply converts a factor matrix (with potential metadata) into a tidy format. See
-# ``component_vis.postprocessing.factor_matrix_to_tidy`` for more info.
+# ``tlvis.postprocessing.factor_matrix_to_tidy`` for more info.
 
-tidy_end_station_data = component_vis.postprocessing.factor_matrix_to_tidy(end_station, value_name="Popularity")
+tidy_end_station_data = tlvis.postprocessing.factor_matrix_to_tidy(end_station, value_name="Popularity")
 
 ###############################################################################
 # Density map of the end station components
@@ -77,7 +77,7 @@ tidy_end_station_data = component_vis.postprocessing.factor_matrix_to_tidy(end_s
 # We can use the animation frame to get a nice slider for the different components.
 
 px.density_mapbox(
-    component_vis.postprocessing.factor_matrix_to_tidy(end_station, value_name="Popularity"),
+    tlvis.postprocessing.factor_matrix_to_tidy(end_station, value_name="Popularity"),
     lat="lat",
     lon="lon",
     z="Popularity",
@@ -106,7 +106,7 @@ px.density_mapbox(
 # represent.
 
 px.line(
-    component_vis.postprocessing.factor_matrix_to_tidy(hour, value_name="Popularity"),
+    tlvis.postprocessing.factor_matrix_to_tidy(hour, value_name="Popularity"),
     x="Hour",
     y="Popularity",
     color="Component",
@@ -123,7 +123,7 @@ px.line(
 # ~~~~~~~
 # Next, we look at the weekday components.
 
-tidy_day_of_week = component_vis.postprocessing.factor_matrix_to_tidy(day_of_week, value_name="Popularity")
+tidy_day_of_week = tlvis.postprocessing.factor_matrix_to_tidy(day_of_week, value_name="Popularity")
 
 px.line(
     tidy_day_of_week, x="Day of week", y="Popularity", color="Component",
@@ -138,7 +138,7 @@ px.line(
 # Month plots
 # ~~~~~~~~~~~
 
-tidy_month = component_vis.postprocessing.factor_matrix_to_tidy(month, value_name="Popularity")
+tidy_month = tlvis.postprocessing.factor_matrix_to_tidy(month, value_name="Popularity")
 
 px.line(
     tidy_month, x="Month", y="Popularity", color="Component",
@@ -153,7 +153,7 @@ px.line(
 # ~~~~
 
 px.line(
-    component_vis.postprocessing.factor_matrix_to_tidy(year, value_name="Popularity"),
+    tlvis.postprocessing.factor_matrix_to_tidy(year, value_name="Popularity"),
     x="Year",
     y="Popularity",
     color="Component",
@@ -167,7 +167,7 @@ px.line(
 # Important about including factor metadata
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # By including factor metadata, we add additional columns to the factor matrices. As a consequence, some of the
-# functions in ``component_vis`` will no longer work properly on CP tensors with metadata on the factor matrices.
+# functions in ``tlvis`` will no longer work properly on CP tensors with metadata on the factor matrices.
 # It can therefore be beneficial to not include the metadata in the beginning (this is the default behaviour of
 # ``postprocess``) and only add the metadata in the end. Alternatively, it can be useful to have a normally
 # postprocessed CP tensor as well as a CP tensor with metadata.
