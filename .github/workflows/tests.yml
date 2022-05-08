@@ -18,7 +18,7 @@ jobs:
           python -m pip install --upgrade pip wheel
           python -m pip install -e .[test,all]
       - name: run tests
-        run: python3 -m pytest --cov=component_vis --cov-report=xml
+        run: python3 -m pytest --cov=tlvis --cov-report=xml
       - name: upload coverage to Codecov
         if: ${{matrix.os == 'ubuntu-latest'}}
         uses: codecov/codecov-action@v2

@@ -7,6 +7,8 @@ import pandas as pd
 import scipy.stats as stats
 
 from ._module_utils import is_dataframe, is_iterable, is_xarray
+from ._tl_utils import _handle_tensorly_backends_cp, _handle_tensorly_backends_dataset, _SINGLETON
+from ._xarray_wrapper import is_labelled_dataset
 from .utils import _alias_mode_axis, cp_to_tensor
 
 _LEVERAGE_NAME = "Leverage score"
@@ -41,6 +43,8 @@ def _compute_slabwise_sse(estimated, true, normalise=True, axis=0):
 
 
 @_alias_mode_axis()
+@_handle_tensorly_backends_dataset("true", _SINGLETON)
+@_handle_tensorly_backends_dataset("estimated", None)
 def compute_slabwise_sse(estimated, true, normalise=True, mode=0, axis=None):
     r"""Compute the (normalised) slabwise SSE along the given mode(s).
 
@@ -99,11 +103,12 @@ def compute_slabwise_sse(estimated, true, normalise=True, mode=0, axis=None):
             raise ValueError("Index of true and estimated matrix must be equal")
 
     slab_sse = _compute_slabwise_sse(estimated, true, normalise=normalise, axis=mode)
-    if hasattr(slab_sse, "to_dataframe"):
+    if is_labelled_dataset(true):
         slab_sse.name = _SLABWISE_SSE_NAME
     return slab_sse
 
 
+@_handle_tensorly_backends_dataset("factor_matrix", _SINGLETON)
 def compute_leverage(factor_matrix):
     r"""Compute the leverage score of the given factor matrix.
 
@@ -156,7 +161,7 @@ def compute_leverage(factor_matrix):
     In this example, we compute the leverage of a random factor matrix
 
     >>> import numpy as np
-    >>> from component_vis.outliers import compute_leverage
+    >>> from tlvis.outliers import compute_leverage
     >>> rng = np.random.default_rng(0)
     >>> A = rng.standard_normal(size=(5, 2))
     >>> leverage_scores = compute_leverage(A)
@@ -177,6 +182,8 @@ def compute_leverage(factor_matrix):
 
 
 @_alias_mode_axis()
+@_handle_tensorly_backends_dataset("true_tensor", None)
+@_handle_tensorly_backends_cp("cp_tensor", None)
 def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axis=None):
     """Compute the leverage score and (normalised) slabwise SSE along one axis.
 
@@ -234,6 +241,7 @@ def compute_outlier_info(cp_tensor, true_tensor, normalise_sse=True, mode=0, axi
     return results
 
 
+@_handle_tensorly_backends_dataset("leverage_scores", None)
 def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.05):
     """Compute threshold for detecting possible outliers based on leverage.
 
@@ -310,7 +318,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
 
     >>> import numpy as np
     >>> from scipy.stats import bootstrap
-    >>> from component_vis.outliers import compute_leverage, get_leverage_outlier_threshold
+    >>> from tlvis.outliers import compute_leverage, get_leverage_outlier_threshold
 
     Here, we create a function that computes the false positive rate
 
@@ -427,6 +435,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
         )
 
 
+@_handle_tensorly_backends_dataset("slab_sse", None)
 def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05, ddof=1):
     r"""Compute rule-of-thumb threshold values for suspicious residuals.
 
@@ -468,8 +477,8 @@ def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05,
 
     >>> import numpy as np
     >>> from scipy.stats import bootstrap
-    >>> from component_vis.outliers import compute_slabwise_sse, get_slabwise_sse_outlier_threshold
-    >>> from component_vis.utils import cp_to_tensor
+    >>> from tlvis.outliers import compute_slabwise_sse, get_slabwise_sse_outlier_threshold
+    >>> from tlvis.utils import cp_to_tensor
 
     Then, we create a function to compute the false positive rate. This will be useful for our
     bootstrap estimate for the true false positive rate.

@@ -3,11 +3,11 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-import component_vis.utils as utils
-from component_vis import factor_tools
-from component_vis._module_utils import is_dataframe
-from component_vis._xarray_wrapper import _unlabel_cp_tensor
-from component_vis.data import simulated_random_cp_tensor
+import tlvis.utils as utils
+from tlvis import factor_tools
+from tlvis._module_utils import is_dataframe
+from tlvis._xarray_wrapper import _unlabel_cp_tensor
+from tlvis.data import simulated_random_cp_tensor
 
 
 def safe_permute(arr, permutation):
@@ -665,7 +665,7 @@ def test_percentage_variation_method_data_no_dataset(seed, labelled):
 def test_percentage_variation_warns_dataset_given_method_model(seed, labelled):
     cp_tensor, X = simulated_random_cp_tensor((10, 11, 12), 3, seed=seed, labelled=labelled)
     with pytest.warns(UserWarning):
-        factor_tools.percentage_variation(cp_tensor, X=X, method="model")
+        factor_tools.percentage_variation(cp_tensor, dataset=X, method="model")
 
 
 @pytest.mark.parametrize("labelled", [True, False])

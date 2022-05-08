@@ -13,6 +13,7 @@ import pandas as pd
 import xarray as xr
 
 from ._module_utils import (
+    _SINGLETON,
     _check_is_argument,
     is_dataframe,
     is_xarray,
@@ -49,8 +50,8 @@ def add_factor_metadata(cp_tensor, dataset):
 
     Examples
     --------
-    >>> from component_vis.data import load_oslo_city_bike
-    >>> from component_vis.postprocessing import postprocess, add_factor_metadata
+    >>> from tlvis.data import load_oslo_city_bike
+    >>> from tlvis.postprocessing import postprocess, add_factor_metadata
     >>> from tensorly.decomposition import parafac
     >>> bikes = load_oslo_city_bike()
     >>> bikes.coords
@@ -347,9 +348,6 @@ def _relabel_dataset(np_dataset, dataset_constructor, dataset_metadata, optional
     if optional and np_dataset is None:
         return
     return dataset_constructor(np_dataset, **dataset_metadata)
-
-
-_SINGLETON = object()
 
 
 def _handle_labelled_cp(cp_tensor_name, output_cp_tensor_index, optional=False, preserve_columns=True):

@@ -11,7 +11,7 @@ However, since *dimensions* often denote the number of entries in a vector, we d
 dimension for tensors. Instead, we use the word *mode* :cite:p:`kolda2009tensor`.
 
 Tensors in Python are often represented by NumPy arrays, and NumPy uses the word *axis* for the different modes.
-Therefore, in ComponentVis, we alias ``mode`` and ``axis`` in all the function calls.
+Therefore, in TLVis, we alias ``mode`` and ``axis`` in all the function calls.
 However, the word ``mode`` is generally used in the documentation.
 
 
@@ -23,7 +23,7 @@ Notation
    :alt: Illustration of a CP tensor
    :width: 90 %
 
-Above, we see an illustration of the notation used in ComponentVis.
+Above, we see an illustration of the notation used in TLVis.
 We represent dense tensors either as NumPy arrays,
 Pandas DataFrames or xarray DataArrays with the name ``dataset``.
 PARAFAC (or CP or CPD) models are represented by a tuple, where the first element is a vector of weights,
@@ -31,13 +31,13 @@ one for each component, and the second element is a list of factor matrices, one
 This form is compatible with TensorLy, and we have also taken care to give variables
 on this form the name ``cp_tensor`` to match TensorLy.
 
-In ComponentVis, we also use the terms *labelled* and *unlabelled* dataset and decompositions.
+In TLVis, we also use the terms *labelled* and *unlabelled* dataset and decompositions.
 A labelled dataset is either a Pandas DataFrames or a xarray DataArray.
 By using Pandas and xarray objects, we keep the metadata together with the dataset,
 making it easier to produce rich visualisations later.
 Similarly, a labelled decomposition is a decomposition where the factor matrices are stored as Pandas DataFrames
 with an index equal to the coordinates along the corresponding mode of the xarray DataArray.
-ComponentVis can seamlessly work with both labelled and unlabelled data and decompositions,
+TLVis can seamlessly work with both labelled and unlabelled data and decompositions,
 but we recommend using the labelled variant whenever possible.
 
 

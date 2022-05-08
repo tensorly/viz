@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+import tensorly as tl
 
 
 @pytest.fixture
@@ -20,3 +21,9 @@ def rng(seed):
 def close_matplotlib_figures():
     yield
     plt.close("all")
+
+
+@pytest.fixture(autouse=True)
+def set_numpy_backend():
+    yield
+    tl.set_backend("numpy")

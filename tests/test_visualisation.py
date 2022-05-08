@@ -3,11 +3,11 @@ import numpy as np
 import pytest
 from numpy.testing import assert_array_equal
 
-import component_vis.outliers as outliers
-from component_vis import model_evaluation, visualisation
-from component_vis.data import simulated_random_cp_tensor
-from component_vis.postprocessing import postprocess
-from component_vis.utils import cp_to_tensor
+import tlvis.outliers as outliers
+from tlvis import model_evaluation, visualisation
+from tlvis.data import simulated_random_cp_tensor
+from tlvis.postprocessing import postprocess
+from tlvis.utils import cp_to_tensor
 
 
 @pytest.mark.parametrize("labelled", [True, False])

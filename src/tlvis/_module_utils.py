@@ -120,3 +120,6 @@ def validate_cp_tensor(cp_tensor):
         if weights.ndim != 1:
             raise ValueError(f"The weights must be 1d array, {weights.ndim} != 1 ")
     return cp_tensor
+
+
+_SINGLETON = object()
