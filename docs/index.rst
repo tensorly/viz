@@ -18,7 +18,6 @@ To get started, take a look at the :ref:`examples` or the :ref:`API`.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    about_tensors
    installation
