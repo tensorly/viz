@@ -916,9 +916,8 @@ def component_comparison_plot(
         Dictionary with model names mapping to decompositions. The model names
         are used for labels. The components of all CP tensors will be aligned
         to maximise the factor match score with the components of the first CP
-        tensor in the dictionary (from Python 3.7, dictionaries are sorted by
-        insertion order, and dictionaries were sorted by insertion order already
-        in CPython 3.6).
+        tensor in the dictionary (starting with Python 3.7, dictionaries are sorted by
+        insertion order).
     row : {"model", "component"}
     weight_behaviour : {"ignore", "normalise", "evenly", "one_mode"} (default="normalise")
         How to handle the component weights.

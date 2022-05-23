@@ -134,10 +134,10 @@ def core_consistency(cp_tensor, dataset, normalised=False):
     No. components: 3 - core consistency: 81
     No. components: 4 - core consistency: 0
 
-    Notes
-    -----
-    This implementation uses the fast method of estimating the core tensor
-    :cite:p:`papalexakis2015fast,buis1996efficient`
+    .. note::
+    
+        This implementation uses the fast method of estimating the core tensor
+        :cite:p:`papalexakis2015fast,buis1996efficient`
     """
     # Distribute weights
     weights, factors = cp_tensor

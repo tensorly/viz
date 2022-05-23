@@ -35,7 +35,7 @@ aminoacids = tlvis.data.load_aminoacids()
 # Fitting a PARAFAC model
 # ^^^^^^^^^^^^^^^^^^^^^^^
 #
-# First, we fit a PARAFAC model. Normally, you should fit models several random initialisations,
+# First, we fit a PARAFAC model. Normally, you should fit models using several random initialisations,
 # but since our goal here is not data analysis, but demonstrating how TLVis visualises
 # decompositions with and without labels, we fit only one model.
 
@@ -46,7 +46,7 @@ cp_tensor = parafac(X, 3, init="random", random_state=0)
 # Plotting the components
 # ^^^^^^^^^^^^^^^^^^^^^^^
 #
-# Next, we plot the components without preprocessing the decomposition.
+# Next, we plot the components without postprocessing the decomposition.
 
 fig, ax = tlvis.visualisation.components_plot(cp_tensor)
 plt.show()
@@ -59,7 +59,7 @@ plt.show()
 # Plotting the components
 # ^^^^^^^^^^^^^^^^^^^^^^^
 #
-# And finally, we plot the preprocessed decomposition instead.
+# And finally, we plot the postprocessed decomposition instead.
 
 cp_tensor_postprocessed = tlvis.postprocessing.postprocess(cp_tensor, aminoacids)
 fig, ax = tlvis.visualisation.components_plot(cp_tensor_postprocessed)

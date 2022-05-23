@@ -32,7 +32,7 @@ This form is compatible with TensorLy, and we have also taken care to give varia
 on this form the name ``cp_tensor`` to match TensorLy.
 
 In TLVis, we also use the terms *labelled* and *unlabelled* dataset and decompositions.
-A labelled dataset is either a Pandas DataFrames or a xarray DataArray.
+A labelled dataset is either a Pandas DataFrame or an xarray DataArray.
 By using Pandas and xarray objects, we keep the metadata together with the dataset,
 making it easier to produce rich visualisations later.
 Similarly, a labelled decomposition is a decomposition where the factor matrices are stored as Pandas DataFrames
@@ -43,20 +43,20 @@ but we recommend using the labelled variant whenever possible.
 
 What are tensor factorisations?
 -------------------------------
-Just like a matrix factorisation decomposes a matrix into low-rank components, tensor factorisation methods
-decompose a tensor into low-rank components. These components can be very informative and give insight into the
-patterns in the data. One of the most commonly used tensor factorisation methods is PARAFAC (also known as CP and CPD).
-PARAFAC can be considered a generalisation of principal component analysis (PCA) and nonnegative matrix factorisation
-(NMF) for higher-order data. Let us here see how PARAFAC decomposition relates to matrix decomposition. With
-matrix factorisation, we describe a matrix, :math:`\mathbf{X}`, as the outer product of two-factor matrices:
+Similarly to matrix factorisation methods, tensor factorisation methods decompose a tensor into low-rank components.
+These components can be very informative and give insight into the patterns in the data.
+One of the most commonly used tensor factorisation methods is PARAFAC (also known as CP and CPD).
+PARAFAC can be considered a generalisation of two-way methods such as principal component analysis (PCA) and nonnegative matrix factorisation (NMF) to higher-order data.
+Let us here see how PARAFAC decomposition relates to matrix decomposition.
+With matrix factorisation, we describe a matrix, :math:`\mathbf{X}`, as the outer product of two-factor matrices:
 
 .. math::
 
     \mathbf{X} \approx \mathbf{A} \mathbf{B}^\mathsf{T},
 
 where :math:`\mathbf{A}` and :math:`\mathbf{B}` are *factor matrices* that contain the patterns along the rows and
-columns of :math:`\mathbf{X}`. The first column of :math:`\mathbf{A}` and :math:`\mathbf{B}` are called the first
-component, the second column is called the second component and so forth.
+columns of :math:`\mathbf{X}`. The first component is represented by the first columns of :math:`\mathbf{A}` and :math:`\mathbf{B}`,
+the second component is represented by the second columns and so forth.
 
 We can look at an example to better understand these factor matrices. If :math:`\mathbf{X}` is a matrix
 of movie scores given by various users, then each component could represent a genre and the :math:`i`-th row of

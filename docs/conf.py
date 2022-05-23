@@ -160,7 +160,13 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "tlvis.tex", u"TLVis Documentation", u"Marie Roald", "manual",),
+    (
+        master_doc,
+        "tlvis.tex",
+        "TLVis Documentation",
+        r"Marie Roald \& Yngve Mardal Moe",
+        "manual",
+    ),
 ]
 
 

@@ -2,7 +2,7 @@
 TLVis + PlotLy for interactive visualisations
 ----------------------------------------------------
 
-In this example, we'll see how TLVis can be used together with PlotLy Express for easily making thorough interactive visualisations.
+In this example, we'll see how TLVis can be used together with PlotLy Express to produce rich, interactive visualisations of your extracted components with just a few lines of code.
 """
 
 ###############################################################################
@@ -15,7 +15,7 @@ from tensorly.decomposition import non_negative_parafac_hals
 import tlvis
 
 ###############################################################################
-# To fit CP models, we need to solve a non-convex optimization problem, possibly with local minima. It is therefore useful
+# To fit CP models, we need to solve a non-convex optimization problem, possibly with local minima. It is therefore beneficial
 # to fit several models with the same number of components using many different random initialisations.
 
 

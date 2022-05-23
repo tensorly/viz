@@ -142,7 +142,7 @@ plt.show()
 # It is important to note that the core consistency is not guaranteed to tell us which model to use. There are several
 # cases where the core consistency may fail. Some examples are:
 #
-#  #. If we have many components, then even minor differences on the off-diagonal can sum up reduce the core
+#  #. If we have many components, then even minor differences on the off-diagonal can sum up and reduce the core
 #     consistency measurably,
 #  #. if we have data that doesn't follow the assumptions of PARAFAC but where the PARAFAC components can still
 #     provide valuable insight,
