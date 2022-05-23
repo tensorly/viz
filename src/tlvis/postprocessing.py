@@ -54,7 +54,7 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
     .. math::
         \mathbf{X} = (\mathbf{U} \text{diag}(\mathbf{f})) \mathbf{S} (\mathbf{V} \text{diag}(\mathbf{f}))^\mathsf{T},
 
-    where :math:`\mathbf{f}` is a vector containing only ones or zeros. Similarly,
+    where :math:`\mathbf{f}` is a vector containing only ones or negative ones. Similarly,
     a CP factorisation with factor matrices :math:`\mathbf{A}, \mathbf{B}` and :math:`\mathbf{C}`
     is equivalent to the CP factorisations with the following factor matrices:
 

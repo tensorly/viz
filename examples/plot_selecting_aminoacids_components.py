@@ -90,9 +90,9 @@ selected_models = {rank: inits[0] for rank, inits in models.items()}
 #       \frac{\mathbf{b}_r^\mathsf{T}\hat{\mathbf{b}}_r}{\|\mathbf{b}_r\|\|\hat{\mathbf{b}}_r\|}
 #       \frac{\mathbf{c}_r^\mathsf{T}\hat{\mathbf{c}}_r}{\|\mathbf{c}_r\|\|\hat{\mathbf{c}}_r\|},
 #
-# where the the parameters without a hat correspond the the parameters of the reference decomposition. $w$ represents
-# the weight of the decompositions, and $\mathbf{a}_r, \mathbf{b}_r$ and $\mathbf{c}_r$ represents the $r$-th component
-# vectors.
+# where the the parameters without a hat correspond the the parameters of the reference decomposition.
+# :math:`w` represents the weight of the decompositions, and :math:`\mathbf{a}_r, \mathbf{b}_r` and
+# :math:`\mathbf{c}_r` represents the :math:`r`-th component vectors.
 
 fms_with_selected = {}
 for rank, inits in models.items():

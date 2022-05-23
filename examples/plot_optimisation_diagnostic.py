@@ -66,12 +66,12 @@ print(similarity_evaluation(first_attempt, estimated_cp_tensors))
 ###############################################################################
 # We see that the different initialisations do not resemble the selected initialisation much. So the optimisation
 # seems unstable. Let's also compare the selected  model with the true decomposition
-# (which we can only because we have simulated data and therefore know the true decomposition).
+# (which is only possible because we have simulated data and therefore know the true decomposition).
 
 print(factor_match_score(first_attempt, cp_tensor))
 
 ###############################################################################
-# So the decomposition is, as we expected, not very good... So let's try to increase the maximum number of iterations!
+# So the decomposition is, as we expected, not very good... Let's try to increase the maximum number of iterations!
 
 estimated_cp_tensors = []
 errors = []

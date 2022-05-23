@@ -6,10 +6,9 @@ Split-half analysis for selecting the number of components
 
 In this example, we will look at how we can use split-half analysis to select the number of PARAFAC components.
 
-The idea of split-half analysis is that we want to find the same components if we made a similar dataset to the
-one we have. To accomplish this, we split the dataset in two equally sized non-overlapping pieces along one mode
-and fit a PARAFAC model to both pieces. Then, we compare the similarity of the factors in the other, non-split
-modes.
+The idea of split-half analysis is that we want to find the same underlying patterns if we look at different representative subsets of the same data.
+To accomplish this, we split the dataset in two equally sized non-overlapping pieces along one mode and fit a PARAFAC model to both pieces.
+Then, we compare the similarity of the factors in the other, non-split modes.
 
 Generally, we would split the sample mode, but sometimes, it may also make sense to split other modes. For example,
 if we have a time series and expect the same patterns to be present in two subsequent periods, then we may split
@@ -55,7 +54,7 @@ def fit_many_parafac(X, num_components, num_inits=5):
 # Creating simulated data
 # ^^^^^^^^^^^^^^^^^^^^^^^
 #
-# We start with some simulated data, since then, we know exactly how many components we have.
+# We start with some simulated data, since then, we know exactly how many components there are in the data.
 
 cp_tensor, dataset = tlvis.data.simulated_random_cp_tensor((30, 40, 50), 4, noise_level=0.2, labelled=True)
 
@@ -111,6 +110,17 @@ for rank, (cp_1, cp_2) in models.items():
 plt.plot(split_half_stability.keys(), split_half_stability.values(), "-o")
 plt.show()
 
+###############################################################################
+# As we can see, there is a sharp drop in stability when increasing from four to five components.
+# This drop indicates that the patterns we find with a five-component model are not robust to small changes in the data.
+# In this case, this result is expected because we simulated the data and know that it contains only four components.
+# So to fit a five-component model to this four-component data, the model might split the information in one of the
+# "true" components into two or more model components and possibly mix some of the components.
+# Since this splitting and mixing can be done in many ways, we no longer have a stable decomposition, causing the
+# sharp drop we see in the plot.
+#
+# So we see that visualising the split-half stability can be a helpful way to evaluate how many components you should
+# use to model your data.
 
 ###############################################################################
 # Split-half analysis for the bike sharing data
