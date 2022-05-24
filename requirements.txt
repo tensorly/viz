@@ -7,8 +7,13 @@ flake8
 black
 isort
 bump2version
-
+plotly
+tensorly
 sphinx
+sphinxcontrib-bibtex
+sphinx-gallery
+numpydoc
+tensorly_sphinx_theme
 
 tox
 coverage
