@@ -161,7 +161,7 @@ def compute_leverage(factor_matrix):
     In this example, we compute the leverage of a random factor matrix
 
     >>> import numpy as np
-    >>> from tlvis.outliers import compute_leverage
+    >>> from tlviz.outliers import compute_leverage
     >>> rng = np.random.default_rng(0)
     >>> A = rng.standard_normal(size=(5, 2))
     >>> leverage_scores = compute_leverage(A)
@@ -318,7 +318,7 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
 
     >>> import numpy as np
     >>> from scipy.stats import bootstrap
-    >>> from tlvis.outliers import compute_leverage, get_leverage_outlier_threshold
+    >>> from tlviz.outliers import compute_leverage, get_leverage_outlier_threshold
 
     Here, we create a function that computes the false positive rate
 
@@ -477,8 +477,8 @@ def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05,
 
     >>> import numpy as np
     >>> from scipy.stats import bootstrap
-    >>> from tlvis.outliers import compute_slabwise_sse, get_slabwise_sse_outlier_threshold
-    >>> from tlvis.utils import cp_to_tensor
+    >>> from tlviz.outliers import compute_slabwise_sse, get_slabwise_sse_outlier_threshold
+    >>> from tlviz.utils import cp_to_tensor
 
     Then, we create a function to compute the false positive rate. This will be useful for our
     bootstrap estimate for the true false positive rate.

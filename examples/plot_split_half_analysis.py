@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 from tensorly.decomposition import parafac
 
-import tlvis
+import tlviz
 
 rng = np.random.default_rng(0)
 
@@ -56,7 +56,7 @@ def fit_many_parafac(X, num_components, num_inits=5):
 #
 # We start with some simulated data, since then, we know exactly how many components there are in the data.
 
-cp_tensor, dataset = tlvis.data.simulated_random_cp_tensor((30, 40, 50), 4, noise_level=0.2, labelled=True)
+cp_tensor, dataset = tlviz.data.simulated_random_cp_tensor((30, 40, 50), 4, noise_level=0.2, labelled=True)
 
 
 ###############################################################################
@@ -85,7 +85,7 @@ for rank in [1, 2, 3, 4, 5]:
     models[rank] = []
     for split in splits:
         current_models = fit_many_parafac(split.data, rank)
-        current_model = tlvis.multimodel_evaluation.get_model_with_lowest_error(current_models, split)
+        current_model = tlviz.multimodel_evaluation.get_model_with_lowest_error(current_models, split)
         models[rank].append(current_model)
 
 ###############################################################################
@@ -99,7 +99,7 @@ for rank in [1, 2, 3, 4, 5]:
 
 split_half_stability = {}
 for rank, (cp_1, cp_2) in models.items():
-    fms = tlvis.factor_tools.factor_match_score(cp_1, cp_2, consider_weights=False, skip_mode=1)
+    fms = tlviz.factor_tools.factor_match_score(cp_1, cp_2, consider_weights=False, skip_mode=1)
     split_half_stability[rank] = fms
 
 
@@ -138,7 +138,7 @@ plt.show()
 # the same patterns for the two years. We can therefore form two new tensors, one for 2020 and one
 # for 2021, fit PARAFAC models for these two datasets and compare the similarity of the components.
 
-bike_data = tlvis.data.load_oslo_city_bike()
+bike_data = tlviz.data.load_oslo_city_bike()
 
 splits = [
     bike_data.loc[{"Year": 2020}],
@@ -151,12 +151,12 @@ for rank in [1, 2, 3, 4, 5]:
     bike_models[rank] = []
     for split in splits:
         current_models = fit_many_parafac(split.data, rank)
-        current_model = tlvis.multimodel_evaluation.get_model_with_lowest_error(current_models, split)
+        current_model = tlviz.multimodel_evaluation.get_model_with_lowest_error(current_models, split)
         bike_models[rank].append(current_model)
 
 bike_stability = {}
 for rank, (cp_1, cp_2) in bike_models.items():
-    fms = tlvis.factor_tools.factor_match_score(cp_1, cp_2, consider_weights=False, skip_mode=1)
+    fms = tlviz.factor_tools.factor_match_score(cp_1, cp_2, consider_weights=False, skip_mode=1)
     bike_stability[rank] = fms
 
 

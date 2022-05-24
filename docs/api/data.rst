@@ -1,5 +1,5 @@
 Example datasets
 ----------------
 
-.. automodule:: tlvis.data
+.. automodule:: tlviz.data
     :members: 

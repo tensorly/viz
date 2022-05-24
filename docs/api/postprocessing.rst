@@ -1,5 +1,5 @@
 Post-processing
 ---------------
 
-.. automodule:: tlvis.postprocessing
+.. automodule:: tlviz.postprocessing
     :members:

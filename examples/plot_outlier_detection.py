@@ -11,7 +11,7 @@ Residuals
 
 The residuals measure how well the PARAFAC model represents the data. For detecting outliers, it is common
 to compute the sum of squared error for each sample. Since each sample corresponds to a slab in the data tensor,
-we use the name *slabwise SSE* in TLVis. For a third-order tensor, :math:`\mathcal{X}`, and its PARAFAC
+we use the name *slabwise SSE* in TLViz. For a third-order tensor, :math:`\mathcal{X}`, and its PARAFAC
 estimate, :math:`\hat{\mathcal{X}}`, we compute the :math:`i`-th residual in the first mode as
 
 .. math::
@@ -46,7 +46,7 @@ import numpy as np
 import pandas as pd
 from tensorly.decomposition import parafac
 
-import tlvis
+import tlviz
 
 ###############################################################################
 # Utility for fitting PARAFAC models and sampling CP tensors
@@ -67,8 +67,8 @@ def fit_parafac(X, num_components, num_inits=5):
         )
         for i in range(num_inits)
     ]
-    model = tlvis.multimodel_evaluation.get_model_with_lowest_error(model_candidates, X)
-    return tlvis.postprocessing.postprocess(model, X)
+    model = tlviz.multimodel_evaluation.get_model_with_lowest_error(model_candidates, X)
+    return tlviz.postprocessing.postprocess(model, X)
 
 
 def index_cp_tensor(cp_tensor, indices, mode):
@@ -111,7 +111,7 @@ true_model = (None, [A, B, C])
 # Plotting the components
 # ~~~~~~~~~~~~~~~~~~~~~~~
 
-tlvis.visualisation.components_plot(true_model)
+tlviz.visualisation.components_plot(true_model)
 plt.show()
 
 
@@ -119,7 +119,7 @@ plt.show()
 # Adding artificial noise
 # ~~~~~~~~~~~~~~~~~~~~~~~
 
-X = tlvis.utils.cp_to_tensor(true_model)
+X = tlviz.utils.cp_to_tensor(true_model)
 noise = rng.standard_normal(X.shape)
 X += np.linalg.norm(X.data) * 0.1 * noise / np.linalg.norm(noise)
 
@@ -137,19 +137,19 @@ X[3] = X[3] * 3 + 5
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 first_attempt = fit_parafac(X, rank, num_inits=5)
-tlvis.visualisation.component_comparison_plot({"True": true_model, "First attempt": first_attempt})
+tlviz.visualisation.component_comparison_plot({"True": true_model, "First attempt": first_attempt})
 plt.show()
 
 ###############################################################################
 # We see that some of the components are wrong, and to quantify this, we can look at the factor match score:
 
-fms = tlvis.factor_tools.factor_match_score(true_model, first_attempt)
+fms = tlviz.factor_tools.factor_match_score(true_model, first_attempt)
 print(f"The FMS is {fms:.2f}")
 
 ###############################################################################
 # Next, we can create a scatter plot where we plot the leverage and residuals for each sample.
 
-tlvis.visualisation.outlier_plot(first_attempt, X)
+tlviz.visualisation.outlier_plot(first_attempt, X)
 plt.show()
 
 ###############################################################################
@@ -175,21 +175,21 @@ second_attempt = fit_parafac(sampled_X, rank, num_inits=5)
 # Otherwise, we could not align the components.
 
 sampled_true_cp = index_cp_tensor(true_model, selected_samples, mode=0)
-tlvis.visualisation.component_comparison_plot({"True": sampled_true_cp, "Second attempt": second_attempt})
+tlviz.visualisation.component_comparison_plot({"True": sampled_true_cp, "Second attempt": second_attempt})
 plt.show()
 
 ###############################################################################
 # Still, we have not successfully recovered the correct components,
 # which is apparent from the factor match score.
 
-fms = tlvis.factor_tools.factor_match_score(sampled_true_cp, second_attempt)
+fms = tlviz.factor_tools.factor_match_score(sampled_true_cp, second_attempt)
 print(f"The FMS is {fms:.2f}")
 
 
 ###############################################################################
 # We can also create the outlier plot again to see which samples are suspicious.
 
-tlvis.visualisation.outlier_plot(second_attempt, sampled_X)
+tlviz.visualisation.outlier_plot(second_attempt, sampled_X)
 plt.show()
 
 
@@ -203,13 +203,13 @@ sampled_X = X.loc[{"Mode 0": selected_samples}]
 third_attempt = fit_parafac(sampled_X, rank, num_inits=5)
 
 sampled_true_cp = index_cp_tensor(true_model, selected_samples, mode=0)
-tlvis.visualisation.component_comparison_plot({"True": sampled_true_cp, "Third attempt": third_attempt})
+tlviz.visualisation.component_comparison_plot({"True": sampled_true_cp, "Third attempt": third_attempt})
 plt.show()
 
 ###############################################################################
 # Here, we see that we finally uncovered the true components. This is also apparent from the FMS
 
-fms = tlvis.factor_tools.factor_match_score(sampled_true_cp, third_attempt)
+fms = tlviz.factor_tools.factor_match_score(sampled_true_cp, third_attempt)
 print(f"The FMS is {fms:.2f}")
 
 ###############################################################################
@@ -227,7 +227,7 @@ print(f"The FMS is {fms:.2f}")
 ###############################################################################
 # We can also create the outlier plot again to see if there still are any suspicious samples
 
-tlvis.visualisation.outlier_plot(third_attempt, sampled_X)
+tlviz.visualisation.outlier_plot(third_attempt, sampled_X)
 plt.show()
 
 ###############################################################################
@@ -239,7 +239,7 @@ sampled_X = X.loc[{"Mode 0": selected_samples}]
 fourth_attempt = fit_parafac(sampled_X, rank, num_inits=5)
 
 sampled_true_cp = index_cp_tensor(true_model, selected_samples, mode=0)
-tlvis.visualisation.component_comparison_plot({"True": sampled_true_cp, "Fourth attempt": fourth_attempt})
+tlviz.visualisation.component_comparison_plot({"True": sampled_true_cp, "Fourth attempt": fourth_attempt})
 plt.show()
 
 ###############################################################################
@@ -260,8 +260,8 @@ plt.show()
 # Unfortunately, there are no hard rules for selecting which samples to remove as outliers.
 # Instead, we generally have to consider each suspected outlier individually.
 # However, there are some useful rules-of-thumb discussed in the literature.
-# These methods are detailed in :meth:`tlvis.outliers.get_slabwise_sse_outlier_threshold`
-# and :meth:`tlvis.outliers.get_slabwise_sse_outlier_threshold`.
+# These methods are detailed in :meth:`tlviz.outliers.get_slabwise_sse_outlier_threshold`
+# and :meth:`tlviz.outliers.get_slabwise_sse_outlier_threshold`.
 # There are two ways to select outliers based on the leverage score.
 # If we interpret the leverage score as the number of components devoted to each sample,
 # which Huber does in :cite:p:`huber2009robust`,
@@ -287,7 +287,7 @@ plt.show()
 # Visualising the rules-of-thumb on our first attempted PARAFAC model
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-tlvis.visualisation.outlier_plot(
+tlviz.visualisation.outlier_plot(
     first_attempt,
     X,
     leverage_rules_of_thumb=["p-value", "hotelling", "huber higher", "huber lower", "hw lower", "hw higher"],

@@ -11,8 +11,8 @@ line-length = 120
 known_third_party = []
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --cov=tlvis"
+addopts = "--doctest-modules --cov=tlviz"
 testpaths = [
     "tests",
-    "tlvis",
+    "tlviz",
 ]

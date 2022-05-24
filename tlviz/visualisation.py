@@ -59,7 +59,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     metric: str or Callable
         Which metric to plot, should have the signature ``metric(cp_tensor, dataset)`` and return
         a float. If it is a string, then this will be used as the y-label and metric will be set to
-        ``metric = getattr(tlvis.model_evaluation, metric)``.
+        ``metric = getattr(tlviz.model_evaluation, metric)``.
         Also, if ``metric`` is a string, then it is converted to lower-case letters and spaces
         are converted to underlines before getting the metric from the ``model_evaluation`` module.
     ax: matplotlib axes
@@ -79,8 +79,8 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         :context: close-figs
         :include-source:
 
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.visualisation import scree_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import scree_plot
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
         >>>
@@ -98,8 +98,8 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         :context: close-figs
         :include-source:
 
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.visualisation import scree_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import scree_plot
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
         >>>
@@ -112,7 +112,7 @@ def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
         >>> ax = scree_plot(cp_tensors, dataset, ax=axes[0])
         >>> ax = scree_plot(cp_tensors, dataset, metric="Core consistency", ax=axes[1])
         >>> # Names are converted to lowercase and spaces are converted to underlines when fetching metric-function,
-        >>> # so "Core consistency" becomes getattr(tlvis.model_evaluation, "core_consistency")
+        >>> # so "Core consistency" becomes getattr(tlviz.model_evaluation, "core_consistency")
         >>>
         >>> for ax in axes:
         ...     xlabel = ax.set_xlabel("Number of components")
@@ -172,8 +172,8 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
 
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.visualisation import histogram_of_residuals
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import histogram_of_residuals
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> histogram_of_residuals(est_cp, X)
@@ -221,7 +221,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
     use_pingouin : bool
         If true, then the GPL-3 licensed ``pingouin``-library will be used
         for generating an enhanced QQ-plot (with error bars), at the cost
-        of changing the license of tlvis into a GPL-license too.
+        of changing the license of tlviz into a GPL-license too.
     **kwargs
         Additional keyword arguments passed to the qq-plot function
         (``statsmodels.api.qqplot`` or ``pingouin.qqplot``)
@@ -239,8 +239,8 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
 
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.visualisation import residual_qq
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import residual_qq
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> residual_qq(est_cp, X)
@@ -293,12 +293,12 @@ def outlier_plot(
         Which mode (axis) to create the outlier plot for
     leverage_rules_of_thumb : str or iterable of str
         Rule of thumb(s) used to create lines for detecting outliers based on leverage score. Must be a supported
-        argument for ``method`` with :meth:`tlvis.outliers.get_leverage_outlier_threshold`. If
+        argument for ``method`` with :meth:`tlviz.outliers.get_leverage_outlier_threshold`. If
         ``leverage_rules_of_thumb`` is an iterable of strings, then multiple lines will be drawn, one for each
         method.
     residual_rules_of_thumb : str or iterable of str
         Rule of thumb(s) used to create lines for detecting outliers based on residuals. Must be a supported
-        argument for ``method`` with :meth:`tlvis.outliers.get_slabwise_sse_outlier_threshold`. If
+        argument for ``method`` with :meth:`tlviz.outliers.get_slabwise_sse_outlier_threshold`. If
         ``residual_rules_of_thumb`` is an iterable of strings, then multiple lines will be drawn, one for each
         method.
     p_value : float or iterable of float
@@ -325,9 +325,9 @@ def outlier_plot(
 
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import non_negative_parafac_hals
-        >>> from tlvis.data import load_oslo_city_bike
-        >>> from tlvis.postprocessing import postprocess
-        >>> from tlvis.visualisation import outlier_plot
+        >>> from tlviz.data import load_oslo_city_bike
+        >>> from tlviz.postprocessing import postprocess
+        >>> from tlviz.visualisation import outlier_plot
         >>>
         >>> data = load_oslo_city_bike()
         >>> X = data.data
@@ -348,9 +348,9 @@ def outlier_plot(
 
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import non_negative_parafac_hals
-        >>> from tlvis.data import load_oslo_city_bike
-        >>> from tlvis.postprocessing import postprocess
-        >>> from tlvis.visualisation import outlier_plot
+        >>> from tlviz.data import load_oslo_city_bike
+        >>> from tlviz.postprocessing import postprocess
+        >>> from tlviz.visualisation import outlier_plot
         >>>
         >>> data = load_oslo_city_bike()
         >>> X = data.data
@@ -365,11 +365,11 @@ def outlier_plot(
 
     See Also
     --------
-    tlvis.outliers.compute_outlier_info
-    tlvis.outliers.compute_leverage
-    tlvis.outliers.compute_slabwise_sse
-    tlvis.outliers.get_leverage_outlier_threshold
-    tlvis.outliers.get_slabwise_sse_outlier_threshold
+    tlviz.outliers.compute_outlier_info
+    tlviz.outliers.compute_leverage
+    tlviz.outliers.compute_slabwise_sse
+    tlviz.outliers.get_leverage_outlier_threshold
+    tlviz.outliers.get_slabwise_sse_outlier_threshold
     """
     weights, factor_matrices = cp_tensor
 
@@ -495,7 +495,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         :include-source:
 
         >>> from tensorly.random import random_cp
-        >>> from tlvis.visualisation import component_scatterplot
+        >>> from tlviz.visualisation import component_scatterplot
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor = random_cp(shape=(5,10,15), rank=2)
         >>> component_scatterplot(cp_tensor, mode=0)
@@ -512,8 +512,8 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> import plotly.express as px
-        >>> from tlvis.postprocessing import label_cp_tensor
-        >>> from tlvis.visualisation import component_scatterplot
+        >>> from tlviz.postprocessing import label_cp_tensor
+        >>> from tlviz.visualisation import component_scatterplot
         >>>
         >>> # Load data and convert to xarray
         >>> stocks = px.data.stocks().set_index("date").stack()
@@ -580,7 +580,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
         The dataset the CP tensor models.
     normalised : bool
         If true then the normalised core consistency will be estimated
-        (see ``tlvis.model_evaluation.core_consistency``)
+        (see ``tlviz.model_evaluation.core_consistency``)
     ax : Matplotlib axes
         Axes to plot the core element plot within
 
@@ -597,8 +597,8 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
 
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.visualisation import core_element_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import core_element_plot
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=42)
         >>> est_cp = parafac(X, 3)
         >>> core_element_plot(est_cp, X)
@@ -751,8 +751,8 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
         :context: close-figs
         :include-source:
 
-        >>> from tlvis.visualisation import core_element_heatmap
-        >>> from tlvis.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import core_element_heatmap
+        >>> from tlviz.data import simulated_random_cp_tensor
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor((20, 30, 40), 3, seed=0)
         >>> fig, axes = core_element_heatmap(cp_tensor, dataset)
@@ -841,7 +841,7 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         :include-source:
 
         >>> from tensorly.random import random_cp
-        >>> from tlvis.visualisation import components_plot
+        >>> from tlviz.visualisation import components_plot
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor = random_cp(shape=(5,10,15), rank=3)
         >>> fig, axes = components_plot(cp_tensor)
@@ -857,8 +857,8 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> import plotly.express as px
-        >>> from tlvis.postprocessing import label_cp_tensor
-        >>> from tlvis.visualisation import components_plot
+        >>> from tlviz.postprocessing import label_cp_tensor
+        >>> from tlviz.visualisation import components_plot
         >>>
         >>> # Load data and convert to xarray
         >>> stocks = px.data.stocks().set_index("date").stack()
@@ -946,9 +946,9 @@ def component_comparison_plot(
 
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.decomposition import parafac, non_negative_parafac_hals
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.visualisation import component_comparison_plot
-        >>> from tlvis.postprocessing import postprocess
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import component_comparison_plot
+        >>> from tlviz.postprocessing import postprocess
         >>>
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, noise_level=0.5, seed=42)
         >>> cp_tensors = {
@@ -969,10 +969,10 @@ def component_comparison_plot(
         :include-source:
 
         >>> import matplotlib.pyplot as plt
-        >>> from tlvis.data import simulated_random_cp_tensor
-        >>> from tlvis.factor_tools import permute_cp_tensor
-        >>> from tlvis.postprocessing import postprocess
-        >>> from tlvis.visualisation import component_comparison_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
+        >>> from tlviz.factor_tools import permute_cp_tensor
+        >>> from tlviz.postprocessing import postprocess
+        >>> from tlviz.visualisation import component_comparison_plot
         >>>
         >>> four_components = simulated_random_cp_tensor((5, 6, 7), 4, noise_level=0.5, seed=42)[0]
         >>> three_components = permute_cp_tensor(four_components, permutation=[0, 1, 2])
@@ -1103,7 +1103,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.random import random_cp
         >>> from tensorly.decomposition import parafac
-        >>> from tlvis.visualisation import optimisation_diagnostic_plots
+        >>> from tlviz.visualisation import optimisation_diagnostic_plots
         >>>
         >>> # Generate random tensor and add noise
         >>> rng = np.random.RandomState(1)
@@ -1130,7 +1130,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> import matplotlib.pyplot as plt
         >>> from tensorly.random import random_cp
         >>> from tensorly.decomposition import parafac
-        >>> from tlvis.visualisation import optimisation_diagnostic_plots
+        >>> from tlviz.visualisation import optimisation_diagnostic_plots
         >>>
         >>> # Generate random tensor and add noise
         >>> rng = np.random.RandomState(1)
@@ -1234,8 +1234,8 @@ def percentage_variation_plot(
         :context: close-figs
         :include-source:
 
-        >>> from tlvis.visualisation import percentage_variation_plot
-        >>> from tlvis.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import percentage_variation_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor)
@@ -1248,8 +1248,8 @@ def percentage_variation_plot(
         :context: close-figs
         :include-source:
 
-        >>> from tlvis.visualisation import percentage_variation_plot
-        >>> from tlvis.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import percentage_variation_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor, dataset, method="data")
@@ -1262,8 +1262,8 @@ def percentage_variation_plot(
         :context: close-figs
         :include-source:
 
-        >>> from tlvis.visualisation import percentage_variation_plot
-        >>> from tlvis.data import simulated_random_cp_tensor
+        >>> from tlviz.visualisation import percentage_variation_plot
+        >>> from tlviz.data import simulated_random_cp_tensor
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor, dataset, method="both")

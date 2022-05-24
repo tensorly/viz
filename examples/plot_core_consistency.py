@@ -14,7 +14,7 @@ CORCONDIA) :cite:p:`bro2003new`. In this example, we'll see how, why and when th
 import matplotlib.pyplot as plt
 from tensorly.decomposition import parafac
 
-import tlvis
+import tlviz
 
 
 def fit_parafac(X, num_components, num_inits=5):
@@ -31,14 +31,14 @@ def fit_parafac(X, num_components, num_inits=5):
         )
         for i in range(num_inits)
     ]
-    cp_tensor = tlvis.multimodel_evaluation.get_model_with_lowest_error(model_candidates, X)
-    return tlvis.postprocessing.postprocess(cp_tensor, dataset=aminoacids)
+    cp_tensor = tlviz.multimodel_evaluation.get_model_with_lowest_error(model_candidates, X)
+    return tlviz.postprocessing.postprocess(cp_tensor, dataset=aminoacids)
 
 
 ###############################################################################
 # Then we load the data and fit a PARAFAC model to it.
 
-aminoacids = tlvis.data.load_aminoacids()
+aminoacids = tlviz.data.load_aminoacids()
 four_component_cp = fit_parafac(aminoacids.data, 4, num_inits=5)
 
 ###############################################################################
@@ -71,7 +71,7 @@ four_component_cp = fit_parafac(aminoacids.data, 4, num_inits=5)
 # Let's look at the entries we get for :math:`\mathcal{G}` with the PARAFAC model we fitted to the amino acids dataset.
 
 ###############################################################################
-tlvis.visualisation.core_element_heatmap(four_component_cp, aminoacids)
+tlviz.visualisation.core_element_heatmap(four_component_cp, aminoacids)
 plt.show()
 
 ###############################################################################
@@ -86,7 +86,7 @@ plt.show()
 # off-diagonal entries are plotted afterwards.
 
 ###############################################################################
-tlvis.visualisation.core_element_plot(four_component_cp, aminoacids)
+tlviz.visualisation.core_element_plot(four_component_cp, aminoacids)
 plt.show()
 
 ###############################################################################
@@ -116,7 +116,7 @@ models = {}
 for rank in [1, 2, 3, 4, 5]:
     models[rank] = fit_parafac(aminoacids.data, rank, num_inits=5)
 
-ax = tlvis.visualisation.scree_plot(models, aminoacids, metric="Core consistency")
+ax = tlviz.visualisation.scree_plot(models, aminoacids, metric="Core consistency")
 ax.set_ylim(0, 105)
 plt.show()
 
@@ -125,11 +125,11 @@ plt.show()
 # components, the core consistency becomes very small. The three-component model is, therefore, a good choice.
 
 ###############################################################################
-tlvis.visualisation.core_element_heatmap(models[3], aminoacids)
+tlviz.visualisation.core_element_heatmap(models[3], aminoacids)
 plt.show()
 
 ###############################################################################
-tlvis.visualisation.core_element_plot(models[3], aminoacids)
+tlviz.visualisation.core_element_plot(models[3], aminoacids)
 plt.show()
 
 ###############################################################################

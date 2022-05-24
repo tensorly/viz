@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-"""Unit test package for tlvis."""
+"""Unit test package for tlviz."""

@@ -3,8 +3,8 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-import tlvis.data as data
-from tlvis.utils import cp_to_tensor
+import tlviz.data as data
+from tlviz.utils import cp_to_tensor
 
 
 @pytest.mark.parametrize("is_labelled", [True, False])

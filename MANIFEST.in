@@ -1,5 +1,5 @@
 include LICENSE
 include README.rst
 
-graft tlvis
+graft tlviz
 global-exclude *.pyc

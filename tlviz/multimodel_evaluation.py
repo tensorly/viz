@@ -44,8 +44,8 @@ def similarity_evaluation(cp_tensor, comparison_cp_tensors, similarity_metric=No
 
     We start by importing the relevant functionality
 
-    >>> from tlvis.multimodel_evaluation import sort_models_by_error, similarity_evaluation
-    >>> from tlvis.data import simulated_random_cp_tensor
+    >>> from tlviz.multimodel_evaluation import sort_models_by_error, similarity_evaluation
+    >>> from tlviz.data import simulated_random_cp_tensor
     >>> from tensorly.decomposition import parafac
 
     Then, we create a random simulated dataset and fit five parafac models to it.
@@ -119,10 +119,10 @@ def get_model_with_lowest_error(cp_tensors, dataset, error_function=None, return
 
     We start by importing the relevant functionality
 
-    >>> from tlvis.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
-    >>> from tlvis.model_evaluation import relative_sse
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.factor_tools import check_cp_tensor_equal
+    >>> from tlviz.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
+    >>> from tlviz.model_evaluation import relative_sse
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.factor_tools import check_cp_tensor_equal
     >>> from tensorly.decomposition import parafac
 
     Then, we create a simulated dataset and fit five model candidates using different random initialisations.
@@ -210,8 +210,8 @@ def sort_models_by_error(cp_tensors, dataset, error_function=None):
 
     We start by importing the relevant functionality.
 
-    >>> from tlvis.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
-    >>> from tlvis.data import simulated_random_cp_tensor
+    >>> from tlviz.multimodel_evaluation import sort_models_by_error, get_model_with_lowest_error
+    >>> from tlviz.data import simulated_random_cp_tensor
     >>> from tensorly.decomposition import parafac
 
     Then, we simulate a random dataset and fit five model candidates to it.

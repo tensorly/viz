@@ -2,7 +2,7 @@
 Contribution guidelines
 =======================
 
-All contributions to TLVis are welcome! If you find a bug or an error in the documentation, we very much appreciate
+All contributions to TLViz are welcome! If you find a bug or an error in the documentation, we very much appreciate
 an issue or a pull request!
 
 -----------------
@@ -10,38 +10,38 @@ How to contribute
 -----------------
 
 If you find a bug, or have an idea for a new feature, and you want to know if the contribution is relevant and not
-being worked on, you can open a `new issue <https://github.com/MarieRoald/tlvis/issues>`_. For major
+being worked on, you can open a `new issue <https://github.com/MarieRoald/tlviz/issues>`_. For major
 bugs, it can also be useful to include a `minimal, reproducible example <https://stackoverflow.com/help/minimal-reproducible-example>`_,
 to make it as easy as possible to fix it.
 
-You can submit implementation of new features or bug/documentation fixes as a `pull-request <https://github.com/MarieRoald/tlvis/pulls>`_.
+You can submit implementation of new features or bug/documentation fixes as a `pull-request <https://github.com/MarieRoald/tlviz/pulls>`_.
 
 -----------------------
 Development environment
 -----------------------
 
-We recommend using a virtual environment to develop TLVis locally on your machine. For example, with Anaconda
+We recommend using a virtual environment to develop TLViz locally on your machine. For example, with Anaconda
 
 .. code:: bash
 
-    conda create -n tlvis python=3.8 anaconda
+    conda create -n tlviz python=3.8 anaconda
 
-Then, you can download the TLVis source code and install it together with all the development dependencies
+Then, you can download the TLViz source code and install it together with all the development dependencies
 
 .. code:: bash
 
-    git clone https://github.com/marieroald/tlvis.git
-    cd tlvis
+    git clone https://github.com/marieroald/tlviz.git
+    cd tlviz
     pip install -e .[devel,test,docs]
 
-This will install TLVis in editable mode, so any change to the source code will be applied to the installed
+This will install TLViz in editable mode, so any change to the source code will be applied to the installed
 version too.
 
 -----------
 Style guide
 -----------
 
-TLVis follows the `Black <https://github.com/psf/black>`_ style (with a maximum line length of 120 characters) and
+TLViz follows the `Black <https://github.com/psf/black>`_ style (with a maximum line length of 120 characters) and
 follows most of the `flake8 <https://flake8.pycqa.org/en/latest/>`_ guidelines (except E203, W503). Most style errors
 will be fixed automatically in VSCode if you include the following lines in your `settings.json` file
 
@@ -69,7 +69,7 @@ will be fixed automatically in VSCode if you include the following lines in your
 Unit tests
 ----------
 
-TLVis aims to have a high test coverage, so any new code should also include tests, including visualisation.
+TLViz aims to have a high test coverage, so any new code should also include tests, including visualisation.
 You can run the tests by running
 
 .. code:: bash
