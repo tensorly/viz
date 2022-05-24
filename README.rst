@@ -6,7 +6,7 @@ TLViz — Visualising and analysing component models
     :target: https://github.com/tensorly/viz/actions/workflows/tests.yml
     :alt: Tests
 
-.. image:: https://codecov.io/gh/tensorly/viz/branch/master/graph/badge.svg?token=BYEME3G8KG
+.. image:: https://codecov.io/gh/tensorly/viz/branch/main/graph/badge.svg?token=QhgCjtr2qk
     :target: https://codecov.io/gh/tensorly/viz
     :alt: Coverage
 
