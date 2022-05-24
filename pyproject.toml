@@ -14,5 +14,5 @@ known_third_party = []
 addopts = "--doctest-modules --cov=tlvis"
 testpaths = [
     "tests",
-    "src",
+    "tlvis",
 ]
