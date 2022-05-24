@@ -3,8 +3,8 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-from tlvis._module_utils import is_dataframe, is_xarray
-from tlvis._xarray_wrapper import (
+from tlviz._module_utils import is_dataframe, is_xarray
+from tlviz._xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
     _handle_labelled_dataset,
@@ -22,7 +22,7 @@ from tlvis._xarray_wrapper import (
     is_labelled_tucker,
     label_cp_tensor,
 )
-from tlvis.data import simulated_random_cp_tensor
+from tlviz.data import simulated_random_cp_tensor
 
 
 def test_is_labelled_cp(rng):

@@ -1,5 +1,5 @@
 Visualisation
 -------------
 
-.. automodule:: tlvis.visualisation
+.. automodule:: tlviz.visualisation
     :members: 

@@ -1,5 +1,5 @@
 Outlier detection
 -----------------
 
-.. automodule:: tlvis.outliers
+.. automodule:: tlviz.outliers
     :members:

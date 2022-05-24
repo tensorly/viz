@@ -12,7 +12,7 @@ In this example, we will look at some methods for selecting the number of compon
 import matplotlib.pyplot as plt
 from tensorly.decomposition import parafac
 
-import tlvis
+import tlviz
 
 ###############################################################################
 # To fit PARAFAC models, we need to solve a non-convex optimization problem, possibly with local minima. It is
@@ -42,7 +42,7 @@ def fit_many_parafac(X, num_components, num_inits=5):
 # Here we load the `Aminoacids dataset <http://models.life.ku.dk/Amino_Acid_fluo>`_ from :cite:p:`bro1997parafac`
 # and plot the EEM-matrix for each of the five samples.
 
-aminoacids = tlvis.data.load_aminoacids()
+aminoacids = tlviz.data.load_aminoacids()
 
 fig, axes = plt.subplots(1, 5, figsize=(15, 3), tight_layout=True)
 for i, sample in enumerate(aminoacids):
@@ -66,7 +66,7 @@ for rank in [1, 2, 3, 4, 5]:
 
 errors = {}
 for rank, inits in models.items():
-    sorted_inits, sorted_errors = tlvis.multimodel_evaluation.sort_models_by_error(inits, aminoacids.data)
+    sorted_inits, sorted_errors = tlviz.multimodel_evaluation.sort_models_by_error(inits, aminoacids.data)
     models[rank] = sorted_inits
     errors[rank] = sorted_errors
 
@@ -96,7 +96,7 @@ selected_models = {rank: inits[0] for rank, inits in models.items()}
 
 fms_with_selected = {}
 for rank, inits in models.items():
-    fms_with_selected[rank] = tlvis.multimodel_evaluation.similarity_evaluation(inits[0], inits)
+    fms_with_selected[rank] = tlviz.multimodel_evaluation.similarity_evaluation(inits[0], inits)
 
 ###############################################################################
 # Plot uniqueness information
@@ -145,8 +145,8 @@ plt.show()
 
 fig, axes = plt.subplots(1, 2, figsize=(7, 3), tight_layout=True)
 
-tlvis.visualisation.scree_plot(selected_models, aminoacids.data, metric="Fit", ax=axes[0])
-tlvis.visualisation.scree_plot(selected_models, aminoacids.data, metric="Core consistency", ax=axes[1])
+tlviz.visualisation.scree_plot(selected_models, aminoacids.data, metric="Fit", ax=axes[0])
+tlviz.visualisation.scree_plot(selected_models, aminoacids.data, metric="Core consistency", ax=axes[1])
 
 axes[1].set_ylim(0, 105)
 plt.show()
@@ -168,7 +168,7 @@ fig, axes = plt.subplots(1, 5, figsize=(15, 3), tight_layout=True, sharex=False,
 
 for i, (rank, model) in enumerate(selected_models.items()):
     axes[i].set_title(f"{rank} components")
-    tlvis.visualisation.core_element_plot(model, aminoacids.data, ax=axes[i])
+    tlviz.visualisation.core_element_plot(model, aminoacids.data, ax=axes[i])
 
 plt.show()
 
@@ -203,26 +203,26 @@ plt.show()
 # 3 components
 # ~~~~~~~~~~~~
 
-model_3comp = tlvis.postprocessing.postprocess(selected_models[3], dataset=aminoacids)
-tlvis.visualisation.components_plot(model_3comp)
+model_3comp = tlviz.postprocessing.postprocess(selected_models[3], dataset=aminoacids)
+tlviz.visualisation.components_plot(model_3comp)
 plt.show()
 
 ###############################################################################
 fig, ax = plt.subplots(figsize=(3 * 1.6, 3), tight_layout=True)
-tlvis.visualisation.percentage_variation_plot(model_3comp, aminoacids.data, method="both", ax=ax)
+tlviz.visualisation.percentage_variation_plot(model_3comp, aminoacids.data, method="both", ax=ax)
 ax.set_yscale("log")
 plt.show()
 
 ###############################################################################
 # 4 components
 # ~~~~~~~~~~~~
-model_4comp = tlvis.postprocessing.postprocess(selected_models[4], dataset=aminoacids)
-tlvis.visualisation.components_plot(model_4comp)
+model_4comp = tlviz.postprocessing.postprocess(selected_models[4], dataset=aminoacids)
+tlviz.visualisation.components_plot(model_4comp)
 plt.show()
 
 ###############################################################################
 fig, ax = plt.subplots(figsize=(3 * 1.6, 3), tight_layout=True)
-tlvis.visualisation.percentage_variation_plot(model_4comp, aminoacids.data, method="both", ax=ax)
+tlviz.visualisation.percentage_variation_plot(model_4comp, aminoacids.data, method="both", ax=ax)
 ax.set_yscale("log")
 
 ###############################################################################

@@ -3,11 +3,11 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-import tlvis.utils as utils
-from tlvis import factor_tools
-from tlvis._module_utils import is_dataframe
-from tlvis._xarray_wrapper import _unlabel_cp_tensor
-from tlvis.data import simulated_random_cp_tensor
+import tlviz.utils as utils
+from tlviz import factor_tools
+from tlviz._module_utils import is_dataframe
+from tlviz._xarray_wrapper import _unlabel_cp_tensor
+from tlviz.data import simulated_random_cp_tensor
 
 
 def safe_permute(arr, permutation):

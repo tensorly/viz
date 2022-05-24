@@ -101,8 +101,8 @@ def cp_norm(cp_tensor):
     Examples
     --------
     >>> import numpy as np
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.utils import cp_norm, cp_to_tensor
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.utils import cp_norm, cp_to_tensor
     >>> cp_tensor = simulated_random_cp_tensor((30, 10, 10), rank=5, seed=0)[0]
     >>> norm_fast = cp_norm(cp_tensor)
     >>> norm_slow = np.linalg.norm(cp_to_tensor(cp_tensor))
@@ -165,8 +165,8 @@ def cp_to_tensor(cp_tensor):
 
     Examples
     --------
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.utils import cp_to_tensor
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.utils import cp_to_tensor
     >>> unlabelled_cp_tensor = simulated_random_cp_tensor((10, 20, 30), 5, labelled=False, seed=0)[0]
     >>> unlabelled_X = cp_to_tensor(unlabelled_cp_tensor)
     >>> type(unlabelled_X)

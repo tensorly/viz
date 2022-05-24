@@ -4,10 +4,10 @@ import pytest
 import tensorly as tl
 import xarray as xr
 
-import tlvis.factor_tools as factor_tools
-import tlvis.utils as utils
-from tlvis._module_utils import is_xarray
-from tlvis.data import simulated_random_cp_tensor
+import tlviz.factor_tools as factor_tools
+import tlviz.utils as utils
+from tlviz._module_utils import is_xarray
+from tlviz.data import simulated_random_cp_tensor
 
 
 def test_extract_singleton(rng):

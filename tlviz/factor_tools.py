@@ -276,7 +276,7 @@ def get_factor_matrix_permutation(factor_matrix1, factor_matrix2, ignore_sign=Tr
         indeterminacy of component models.
     allow_smaller_rank : bool (default=False)
         If ``True``, then the function can align a smaller matrix onto a larger one. Missing
-        columns are aligned with ``tlvis.factor_tools.NO_COLUMN`` (a slice that slices nothing).
+        columns are aligned with ``tlviz.factor_tools.NO_COLUMN`` (a slice that slices nothing).
 
     Returns
     -------
@@ -284,7 +284,7 @@ def get_factor_matrix_permutation(factor_matrix1, factor_matrix2, ignore_sign=Tr
         List of ints used to permute ``factor_matrix2`` so its columns optimally align with ``factor_matrix1``.
         If the ``factor_matrix1`` has a column with no corresponding column in ``factor_matrix2`` (i.e. there
         are fewer columns in ``factor_matrix2`` than in ``factor_matrix1``), then
-        ``tlvis.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing columns.
+        ``tlviz.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing columns.
 
     Raises
     ------
@@ -366,7 +366,7 @@ def factor_match_score(
     allow_smaller_rank : bool (default=False)
         Only relevant if ``return_permutation=True``. If ``True``, then ``cp_tensor2``
         can have fewer components than ``cp_tensor2``. Missing components are aligned
-        with ``tlvis.factor_tools.tlvis.factor_tools.NO_COLUMN`` (a slice that slices nothing).
+        with ``tlviz.factor_tools.tlviz.factor_tools.NO_COLUMN`` (a slice that slices nothing).
 
     Returns
     -------
@@ -376,7 +376,7 @@ def factor_match_score(
         List of ints used to permute ``cp_tensor2`` so its components optimally align with ``cp_tensor1``.
         If the ``cp_tensor1`` has a component with no corresponding component in ``cp_tensor2`` (i.e. there
         are fewer components in ``cp_tensor2`` than in ``cp_tensor1``), then
-        ``tlvis.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing components.
+        ``tlviz.factor_tools.NO_COLUMN`` (a slice that slices nothing) is used to indicate missing components.
 
     Raises
     ------
@@ -386,7 +386,7 @@ def factor_match_score(
     Examples
     --------
     >>> import numpy as np
-    >>> from tlvis.factor_tools import factor_match_score
+    >>> from tlviz.factor_tools import factor_match_score
     >>> from tensorly.decomposition import parafac
     >>> from tensorly.random import random_cp
     >>> # Construct random cp tensor with TensorLy
@@ -534,8 +534,8 @@ def degeneracy_score(cp_tensor):
     --------
     We begin by constructing a random simulated cp tensor and compute the degeneracy score
 
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.factor_tools import degeneracy_score
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.factor_tools import degeneracy_score
     >>> cp_tensor = simulated_random_cp_tensor((10, 11, 12), rank=3, seed=0)[0]
     >>> print(f"Degeneracy score: {degeneracy_score(cp_tensor):.2f}")
     Degeneracy score: 0.35
@@ -736,7 +736,7 @@ def check_factor_matrix_equal(factor_matrix1, factor_matrix2, ignore_labels=Fals
     --------
     ``check_factor_matrix_equal`` checks if two factor matrices are exactly the same.
 
-    >>> from tlvis.data import simulated_random_cp_tensor
+    >>> from tlviz.data import simulated_random_cp_tensor
     >>> import numpy as np
     >>> A = np.arange(6).reshape(3, 2).astype(float)
     >>> B = A.copy()
@@ -821,8 +821,8 @@ def check_cp_tensor_equal(cp_tensor1, cp_tensor2, ignore_labels=False):
     ``check_cp_tensor_equal`` checks for strict equality of the factor matrices and
     weights.
 
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.factor_tools import check_cp_tensor_equal
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.factor_tools import check_cp_tensor_equal
     >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
     >>> check_cp_tensor_equal(cp_tensor, cp_tensor)
     True
@@ -836,14 +836,14 @@ def check_cp_tensor_equal(cp_tensor1, cp_tensor2, ignore_labels=False):
     Normalising a ``cp_tensor`` changes its values, so then we do not have strict equality
     of the factor matrices, even though the decomposition is equivalent
 
-    >>> from tlvis.factor_tools import normalise_cp_tensor
+    >>> from tlviz.factor_tools import normalise_cp_tensor
     >>> normalised_cp_tensor = normalise_cp_tensor(cp_tensor)
     >>> check_cp_tensor_equal(cp_tensor, normalised_cp_tensor)
     False
 
     Permutations will also make the numerical values of the``cp_tensor`` change
 
-    >>> from tlvis.factor_tools import permute_cp_tensor
+    >>> from tlviz.factor_tools import permute_cp_tensor
     >>> check_cp_tensor_equal(cp_tensor, permute_cp_tensor(cp_tensor, permutation=[1, 2, 0]))
     False
 
@@ -907,7 +907,7 @@ def check_factor_matrix_close(factor_matrix1, factor_matrix2, rtol=1e-5, atol=1e
     --------
     ``check_factor_matrix_close`` checks if two factor matrices are close up to round off errors.
 
-    >>> from tlvis.data import simulated_random_cp_tensor
+    >>> from tlviz.data import simulated_random_cp_tensor
     >>> import numpy as np
     >>> A = np.arange(6).reshape(3, 2).astype(float)
     >>> B = A + 1e-10
@@ -996,8 +996,8 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
     --------
     ``check_cp_tensors_equivalent`` checks if two CP tensors represent the same dense tensor
 
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.factor_tools import check_cp_tensors_equivalent
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.factor_tools import check_cp_tensors_equivalent
     >>> cp_tensor, dataset = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
     >>> cp_tensor2, dataset2 = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
     >>> check_cp_tensors_equivalent(cp_tensor, cp_tensor2)
@@ -1005,7 +1005,7 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
 
     Normalising a ``cp_tensor`` changes its values, but not which dense tensor it represents
 
-    >>> from tlvis.factor_tools import normalise_cp_tensor
+    >>> from tlviz.factor_tools import normalise_cp_tensor
     >>> normalised_cp_tensor = normalise_cp_tensor(cp_tensor)
     >>> check_cp_tensors_equivalent(cp_tensor, normalised_cp_tensor)
     True
@@ -1013,7 +1013,7 @@ def check_cp_tensors_equivalent(cp_tensor1, cp_tensor2, rtol=1e-5, atol=1e-8, ig
     Permutations will also make the numerical values of the``cp_tensor`` change but not the
     dense tensor it represents
 
-    >>> from tlvis.factor_tools import permute_cp_tensor
+    >>> from tlviz.factor_tools import permute_cp_tensor
     >>> check_cp_tensors_equivalent(cp_tensor, permute_cp_tensor(cp_tensor, permutation=[1, 2, 0]))
     True
 
@@ -1105,8 +1105,8 @@ def percentage_variation(cp_tensor, dataset=None, method="model"):
     of each component to the model. However, this may also not sum to 100 since the components may
     not be orthogonal.
 
-    >>> from tlvis.data import simulated_random_cp_tensor
-    >>> from tlvis.factor_tools import percentage_variation
+    >>> from tlviz.data import simulated_random_cp_tensor
+    >>> from tlviz.factor_tools import percentage_variation
     >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=0)
     >>> print(percentage_variation(cp_tensor).astype(int))
     [11  2  0  0 39]

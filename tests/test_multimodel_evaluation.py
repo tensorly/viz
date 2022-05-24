@@ -4,10 +4,10 @@ import numpy as np
 import pytest
 from pytest import approx
 
-import tlvis.multimodel_evaluation as multimodel_evaluation
-from tlvis.data import simulated_random_cp_tensor
-from tlvis.factor_tools import check_cp_tensor_equal, permute_cp_tensor
-from tlvis.utils import cp_to_tensor
+import tlviz.multimodel_evaluation as multimodel_evaluation
+from tlviz.data import simulated_random_cp_tensor
+from tlviz.factor_tools import check_cp_tensor_equal, permute_cp_tensor
+from tlviz.utils import cp_to_tensor
 
 
 @pytest.mark.parametrize("labelled", [True, False])

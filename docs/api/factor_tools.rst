@@ -1,5 +1,5 @@
 Factor tools
 ------------
 
-.. automodule:: tlvis.factor_tools
+.. automodule:: tlviz.factor_tools
     :members:

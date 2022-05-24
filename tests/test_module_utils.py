@@ -3,11 +3,11 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-import tlvis._module_utils as cv_utils
-from tlvis._xarray_wrapper import is_labelled_cp
-from tlvis.data import simulated_random_cp_tensor
-from tlvis.factor_tools import check_cp_tensor_equal
-from tlvis.utils import cp_to_tensor
+import tlviz._module_utils as cv_utils
+from tlviz._xarray_wrapper import is_labelled_cp
+from tlviz.data import simulated_random_cp_tensor
+from tlviz.factor_tools import check_cp_tensor_equal
+from tlviz.utils import cp_to_tensor
 
 
 @pytest.mark.parametrize(

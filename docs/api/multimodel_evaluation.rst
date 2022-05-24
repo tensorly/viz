@@ -1,5 +1,5 @@
 Multi-model evaluation
 ----------------------
 
-.. automodule:: tlvis.multimodel_evaluation
+.. automodule:: tlviz.multimodel_evaluation
     :members: 
