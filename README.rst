@@ -2,12 +2,12 @@
 TLViz — Visualising and analysing component models
 ==================================================
 
-.. image:: https://github.com/marieroald/tlviz/workflows/tests/badge.svg
-    :target: https://github.com/MarieRoald/tlviz/actions/workflows/tests.yml
+.. image:: https://github.com/tensorly/viz/workflows/tests/badge.svg
+    :target: https://github.com/tensorly/viz/actions/workflows/tests.yml
     :alt: Tests
 
-.. image:: https://codecov.io/gh/MarieRoald/tlviz/branch/master/graph/badge.svg?token=BYEME3G8KG
-    :target: https://codecov.io/gh/MarieRoald/tlviz
+.. image:: https://codecov.io/gh/tensorly/viz/branch/master/graph/badge.svg?token=BYEME3G8KG
+    :target: https://codecov.io/gh/tensorly/viz
     :alt: Coverage
 
 .. image:: https://readthedocs.org/projects/tlvis/badge/?version=latest
