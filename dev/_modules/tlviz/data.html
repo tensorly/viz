@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlviz.data &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+
+        <div class="content main-content">
+          
+  <h1>Source code for tlviz.data</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
+
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">cp_to_tensor</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;load_aminoacids&quot;</span><span class="p">,</span> <span class="s2">&quot;load_oslo_city_bike&quot;</span><span class="p">,</span> <span class="s2">&quot;download_city_bike&quot;</span><span class="p">]</span>
+
+<span class="n">DATASET_PARENT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;datasets&quot;</span>
+<span class="n">DOWNLOADED_PARENT</span> <span class="o">=</span> <span class="n">DATASET_PARENT</span> <span class="o">/</span> <span class="s2">&quot;downloads&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RemoteZip</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">contents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">filename</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">zip</span><span class="o">.</span><span class="n">infolist</span><span class="p">()]</span>
+
+    <span class="k">def</span> <span class="nf">extract_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="n">file_contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zip</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">file_contents</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">extract_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">filename</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="load_aminoacids"><a class="viewcode-back" href="../../api/data.html#tlviz.data.load_aminoacids">[docs]</a><span class="k">def</span> <span class="nf">load_aminoacids</span><span class="p">(</span><span class="n">save_data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load the Aminoacids dataset from &quot;PARAFAC. Tutorial and applications&quot; by Rasmus Bro :cite:p:`bro1997parafac`.</span>
+
+<span class="sd">    This is a fluoresence spectroscopy dataset well suited for PARAFAC analysis.</span>
+<span class="sd">    The data stems from five samples with different amounts of the aminoacids tyrosine, tryptophan and phenylalanine.</span>
+
+<span class="sd">    See here for more information about the data:</span>
+<span class="sd">        http://models.life.ku.dk/Amino_Acid_fluo</span>
+<span class="sd">    Or archived version here:</span>
+<span class="sd">        https://web.archive.org/web/20210413050155/http://models.life.ku.dk/Amino_Acid_fluo</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    save_data : bool (default=True)</span>
+<span class="sd">        If ``True``, then the dataset is saved in ``tlviz.data.DOWNLOAD_PARENT`` to avoid having to download</span>
+<span class="sd">        it in the future.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+<span class="sd">        The Aminoacids dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading Aminoacids dataset from:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems,&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot; 1997, 38, 149-171&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">DOWNLOADED_PARENT</span> <span class="o">/</span> <span class="s2">&quot;aminoacids.nc4&quot;</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataarray</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">aminoacids_zip</span> <span class="o">=</span> <span class="n">RemoteZip</span><span class="p">(</span><span class="s2">&quot;http://models.life.ku.dk/sites/default/files/Amino_Acid_fluo.zip&quot;</span><span class="p">)</span>
+    <span class="n">matlab_variables</span> <span class="o">=</span> <span class="n">loadmat</span><span class="p">(</span><span class="n">aminoacids_zip</span><span class="o">.</span><span class="n">extract_file</span><span class="p">(</span><span class="s2">&quot;amino.mat&quot;</span><span class="p">))</span>
+
+    <span class="n">I</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">J</span> <span class="o">=</span> <span class="n">matlab_variables</span><span class="p">[</span><span class="s2">&quot;DimX&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">matlab_variables</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+    <span class="n">emission_frequencies</span> <span class="o">=</span> <span class="n">matlab_variables</span><span class="p">[</span><span class="s2">&quot;EmAx&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">excitation_frequencies</span> <span class="o">=</span> <span class="n">matlab_variables</span><span class="p">[</span><span class="s2">&quot;ExAx&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">coords_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Sample&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)),</span>
+        <span class="s2">&quot;Emission frequency&quot;</span><span class="p">:</span> <span class="n">emission_frequencies</span><span class="p">,</span>
+        <span class="s2">&quot;Excitation frequency&quot;</span><span class="p">:</span> <span class="n">excitation_frequencies</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="s2">&quot;Excitation frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;Emission frequency&quot;</span><span class="p">]</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_data</span><span class="p">:</span>
+        <span class="n">DOWNLOADED_PARENT</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="load_oslo_city_bike"><a class="viewcode-back" href="../../api/data.html#tlviz.data.load_oslo_city_bike">[docs]</a><span class="k">def</span> <span class="nf">load_oslo_city_bike</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Download bike data from the bike sharing system in Oslo 2020-2021.</span>
+
+<span class="sd">    The dataset is a five-way tensor with modes:</span>
+
+<span class="sd">     * Bike station id</span>
+<span class="sd">     * Year</span>
+<span class="sd">     * Month</span>
+<span class="sd">     * Day of week</span>
+<span class="sd">     * Hour of day</span>
+
+<span class="sd">    where the elements corresponds to the number of trips ending in a given</span>
+<span class="sd">    time period and station. For example, the index ``377, 2020, 5, 1, 13`` corresponds</span>
+<span class="sd">    to the number of trips that ended at station 377 at 1pm (CET time) on Mondays in May of 2020.</span>
+
+<span class="sd">    The data was collected using the open API of https://oslobysykkel.no/en/open-data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+<span class="sd">        Data array whose data is the dataset and coordinates are bike station ID, year, month, day of week</span>
+<span class="sd">        and hour of day. There are also three metadata-coordinates along the &quot;Bike station ID&quot;-axis containing</span>
+<span class="sd">        latitudes, longitudes and station names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nc4_file</span> <span class="o">=</span> <span class="n">DATASET_PARENT</span> <span class="o">/</span> <span class="s2">&quot;oslo_bike.nc4&quot;</span>
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataarray</span><span class="p">(</span><span class="n">nc4_file</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="download_city_bike"><a class="viewcode-back" href="../../api/data.html#tlviz.data.download_city_bike">[docs]</a><span class="k">def</span> <span class="nf">download_city_bike</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;oslobysykkel.no&quot;</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Download bike data from the bike sharing system in Oslo.</span>
+
+<span class="sd">    The dataset is a five-way tensor with modes:</span>
+
+<span class="sd">     * Bike station id</span>
+<span class="sd">     * Year</span>
+<span class="sd">     * Month</span>
+<span class="sd">     * Day of week</span>
+<span class="sd">     * Hour of day</span>
+
+<span class="sd">    where the elements corresponds to the number of trips ending in a given</span>
+<span class="sd">    time period and station. For example, the index ``377, 2020, 5, 1, 13`` corresponds</span>
+<span class="sd">    to the number of trips that ended at station 377 at 1pm (CET time) on Mondays in May of 2020.</span>
+
+<span class="sd">    The data was collected using the open urbansharing API.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source : str</span>
+<span class="sd">        String to download data from. The API endpoint becomes:</span>
+<span class="sd">        https://data.urbansharing.com/{source}/trips/v1/{year}/{month:02d}.csv</span>
+<span class="sd">        Some end-points that are known to work are:</span>
+
+<span class="sd">         * oslobysykkel.no</span>
+<span class="sd">         * bergenbysykkel.no</span>
+<span class="sd">         * trondheimbysykkel.no</span>
+
+<span class="sd">    years : iterable of int</span>
+<span class="sd">        The years to download data from.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+<span class="sd">        Data array whose data is the dataset and coordinates are bike station ID, year, month, day of week</span>
+<span class="sd">        and hour of day. There are also three metadata-coordinates along the &quot;Bike station ID&quot;-axis containing</span>
+<span class="sd">        latitudes, longitudes and station names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">end_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">lat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+            <span class="n">month</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://data.urbansharing.com/</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">/trips/v1/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">month</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+            <span class="c1"># station_names = sorted(set(df[&quot;start_station_name&quot;]) | set(df[&quot;end_station_name&quot;]))</span>
+
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">else</span> <span class="s2">&quot;.000000+&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)))</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S.</span><span class="si">%f</span><span class="s2">+00:00&quot;</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s2">&quot;CET&quot;</span><span class="p">)</span>
+
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ended_at&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span>
+
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;trip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span><span class="o">.</span><span class="n">day</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Day of week&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span><span class="o">.</span><span class="n">dayofweek</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span><span class="o">.</span><span class="n">hour</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span><span class="o">.</span><span class="n">month</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span><span class="o">.</span><span class="n">year</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;end_station_id&quot;</span><span class="p">:</span> <span class="s2">&quot;End station ID&quot;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">lat</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;End station ID&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;end_station_latitude&quot;</span><span class="p">]</span>
+                <span class="n">lon</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;End station ID&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;end_station_longitude&quot;</span><span class="p">]</span>
+                <span class="n">name</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;End station ID&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;end_station_name&quot;</span><span class="p">]</span>
+
+            <span class="n">end</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;End station ID&quot;</span><span class="p">,</span> <span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="s2">&quot;Month&quot;</span><span class="p">,</span> <span class="s2">&quot;Day of week&quot;</span><span class="p">,</span> <span class="s2">&quot;Hour&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()[[</span><span class="s2">&quot;trip&quot;</span><span class="p">]]</span>
+            <span class="n">end_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">end_data</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+    <span class="c1"># Drop trips that started in the last year of interest and ended the year after</span>
+    <span class="n">unwanted_years</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">unwanted_years</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="s2">&quot;Year&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Set equal to 0 for all hours with no trips</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">values</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Add station metadata</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="p">[</span><span class="n">lat</span><span class="p">[</span><span class="n">station_id</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span> <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;End station ID&quot;</span><span class="p">]]</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="p">[</span><span class="n">lon</span><span class="p">[</span><span class="n">station_id</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span> <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;End station ID&quot;</span><span class="p">]]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">[</span><span class="n">station_id</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span> <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;End station ID&quot;</span><span class="p">]]</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;variable&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;End station ID&quot;</span><span class="p">,),</span> <span class="n">lat</span><span class="p">),</span>
+            <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;End station ID&quot;</span><span class="p">,),</span> <span class="n">lon</span><span class="p">),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;End station ID&quot;</span><span class="p">,),</span> <span class="n">name</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">dims</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bike trips&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataset</span></div>
+
+
+<span class="k">def</span> <span class="nf">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">labelled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a random noisy CP tensor.</span>
+
+<span class="sd">    The factor matrices and weights have uniformly distributed elements and</span>
+<span class="sd">    the noise is normally distributed with magnitude ``noise_level * tl.norm(X)``,</span>
+<span class="sd">    where ``X`` is the datatensor represented by the decomposition.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shape : iterable of ints</span>
+<span class="sd">        The shape of the data tensor</span>
+<span class="sd">    rank : int</span>
+<span class="sd">        The number of components</span>
+<span class="sd">    noise_level : float</span>
+<span class="sd">        Relative magnitude of the noise compared to the magnitude of the data.</span>
+<span class="sd">    seed : {None, int, array_like[ints], np.random.SeedSequence, np.random.BitGenerator, np.random.Generator}</span>
+<span class="sd">        Seed for numpy random number generator</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cp_tensor</span>
+<span class="sd">        CP tensor that represents the simulated dataset</span>
+
+<span class="sd">    np.ndarray</span>
+<span class="sd">        Dense tensor with noise added</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">rank</span><span class="p">))</span> <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">labelled</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">cp</span> <span class="o">=</span> <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">X_noisy</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">noise_level</span> <span class="o">*</span> <span class="n">noise</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cp</span><span class="p">,</span> <span class="n">X_noisy</span>
+
+
+<span class="c1"># TODO: Add more example datasets</span>
+<span class="c1"># TODO: Enron data</span>
+<span class="c1"># TOTEST: data.py</span>
+</pre></div>
+
+        </div>
+
+		
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

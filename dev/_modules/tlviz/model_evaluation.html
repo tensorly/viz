@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlviz.model_evaluation &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+
+        <div class="content main-content">
+          
+  <h1>Source code for tlviz.model_evaluation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains functions used to evaluate a single tensor factorisation model</span>
+<span class="sd">by comparing it to a data tensor.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">sla</span>
+
+<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">to_numpy</span>
+<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="n">_handle_labelled_cp</span><span class="p">,</span> <span class="n">_handle_labelled_dataset</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;estimate_core_tensor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;core_consistency&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;relative_sse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;predictive_power&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="estimate_core_tensor"><a class="viewcode-back" href="../../api/model_evaluation.html#tlviz.model_evaluation.estimate_core_tensor">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">estimate_core_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Efficient estimation of the Tucker core from a factor matrices and a data tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factors : tuple</span>
+<span class="sd">        Tuple of factor matrices used to estimate the core tensor from</span>
+<span class="sd">    dataset : np.ndarray</span>
+<span class="sd">        The data tensor that the core tensor is estimated from</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    In the original paper, :cite:t:`papalexakis2015fast` present an algorithm</span>
+<span class="sd">    for 3-way tensors. However, it is straightforward to generalise it to N-way tensors</span>
+<span class="sd">    by using the inverse tensor product formula in :cite:p:`buis1996efficient`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">cast_labelled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+
+    <span class="n">svds</span> <span class="o">=</span> <span class="p">[</span><span class="n">sla</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="ow">in</span> <span class="n">svds</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="ow">in</span> <span class="n">svds</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">s_pinv</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">s_pinv</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">s_pinv</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">s_pinv</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">s_pinv</span><span class="p">),</span> <span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="ow">in</span> <span class="n">svds</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">Vh</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="core_consistency"><a class="viewcode-back" href="../../api/model_evaluation.html#tlviz.model_evaluation.core_consistency">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">core_consistency</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the core consistency :cite:p:`bro2003new`</span>
+
+<span class="sd">    A CP model can be interpreted as a restricted Tucker model, where the</span>
+<span class="sd">    core tensor is constrained to be superdiagonal. For a third order tensor,</span>
+<span class="sd">    this means that the core tensor, :math:`\mathcal{G}`, satisfy :math:`g_{ijk}\neq0`</span>
+<span class="sd">    only if :math:`i = j = k`. To compute the core consistency of a CP decomposition,</span>
+<span class="sd">    we use this property, and calculate the optimal Tucker core tensor given</span>
+<span class="sd">    the factor matrices of the CP model.</span>
+
+<span class="sd">    The key observation is that if the data tensor follows the assumptions</span>
+<span class="sd">    of the CP model, then the optimal core tensor should be similar to that</span>
+<span class="sd">    of the CP model, i. e. superdiagonal. However, if the data can be better</span>
+<span class="sd">    described by allowing for interactions between the components across modes,</span>
+<span class="sd">    then the core tensor will have non-zero off-diagonal. The core consistency</span>
+<span class="sd">    quantifies this measure and is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \text{CC} = 100 - 100 \frac{\| \mathcal{G} - \mathcal{I} \|_F^2}{N}</span>
+
+<span class="sd">    where :math:`\mathcal{G}` is the estimated core tensor, :math:`\mathcal{I}`</span>
+<span class="sd">    is a superdiagonal tensor only ones on the superdiagonal and :math:`N`</span>
+<span class="sd">    is a normalising factor, either equal to the number of components or the</span>
+<span class="sd">    squared frobenius norm of the estimated core tensor. A core consistency</span>
+<span class="sd">    score close to 100 indicates that the CP model is likely valid. If the</span>
+<span class="sd">    core consistency is low, however, then the model either has components</span>
+<span class="sd">    that describe noise or the data does not follow the model&#39;s assumptions.</span>
+<span class="sd">    So the core consistency can help determine if the chosen number of</span>
+<span class="sd">    components is suitable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray</span>
+<span class="sd">        Data tensor that the cp_tensor is fitted against</span>
+<span class="sd">    normalised : Bool (default=False)</span>
+<span class="sd">        If True, then the squared frobenius norm of the estimated core tensor</span>
+<span class="sd">        is used to normalise the core consistency. Otherwise, the number of</span>
+<span class="sd">        components is used.</span>
+
+<span class="sd">        If ``normalised=False``, then the core consistency formula coincides</span>
+<span class="sd">        with :cite:p:`bro2003new`, and if ``normalised=True``, the core consistency</span>
+<span class="sd">        formula coincides with that used in the `N-Way toolbox &lt;http://models.life.ku.dk/nwaytoolbox&gt;`_,</span>
+<span class="sd">        and is unlikely to be less than 0. For core consistencies close to</span>
+<span class="sd">        100, the formulas approximately coincide.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The core consistency</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    We can use the core consistency diagonstic to determine the correct number of components</span>
+<span class="sd">    for a CP model. Here, we only fit one model, but in practice, you should fit multiple models</span>
+<span class="sd">    and select the one with the lowest SSE (to account for local minima) before computing the</span>
+<span class="sd">    core consistency.</span>
+
+<span class="sd">    &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">    &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor((10,11,12), 3, seed=42)</span>
+<span class="sd">    &gt;&gt;&gt; # Fit many CP models with different number of components</span>
+<span class="sd">    &gt;&gt;&gt; for rank in range(1, 5):</span>
+<span class="sd">    ...     decomposition = parafac(dataset, rank=rank, random_state=42)</span>
+<span class="sd">    ...     cc = core_consistency(decomposition, dataset, normalised=True)</span>
+<span class="sd">    ...     print(f&quot;No. components: {rank} - core consistency: {cc:.0f}&quot;)</span>
+<span class="sd">    No. components: 1 - core consistency: 100</span>
+<span class="sd">    No. components: 2 - core consistency: 100</span>
+<span class="sd">    No. components: 3 - core consistency: 81</span>
+<span class="sd">    No. components: 4 - core consistency: 0</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">    </span>
+<span class="sd">        This implementation uses the fast method of estimating the core tensor</span>
+<span class="sd">        :cite:p:`papalexakis2015fast,buis1996efficient`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Distribute weights</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">*=</span> <span class="n">weights</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">factors</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+    <span class="c1"># Estimate core and compare</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">estimate_core_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalised</span><span class="p">:</span>
+        <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">G</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">denom</span> <span class="o">=</span> <span class="n">rank</span>
+
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">-</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">G</span> <span class="o">-</span> <span class="n">T</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span></div>
+
+
+<div class="viewcode-block" id="sse"><a class="viewcode-back" href="../../api/model_evaluation.html#tlviz.model_evaluation.sse">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sse</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the sum of squared error for a given cp_tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : ndarray</span>
+<span class="sd">        Tensor approximated by ``cp_tensor``</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The sum of squared error, ``sum((X_hat - dataset)**2)``, where ``X_hat``</span>
+<span class="sd">        is the dense tensor represented by ``cp_tensor``</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Below, we create a random CP tensor and a random tensor and compute</span>
+<span class="sd">    the sum of squared error for these two tensors.</span>
+
+<span class="sd">    &gt;&gt;&gt; import tensorly as tl</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.model_evaluation import sse</span>
+<span class="sd">    &gt;&gt;&gt; rng = tl.check_random_state(0)</span>
+<span class="sd">    &gt;&gt;&gt; cp = random_cp((4, 5, 6), 3, random_state=rng)</span>
+<span class="sd">    &gt;&gt;&gt; X = rng.random_sample((4, 5, 6))</span>
+<span class="sd">    &gt;&gt;&gt; sse(cp, X)</span>
+<span class="sd">    18.948918157419186</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X_hat</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">dataset</span> <span class="o">-</span> <span class="n">X_hat</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="relative_sse"><a class="viewcode-back" href="../../api/model_evaluation.html#tlviz.model_evaluation.relative_sse">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">relative_sse</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">sum_squared_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the relative sum of squared error for a given cp_tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : ndarray</span>
+<span class="sd">        Tensor approximated by ``cp_tensor``</span>
+<span class="sd">    sum_squared_dataset: float (optional)</span>
+<span class="sd">        If ``sum(dataset**2)`` is already computed, you can optionally provide it</span>
+<span class="sd">        using this argument to avoid unnecessary recalculation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The relative sum of squared error, ``sum((X_hat - dataset)**2)/sum(dataset**2)``,</span>
+<span class="sd">        where ``X_hat`` is the dense tensor represented by ``cp_tensor``</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Below, we create a random CP tensor and a random tensor and compute</span>
+<span class="sd">    the sum of squared error for these two tensors.</span>
+
+<span class="sd">    &gt;&gt;&gt; import tensorly as tl</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.model_evaluation import relative_sse</span>
+<span class="sd">    &gt;&gt;&gt; rng = tl.check_random_state(0)</span>
+<span class="sd">    &gt;&gt;&gt; cp = random_cp((4, 5, 6), 3, random_state=rng)</span>
+<span class="sd">    &gt;&gt;&gt; X = rng.random_sample((4, 5, 6))</span>
+<span class="sd">    &gt;&gt;&gt; relative_sse(cp, X)</span>
+<span class="sd">    0.4817407254961442</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sum_squared_dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sum_squared_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sse</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span> <span class="o">/</span> <span class="n">sum_squared_x</span></div>
+
+
+<div class="viewcode-block" id="fit"><a class="viewcode-back" href="../../api/model_evaluation.html#tlviz.model_evaluation.fit">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">sum_squared_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the fit (1-relative sum squared error) for a given cp_tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : ndarray</span>
+<span class="sd">        Tensor approximated by ``cp_tensor``</span>
+<span class="sd">    sum_squared_dataset: float (optional)</span>
+<span class="sd">        If ``sum(dataset**2)`` is already computed, you can optionally provide it</span>
+<span class="sd">        using this argument to avoid unnecessary recalculation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The relative sum of squared error, ``sum((X_hat - dataset)**2)/sum(dataset**2)``,</span>
+<span class="sd">        where ``X_hat`` is the dense tensor represented by ``cp_tensor``</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Below, we create a random CP tensor and a random tensor and compute</span>
+<span class="sd">    the sum of squared error for these two tensors.</span>
+
+<span class="sd">    &gt;&gt;&gt; import tensorly as tl</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.model_evaluation import fit</span>
+<span class="sd">    &gt;&gt;&gt; rng = tl.check_random_state(0)</span>
+<span class="sd">    &gt;&gt;&gt; cp = random_cp((4, 5, 6), 3, random_state=rng)</span>
+<span class="sd">    &gt;&gt;&gt; X = rng.random_sample((4, 5, 6))</span>
+<span class="sd">    &gt;&gt;&gt; fit(cp, X)</span>
+<span class="sd">    0.5182592745038558</span>
+
+<span class="sd">    We can see that it is equal to 1 - relative SSE</span>
+
+<span class="sd">    &gt;&gt;&gt; from tlviz.model_evaluation import relative_sse</span>
+<span class="sd">    &gt;&gt;&gt; 1 - relative_sse(cp, X)</span>
+<span class="sd">    0.5182592745038558</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">relative_sse</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">sum_squared_dataset</span><span class="o">=</span><span class="n">sum_squared_dataset</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="predictive_power"><a class="viewcode-back" href="../../api/model_evaluation.html#tlviz.model_evaluation.predictive_power">[docs]</a><span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">predictive_power</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sklearn_estimator</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Use scikit-learn estimator to evaluate the predictive power of a factor matrix.</span>
+
+<span class="sd">    This is useful if you evaluate the components based on their predictive</span>
+<span class="sd">    power with respect to some task.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factor_matrix : ndarray(ndim=2)</span>
+<span class="sd">        Factor matrix from a tensor decomposition model</span>
+<span class="sd">    y : ndarray(ndim=1)</span>
+<span class="sd">        Prediction target for each row of the factor matrix in the given mode.</span>
+<span class="sd">        ``y`` should have same length as the first dimension of this factor</span>
+<span class="sd">        matrix (i.e. the length of the tensor along the given mode).</span>
+<span class="sd">    sklearn_estimator : scikit learn estimator</span>
+<span class="sd">        Scikit learn estimator. Must have the ``fit`` and ``predict`` methods,</span>
+<span class="sd">        and if ``metric`` is ``None``, then it should also have the ``score``</span>
+<span class="sd">        method. See https://scikit-learn.org/stable/developers/develop.html.</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        Which mode to perform the scoring along</span>
+<span class="sd">    metric : Callable</span>
+<span class="sd">        Callable (typically function) with the signature ``metric(y_true, y_pred)``,</span>
+<span class="sd">        where ``y_true=labels`` and ``y_pred`` is the predicted values</span>
+<span class="sd">        obtained from ``sklearn_estimator``. See</span>
+<span class="sd">        https://scikit-learn.org/stable/developers/develop.html#specific-models.</span>
+<span class="sd">    axis : int (optional)</span>
+<span class="sd">        Alias for mode, if set, then mode cannot be set.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Score based on the estimator&#39;s performance.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    ``predictive_power`` can be useful to evaluate the predictive power of a CP decomposition.</span>
+<span class="sd">    To illustrate this, we start by creating a simulated CP tensor and a variable we want to</span>
+<span class="sd">    predict that is linearly related to one of the factor matrices.</span>
+
+<span class="sd">    &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; rng = np.random.default_rng(0)</span>
+<span class="sd">    &gt;&gt;&gt; cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=rng)</span>
+<span class="sd">    &gt;&gt;&gt; weights, (A, B, C) = cp_tensor</span>
+<span class="sd">    &gt;&gt;&gt; regression_coefficients = rng.standard_normal((5, 1))</span>
+<span class="sd">    &gt;&gt;&gt; Y = A @ regression_coefficients</span>
+
+<span class="sd">    Next, we fit a PARAFAC model to this data</span>
+
+<span class="sd">    &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">    &gt;&gt;&gt; est_cp_tensor = parafac(X, 5)</span>
+
+<span class="sd">    Finally, we see how well the estimated decomposition can describe our target variable, ``Y``.</span>
+<span class="sd">    This will use the :math:`R^2`-coefficient for scoring, as that is the default scoring method</span>
+<span class="sd">    for linear models.</span>
+
+<span class="sd">    &gt;&gt;&gt; from sklearn.linear_model import LinearRegression</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.model_evaluation import predictive_power</span>
+<span class="sd">    &gt;&gt;&gt; linear_regression = LinearRegression()</span>
+<span class="sd">    &gt;&gt;&gt; r_squared = predictive_power(cp_tensor, Y, linear_regression)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;The R^2 coefficient is {r_squared:.2f}&quot;)</span>
+<span class="sd">    The R^2 coefficient is 1.00</span>
+
+<span class="sd">    We can also specify our own scoring function</span>
+
+<span class="sd">    &gt;&gt;&gt; from sklearn.metrics import max_error</span>
+<span class="sd">    &gt;&gt;&gt; highest_error = predictive_power(cp_tensor, Y, linear_regression, metric=max_error)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;The maximum error is {highest_error:.2f}&quot;)</span>
+<span class="sd">    The maximum error is 0.00</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="p">]</span>
+    <span class="n">sklearn_estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">metric</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sklearn_estimator</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sklearn_estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">))</span></div>
+</pre></div>
+
+        </div>
+
+		
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlviz.outliers &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+
+        <div class="content main-content">
+          
+  <h1>Source code for tlviz.outliers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+
+<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="n">is_dataframe</span><span class="p">,</span> <span class="n">is_iterable</span><span class="p">,</span> <span class="n">is_xarray</span>
+<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">_SINGLETON</span>
+<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="n">is_labelled_dataset</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
+
+<span class="n">_LEVERAGE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Leverage score&quot;</span>
+<span class="n">_SLABWISE_SSE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Slabwise SSE&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;compute_slabwise_sse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_leverage&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_outlier_info&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_leverage_outlier_threshold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_slabwise_sse_outlier_threshold&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">factor_matrix</span>
+    <span class="n">leverage</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">leverage</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="p">{</span><span class="n">axis</span><span class="p">}</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+
+    <span class="n">reduction_axis</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">true</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">)</span>
+    <span class="n">SSE</span> <span class="o">=</span> <span class="p">((</span><span class="n">estimated</span> <span class="o">-</span> <span class="n">true</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">reduction_axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalise</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SSE</span> <span class="o">/</span> <span class="n">SSE</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SSE</span>
+
+
+<div class="viewcode-block" id="compute_slabwise_sse"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_slabwise_sse">[docs]</a><span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;estimated&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the (normalised) slabwise SSE along the given mode(s).</span>
+
+<span class="sd">    For a tensor, :math:`\mathcal{X}`, and an estimated tensor :math:`\hat{\mathcal{X}}`,</span>
+<span class="sd">    we compute the :math:`i`-th normalised slabwise residual as</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        r_i = \frac{\sum_{jk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}</span>
+<span class="sd">                   {\sum_{ijk} \left(x_{ijk} - \hat{x}_{ijk}\right)^2}.</span>
+
+<span class="sd">    The residuals can measure how well our decomposition fits the different</span>
+<span class="sd">    sample. If a sample, :math:`i`, has a high residual, then that indicates that</span>
+<span class="sd">    the model is not able to describe its behaviour.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    estimated : xarray or numpy array</span>
+<span class="sd">        Estimated dataset, if this is an xarray, then the output is too.</span>
+<span class="sd">    true : xarray or numpy array</span>
+<span class="sd">        True dataset, if this is an xarray, then the output is too.</span>
+<span class="sd">    normalise : bool</span>
+<span class="sd">        Whether the SSE should be scaled so the vector sums to one.</span>
+<span class="sd">    mode : int or iterable of ints</span>
+<span class="sd">        Mode (or modes) that the SSE is computed across (i.e. these are not the ones summed over).</span>
+<span class="sd">        The output will still have these axes.</span>
+<span class="sd">    axis : int or iterable of ints (optional)</span>
+<span class="sd">        Alias for mode. If this is set, then no value for mode can be given</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    slab_sse : xarray or numpy array</span>
+<span class="sd">        The (normalised) slabwise SSE, if true tensor input is an xarray array,</span>
+<span class="sd">        then the returned tensor is too.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODOC: example for compute_slabwise_sse</span>
+    <span class="c1"># Check that dimensions match up.</span>
+    <span class="k">if</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">estimated</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">true</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">estimated</span><span class="o">.</span><span class="n">dims</span> <span class="o">!=</span> <span class="n">true</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Dimensions of estimated and true tensor must be equal,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; they are </span><span class="si">{</span><span class="n">estimated</span><span class="o">.</span><span class="n">dims</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">true</span><span class="o">.</span><span class="n">dims</span><span class="si">}</span><span class="s2">, respectively.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">estimated</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">true</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">estimated</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The dimension </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2"> has different length for the true and estiamted tensor. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;The true tensor has length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">true</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span><span class="si">}</span><span class="s2"> and the estimated tensor &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;has length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">estimated</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">true</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">==</span> <span class="n">estimated</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The dimension </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2"> has different coordinates for the true and estimated tensor.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">estimated</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">true</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">estimated</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="n">true</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Columns of true and estimated matrix must be equal&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">estimated</span><span class="o">.</span><span class="n">index</span> <span class="o">!=</span> <span class="n">true</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Index of true and estimated matrix must be equal&quot;</span><span class="p">)</span>
+
+    <span class="n">slab_sse</span> <span class="o">=</span> <span class="n">_compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="n">normalise</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_labelled_dataset</span><span class="p">(</span><span class="n">true</span><span class="p">):</span>
+        <span class="n">slab_sse</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">_SLABWISE_SSE_NAME</span>
+    <span class="k">return</span> <span class="n">slab_sse</span></div>
+
+
+<div class="viewcode-block" id="compute_leverage"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_leverage">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the leverage score of the given factor matrix.</span>
+
+<span class="sd">    The leverage score is a measure of how much &quot;influence&quot; a slab (often representing a sample)</span>
+<span class="sd">    has on a tensor factorisation model. To compute the leverage score for the different slabs,</span>
+<span class="sd">    we only need the factor matrix for the selected mode. If the selected mode is represented</span>
+<span class="sd">    by :math:`\mathbf{A}`, then the leverage score is defined as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        h_i = \left[\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T\right]_{ii},</span>
+
+<span class="sd">    that is, the :math:`i`-th diagonal entry of the matrix</span>
+<span class="sd">    :math:`\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T`.</span>
+<span class="sd">    If a given slab, :math:`i`, has a high leverage score, then it likely has a strong</span>
+<span class="sd">    influence on the model. A good overview of the leverage score is :cite:p:`velleman1981efficient`.</span>
+
+<span class="sd">    The leverage scores sum to the number of components for our model. Moreover, if a data point</span>
+<span class="sd">    has a leverage score equal to 1, then removing the row from :math:`A` that corresponds</span>
+<span class="sd">    to that data point will reduce the rank of :math:`A` by 1. The leverage can therefore be</span>
+<span class="sd">    thought of as a measure of how many components a model &quot;devotes&quot; to each data point :cite:p:`belsley1980regression`.</span>
+
+<span class="sd">    Another way of interpreting the leverage score is as a measure of how &quot;similar&quot; a data point</span>
+<span class="sd">    is to the rest. If a data point has a leverage of 1, then there is no other similar data points.</span>
+<span class="sd">    Likewise, if a data point has a leverage of 0.5, then there is one other &quot;similar&quot; data point</span>
+<span class="sd">    (in some weighted sense), and a leverage of 0.2 means that there are five other &quot;similar&quot; data</span>
+<span class="sd">    points :cite:p:`huber2009robust`.</span>
+
+<span class="sd">    If the factor matrix is a dataframe, then the output is also a dataframe with that index. Otherwise,</span>
+<span class="sd">    the output is a NumPy array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factor_matrix : DataFrame or numpy array</span>
+<span class="sd">        The factor matrix whose leverage we compute</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    leverage : DataFrame or numpy array</span>
+<span class="sd">        The leverage scores, if the input is a dataframe, then the index is preserved.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The leverage score is related to the Hotelling T2-statistic (or D-statistic), which</span>
+<span class="sd">        is equal to a scaled version of leverage computed based on centered factor matrices.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    In this example, we compute the leverage of a random factor matrix</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.outliers import compute_leverage</span>
+<span class="sd">    &gt;&gt;&gt; rng = np.random.default_rng(0)</span>
+<span class="sd">    &gt;&gt;&gt; A = rng.standard_normal(size=(5, 2))</span>
+<span class="sd">    &gt;&gt;&gt; leverage_scores = compute_leverage(A)</span>
+<span class="sd">    &gt;&gt;&gt; for index, leverage in enumerate(leverage_scores):</span>
+<span class="sd">    ...     print(f&quot;Sample {index} has leverage score {leverage:.2f}&quot;)</span>
+<span class="sd">    Sample 0 has leverage score 0.04</span>
+<span class="sd">    Sample 1 has leverage score 0.23</span>
+<span class="sd">    Sample 2 has leverage score 0.50</span>
+<span class="sd">    Sample 3 has leverage score 0.59</span>
+<span class="sd">    Sample 4 has leverage score 0.64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">leverage</span> <span class="o">=</span> <span class="n">_compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">leverage</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">_LEVERAGE_NAME</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">factor_matrix</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">leverage</span></div>
+
+
+<div class="viewcode-block" id="compute_outlier_info"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_outlier_info">[docs]</a><span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;true_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">compute_outlier_info</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">true_tensor</span><span class="p">,</span> <span class="n">normalise_sse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the leverage score and (normalised) slabwise SSE along one axis.</span>
+
+<span class="sd">    These metrics are often plotted against each other to discover outliers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    true_tensor : xarray or numpy array</span>
+<span class="sd">        Dataset that cp_tensor is fitted against.</span>
+<span class="sd">    normalise_sse : bool</span>
+<span class="sd">        If true, the slabwise SSE is scaled so it sums to one.</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        The mode to compute the outlier info across.</span>
+<span class="sd">    axis : int (optional)</span>
+<span class="sd">        Alias for mode. If this is set, then no value for mode can be given.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DataFrame</span>
+<span class="sd">        Dataframe with two columns, &quot;Leverage score&quot; and &quot;Slabwise SSE&quot;.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    compute_leverage : More information about the leverage score is given in this docstring</span>
+<span class="sd">    compute_slabwise_sse : More information about the slabwise SSE is given in this docstring</span>
+<span class="sd">    get_leverage_outlier_threshold : Cutoff for selecting potential outliers based on the leverage</span>
+<span class="sd">    compute_slabwise_sse : Cutoff for selecting potential outliers based on the slabwise SSE</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODOC: Example for compute_outlier_info</span>
+    <span class="c1"># Add whether suspicious based on rule-of-thumb cutoffs as boolean columns</span>
+    <span class="n">leverage</span> <span class="o">=</span> <span class="n">compute_leverage</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="p">])</span>
+
+    <span class="n">estimated_tensor</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+    <span class="n">slab_sse</span> <span class="o">=</span> <span class="n">compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated_tensor</span><span class="p">,</span> <span class="n">true_tensor</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="n">normalise_sse</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">):</span>
+        <span class="n">slab_sse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">slab_sse</span><span class="o">.</span><span class="n">to_series</span><span class="p">())</span>
+
+    <span class="n">leverage_is_labelled</span> <span class="o">=</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">leverage</span><span class="p">)</span>
+    <span class="n">sse_is_labelled</span> <span class="o">=</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">leverage_is_labelled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sse_is_labelled</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">leverage_is_labelled</span> <span class="ow">and</span> <span class="n">sse_is_labelled</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;If `cp_tensor` is labelled (factor matrices are dataframes), then&quot;</span>
+            <span class="s2">&quot;`true_tensor` should be an xarray object and vice versa.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">leverage_is_labelled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sse_is_labelled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">_LEVERAGE_NAME</span><span class="p">:</span> <span class="n">leverage</span><span class="p">,</span> <span class="n">_SLABWISE_SSE_NAME</span><span class="p">:</span> <span class="n">slab_sse</span><span class="p">})</span>
+    <span class="k">elif</span> <span class="n">leverage_is_labelled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">slab_sse</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">leverage</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The indices of the labelled factor matrices does not match up with the xarray dataset&quot;</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">leverage</span><span class="p">,</span> <span class="n">slab_sse</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">_LEVERAGE_NAME</span><span class="p">,</span> <span class="n">_SLABWISE_SSE_NAME</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="get_leverage_outlier_threshold"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_leverage_outlier_threshold">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;leverage_scores&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p_value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute threshold for detecting possible outliers based on leverage.</span>
+
+<span class="sd">    **Huber&#39;s heuristic for selecting outliers**</span>
+
+<span class="sd">    In Robust Statistics, Huber :cite:p:`huber2009robust` shows that that if the leverage score,</span>
+<span class="sd">    :math:`h_i`, of a sample is equal to :math:`1/r` and we duplicate that sample, then its leverage</span>
+<span class="sd">    score will be equal to :math:`1/(1+r)`. We can therefore, think of of the reciprocal of the</span>
+<span class="sd">    leverage score, :math:`1/h_i`, as the number of similar samples in the dataset. Following this</span>
+<span class="sd">    logic, Huber recommends two thresholds for selecting outliers: 0.2 (which we name ``&quot;huber low&quot;``)</span>
+<span class="sd">    and 0.5 (which we name ``&quot;huber high&quot;``).</span>
+
+<span class="sd">    **Hoaglin and Welch&#39;s heuristic for selecting outliers**</span>
+
+<span class="sd">    In :cite:p:`hoaglin1978hat`, :cite:authors:`hoaglin1978hat` state that :math:`2r/n` is a good cutoff</span>
+<span class="sd">    for selecting samples that may be outliers. This choice is elaborated in :cite:p:`belsley1980regression`</span>
+<span class="sd">    (page 17), where :cite:authors:`belsley1980regression` also propose :math:`3r/n` as a cutoff when</span>
+<span class="sd">    :math:`r &lt; 6` and :math:`n-r &gt; 12`. They also defend thee cut-offs by proving that if the factor matrices</span>
+<span class="sd">    are normally distributed, then :math:`(n - r)[h_i - (1/n)]/[(1 - h_i)(r - 1)]` follows a Fisher</span>
+<span class="sd">    distribution with :math:`(r-1)` and :math:`(n-r)` degrees of freedom. While the factor matrix</span>
+<span class="sd">    seldomly follows a normal distribution, :cite:authors:`belsley1980regression` still argues that this</span>
+<span class="sd">    can be a good starting point for cut-off values of suspicious data points. Based on reasonable choices for</span>
+<span class="sd">    :math:`n` and :math:`r`, they arive at the heuristics above.</span>
+
+<span class="sd">    **Leverage p-value**</span>
+
+<span class="sd">    Another way to select ouliers is also based on the findings by :cite:authors:`belsley1980regression`.</span>
+<span class="sd">    We can use the transformation into a Fisher distributed variable (assuming that the factor elements</span>
+<span class="sd">    are drawn from a normal distribution), to compute cut-off values based on a p-value. The elements of</span>
+<span class="sd">    the factor matrices are seldomly normally distributed, so this is also just a rule-of-thumb.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Note also that we, with bootstrap estimation, have found that this p-value is only valid for</span>
+<span class="sd">        large number of components. For smaller number of components, the false positive rate will be higher</span>
+<span class="sd">        than the specified p-value, even if the components follow a standard normal distribution (see example below).</span>
+
+<span class="sd">    **Hotelling&#39;s T2 statistic**</span>
+
+<span class="sd">    Yet another way to estimate a p-value is via Hotelling&#39;s T-squared statistic :cite:p:`jackson1980principal`</span>
+<span class="sd">    (see also :cite:p:`nomikos1995multivariate`). The key here is to notice that if the factor matrices are</span>
+<span class="sd">    normally distributed with zero mean, then the leverage is equivalent to a scaled version of the Hotelling&#39;s</span>
+<span class="sd">    T-squared statistic. This is commonly used in PCA, where the data often is centered beforehand, which leads</span>
+<span class="sd">    to components with zero mean (in the mode the data is centered across). Again, note that the elements of the</span>
+<span class="sd">    factor matrices are seldomly normally distributed, so this is also just a rule-of-thumb.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Note also that we, with bootstrap estimation, have found that this p-value is not valid for</span>
+<span class="sd">        large numbers of components. In that case, the false positive rate will be higher than the specified</span>
+<span class="sd">        p-value, even if the components follow a standard normal distribution (see example below).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    leverage_scores : np.ndarray or pd.DataFrame</span>
+<span class="sd">    method : {&quot;huber lower&quot;, &quot;huber higher&quot;, &quot;hw lower&quot;, &quot;hw higher&quot;, &quot;p-value&quot;, &quot;hotelling&quot;}</span>
+<span class="sd">    p_value : float (optional, default=0.05)</span>
+<span class="sd">        If ``method=&quot;p-value&quot;``, then this is the p-value used for the cut-off.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    threshold : float</span>
+<span class="sd">        Threshold value, data points with a leverage score larger than the threshold are suspicious</span>
+<span class="sd">        and may be outliers.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    **The leverage p-value is only accurate with many components:**</span>
+<span class="sd">    Here, we use Monte-Carlo estimation to demonstrate that the p-value derived in :cite:p:`belsley1980regression`</span>
+<span class="sd">    is valid only for large number of components.</span>
+
+<span class="sd">    We start by importing some utilities</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from scipy.stats import bootstrap</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.outliers import compute_leverage, get_leverage_outlier_threshold</span>
+
+<span class="sd">    Here, we create a function that computes the false positive rate</span>
+
+<span class="sd">    &gt;&gt;&gt; def compute_false_positive_rate(n, d, p_value):</span>
+<span class="sd">    ...     X = np.random.standard_normal((n, d))</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     h = compute_leverage(X)</span>
+<span class="sd">    ...     th = get_leverage_outlier_threshold(h, method=&quot;p-value&quot;, p_value=p_value)</span>
+<span class="sd">    ...     return (h &gt; th).mean()</span>
+
+<span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 1_000</span>
+<span class="sd">    &gt;&gt;&gt; leverages = [compute_false_positive_rate(10, 2, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0815, 0.0897]</span>
+
+<span class="sd">    We see that the false positive rate is almost twice what we prescribe (0.05). However, if we increase</span>
+<span class="sd">    the number of components, then the false positive rate improves</span>
+
+<span class="sd">    &gt;&gt;&gt; leverages = [compute_false_positive_rate(10, 9, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0468, 0.0554]</span>
+
+<span class="sd">    This indicates that the false positive rate is most accurate when the number of components is equal</span>
+<span class="sd">    to the number of samples - 1. We can increase the number of samples to assess this conjecture</span>
+
+<span class="sd">    &gt;&gt;&gt; leverages = [compute_false_positive_rate(100, 9, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0558, 0.0581]</span>
+
+<span class="sd">    The increase in the false positive rate supports the conjecture that :cite:author:`belsley1980regression`&#39;s</span>
+<span class="sd">    method for computing the p-value is accurate only when the number of components is high. Still, it is</span>
+<span class="sd">    important to remember that the original assumptions (normally distributed components) is seldomly satisfied</span>
+<span class="sd">    also, so this method is only a rule-of-thumb and can still be useful.</span>
+
+<span class="sd">    **Hotelling&#39;s T-squared statistic requires few components or many samples:**</span>
+<span class="sd">    Here, we use Monte-Carlo estimation to demonstrate that the Hotelling T-squared statistic is only valid with</span>
+<span class="sd">    many samples.</span>
+
+<span class="sd">    &gt;&gt;&gt; def compute_hotelling_false_positive_rate(n, d, p_value):</span>
+<span class="sd">    ...     X = np.random.standard_normal((n, d))</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     h = compute_leverage(X)</span>
+<span class="sd">    ...     th = get_leverage_outlier_threshold(h, method=&quot;hotelling&quot;, p_value=p_value)</span>
+<span class="sd">    ...     return (h &gt; th).mean()</span>
+
+<span class="sd">    We set the simulation parameters and the seed</span>
+
+<span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 1_000</span>
+<span class="sd">    &gt;&gt;&gt; fprs = [compute_hotelling_false_positive_rate(10, 2, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0492, 0.0568]</span>
+
+<span class="sd">    However, if we increase the number of components, then the false positive rate becomes to large</span>
+
+<span class="sd">    &gt;&gt;&gt; fprs = [compute_hotelling_false_positive_rate(10, 5, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0738, 0.0833]</span>
+
+<span class="sd">    But if we increase the number of samples, then the estimate is good again</span>
+
+<span class="sd">    &gt;&gt;&gt; fprs = [compute_hotelling_false_positive_rate(100, 5, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0494, 0.0515]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">)))</span>
+    <span class="n">num_components</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">)))</span>
+
+    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;huber lower&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.2</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;huber higher&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.5</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hw lower&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_components</span> <span class="o">/</span> <span class="n">num_samples</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hw higher&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">num_components</span> <span class="o">/</span> <span class="n">num_samples</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;p-value&quot;</span><span class="p">:</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_components</span>
+
+        <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot use P-value when there is only one component.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot use P-value when there are fewer samples than components.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># TODO: Try with n - p - 1, and try maths too compare with hotelling</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">F_scale</span> <span class="o">=</span> <span class="n">F</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+        <span class="c1"># Solve the equation (h + (1/n)) / (1 - h) = F_scale:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">F_scale</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">F_scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hotelling&quot;</span><span class="p">:</span>
+        <span class="n">I</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_components</span>
+        <span class="k">if</span> <span class="n">I</span> <span class="o">&lt;=</span> <span class="n">R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot use Hotelling P-value when there are fewer samples than components minus one.&quot;</span><span class="p">)</span>
+
+        <span class="n">F</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">I</span> <span class="o">-</span> <span class="n">R</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">F</span> <span class="o">*</span> <span class="p">(</span><span class="n">R</span> <span class="o">/</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">R</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">R</span> <span class="o">/</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">R</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">F</span><span class="p">)</span>
+        <span class="c1"># Remove the square compared to Nomikos &amp; MacGregor since the leverage is:</span>
+        <span class="c1">#  A(AtA)^-1 At,</span>
+        <span class="c1"># not</span>
+        <span class="c1">#  A(AtA / (I-1))^-1 At</span>
+        <span class="k">return</span> <span class="n">B</span> <span class="o">*</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">I</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Method must be one of &#39;huber lower&#39;, &#39;huber higher&#39;, &#39;hw lower&#39; or &#39;hw higher&#39;, &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;p-value&#39;, or &#39;hotelling&#39; not </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_slabwise_sse_outlier_threshold"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;slab_sse&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_slabwise_sse_outlier_threshold</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute rule-of-thumb threshold values for suspicious residuals.</span>
+
+<span class="sd">    One way to determine possible outliers is to examine how well the model describes</span>
+<span class="sd">    the different data points. A standard way of measuring this, is by the slab-wise</span>
+<span class="sd">    sum of squared errors (slabwise SSE), which is the sum of squared error for each</span>
+<span class="sd">    data point.</span>
+
+<span class="sd">    There is, unfortunately, no guaranteed way to detect outliers automatically based</span>
+<span class="sd">    on the residuals. However, if the noise is normally distributed, then the residuals</span>
+<span class="sd">    follow a scaled chi-squared distribution. Specifically, we have that</span>
+<span class="sd">    :math:`\text{SSE}_i^2 \sim g\chi^2_h`, where :math:`g = \frac{\sigma^2}{2\mu}`,</span>
+<span class="sd">    :math:`h = \frac{\mu}{g} = \frac{2\mu^2}{\sigma^2}`, and :math:`\mu` is the</span>
+<span class="sd">    average slabwise SSE and :math:`\sigma^2` is the variance of the slabwise</span>
+<span class="sd">    SSE :cite:p:`box1954some`.</span>
+
+<span class="sd">    Another rule-of-thumb follows from :cite:p:`naes2002user` (p. 187), which states</span>
+<span class="sd">    that two times the standard deviation of the slabwise SSE can be used for</span>
+<span class="sd">    determining data points with a suspiciously high residual.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    slab_sse : np.ndarray or pd.DataFrame</span>
+<span class="sd">    method : {&quot;two_sigma&quot;, &quot;p-value&quot;}</span>
+<span class="sd">    p_value : float (optional, default=0.05)</span>
+<span class="sd">        If ``method=&quot;p-value&quot;``, then this is the p-value used for the cut-off.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    threshold : float</span>
+<span class="sd">        Threshold value, data points with a higher SSE than the threshold are suspicious</span>
+<span class="sd">        and may be outliers.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Here, we see that the p-value gives a good cutoff if the noise is normally distributed</span>
+
+<span class="sd">    We start by importing the tools we&#39;ll need</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from scipy.stats import bootstrap</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.outliers import compute_slabwise_sse, get_slabwise_sse_outlier_threshold</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.utils import cp_to_tensor</span>
+
+<span class="sd">    Then, we create a function to compute the false positive rate. This will be useful for our</span>
+<span class="sd">    bootstrap estimate for the true false positive rate.</span>
+
+<span class="sd">    &gt;&gt;&gt; def compute_false_positive_rate(shape, num_components, p_value):</span>
+<span class="sd">    ...     A = np.random.standard_normal((shape[0], num_components))</span>
+<span class="sd">    ...     B = np.random.standard_normal((shape[1], num_components))</span>
+<span class="sd">    ...     C = np.random.standard_normal((shape[2], num_components))</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     X = cp_to_tensor((None, [A, B, C]))</span>
+<span class="sd">    ...     noisy_X = X + np.random.standard_normal(shape)*5</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     sse = compute_slabwise_sse(X, noisy_X)</span>
+<span class="sd">    ...     th = get_slabwise_sse_outlier_threshold(sse, method=&quot;p-value&quot;, p_value=p_value)</span>
+<span class="sd">    ...     return (sse &gt; th).mean()</span>
+
+<span class="sd">    Finally, we estimate the 95% confidence interval of the false positive rate to validate</span>
+<span class="sd">    that it is approximately correct.</span>
+
+<span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 1_000</span>
+<span class="sd">    &gt;&gt;&gt; slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0434, 0.0474]</span>
+
+<span class="sd">    We see that the 95% confidence interval lies just below our goal of 0.05! Let&#39;s also try</span>
+<span class="sd">    with a false positive rate of 0.1</span>
+
+<span class="sd">    &gt;&gt;&gt; slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.1) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0972, 0.1021]</span>
+
+<span class="sd">    Here we see that the false positive rate is sufficiently estimated. It may have been too low</span>
+<span class="sd">    above since we either did not have enough samples in the first mode (which we compute) the</span>
+<span class="sd">    false positive rate for). With only 20 samples, it will be difficult to correctly estimate a</span>
+<span class="sd">    false positive rate of 0.05. If we increase the number of samples to 200 instead, we see that</span>
+<span class="sd">    the false positive rate is within our expected bounds.</span>
+
+<span class="sd">    &gt;&gt;&gt; slab_sse = [compute_false_positive_rate((200, 20, 10), 5, 0.05) for _ in range(n_samples)],</span>
+<span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.0494, 0.0507]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;two sigma&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">std</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;p-value&quot;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">std</span> <span class="o">*</span> <span class="n">std</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">mean</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">/</span> <span class="n">g</span>
+        <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method must be one of &#39;two sigma&#39; and &#39;p-value&#39;, not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+        </div>
+
+		
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

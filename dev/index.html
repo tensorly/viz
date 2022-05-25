@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>TLViz — Visualising and analysing component models &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+ <script src="_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="What are tensors and tensor decompositions?" href="about_tensors.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="#">
+            <img src="_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="#">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="#">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TLViz" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul>
+<li class="toctree-l1"><a class="reference internal" href="about_tensors.html">What are tensors and tensor decompositions?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tensorly_backends.html">Working with TensorLy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
+        </div>
+        
+
+        <div class="content main-content">
+          
+  <section id="tlviz-visualising-and-analysing-component-models">
+<h1>TLViz — Visualising and analysing component models<a class="headerlink" href="#tlviz-visualising-and-analysing-component-models" title="Permalink to this headline">¶</a></h1>
+<figure class="align-default">
+<img alt="Illustration of figures made with TLViz" src="_images/overview.png" />
+</figure>
+<p>TLViz, short for TensorLy-Vis, is a Python package that helps you inspect your component models with insightful analysis and beautiful visualisations!
+It is designed around the TensorLy API for PARAFAC/CP decompositions to fit seamlessly into your data analysis workflow.
+With TLViz, you can combine metadata xarray DataArrays and Pandas DataFrames with your extracted factor matrices, turning them into rich DataFrames with meaningful indices.
+To get started, take a look at the <a class="reference internal" href="auto_examples/index.html#examples"><span class="std std-ref">Gallery of examples</span></a> or the <a class="reference internal" href="api.html#api"><span class="std std-ref">API Reference</span></a>.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/cp_tensor.svg"><img alt="Illustration of a CP tensor" src="_images/cp_tensor.svg" width="90%" /></a>
+<figcaption>
+<p><span class="caption-text">Illustration of a PARAFAC/CP model and how such models are represented by TensorLy and TLViz. See <a class="reference internal" href="about_tensors.html#about-tensors"><span class="std std-ref">What are tensors and tensor decompositions?</span></a> for more information.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about_tensors.html">What are tensors and tensor decompositions?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about_tensors.html#notation">Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about_tensors.html#what-are-tensor-factorisations">What are tensor factorisations?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a><ul>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/postprocessing.html">Post-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html">Factor tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/multimodel_evaluation.html">Multi-model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/outliers.html">Outlier detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html">Visualisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/data.html">Example datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tensorly_backends.html">Working with TensorLy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#development-environment">Development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#style-guide">Style guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+        </div>
+
+		
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    
+    <a class="button is-medium pagination-next" href="about_tensors.html" title="next page" accesskey="n">
+        <span>What are tensors and tensor decompositions? </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+        
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+    
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc">  
+        <div class="menu menu-list">
+        <p class="menu-label">On this page</p>
+        <ul>
+<li><a class="reference internal" href="#">TLViz — Visualising and analysing component models</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
+
+    
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1112 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Factor tools &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script src="../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Model evaluation" href="model_evaluation.html" />
+    <link rel="prev" title="Post-processing" href="postprocessing.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../index.html">
+            <img src="../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TLViz" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_tensors.html">What are tensors and tensor decompositions?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html">Post-processing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Factor tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model_evaluation.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimodel_evaluation.html">Multi-model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="outliers.html">Outlier detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Example datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tensorly_backends.html">Working with TensorLy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
+        </div>
+        
+
+        <div class="content main-content">
+          
+  <section id="module-tlviz.factor_tools">
+<span id="factor-tools"></span><h1>Factor tools<a class="headerlink" href="#module-tlviz.factor_tools" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.check_cp_tensor_equal">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">check_cp_tensor_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_tensor2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#check_cp_tensor_equal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.check_cp_tensor_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the factor matrices and weights are equal.</p>
+<p>This will check if the factor matrices and weights are exactly equal
+to one another. It will not check if the two decompositions are equivalent.
+For example, if <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code> contain the same factors as <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code>,
+but permuted, or with the weights distributed differently between the
+modes, then this function will return False. To check for equivalence,
+use <code class="docutils literal notranslate"><span class="pre">check_cp_tensors_equivalent</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor1</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>cp_tensor2</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>ignore_labels</strong><span class="classifier">bool</span></dt><dd><p>If True, then labels (i.e. DataFrame column names and indices) can differ.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the decompositions are equal.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#tlviz.factor_tools.check_cp_tensors_equivalent" title="tlviz.factor_tools.check_cp_tensors_equivalent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_cp_tensors_equivalent</span></code></a></dt><dd><p>Function for checking if two CP tensors represent the same dense tensor.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">check_cp_tensor_equal</span></code> checks for strict equality of the factor matrices and
+weights.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">check_cp_tensor_equal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensor_equal</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>But it does not check the identity of the decompositions, only their numerical values</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor2</span><span class="p">,</span> <span class="n">dataset2</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensor_equal</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">cp_tensor2</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Normalising a <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> changes its values, so then we do not have strict equality
+of the factor matrices, even though the decomposition is equivalent</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">normalise_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalised_cp_tensor</span> <span class="o">=</span> <span class="n">normalise_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensor_equal</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">normalised_cp_tensor</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>Permutations will also make the numerical values of the``cp_tensor`` change</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">permute_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensor_equal</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permute_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.check_cp_tensors_equivalent">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">check_cp_tensors_equivalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_tensor2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#check_cp_tensors_equivalent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.check_cp_tensors_equivalent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the decompositions are equivalent</p>
+<p>This will check if the factor matrices and weights are equivalent. That is
+if they represent the same tensor. This differs from checking equality in
+the sense that if <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code> contain the same factors as <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code>,
+but permuted, or with the weights distributed differently between the
+modes, then they are not equal, but equivalent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor1</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>cp_tensor2</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>rtol</strong><span class="classifier">float</span></dt><dd><p>Relative tolerance (see <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>)</p>
+</dd>
+<dt><strong>atol</strong><span class="classifier">float</span></dt><dd><p>Absolute tolerance (see <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>)</p>
+</dd>
+<dt><strong>ignore_labels</strong><span class="classifier">bool</span></dt><dd><p>If True, then labels (i.e. DataFrame column names and indices) can differ.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the decompositions are equivalent.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_cp_tensor_equivalent</span></code></dt><dd><p>Function for checking if two CP tensors have the same numerical value (have equal weights and factor matrices)</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">check_cp_tensors_equivalent</span></code> checks if two CP tensors represent the same dense tensor</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">check_cp_tensors_equivalent</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor2</span><span class="p">,</span> <span class="n">dataset2</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensors_equivalent</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">cp_tensor2</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Normalising a <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> changes its values, but not which dense tensor it represents</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">normalise_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalised_cp_tensor</span> <span class="o">=</span> <span class="n">normalise_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensors_equivalent</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">normalised_cp_tensor</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Permutations will also make the numerical values of the``cp_tensor`` change but not the
+dense tensor it represents</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">permute_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_cp_tensors_equivalent</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permute_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.check_factor_matrix_close">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">check_factor_matrix_close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor_matrix2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#check_factor_matrix_close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.check_factor_matrix_close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.</p>
+<p>This function is similar to <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>, but works on both labelled and unlabelled factor
+matrices. If the factor matrices are labelled, then the DataFrame index and columns are also
+compared (unless <code class="docutils literal notranslate"><span class="pre">ignore_labels=True</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>factor_matrix1</strong><span class="classifier">numpy.ndarray or pandas.DataFrame</span></dt><dd><p>Labelled or unlabelled factor matrix</p>
+</dd>
+<dt><strong>cp_tensor2</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>Labelled or unlabelled factor matrix</p>
+</dd>
+<dt><strong>rtol</strong><span class="classifier">float</span></dt><dd><p>Relative tolerance (see <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>)</p>
+</dd>
+<dt><strong>atol</strong><span class="classifier">float</span></dt><dd><p>Absolute tolerance (see <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>)</p>
+</dd>
+<dt><strong>ignore_labels</strong><span class="classifier">bool</span></dt><dd><p>If True, then labels (i.e. DataFrame column names and indices) can differ.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the decompositions are equivalent.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">check_factor_matrix_close</span></code> checks if two factor matrices are close up to round off errors.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span> <span class="mf">1e-10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_close</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If we make only one of them into a DataFrame, then the factor matrices are not close</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_labelled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_close</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_close</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A_labelled</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>If we turn B into a DataFrame too, it passes again</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">B_labelled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_close</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B_labelled</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The index is checked for equality, so if we change the index of <code class="docutils literal notranslate"><span class="pre">B_labelled</span></code>, then
+the factor matrices are not close</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">B_labelled</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_close</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B_labelled</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>However, we can disable checking the labels by using the <code class="docutils literal notranslate"><span class="pre">ignore_labels</span></code> argument</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_close</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B_labelled</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.check_factor_matrix_equal">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">check_factor_matrix_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor_matrix2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#check_factor_matrix_equal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.check_factor_matrix_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.</p>
+<p>This function is similar to <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>, but works on both labelled and unlabelled factor
+matrices. If the factor matrices are labelled, then the DataFrame index and columns are also
+compared (unless <code class="docutils literal notranslate"><span class="pre">ignore_labels=True</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>factor_matrix1</strong><span class="classifier">numpy.ndarray or pandas.DataFrame</span></dt><dd><p>Labelled or unlabelled factor matrix</p>
+</dd>
+<dt><strong>cp_tensor2</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>Labelled or unlabelled factor matrix</p>
+</dd>
+<dt><strong>rtol</strong><span class="classifier">float</span></dt><dd><p>Relative tolerance (see <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>)</p>
+</dd>
+<dt><strong>atol</strong><span class="classifier">float</span></dt><dd><p>Absolute tolerance (see <code class="docutils literal notranslate"><span class="pre">numpy.allclose</span></code>)</p>
+</dd>
+<dt><strong>ignore_labels</strong><span class="classifier">bool</span></dt><dd><p>If True, then labels (i.e. DataFrame column names and indices) can differ.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the decompositions are equivalent.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">check_factor_matrix_equal</span></code> checks if two factor matrices are exactly the same.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If they are only the same up to round off errors, then this function returns <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>If we make only one of them into a DataFrame, then the factor matrices are not equal</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_labelled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A_labelled</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>If we turn B into a DataFrame too, it passes again</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">B_labelled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B_labelled</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The index is checked for equality, so if we change the index of <code class="docutils literal notranslate"><span class="pre">B_labelled</span></code>, then
+the factor matrices are not equal</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">B_labelled</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B_labelled</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>However, we can disable checking the labels by using the <code class="docutils literal notranslate"><span class="pre">ignore_labels</span></code> argument</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">check_factor_matrix_equal</span><span class="p">(</span><span class="n">A_labelled</span><span class="p">,</span> <span class="n">B_labelled</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.cosine_similarity">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">cosine_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor_matrix2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#cosine_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.cosine_similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The average cosine similarity (Tucker congruence) with optimal column permutation.</p>
+<p>The cosine similarity between two vectors is computed as</p>
+<div class="math notranslate nohighlight">
+\[\cos (\mathbf{x}, \mathbf{y}) =
+\frac{\mathbf{x}^\mathsf{T}}{\|\mathbf{x}\|}\frac{\mathbf{y}}{\|\mathbf{y}\|}\]</div>
+<p>This function returns the average cosine similarity between the columns vectors of
+the two factor matrices, using the optimal column permutation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>factor_matrix1</strong><span class="classifier">np.ndarray or pd.DataFrame</span></dt><dd><p>First factor matrix</p>
+</dd>
+<dt><strong>factor_matrix2</strong><span class="classifier">np.ndarray or pd.DataFrame</span></dt><dd><p>Second factor matrix</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The average cosine similarity.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.degeneracy_score">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">degeneracy_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#degeneracy_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.degeneracy_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the degeneracy score for a given decomposition.</p>
+<p>PARAFAC models can be degenerate, which is a sign that we should
+be careful before interpreting that model. For a third order tensor,
+this generally manifests in a triple cosine of two components that
+approach -1. That is</p>
+<div class="math notranslate nohighlight">
+\[\cos(\mathbf{a}_{r}, \mathbf{a}_{s})
+\cos(\mathbf{b}_{r}, \mathbf{b}_{s})
+\cos(\mathbf{c}_{r}, \mathbf{c}_{s})
+\approx -1\]</div>
+<p>for some <span class="math notranslate nohighlight">\(r \neq s\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{A}, \mathbf{B}\)</span>
+and <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> are factor matrices and</p>
+<div class="math notranslate nohighlight">
+\[\cos(\mathbf{x}, \mathbf{y}) =
+\frac{\mathbf{x}^\mathsf{T} \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.\]</div>
+<p>Furthermore, the magnitude of the degenerate components are unbounded and
+will approach infinity as the number of iterations increase.</p>
+<p>Degenerate solutions typically signify that the decomposition is unreliable,
+and one should take care before interpreting the components. Degeneracy
+can, in fact, be a sign that the PARAFAC problem is ill-posed. There are certain
+tensors where there are no solutions to the least squares problem to needed to fit
+PARAFAC models. And in those cases, the “optimal” but unobtainable PARAFAC
+decomposition will have component vectors with infinite norm that point in
+opposite directions <span id="id1">[<a class="reference internal" href="../references.html#id17" title="Wim P Krijnen, Theo K Dijkstra, and Alwin Stegeman. On the non-existence of optimal solutions and the occurrence of “degeneracy” in the candecomp/parafac model. Psychometrika, 73(3):431–439, 2008.">KDS08</a>]</span>.</p>
+<p>There are several strategies to avoid degenerate solutions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fitting models with more random initialisations</p></li>
+<li><p>Decreasing the convergence tolerance or increasing the number of iterations</p></li>
+<li><p>Imposing non-negativity constraints in all modes</p></li>
+<li><p>Imposing orthogonality constraints in at least one mode</p></li>
+<li><p>Changing the number of components</p></li>
+</ul>
+</div></blockquote>
+<p>Both non-negativity constraints and orthogonality constraints will
+remove the potential ill-posedness of the CP model. We can, in fact,
+not obtain degenerate solutions when we impose such constriants
+<span id="id2">[<a class="reference internal" href="../references.html#id17" title="Wim P Krijnen, Theo K Dijkstra, and Alwin Stegeman. On the non-existence of optimal solutions and the occurrence of “degeneracy” in the candecomp/parafac model. Psychometrika, 73(3):431–439, 2008.">KDS08</a>]</span></p>
+<p>To measure degeneracy, we compute the degeneracy score, which is the
+minimum triple cosine (for a third-order tensor). A score close to
+-1 signifies a degenerate solution. A score of -0.85 is an indication
+of a troublesome model <span id="id3">[<a class="reference internal" href="../references.html#id11" title="Wilhelmus Petrus Krijnen. The analysis of three-way arrays by constrained PARAFAC methods. DSWO Press, Leiden University, 1993.">Kri93</a>]</span> (as cited in
+<span id="id4">[<a class="reference internal" href="../references.html#id10" title="Rasmus Bro. Parafac. tutorial and applications. Chemometrics and intelligent laboratory systems, 38(2):149–171, 1997.">Bro97</a>]</span>).</p>
+<p>For more information about degeneracy for component models see
+<span id="id5">[<a class="reference internal" href="../references.html#id9" title="Bonne JH Zijlstra and Henk AL Kiers. Degenerate solutions obtained from several variants of factor analysis. Journal of Chemometrics: A Journal of the Chemometrics Society, 16(11):596–605, 2002.">ZK02</a>]</span> and <span id="id6">[<a class="reference internal" href="../references.html#id10" title="Rasmus Bro. Parafac. tutorial and applications. Chemometrics and intelligent laboratory systems, 38(2):149–171, 1997.">Bro97</a>]</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are other kinds of degeneracies too. For example three-component
+degeneracies, which manifests as two components of increasing magnitude
+and one other component equal to the negative sum of the former
+two <span id="id7">[<a class="reference internal" href="../references.html#id19" title="Pentti Paatero. Construction and analysis of degenerate parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 14(3):285–299, 2000.">Paa00</a>, <a class="reference internal" href="../references.html#id18" title="Alwin Stegeman. Degeneracy in candecomp/parafac explained for p× p× 2 arrays of rank p+ 1 or higher. Psychometrika, 71(3):483–501, 2006.">Ste06</a>]</span>. However, it
+is the two-component degeneracy that is most commonly discussed in the
+litterature <span id="id8">[<a class="reference internal" href="../references.html#id10" title="Rasmus Bro. Parafac. tutorial and applications. Chemometrics and intelligent laboratory systems, 38(2):149–171, 1997.">Bro97</a>, <a class="reference internal" href="../references.html#id17" title="Wim P Krijnen, Theo K Dijkstra, and Alwin Stegeman. On the non-existence of optimal solutions and the occurrence of “degeneracy” in the candecomp/parafac model. Psychometrika, 73(3):431–439, 2008.">KDS08</a>, <a class="reference internal" href="../references.html#id9" title="Bonne JH Zijlstra and Henk AL Kiers. Degenerate solutions obtained from several variants of factor analysis. Journal of Chemometrics: A Journal of the Chemometrics Society, 16(11):596–605, 2002.">ZK02</a>]</span>.
+Still, if three or more components display weights that have a much higher
+magnitude than the data, there is a reason to be concerned.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>degeneracy_score</strong><span class="classifier">float</span></dt><dd><p>Degeneracy score, between 1 and -1. A score close to -1 signifies
+a degenerate solution. A score of -0.85 is an indication of a
+troublesome model <span id="id9">[<a class="reference internal" href="../references.html#id11" title="Wilhelmus Petrus Krijnen. The analysis of three-way arrays by constrained PARAFAC methods. DSWO Press, Leiden University, 1993.">Kri93</a>]</span> (as cited in
+<span id="id10">[<a class="reference internal" href="../references.html#id10" title="Rasmus Bro. Parafac. tutorial and applications. Chemometrics and intelligent laboratory systems, 38(2):149–171, 1997.">Bro97</a>]</span>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>We begin by constructing a random simulated cp tensor and compute the degeneracy score</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">degeneracy_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degeneracy score: </span><span class="si">{</span><span class="n">degeneracy_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Degeneracy score: 0.35</span>
+</pre></div>
+</div>
+<p>We see that (as expected) the random cp_tensor is not very degenerate. To simulate
+a tensor with two-component degeneracy, we can, for example, replace one of the
+components with a flipped copy of another component</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">A</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">B</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">C</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degeneracy score: </span><span class="si">{</span><span class="n">degeneracy_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Degeneracy score: -1.00</span>
+</pre></div>
+</div>
+<p>We see that this modified cp_tensor is degenerate.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.distribute_weights">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">distribute_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#distribute_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.distribute_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility to distribute the weights of a CP tensor.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+<dt><strong>weight_behaviour</strong><span class="classifier">{“ignore”, “normalise”, “evenly”, “one_mode”} (default=”normalise”)</span></dt><dd><p>How to handle the component weights.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ignore&quot;</span></code> - Do nothing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;normalise&quot;</span></code> - Normalise all factor matrices</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;evenly&quot;</span></code> - All factor matrices have equal norm</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;one_mode&quot;</span></code> - The weight is allocated in one mode, all other factor matrices have unit norm columns.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><strong>weight_mode</strong><span class="classifier">int (optional)</span></dt><dd><p>Which mode to have the component weights in (only used if <code class="docutils literal notranslate"><span class="pre">weight_behaviour=&quot;one_mode&quot;</span></code>)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd><p>The scaled CP tensor.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">weight_behaviour</span></code> is not one of <code class="docutils literal notranslate"><span class="pre">&quot;ignore&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;normalise&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;evenly&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;one_mode&quot;</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#tlviz.factor_tools.normalise_cp_tensor" title="tlviz.factor_tools.normalise_cp_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalise_cp_tensor</span></code></a></dt><dd><p>Give all component vectors unit norm</p>
+</dd>
+<dt><a class="reference internal" href="#tlviz.factor_tools.distribute_weights_evenly" title="tlviz.factor_tools.distribute_weights_evenly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_weights_evenly</span></code></a></dt><dd><p>Give all component vectors the same norm and set the weight-array to one.</p>
+</dd>
+<dt><a class="reference internal" href="#tlviz.factor_tools.distribute_weights_in_one_mode" title="tlviz.factor_tools.distribute_weights_in_one_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_weights_in_one_mode</span></code></a></dt><dd><p>Keep all the weights in one factor matrix and set the weight-array to one.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.distribute_weights_evenly">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">distribute_weights_evenly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#distribute_weights_evenly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.distribute_weights_evenly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure that the weight-vector consists of ones and all factor matrices have equal norm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd><p>The scaled CP tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.distribute_weights_in_one_mode">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">distribute_weights_in_one_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#distribute_weights_in_one_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.distribute_weights_in_one_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalise all factors and multiply the weights into one mode.</p>
+<p>The CP tensor is scaled so all factor matrices except one have unit norm
+columns and the weight-vector contains only ones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+<dt><strong>mode</strong><span class="classifier">int</span></dt><dd><p>Which mode (axis) to store the weights in</p>
+</dd>
+<dt><strong>axis</strong><span class="classifier">int (optional)</span></dt><dd><p>Alias for mode. If this is set, then no value is needed for mode</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd><p>The scaled CP tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.factor_match_score">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">factor_match_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_tensor2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_permutation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#factor_match_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.factor_match_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the factor match score between <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code> and <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code>.</p>
+<p>The factor match score is used to measure the similarity between two
+sets of components. There are many definitions of the FMS, but one
+common definition for third order tensors is given by:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{r=1}^R \frac{\mathbf{a}_r^T \hat{\mathbf{a}}_r}{\|\mathbf{a}_r^T\| \|\hat{\mathbf{a}}_r\|}
+             \frac{\mathbf{b}_r^T \hat{\mathbf{b}}_r}{\|\mathbf{b}_r^T\| \|\hat{\mathbf{b}}_r\|}
+             \frac{\mathbf{c}_r^T \hat{\mathbf{c}}_r}{\|\mathbf{c}_r^T\| \|\hat{\mathbf{c}}_r\|},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{a}, \mathbf{b}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> are the component vectors for
+one of the decompositions and <span class="math notranslate nohighlight">\(\hat{\mathbf{a}}, \hat{\mathbf{b}}\)</span> and <span class="math notranslate nohighlight">\(\hat{\mathbf{c}}\)</span>
+are the component vectors for the other decomposition. Often, the absolute value of the inner
+products is used instead of just the inner products (i.e. <span class="math notranslate nohighlight">\(|\mathbf{a}_r^T \hat{\mathbf{a}}_r|\)</span>).</p>
+<p>The above definition does not take the norm of the component vectors into account.
+However, sometimes, we also wish to compare their norm. In that case, set the
+<code class="docutils literal notranslate"><span class="pre">consider_weights</span></code> argument to <code class="docutils literal notranslate"><span class="pre">True</span></code> to compute</p>
+<div class="math notranslate nohighlight">
+\[\sum_{r=1}^R \left(1 - \frac{w_r \hat{w}_r}{\max\left( w_r \hat{w}_r \right)}\right)
+             \frac{\mathbf{a}_r^T \hat{\mathbf{a}}_r}{\|\mathbf{a}_r^T\|\|\hat{\mathbf{a}}_r\|}
+             \frac{\mathbf{b}_r^T \hat{\mathbf{b}}_r}{\|\mathbf{b}_r^T\|\|\hat{\mathbf{b}}_r\|}
+             \frac{\mathbf{c}_r^T \hat{\mathbf{c}}_r}{\|\mathbf{c}_r^T\|\|\hat{\mathbf{c}}_r\|}\]</div>
+<p>instead, where <span class="math notranslate nohighlight">\(w_r = \|\mathbf{a}_r\| \|\mathbf{b}_r\| \|\mathbf{c}_r\|\)</span> and
+<span class="math notranslate nohighlight">\(\hat{w}_r = \|\hat{\mathbf{a}}_r\| \|\hat{\mathbf{b}}_r\| \|\hat{\mathbf{c}}_r\|\)</span>.</p>
+<p>For both definitions above, there is a permutation determinacy. Two equivalent decompositions
+can have the same component vectors, but in a different order. To resolve this determinacy,
+we use linear sum assignment solver available in SciPy <span id="id11">[<a class="reference internal" href="../references.html#id5" title="David F Crouse. On implementing 2d rectangular assignment algorithms. IEEE Transactions on Aerospace and Electronic Systems, 52(4):1679–1696, 2016.">Cro16</a>]</span> to
+efficiently find the optimal permutation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor1</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>cp_tensor2</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>consider_weights</strong><span class="classifier">bool (default=True)</span></dt><dd><p>If False, then the weight-penalty is used (second equation above).</p>
+</dd>
+<dt><strong>skip_mode</strong><span class="classifier">int or None (default=None)</span></dt><dd><p>Which mode to skip when computing the FMS. Useful if cross validation
+or split-half analysis is used.</p>
+</dd>
+<dt><strong>return_permutation</strong><span class="classifier">bool (default=False)</span></dt><dd><p>Whether or not to return the optimal permutation of the factors</p>
+</dd>
+<dt><strong>absolute_value</strong><span class="classifier">bool (default=True)</span></dt><dd><p>If True, then only magnitude of the congruence is considered, not the
+sign.</p>
+</dd>
+<dt><strong>allow_smaller_rank</strong><span class="classifier">bool (default=False)</span></dt><dd><p>Only relevant if <code class="docutils literal notranslate"><span class="pre">return_permutation=True</span></code>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code>
+can have fewer components than <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code>. Missing components are aligned
+with <code class="docutils literal notranslate"><span class="pre">tlviz.factor_tools.tlviz.factor_tools.NO_COLUMN</span></code> (a slice that slices nothing).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fms</strong><span class="classifier">float</span></dt><dd><p>The factor match score</p>
+</dd>
+<dt><strong>permutation</strong><span class="classifier">list[int | object] (only if return_permutation=True)</span></dt><dd><p>List of ints used to permute <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code> so its components optimally align with <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code>.
+If the <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code> has a component with no corresponding component in <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code> (i.e. there
+are fewer components in <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code> than in <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code>), then
+<code class="docutils literal notranslate"><span class="pre">tlviz.factor_tools.NO_COLUMN</span></code> (a slice that slices nothing) is used to indicate missing components.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">allow_smaller_rank=False</span></code> and <code class="docutils literal notranslate"><span class="pre">cp_tensor2</span></code> has fewer components than <code class="docutils literal notranslate"><span class="pre">cp_tensor1</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">factor_match_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_cp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct random cp tensor with TensorLy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add noise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_noisy</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Decompose with TensorLy and compute FMS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">estimated_cp_tensor</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X_noisy</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fms_with_weight_penalty</span> <span class="o">=</span> <span class="n">factor_match_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">estimated_cp_tensor</span><span class="p">,</span> <span class="n">consider_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Factor match score (with weight penalty): </span><span class="si">{</span><span class="n">fms_with_weight_penalty</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Factor match score (with weight penalty): 0.95</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fms_without_weight_penalty</span> <span class="o">=</span> <span class="n">factor_match_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">estimated_cp_tensor</span><span class="p">,</span> <span class="n">consider_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Factor match score (without weight penalty): </span><span class="si">{</span><span class="n">fms_without_weight_penalty</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Factor match score (without weight penalty): 0.99</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.get_cp_permutation">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">get_cp_permutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_cp_tensor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#get_cp_permutation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.get_cp_permutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the optimal permutation between two CP tensors.</p>
+<p>This function supports two ways of finding the permutation of a CP tensor: Aligning the components
+with those of a reference CP tensor (if <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>), or finding the
+permutation so the components are in descending order with respect to their explained variation
+(if both <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code> and <code class="docutils literal notranslate"><span class="pre">permutation</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<p>This function uses the factor match score to compute the optimal permutation between
+two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
+may have permuted columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+<dt><strong>reference_cp_tensor</strong><span class="classifier">CPTensor or tuple (optional)</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument. The tensor
+that <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> is aligned with. Either this or the <code class="docutils literal notranslate"><span class="pre">permutation</span></code>
+argument must be passed, not both.</p>
+</dd>
+<dt><strong>consider_weights</strong><span class="classifier">bool</span></dt><dd><p>Whether to consider the factor weights when the factor match score is computed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd><p>The permutation to use when permuting <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.get_factor_matrix_permutation">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">get_factor_matrix_permutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor_matrix2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_sign</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#get_factor_matrix_permutation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.get_factor_matrix_permutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find optimal permutation of the factor matrices</p>
+<p>Efficient estimation of the optimal permutation for two factor matrices.
+To find the optimal permutation, <span class="math notranslate nohighlight">\(\sigma\)</span>, we solve the following
+optimisation problem:</p>
+<div class="math notranslate nohighlight">
+\[\max_\sigma \sum_{r} \frac{\left|\mathbf{a}_{r}^\mathsf{T}\hat{\mathbf{a}}_{\sigma(r)}\right|}
+                          {\|\mathbf{a}_{r}\| \|\hat{\mathbf{a}}_{\sigma(r)}\|}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{a}_r\)</span> is the <span class="math notranslate nohighlight">\(r\)</span>-th component vector for the
+first factor matrix and <span class="math notranslate nohighlight">\(\hat{\mathbf{a}}_{\sigma(r)}\)</span> is <span class="math notranslate nohighlight">\(r\)</span>-th
+component vector of the second factor matrix after permuting the columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>factor_matrix1</strong><span class="classifier">np.ndarray or pd.DataFrame</span></dt><dd><p>First factor matrix</p>
+</dd>
+<dt><strong>factor_matrix2</strong><span class="classifier">np.ndarray or pd.DataFrame</span></dt><dd><p>Second factor matrix</p>
+</dd>
+<dt><strong>ignore_sign</strong><span class="classifier">bool</span></dt><dd><p>Whether to take the absolute value of the inner products before
+computing the permutation. This is usually done because of the sign
+indeterminacy of component models.</p>
+</dd>
+<dt><strong>allow_smaller_rank</strong><span class="classifier">bool (default=False)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the function can align a smaller matrix onto a larger one. Missing
+columns are aligned with <code class="docutils literal notranslate"><span class="pre">tlviz.factor_tools.NO_COLUMN</span></code> (a slice that slices nothing).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>permutation</strong><span class="classifier">list[int | slice]</span></dt><dd><p>List of ints used to permute <code class="docutils literal notranslate"><span class="pre">factor_matrix2</span></code> so its columns optimally align with <code class="docutils literal notranslate"><span class="pre">factor_matrix1</span></code>.
+If the <code class="docutils literal notranslate"><span class="pre">factor_matrix1</span></code> has a column with no corresponding column in <code class="docutils literal notranslate"><span class="pre">factor_matrix2</span></code> (i.e. there
+are fewer columns in <code class="docutils literal notranslate"><span class="pre">factor_matrix2</span></code> than in <code class="docutils literal notranslate"><span class="pre">factor_matrix1</span></code>), then
+<code class="docutils literal notranslate"><span class="pre">tlviz.factor_tools.NO_COLUMN</span></code> (a slice that slices nothing) is used to indicate missing columns.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">allow_smaller_rank=False</span></code> and <code class="docutils literal notranslate"><span class="pre">factor_matrix2</span></code> has fewer columns than <code class="docutils literal notranslate"><span class="pre">factor_matrix1</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.normalise_cp_tensor">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">normalise_cp_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#normalise_cp_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.normalise_cp_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure that the all factor matrices have unit norm, and all weight is stored in the weight-vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd><p>The scaled CP tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.percentage_variation">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">percentage_variation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#percentage_variation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.percentage_variation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the percentage of variation captured by each component.</p>
+<p>The (possible) non-orthogonality of CP factor matrices makes it less straightforward
+to estimate the amount of variation captured by each component, compared to a model with
+orthogonal factors. To estimate the amount of variation captured by a single component,
+we therefore use the following formula:</p>
+<div class="math notranslate nohighlight">
+\[\text{fit}_i = \frac{\text{SS}_i}{SS_\mathbf{\mathcal{X}}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{SS}_i\)</span> is the squared norm of the tensor constructed using only the
+i-th component, and <span class="math notranslate nohighlight">\(SS_\mathbf{\mathcal{X}}\)</span> is the squared norm of the data
+tensor <span id="id12">[<a class="reference internal" href="../references.html#id20" title="Eigenvector Research. MCR and PARAFAC Variance Captured. \url https://web.archive.org/web/20210412131553/https://wiki.eigenvector.com/index.php?title=MCR_and_PARAFAC_Variance_Captured, 2011. Accessed: 2022-04-14.">EigenvectorResearch11</a>]</span>. If <code class="docutils literal notranslate"><span class="pre">method=&quot;data&quot;</span></code>, then <span class="math notranslate nohighlight">\(SS_\mathbf{\mathcal{X}}\)</span>
+is the squared norm of the tensor constructed from the CP tensor using all factor matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray</span></dt><dd><p>Data tensor that the cp_tensor is fitted against</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">{“data”, “model”, “both”} (default=”model”)</span></dt><dd><p>Which method to use for computing the fit.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fit</strong><span class="classifier">float or tuple</span></dt><dd><p>The fit (depending on the method). If <code class="docutils literal notranslate"><span class="pre">method=&quot;both&quot;</span></code>, then a tuple is returned
+where the first element is the fit computed against the data tensor and the second
+element is the fit computed against the model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>There are two ways of computing the percentage variation. One method is to divide by the variation
+in the data, giving us the percentage variation of the data captured by each component. This
+approach will not necessarily sum to 100 since</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>the model will not explain all the variation.</p></li>
+<li><p>the components are likely not orthogonal</p></li>
+</ol>
+</div></blockquote>
+<p>Alternatively, we can divide by the variation in the model, which will give us the contribution
+of each component to the model. However, this may also not sum to 100 since the components may
+not be orthogonal.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">percentage_variation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">[11  2  0  0 39]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">[11  2  0  0 37]</span>
+</pre></div>
+</div>
+<p>We see that the variation captured for each component sums to 50 when we compare with the
+data and 52 when we compare with the model. These low numbers are because the components
+are not orthogonal, which means that the magnitude of the data is not equal to the sum
+of the magnitudes of each component. We can also compute the percentage variation with
+the model and the data simultaneously:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">percent_var_data</span><span class="p">,</span> <span class="n">percent_var_model</span> <span class="o">=</span> <span class="n">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">percent_var_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">[11  2  0  0 37]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">percent_var_model</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">[11  2  0  0 39]</span>
+</pre></div>
+</div>
+<p>If noise level is 0, both methods should give the same variantion percentages:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">percent_var_data</span><span class="p">,</span> <span class="n">percent_var_model</span> <span class="o">=</span> <span class="n">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">percent_var_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">[ 3 11  0 34  1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of variation: </span><span class="si">{</span><span class="n">percent_var_data</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Sum of variation: 51</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">percent_var_model</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">[ 3 11  0 34  1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of variation: </span><span class="si">{</span><span class="n">percent_var_model</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Sum of variation: 51</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.factor_tools.permute_cp_tensor">
+<span class="sig-prename descclassname"><span class="pre">tlviz.factor_tools.</span></span><span class="sig-name descname"><span class="pre">permute_cp_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_cp_tensor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/factor_tools.html#permute_cp_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.factor_tools.permute_cp_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permute the CP tensor</p>
+<p>This function supports three ways of permuting a CP tensor: Aligning the components
+with those of a reference CP tensor (if <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>),
+permuting the components according to a given permutation (if <code class="docutils literal notranslate"><span class="pre">permutation</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>)
+or so the components are in descending order with respect to their explained variation
+(if both <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code> and <code class="docutils literal notranslate"><span class="pre">permutation</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<p>This function uses the factor match score to compute the optimal permutation between
+two CP tensors. This is useful for comparison purposes, as CP two identical CP tensors
+may have permuted columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument.</p>
+</dd>
+<dt><strong>permutation</strong><span class="classifier">tuple (optional)</span></dt><dd><p>Tuple with the column permutations. Either this or the <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code>
+argument must be passed, not both.</p>
+</dd>
+<dt><strong>reference_cp_tensor</strong><span class="classifier">CPTensor or tuple (optional)</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument. The tensor
+that <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> is aligned with. Either this or the <code class="docutils literal notranslate"><span class="pre">permutation</span></code>
+argument must be passed, not both.</p>
+</dd>
+<dt><strong>consider_weights</strong><span class="classifier">bool</span></dt><dd><p>Whether to consider the factor weights when the factor match score is computed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd><p>Tuple representing <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> optimally permuted.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If neither <code class="docutils literal notranslate"><span class="pre">permutation</span></code> nor <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code> is provided</p>
+</dd>
+<dt>ValueError</dt><dd><p>If both <code class="docutils literal notranslate"><span class="pre">permutation</span></code> and <code class="docutils literal notranslate"><span class="pre">reference_cp_tensor</span></code> is provided</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+        </div>
+
+		
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button is-medium pagination-previous" href="postprocessing.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span>Post-processing</span>
+    </a>
+    
+    
+    <a class="button is-medium pagination-next" href="model_evaluation.html" title="next page" accesskey="n">
+        <span>Model evaluation </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+        
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+    
+
+    
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

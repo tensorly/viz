@@ -1,0 +1,1469 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlviz.visualisation &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+
+        <div class="content main-content">
+          
+  <h1>Source code for tlviz.visualisation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
+
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">factor_tools</span><span class="p">,</span> <span class="n">model_evaluation</span><span class="p">,</span> <span class="n">postprocessing</span>
+<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="n">_handle_none_weights_cp_tensor</span><span class="p">,</span> <span class="n">is_dataframe</span><span class="p">,</span> <span class="n">is_iterable</span>
+<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">to_numpy_cp</span>
+<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="n">_handle_labelled_cp</span><span class="p">,</span> <span class="n">_handle_labelled_dataset</span>
+<span class="kn">from</span> <span class="nn">.model_evaluation</span> <span class="kn">import</span> <span class="n">estimate_core_tensor</span>
+<span class="kn">from</span> <span class="nn">.outliers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_LEVERAGE_NAME</span><span class="p">,</span>
+    <span class="n">_SLABWISE_SSE_NAME</span><span class="p">,</span>
+    <span class="n">compute_outlier_info</span><span class="p">,</span>
+    <span class="n">get_leverage_outlier_threshold</span><span class="p">,</span>
+    <span class="n">get_slabwise_sse_outlier_threshold</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;scree_plot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;histogram_of_residuals&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;residual_qq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;outlier_plot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;component_scatterplot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;core_element_plot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;core_element_heatmap&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;components_plot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;component_comparison_plot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;optimisation_diagnostic_plots&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;percentage_variation_plot&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="scree_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.scree_plot">[docs]</a><span class="k">def</span> <span class="nf">scree_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;Fit&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create scree plot for the given cp tensors.</span>
+
+<span class="sd">    A scree plot is a plot with the model on the x-axis and a metric (often fit)</span>
+<span class="sd">    on the y-axis. It is commonly plotted as a line plot with a scatter point located at each</span>
+<span class="sd">    model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor: dict[Any, CPTensor]</span>
+<span class="sd">        Dictionary mapping model names (often just the number of components as an int) to a</span>
+<span class="sd">        model.</span>
+<span class="sd">    dataset: numpy.ndarray or xarray.DataArray</span>
+<span class="sd">        Dataset to compare the model against.</span>
+<span class="sd">    errors: dict[Any, float] (optional)</span>
+<span class="sd">        The metric to plot. If given, then the cp_tensor and dataset-arguments are ignored.</span>
+<span class="sd">        This is useful to save computation time if, for example, the fit is computed beforehand.</span>
+<span class="sd">    metric: str or Callable</span>
+<span class="sd">        Which metric to plot, should have the signature ``metric(cp_tensor, dataset)`` and return</span>
+<span class="sd">        a float. If it is a string, then this will be used as the y-label and metric will be set to</span>
+<span class="sd">        ``metric = getattr(tlviz.model_evaluation, metric)``.</span>
+<span class="sd">        Also, if ``metric`` is a string, then it is converted to lower-case letters and spaces</span>
+<span class="sd">        are converted to underlines before getting the metric from the ``model_evaluation`` module.</span>
+<span class="sd">    ax: matplotlib axes</span>
+<span class="sd">        Matplotlib axes that the plot will be placed in. If ``None``, then ``plt.gca()`` will be used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax</span>
+<span class="sd">        Matplotlib axes object with the scree plot</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Simple scree plot of fit</span>
+
+<span class="sd">    .. plot ::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import scree_plot</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; dataset = simulated_random_cp_tensor((10, 20, 30), rank=3, noise_level=0.2, seed=42)[1]</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensors = {}</span>
+<span class="sd">        &gt;&gt;&gt; for rank in range(1, 5):</span>
+<span class="sd">        ...     cp_tensors[f&quot;{rank} components&quot;] = parafac(dataset, rank, random_state=1)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; ax = scree_plot(cp_tensors, dataset)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    Scree plots for fit and core consistency in the same figure</span>
+
+<span class="sd">    .. plot ::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import scree_plot</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; dataset = simulated_random_cp_tensor((10, 20, 30), rank=3, noise_level=0.2, seed=42)[1]</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensors = {}</span>
+<span class="sd">        &gt;&gt;&gt; for rank in range(1, 5):</span>
+<span class="sd">        ...     cp_tensors[rank] = parafac(dataset, rank, random_state=1)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = plt.subplots(1, 2, figsize=(8, 2), tight_layout=True)</span>
+<span class="sd">        &gt;&gt;&gt; ax = scree_plot(cp_tensors, dataset, ax=axes[0])</span>
+<span class="sd">        &gt;&gt;&gt; ax = scree_plot(cp_tensors, dataset, metric=&quot;Core consistency&quot;, ax=axes[1])</span>
+<span class="sd">        &gt;&gt;&gt; # Names are converted to lowercase and spaces are converted to underlines when fetching metric-function,</span>
+<span class="sd">        &gt;&gt;&gt; # so &quot;Core consistency&quot; becomes getattr(tlviz.model_evaluation, &quot;core_consistency&quot;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; for ax in axes:</span>
+<span class="sd">        ...     xlabel = ax.set_xlabel(&quot;Number of components&quot;)</span>
+<span class="sd">        ...     xticks = ax.set_xticks(list(cp_tensors.keys()))</span>
+<span class="sd">        &gt;&gt;&gt; limits = axes[1].set_ylim((0, 105))</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_evaluation</span><span class="p">,</span> <span class="n">metric</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+    <span class="n">cp_tensors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">errors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># compute error using the metric function</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">metric</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">cp_tensor</span> <span class="ow">in</span> <span class="n">cp_tensors</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">errors</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="histogram_of_residuals"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.histogram_of_residuals">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">histogram_of_residuals</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">standardised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a histogram of model residuals (:math:`\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray or xarray.DataArray</span>
+<span class="sd">        Dataset to compare with</span>
+<span class="sd">    ax : Matplotlib axes (Optional)</span>
+<span class="sd">        Axes to plot the histogram in</span>
+<span class="sd">    standardised : bool</span>
+<span class="sd">        If true, then the residuals are divided by their standard deviation</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments passed to the histogram function</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : Matplotlib axes</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import histogram_of_residuals</span>
+<span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)</span>
+<span class="sd">        &gt;&gt;&gt; est_cp = parafac(X, 3)</span>
+<span class="sd">        &gt;&gt;&gt; histogram_of_residuals(est_cp, X)</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;Histogram of residuals&#39;}, xlabel=&#39;Standardised residuals&#39;, ylabel=&#39;Frequency&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">estimated_dataset</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+    <span class="n">residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">estimated_dataset</span> <span class="o">-</span> <span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">standardised</span><span class="p">:</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="n">residuals</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Standardised residuals&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Residuals&quot;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Histogram of residuals&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="residual_qq"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.residual_qq">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">residual_qq</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_pingouin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;QQ-plot of the model residuals.</span>
+
+<span class="sd">    By default, ``statsmodels`` is used to create the QQ-plot. However,</span>
+<span class="sd">    if ``use_pingouin=True``, then we import the GPL-3 lisenced Pingouin</span>
+<span class="sd">    library to create a more informative QQ-plot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray or xarray.DataArray</span>
+<span class="sd">        Dataset to compare with</span>
+<span class="sd">    ax : Matplotlib axes (Optional)</span>
+<span class="sd">        Axes to plot the qq-plot in</span>
+<span class="sd">    use_pingouin : bool</span>
+<span class="sd">        If true, then the GPL-3 licensed ``pingouin``-library will be used</span>
+<span class="sd">        for generating an enhanced QQ-plot (with error bars), at the cost</span>
+<span class="sd">        of changing the license of tlviz into a GPL-license too.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments passed to the qq-plot function</span>
+<span class="sd">        (``statsmodels.api.qqplot`` or ``pingouin.qqplot``)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : Matplotlib axes</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import residual_qq</span>
+<span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)</span>
+<span class="sd">        &gt;&gt;&gt; est_cp = parafac(X, 3)</span>
+<span class="sd">        &gt;&gt;&gt; residual_qq(est_cp, X)</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;QQ-plot of residuals&#39;}, xlabel=&#39;Theoretical Quantiles&#39;, ylabel=&#39;Sample Quantiles&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">estimated_dataset</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+    <span class="n">residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">estimated_dataset</span> <span class="o">-</span> <span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">use_pingouin</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="kn">from</span> <span class="nn">pingouin</span> <span class="kn">import</span> <span class="n">qqplot</span>
+
+        <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;GPL-3 Lisenced code is loaded, so this code also follows the GPL-3 license.&quot;</span><span class="p">)</span>
+        <span class="n">qqplot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sm</span><span class="o">.</span><span class="n">qqplot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;QQ-plot of residuals&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="outlier_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.outlier_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">outlier_plot</span><span class="p">(</span>
+    <span class="n">cp_tensor</span><span class="p">,</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">leverage_rules_of_thumb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">residual_rules_of_thumb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Alias for mode</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the leverage-residual scatterplot to detect outliers.</span>
+
+<span class="sd">    Detecting outliers can be a difficult task, and a common way to do this is by making a scatter-plot where the</span>
+<span class="sd">    leverage score is plotted against the slabwise SSE (or residual).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray or xarray.DataArray</span>
+<span class="sd">        Dataset to compare with</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        Which mode (axis) to create the outlier plot for</span>
+<span class="sd">    leverage_rules_of_thumb : str or iterable of str</span>
+<span class="sd">        Rule of thumb(s) used to create lines for detecting outliers based on leverage score. Must be a supported</span>
+<span class="sd">        argument for ``method`` with :meth:`tlviz.outliers.get_leverage_outlier_threshold`. If</span>
+<span class="sd">        ``leverage_rules_of_thumb`` is an iterable of strings, then multiple lines will be drawn, one for each</span>
+<span class="sd">        method.</span>
+<span class="sd">    residual_rules_of_thumb : str or iterable of str</span>
+<span class="sd">        Rule of thumb(s) used to create lines for detecting outliers based on residuals. Must be a supported</span>
+<span class="sd">        argument for ``method`` with :meth:`tlviz.outliers.get_slabwise_sse_outlier_threshold`. If</span>
+<span class="sd">        ``residual_rules_of_thumb`` is an iterable of strings, then multiple lines will be drawn, one for each</span>
+<span class="sd">        method.</span>
+<span class="sd">    p_value : float or iterable of float</span>
+<span class="sd">        p-value(s) to use for both the leverage and residual rules of thumb. If an iterable of floats is used,</span>
+<span class="sd">        then there will be drawn lines for each p-value.</span>
+<span class="sd">    ax : Matplotlib axes</span>
+<span class="sd">        Axes to plot outlier plot in. If ``None``, then ``plt.gca()`` is used.</span>
+<span class="sd">    axis : int (optional)</span>
+<span class="sd">        Alias for mode. If set, then mode cannot be set.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : Matplotlib axes</span>
+<span class="sd">        Axes with outlier plot in</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Here is a simple example demonstrating how to use the outlier plot to detect outliers based on the</span>
+<span class="sd">    Oslo bike sharing data.</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import non_negative_parafac_hals</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import load_oslo_city_bike</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.postprocessing import postprocess</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import outlier_plot</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; data = load_oslo_city_bike()</span>
+<span class="sd">        &gt;&gt;&gt; X = data.data</span>
+<span class="sd">        &gt;&gt;&gt; cp = non_negative_parafac_hals(X, 3, init=&quot;random&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; cp = postprocess(cp, dataset=data, )</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; outlier_plot(</span>
+<span class="sd">        ...     cp, data, leverage_rules_of_thumb=&#39;p-value&#39;, residual_rules_of_thumb=&#39;p-value&#39;, p_value=[0.05, 0.01]</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    We can also provide multiple types of rules of thumb</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import non_negative_parafac_hals</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import load_oslo_city_bike</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.postprocessing import postprocess</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import outlier_plot</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; data = load_oslo_city_bike()</span>
+<span class="sd">        &gt;&gt;&gt; X = data.data</span>
+<span class="sd">        &gt;&gt;&gt; cp = non_negative_parafac_hals(X, 3, init=&quot;random&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; cp = postprocess(cp, dataset=data, )</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; outlier_plot(</span>
+<span class="sd">        ...     cp, data, leverage_rules_of_thumb=[&#39;huber lower&#39;, &#39;hw higher&#39;], residual_rules_of_thumb=&#39;two sigma&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    tlviz.outliers.compute_outlier_info</span>
+<span class="sd">    tlviz.outliers.compute_leverage</span>
+<span class="sd">    tlviz.outliers.compute_slabwise_sse</span>
+<span class="sd">    tlviz.outliers.get_leverage_outlier_threshold</span>
+<span class="sd">    tlviz.outliers.get_slabwise_sse_outlier_threshold</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factor_matrices</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+
+    <span class="n">outlier_info</span> <span class="o">=</span> <span class="n">compute_outlier_info</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">outlier_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_LEVERAGE_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">outlier_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_SLABWISE_SSE_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Leverage score&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Slabwise SSE&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span> <span class="ow">and</span> <span class="n">factor_matrices</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">}:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Outlier plot for </span><span class="si">{</span><span class="n">factor_matrices</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Outlier plot for mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">outlier_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_LEVERAGE_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">outlier_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_SLABWISE_SSE_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">outlier_info</span><span class="o">.</span><span class="n">index</span><span class="p">,):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Vertical lines for leverage based rule-of-thumb thresholds</span>
+    <span class="n">leverage_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">leverage_rules_of_thumb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">leverage_rules_of_thumb</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">leverage_rules_of_thumb</span> <span class="o">=</span> <span class="p">[</span><span class="n">leverage_rules_of_thumb</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">leverage_rule_of_thumb</span> <span class="ow">in</span> <span class="n">leverage_rules_of_thumb</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">leverage_rule_of_thumb</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="s2">&quot;hotelling&quot;</span><span class="p">}</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">p_value</span><span class="p">):</span>
+                <span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_value</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">leverage_rule_of_thumb</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="s2">&quot;hotelling&quot;</span><span class="p">}:</span>
+                <span class="n">p_values</span> <span class="o">=</span> <span class="n">p_value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>  <span class="c1"># We still need something to iterate over even if it doesn&#39;t use the p-value</span>
+
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">:</span>
+                <span class="n">threshold</span> <span class="o">=</span> <span class="n">get_leverage_outlier_threshold</span><span class="p">(</span>
+                    <span class="n">outlier_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_LEVERAGE_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="n">leverage_rule_of_thumb</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">leverage_rule_of_thumb</span> <span class="o">==</span> <span class="s2">&quot;p-value&quot;</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Leverage p-value: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">elif</span> <span class="n">leverage_rule_of_thumb</span> <span class="o">==</span> <span class="s2">&quot;hotelling&quot;</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hotelling T2 p-value: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">leverage_rule_of_thumb</span>
+                <span class="n">leverage_thresholds</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold</span>
+
+    <span class="c1"># Draw the lines</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">leverage_thresholds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="nb">next</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">_get_lines</span><span class="o">.</span><span class="n">prop_cycler</span><span class="p">))</span>
+
+    <span class="n">residual_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">residual_rules_of_thumb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual_rules_of_thumb</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">residual_rules_of_thumb</span> <span class="o">=</span> <span class="p">[</span><span class="n">residual_rules_of_thumb</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">residual_rule_of_thumb</span> <span class="ow">in</span> <span class="n">residual_rules_of_thumb</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">residual_rule_of_thumb</span> <span class="o">==</span> <span class="s2">&quot;p-value&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">p_value</span><span class="p">):</span>
+                <span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_value</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">residual_rule_of_thumb</span> <span class="o">==</span> <span class="s2">&quot;p-value&quot;</span><span class="p">:</span>
+                <span class="n">p_values</span> <span class="o">=</span> <span class="n">p_value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>  <span class="c1"># We still need something to iterate over even if it doesn&#39;t use the p-value</span>
+
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">:</span>
+                <span class="n">threshold</span> <span class="o">=</span> <span class="n">get_slabwise_sse_outlier_threshold</span><span class="p">(</span>
+                    <span class="n">outlier_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_SLABWISE_SSE_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="n">residual_rule_of_thumb</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">residual_rule_of_thumb</span> <span class="o">==</span> <span class="s2">&quot;p-value&quot;</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Residual p-value: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">residual_rule_of_thumb</span>
+                <span class="n">residual_thresholds</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">residual_thresholds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="nb">next</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">_get_lines</span><span class="o">.</span><span class="n">prop_cycler</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_thresholds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_thresholds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="component_scatterplot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.component_scatterplot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
+<span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">x_component</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_component</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Scatterplot of two columns in a factor matrix.</span>
+
+<span class="sd">    Create a scatterplot with the columns of a factor matrix as feature-vectors.</span>
+<span class="sd">    Note that since factor matrices are not orthogonal, the distances between points</span>
+<span class="sd">    can be misleading. The lack of orthogonality means that distances and angles</span>
+<span class="sd">    are &quot;skewed&quot;, and two slabs with vastly different locations in the scatter plot</span>
+<span class="sd">    can be very similar (in the case of collinear components). For more information</span>
+<span class="sd">    about this phenomenon, see :cite:p:`kiers2000some` and example 8.3 in</span>
+<span class="sd">    :cite:p:`smilde2005multi`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        Mode for the factor matrix whose columns are plotted</span>
+<span class="sd">    x_component : int</span>
+<span class="sd">        Component plotted on the x-axis</span>
+<span class="sd">    y_component : int</span>
+<span class="sd">        Component plotted on the y-axis</span>
+<span class="sd">    ax : Matplotlib axes (Optional)</span>
+<span class="sd">        Axes to plot the scatterplot in</span>
+<span class="sd">    axis : int (optional)</span>
+<span class="sd">        Alias for mode. If this is provided, then no value for mode can be provided.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments passed to ``ax.scatter``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : Matplotlib axes</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Small example with a simulated third order CP tensor</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import component_scatterplot</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = random_cp(shape=(5,10,15), rank=2)</span>
+<span class="sd">        &gt;&gt;&gt; component_scatterplot(cp_tensor, mode=0)</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    Eexample with PCA of a real stock dataset</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; import plotly.express as px</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.postprocessing import label_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import component_scatterplot</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Load data and convert to xarray</span>
+<span class="sd">        &gt;&gt;&gt; stocks = px.data.stocks().set_index(&quot;date&quot;).stack()</span>
+<span class="sd">        &gt;&gt;&gt; stocks.index.names = [&quot;Date&quot;, &quot;Stock&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; stocks = stocks.to_xarray()</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Compute PCA via SVD of centered data</span>
+<span class="sd">        &gt;&gt;&gt; stocks -= stocks.mean(axis=0)</span>
+<span class="sd">        &gt;&gt;&gt; U, s, Vh = np.linalg.svd(stocks, full_matrices=False)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Extract two components and convert to cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; num_components = 2</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = s[:num_components], (U[:, :num_components], Vh.T[:, :num_components])</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = label_cp_tensor(cp_tensor, stocks)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Visualise the components with components_plot</span>
+<span class="sd">        &gt;&gt;&gt; component_scatterplot(cp_tensor, mode=1)</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">factor_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">relevant_factors</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="p">[:,</span> <span class="p">[</span><span class="n">x_component</span><span class="p">,</span> <span class="n">y_component</span><span class="p">]]</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">x_component</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">y_component</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Component plot&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">relevant_factors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">relevant_factors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">relevant_factors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">relevant_factors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="core_element_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.core_element_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">core_element_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Scatter plot with the elements of the optimal core tensor for a given CP tensor.</span>
+
+<span class="sd">    If the CP-model is appropriate for the data, then the core tensor should</span>
+<span class="sd">    be superdiagonal, and all off-superdiagonal entries should be zero. This plot</span>
+<span class="sd">    shows the core elements, sorted so the first R scatter-points correspond to the</span>
+<span class="sd">    superdiagonal and the subsequent scatter-points correspond to off-diagonal entries</span>
+<span class="sd">    in the optimal core tensor.</span>
+
+<span class="sd">    Together with the scatter plot, there is a line-plot that indicate where the scatter-points</span>
+<span class="sd">    should be if the CP-model perfectly describes the data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray or xarray.DataArray</span>
+<span class="sd">        The dataset the CP tensor models.</span>
+<span class="sd">    normalised : bool</span>
+<span class="sd">        If true then the normalised core consistency will be estimated</span>
+<span class="sd">        (see ``tlviz.model_evaluation.core_consistency``)</span>
+<span class="sd">    ax : Matplotlib axes</span>
+<span class="sd">        Axes to plot the core element plot within</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : Matplotlib axes</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import core_element_plot</span>
+<span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=42)</span>
+<span class="sd">        &gt;&gt;&gt; est_cp = parafac(X, 3)</span>
+<span class="sd">        &gt;&gt;&gt; core_element_plot(est_cp, X)</span>
+<span class="sd">        &lt;AxesSubplot:title={&#39;center&#39;:&#39;Core consistency: 99.8&#39;}, xlabel=&#39;Core element&#39;, ylabel=&#39;Value&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">*=</span> <span class="n">weights</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+    <span class="c1"># Estimate core and compute core consistency</span>
+    <span class="n">core_tensor</span> <span class="o">=</span> <span class="n">estimate_core_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalised</span><span class="p">:</span>
+        <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">core_tensor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">denom</span> <span class="o">=</span> <span class="n">rank</span>
+
+    <span class="n">core_consistency</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">-</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">core_tensor</span> <span class="o">-</span> <span class="n">T</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+
+    <span class="c1"># Extract superdiagonal and offdiagonal elements</span>
+    <span class="n">core_elements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">core_tensor</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="n">diagonal_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">diagonal_mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">core_elements</span><span class="p">[:</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">core_tensor</span><span class="p">[</span><span class="n">diagonal_mask</span><span class="p">]</span>
+    <span class="n">core_elements</span><span class="p">[</span><span class="n">rank</span><span class="p">:]</span> <span class="o">=</span> <span class="n">core_tensor</span><span class="p">[</span><span class="o">~</span><span class="n">diagonal_mask</span><span class="p">]</span>
+
+    <span class="c1"># Plot core elements</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">core_elements</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">[:</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Target&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">rank</span><span class="p">],</span> <span class="n">core_elements</span><span class="p">[:</span><span class="n">rank</span><span class="p">],</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Superdiagonal&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">rank</span><span class="p">:],</span> <span class="n">core_elements</span><span class="p">[</span><span class="n">rank</span><span class="p">:],</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Off diagonal&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Core element&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Core consistency: </span><span class="si">{</span><span class="n">core_consistency</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<span class="k">def</span> <span class="nf">_srgb_to_luminance</span><span class="p">(</span><span class="n">srgb</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the Y of XYZ.</span>
+
+<span class="sd">    Computed based on a preview of the IEC 61966-2-1:1999/AMD1:2003 standard. Downloaded</span>
+<span class="sd">    from https://www.sis.se/api/document/preview/562720/ (archived version:</span>
+<span class="sd">    https://web.archive.org/web/20200608215908/https://www.sis.se/api/document/preview/562720/).</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    srgb : np.ndarray</span>
+<span class="sd">        Non-linear sRGB signal</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        Array with luminance (Y) values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">srgb_linear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">srgb</span> <span class="o">&lt;</span> <span class="mf">0.04045</span><span class="p">,</span> <span class="n">srgb</span> <span class="o">/</span> <span class="mf">12.92</span><span class="p">,</span> <span class="p">((</span><span class="n">srgb</span> <span class="o">+</span> <span class="mf">0.055</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.055</span><span class="p">)</span> <span class="o">**</span> <span class="mf">2.4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">srgb_linear</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2126</span><span class="p">,</span> <span class="mf">0.7152</span><span class="p">,</span> <span class="mf">0.0722</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_get_core_tensor_index</span><span class="p">(</span><span class="n">slab_idx</span><span class="p">,</span> <span class="n">slice_mode</span><span class="p">):</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">slice_strs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">slice_mode</span><span class="p">:</span>
+            <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slab_idx</span><span class="p">)</span>
+            <span class="n">slice_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">slab_idx</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+            <span class="n">slice_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">slice_str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">slice_strs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">slices</span><span class="p">),</span> <span class="n">slice_str</span>
+
+
+<span class="k">def</span> <span class="nf">_apply_cmap</span><span class="p">(</span><span class="n">selected_slab</span><span class="p">,</span> <span class="n">vmax</span><span class="p">):</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">)</span>
+    <span class="n">scaled_slab</span> <span class="o">=</span> <span class="p">(</span><span class="n">selected_slab</span> <span class="o">+</span> <span class="n">vmax</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">vmax</span><span class="p">)</span>
+    <span class="n">scaled_slab</span><span class="p">[</span><span class="n">scaled_slab</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">scaled_slab</span><span class="p">[</span><span class="n">scaled_slab</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">cmap</span><span class="p">(</span><span class="n">scaled_slab</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_text_color</span><span class="p">(</span><span class="n">bg_rgb</span><span class="p">):</span>
+    <span class="n">luminance</span> <span class="o">=</span> <span class="n">_srgb_to_luminance</span><span class="p">(</span><span class="n">bg_rgb</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">luminance</span> <span class="o">&gt;</span> <span class="mf">0.408</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;0.15&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;white&quot;</span>
+
+
+<div class="viewcode-block" id="core_element_heatmap"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.core_element_heatmap">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">core_element_heatmap</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">slice_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text_fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.</span>
+
+<span class="sd">    It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which</span>
+<span class="sd">    components that are modelling multi-linear behaviour and which are not. For example, a component that models noise is</span>
+<span class="sd">    more likely to have strong interactions with the other components compared to a component that have a meaningful</span>
+<span class="sd">    interpretation. In the core element heatmap, this is shown as rows, columns and/or slabs that have high entries compared</span>
+<span class="sd">    to the diagonal.</span>
+
+<span class="sd">    If the data follows a PARAFAC model perfectly, then there should only be one non-zero entry per slice. For the :math:`r`-th</span>
+<span class="sd">    slice, the :math:`(r, r)`-th entry will be 1 and all others will be 0.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The core element heatmap can only be plotted for third-order tensors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray or xarray.DataArray</span>
+<span class="sd">        The dataset the CP tensor models.</span>
+<span class="sd">    slice_mode : {0, 1, 2} (default=0)</span>
+<span class="sd">        Which mode to slice the core tensor across.</span>
+<span class="sd">    vmax : float (default=None)</span>
+<span class="sd">        The maximum value for the colormap (a diverging colormap with center at 0 will be used).</span>
+<span class="sd">        If ``None``, then the maximum entry in the core tensor is used.</span>
+<span class="sd">    annotate : bool (default=True)</span>
+<span class="sd">        If ``True``, then the value of the core tensor is plotted too.</span>
+<span class="sd">    text_kwargs : dict (default=None)</span>
+<span class="sd">        Additional keyword arguments used for plotting the text. Can for example be used to set the font size.</span>
+<span class="sd">    text_fmt : str (default=&quot;.2f&quot;)</span>
+<span class="sd">        Formatting string used for annotating.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">    axes : ndarray(dtype=matplotlib.axes.Axes)</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import core_element_heatmap</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor((20, 30, 40), 3, seed=0)</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = core_element_heatmap(cp_tensor, dataset)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only create a core element heatmap for third order tensors.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Multiply weights into components so diagonal should be one</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">A</span> <span class="o">*=</span> <span class="n">weights</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+    <span class="c1"># Estimate core tensor</span>
+    <span class="n">core_tensor</span> <span class="o">=</span> <span class="n">estimate_core_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+    <span class="n">num_components</span> <span class="o">=</span> <span class="n">core_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">num_components</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">vmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">core_tensor</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">text_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">text_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">slab</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+        <span class="n">slices</span><span class="p">,</span> <span class="n">slice_str</span> <span class="o">=</span> <span class="n">_get_core_tensor_index</span><span class="p">(</span><span class="n">slab</span><span class="p">,</span> <span class="n">slice_mode</span><span class="p">)</span>
+        <span class="n">selected_slab</span> <span class="o">=</span> <span class="n">core_tensor</span><span class="p">[</span><span class="n">slices</span><span class="p">]</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">_apply_cmap</span><span class="p">(</span><span class="n">selected_slab</span><span class="p">,</span> <span class="n">vmax</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">annotate</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">selected_slab</span><span class="p">):</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                    <span class="o">*</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># Reverse since matrix index is (y, x), not (x, y)</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">:{</span><span class="n">text_fmt</span><span class="si">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">_get_text_color</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span>
+                    <span class="o">**</span><span class="n">text_kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_components</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_components</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;core_tensor[</span><span class="si">{</span><span class="n">slice_str</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+
+<div class="viewcode-block" id="components_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.components_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">components_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;normalise&quot;</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot the component vectors of a CP model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    weight_behaviour : {&#39;ignore&#39;, &#39;normalise&#39;, &#39;evenly&#39;, &#39;one_mode&#39;}</span>
+<span class="sd">        How to handle the component weights.</span>
+
+<span class="sd">         * ignore - Do nothing, just plot the factor matrices</span>
+<span class="sd">         * normalise - Plot all components after normalising them</span>
+<span class="sd">         * evenly - Distribute the weight evenly across all modes</span>
+<span class="sd">         * one_mode - Move all the weight into one factor matrix</span>
+
+<span class="sd">    weight_mode : int</span>
+<span class="sd">        The mode that the weight should be placed in (only used if ``weight_behaviour=&#39;one_mode&#39;``)</span>
+<span class="sd">    plot_kwargs : list of dictionaries</span>
+<span class="sd">        List of same length as the number of modes. Each element is a kwargs-dict passed to</span>
+<span class="sd">        the plot function for that mode.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">    axes : ndarray(dtype=matplotlib.axes.Axes)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Small example with a simulated CP tensor</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import components_plot</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = random_cp(shape=(5,10,15), rank=3)</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = components_plot(cp_tensor)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    Full example with PCA of a real stock dataset</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; import plotly.express as px</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.postprocessing import label_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import components_plot</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Load data and convert to xarray</span>
+<span class="sd">        &gt;&gt;&gt; stocks = px.data.stocks().set_index(&quot;date&quot;).stack()</span>
+<span class="sd">        &gt;&gt;&gt; stocks.index.names = [&quot;Date&quot;, &quot;Stock&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; stocks = stocks.to_xarray()</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Compute PCA via SVD of centered data</span>
+<span class="sd">        &gt;&gt;&gt; stocks -= stocks.mean(axis=0)</span>
+<span class="sd">        &gt;&gt;&gt; U, s, Vh = np.linalg.svd(stocks, full_matrices=False)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Extract two components and convert to cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; num_components = 2</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = s[:num_components], (U[:, :num_components], Vh.T[:, :num_components])</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = label_cp_tensor(cp_tensor, stocks)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Visualise the components with components_plot</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = components_plot(cp_tensor, weight_behaviour=&quot;one_mode&quot;, weight_mode=1,</span>
+<span class="sd">        ...                             plot_kwargs=[{}, {&#39;marker&#39;: &#39;o&#39;, &#39;linewidth&#39;: 0}])</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factor_matrices</span> <span class="o">=</span> <span class="n">factor_tools</span><span class="o">.</span><span class="n">distribute_weights</span><span class="p">(</span>
+        <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="n">weight_behaviour</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="n">weight_mode</span>
+    <span class="p">)</span>
+
+    <span class="n">num_components</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">num_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">plot_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plot_kwargs</span> <span class="o">=</span> <span class="p">[{}]</span> <span class="o">*</span> <span class="n">num_modes</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span> <span class="o">/</span> <span class="n">num_modes</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">mode</span><span class="p">,</span> <span class="n">factor_matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="s2">&quot;plot&quot;</span><span class="p">):</span>
+            <span class="n">factor_matrix</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_components</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+
+<div class="viewcode-block" id="component_comparison_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.component_comparison_plot">[docs]</a><span class="k">def</span> <span class="nf">component_comparison_plot</span><span class="p">(</span>
+    <span class="n">cp_tensors</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;normalise&quot;</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a plot to compare different CP tensors.</span>
+
+<span class="sd">    This function creates a figure with either D columns and R rows or D columns and N rows,</span>
+<span class="sd">    where D is the number of modes, R is the number of components and N is the number of cp tensors</span>
+<span class="sd">    to compare.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensors : dict (str -&gt; CPTensor)</span>
+<span class="sd">        Dictionary with model names mapping to decompositions. The model names</span>
+<span class="sd">        are used for labels. The components of all CP tensors will be aligned</span>
+<span class="sd">        to maximise the factor match score with the components of the first CP</span>
+<span class="sd">        tensor in the dictionary (starting with Python 3.7, dictionaries are sorted by</span>
+<span class="sd">        insertion order).</span>
+<span class="sd">    row : {&quot;model&quot;, &quot;component&quot;}</span>
+<span class="sd">    weight_behaviour : {&quot;ignore&quot;, &quot;normalise&quot;, &quot;evenly&quot;, &quot;one_mode&quot;} (default=&quot;normalise&quot;)</span>
+<span class="sd">        How to handle the component weights.</span>
+
+<span class="sd">         * ``&quot;ignore&quot;`` - Do nothing</span>
+<span class="sd">         * ``&quot;normalise&quot;`` - Normalise all factor matrices</span>
+<span class="sd">         * ``&quot;evenly&quot;`` - All factor matrices have equal norm</span>
+<span class="sd">         * ``&quot;one_mode&quot;`` - The weight is allocated in one mode, all other factor matrices have unit norm columns.</span>
+
+<span class="sd">    weight_mode : int (optional)</span>
+<span class="sd">        Which mode to have the component weights in (only used if ``weight_behaviour=&quot;one_mode&quot;``)</span>
+<span class="sd">    plot_kwargs : list of list of dicts</span>
+<span class="sd">        Nested list of dictionaries, one dictionary with keyword arguments for each subplot.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib figure</span>
+<span class="sd">    axes : array of matplotlib axes</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac, non_negative_parafac_hals</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import component_comparison_plot</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.postprocessing import postprocess</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, noise_level=0.5, seed=42)</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensors = {</span>
+<span class="sd">        ...     &quot;True&quot;: true_cp,</span>
+<span class="sd">        ...     &quot;CP&quot;: parafac(X, 3),</span>
+<span class="sd">        ...     &quot;NN CP&quot;: non_negative_parafac_hals(X, 3),</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = component_comparison_plot(cp_tensors, row=&quot;component&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    If not all decompositions have the same number of components, then the components will be aligned</span>
+<span class="sd">    with the first (reference) decomposition in the ``cp_tensors``-dictionary. If one of the subsequent</span>
+<span class="sd">    decompositions have fewer components than the reference decomposition, then the columns will be</span>
+<span class="sd">    aligned correctly, and if one of them has more, then the additional components will be ignored.</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.factor_tools import permute_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.postprocessing import postprocess</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import component_comparison_plot</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; four_components = simulated_random_cp_tensor((5, 6, 7), 4, noise_level=0.5, seed=42)[0]</span>
+<span class="sd">        &gt;&gt;&gt; three_components = permute_cp_tensor(four_components, permutation=[0, 1, 2])</span>
+<span class="sd">        &gt;&gt;&gt; two_components = permute_cp_tensor(four_components, permutation=[0, 2])</span>
+<span class="sd">        &gt;&gt;&gt; # Plot the decomposition</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensors = {</span>
+<span class="sd">        ...     &quot;True&quot;: three_components,  # Reference decomposition</span>
+<span class="sd">        ...     &quot;subset&quot;: two_components,  # Only component 0 and 2</span>
+<span class="sd">        ...     &quot;superset&quot;: four_components,  # All components in reference plus one additional</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = component_comparison_plot(cp_tensors, row=&quot;model&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cp_tensors</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">to_numpy_cp</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">cp_tensor</span> <span class="ow">in</span> <span class="n">cp_tensors</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">main_cp_tensor</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">cp_tensors</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factor_matrices</span> <span class="o">=</span> <span class="n">main_cp_tensor</span>
+
+    <span class="n">cp_tensors</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">postprocessing</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span>
+            <span class="n">value</span><span class="p">,</span>
+            <span class="n">reference_cp_tensor</span><span class="o">=</span><span class="n">main_cp_tensor</span><span class="p">,</span>
+            <span class="n">weight_behaviour</span><span class="o">=</span><span class="n">weight_behaviour</span><span class="p">,</span>
+            <span class="n">weight_mode</span><span class="o">=</span><span class="n">weight_mode</span><span class="p">,</span>
+            <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">cp_tensors</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="n">num_components</span> <span class="o">=</span> <span class="n">factor_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">num_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">)</span>
+    <span class="n">num_models</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">)</span>
+    <span class="n">ref_name</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">cp_tensors</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="n">num_models</span>
+    <span class="k">elif</span> <span class="n">row</span> <span class="o">==</span> <span class="s2">&quot;component&quot;</span><span class="p">:</span>
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="n">num_components</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Row must be either &#39;model&#39; or &#39;component&#39;&quot;</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_modes</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_rows</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">/</span> <span class="n">num_modes</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">model_num</span><span class="p">,</span> <span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cp_tensors</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">factor_matrices</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># The weights are handled by the above postprocessing</span>
+        <span class="k">if</span> <span class="n">factor_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">num_components</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> decomposition has a higher rank than the reference </span><span class="si">{</span><span class="n">ref_name</span><span class="si">}</span><span class="s2"> decomposition.&quot;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; Therefore, only the subset of columns in </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> that correspond to columns in&quot;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">ref_name</span><span class="si">}</span><span class="s2"> will be plotted.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">mode</span><span class="p">,</span> <span class="n">factor_matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">component_num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_components</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
+                    <span class="n">row_idx</span> <span class="o">=</span> <span class="n">model_num</span>
+                <span class="k">elif</span> <span class="n">row</span> <span class="o">==</span> <span class="s2">&quot;component&quot;</span><span class="p">:</span>
+                    <span class="n">row_idx</span> <span class="o">=</span> <span class="n">component_num</span>
+
+                <span class="k">if</span> <span class="n">plot_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">[</span><span class="n">row_idx</span><span class="p">][</span><span class="n">mode</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+                    <span class="n">factor_matrix</span><span class="p">[</span><span class="n">component_num</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="n">mode</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">legend</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">[:,</span> <span class="n">component_num</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+            <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_components</span><span class="p">)],</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper center&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="n">num_components</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">row_idx</span><span class="p">,</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">):</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">row</span> <span class="o">==</span> <span class="s2">&quot;component&quot;</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">cp_tensors</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper center&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">row_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_components</span><span class="p">):</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">row_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_modes</span><span class="p">):</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row_idx</span><span class="p">,</span> <span class="n">mode</span><span class="p">]</span>
+            <span class="n">xlim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>  <span class="c1"># Necessary to supress FixedLocator warning</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">())</span>  <span class="c1"># Necessary to supress FixedLocator warning</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>  <span class="c1"># Necessary to supress FixedLocator warning</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+
+<div class="viewcode-block" id="optimisation_diagnostic_plots"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.optimisation_diagnostic_plots">[docs]</a><span class="k">def</span> <span class="nf">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">error_logs</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Diagnostic plots for the optimisation problem.</span>
+
+<span class="sd">    This function creates two plots. One plot that shows the loss value for each initialisation</span>
+<span class="sd">    and whether or not that initialisation converged or ran until the maximum number of iterations.</span>
+<span class="sd">    The other plot shows the error log for each initialisation, with the initialisation with lowest</span>
+<span class="sd">    final error in a different colour (orange).</span>
+
+<span class="sd">    These plots can be helpful for understanding how stable the model is with respect to initialisation.</span>
+<span class="sd">    Ideally, we should see that many initialisations converged and obtained the same, low, error.</span>
+<span class="sd">    If models converge, but with different errors, then this can indicate that indicates that a stricter</span>
+<span class="sd">    convergence tolerance is required, and if no models converge, then more iterations may be required.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    error_logs : list of arrays</span>
+<span class="sd">        List of arrays, each containing the error per iteration for an initialisation.</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iterations for the fitting procedure. Used to determine if the</span>
+<span class="sd">        models converged or not.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">    axes : array(dtype=matplotlib.axes.Axes)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Fit the wrong number of components to show local minima problems</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import optimisation_diagnostic_plots</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Generate random tensor and add noise</span>
+<span class="sd">        &gt;&gt;&gt; rng = np.random.RandomState(1)</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = random_cp((5, 6, 7), 2, random_state=rng)</span>
+<span class="sd">        &gt;&gt;&gt; dataset = cp_tensor.to_tensor() + rng.standard_normal((5, 6, 7))</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Fit 10 models</span>
+<span class="sd">        &gt;&gt;&gt; errs = []</span>
+<span class="sd">        &gt;&gt;&gt; for i in range(10):</span>
+<span class="sd">        ...     errs.append(parafac(dataset, 3, n_iter_max=500, return_errors=True, init=&quot;random&quot;, random_state=rng)[1])</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Plot the diganostic plots</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = optimisation_diagnostic_plots(errs, 500)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+
+<span class="sd">    Fit a model with too few iterations</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.random import random_cp</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import optimisation_diagnostic_plots</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Generate random tensor and add noise</span>
+<span class="sd">        &gt;&gt;&gt; rng = np.random.RandomState(1)</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor = random_cp((5, 6, 7), 3, random_state=rng)</span>
+<span class="sd">        &gt;&gt;&gt; dataset = cp_tensor.to_tensor() + rng.standard_normal((5, 6, 7))</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Fit 10 models</span>
+<span class="sd">        &gt;&gt;&gt; errs = []</span>
+<span class="sd">        &gt;&gt;&gt; for i in range(10):</span>
+<span class="sd">        ...     errs.append(parafac(dataset, 3, n_iter_max=50, return_errors=True, init=&quot;random&quot;, random_state=rng)[1])</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Plot the diagnostic plots</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = optimisation_diagnostic_plots(errs, 50)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">selected_init</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">lowest_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">for</span> <span class="n">init</span><span class="p">,</span> <span class="n">error</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">error_logs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">error</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+            <span class="n">selected_init</span> <span class="o">=</span> <span class="n">init</span>
+            <span class="n">lowest_error</span> <span class="o">=</span> <span class="n">error</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">ymax</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">init</span><span class="p">,</span> <span class="n">error</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">error_logs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="n">selected_init</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.prop_cycle&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s2">&quot;color&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">zorder</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.prop_cycle&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s2">&quot;color&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">zorder</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_iter_max</span><span class="p">:</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">init</span><span class="p">],</span> <span class="p">[</span><span class="n">error</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">init</span><span class="p">],</span> <span class="p">[</span><span class="n">error</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
+        <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ymax</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Initialisation&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="n">ymax</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="n">ymax</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Error (Log scale)&quot;</span><span class="p">)</span>
+
+    <span class="n">custom_lines</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.prop_cycle&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s2">&quot;color&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,),</span>
+        <span class="n">Line2D</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.prop_cycle&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s2">&quot;color&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+        <span class="n">custom_lines</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;Converged&quot;</span><span class="p">,</span> <span class="s2">&quot;Did not converge&quot;</span><span class="p">,</span> <span class="s2">&quot;Lowest final error&quot;</span><span class="p">,</span> <span class="s2">&quot;Other runs&quot;</span><span class="p">],</span>
+        <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span>
+        <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower center&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+
+<div class="viewcode-block" id="percentage_variation_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.percentage_variation_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">percentage_variation_plot</span><span class="p">(</span>
+    <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bar chart showing the percentage of variation explained by each of the components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument</span>
+<span class="sd">    dataset : np.ndarray or xarray.DataArray</span>
+<span class="sd">        Dataset to compare with, only needed if ``method=&quot;data&quot;`` or ``method=&quot;both&quot;``.</span>
+<span class="sd">    model : {&quot;model&quot;, &quot;data&quot;, &quot;both&quot;} (default=&quot;model&quot;)</span>
+<span class="sd">        Whether the percentage variation should be computed based on the model, data or both.</span>
+<span class="sd">    ax : matplotlib axes</span>
+<span class="sd">        Axes to draw the plot in</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matplotlib axes</span>
+<span class="sd">        Axes with the plot in</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    By default, we get the percentage of variation in the model each component explains</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import percentage_variation_plot</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)</span>
+<span class="sd">        &gt;&gt;&gt; percentage_variation_plot(cp_tensor)</span>
+<span class="sd">        &lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    We can also get the percentage of variation in the data that each component explains</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import percentage_variation_plot</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)</span>
+<span class="sd">        &gt;&gt;&gt; percentage_variation_plot(cp_tensor, dataset, method=&quot;data&quot;)</span>
+<span class="sd">        &lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    Or both the variation in the data and in the model</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tlviz.visualisation import percentage_variation_plot</span>
+<span class="sd">        &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)</span>
+<span class="sd">        &gt;&gt;&gt; percentage_variation_plot(cp_tensor, dataset, method=&quot;both&quot;)</span>
+<span class="sd">        &lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;Percentage of data&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Percentage of model&quot;</span><span class="p">}</span>
+    <span class="n">variation</span> <span class="o">=</span> <span class="n">factor_tools</span><span class="o">.</span><span class="n">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;both&quot;</span><span class="p">:</span>
+        <span class="n">data_var</span><span class="p">,</span> <span class="n">model_var</span> <span class="o">=</span> <span class="n">variation</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_var</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">data_var</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_var</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">model_var</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">variation</span><span class="p">)),</span> <span class="n">variation</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">method</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Component number&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Percentage variation explained [%]&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+</pre></div>
+
+        </div>
+
+		
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

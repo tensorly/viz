@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlviz._xarray_wrapper &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+
+        <div class="content main-content">
+          
+  <h1>Source code for tlviz._xarray_wrapper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;This module contains utilities for seamlessly handling DataFrames as factor matrices and xarray DataArrays as data</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_SINGLETON</span><span class="p">,</span>
+    <span class="n">_check_is_argument</span><span class="p">,</span>
+    <span class="n">is_dataframe</span><span class="p">,</span>
+    <span class="n">is_xarray</span><span class="p">,</span>
+    <span class="n">validate_cp_tensor</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;is_dataframe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_xarray&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_labelled_dataset&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_labelled_cp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_labelled_tucker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;label_cp_tensor&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="add_factor_metadata"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.add_factor_metadata">[docs]</a><span class="k">def</span> <span class="nf">add_factor_metadata</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds the additional coordinates along each dataset dimension as new columns in the factor matrices.</span>
+
+<span class="sd">    The coordinates of xarray DataArrays can contain metadata. For each dimension, there may be additional</span>
+<span class="sd">    coordinates that are not used for indexing purposes. This function will iterate over all modes of</span>
+<span class="sd">    a dataset and a labelled CP tensor and add the additional coordinates as new columns in the factor</span>
+<span class="sd">    matrices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : labelled CP Tensor</span>
+<span class="sd">    dataset : xarray.DataArray</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        CP-tensor like tuple where the factor matrices are augmented with additional metadata.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.data import load_oslo_city_bike</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.postprocessing import postprocess, add_factor_metadata</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">    &gt;&gt;&gt; bikes = load_oslo_city_bike()</span>
+<span class="sd">    &gt;&gt;&gt; bikes.coords</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * End station name  (End station name) object &#39;7 Juni Plassen&#39; ... &#39;Økernve...</span>
+<span class="sd">        lat               (End station name) float64 59.92 59.93 ... 59.93 59.92</span>
+<span class="sd">        lon               (End station name) float64 10.73 10.75 ... 10.8 10.78</span>
+<span class="sd">      * Hour              (Hour) int32 0 1 2 3 4 5 6 7 8 ... 16 17 18 19 20 21 22 23</span>
+<span class="sd">      * Month             (Month) int32 1 2 3 4 5 6 7 8 9 10 11 12</span>
+<span class="sd">      * Day of week       (Day of week) int32 0 1 2 3 4 5 6</span>
+<span class="sd">      * Year              (Year) int32 2020 2021</span>
+
+<span class="sd">    We see that the ``End station name`` dimension has two additional columns: ``lat`` and ``lon``.</span>
+<span class="sd">    These contain metadata about the end station coordinates, and it can be useful to have these</span>
+<span class="sd">    columns also in the factor matrices. To do this, we first fit a PARAFAC model to the dataset,</span>
+<span class="sd">    then we postprocess it to label the CP tensor and finally, we add the metadata information</span>
+
+<span class="sd">    &gt;&gt;&gt; cp = parafac(bikes.data, 3, init=&quot;random&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; cp_labelled = postprocess(cp, bikes)</span>
+<span class="sd">    &gt;&gt;&gt; print(cp_labelled[1][0].columns)</span>
+<span class="sd">    RangeIndex(start=0, stop=3, step=1)</span>
+<span class="sd">    &gt;&gt;&gt; cp_with_metadata = add_factor_metadata(cp_labelled, bikes)</span>
+<span class="sd">    &gt;&gt;&gt; print(cp_with_metadata[1][0].columns)</span>
+<span class="sd">    Index([0, 1, 2, &#39;lat&#39;, &#39;lon&#39;], dtype=&#39;object&#39;)</span>
+
+<span class="sd">    We see that when we add the metadata, then the latitude and longitude columns are added</span>
+<span class="sd">    to the dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_labelled_cp</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The CP tensor must be labelled with the same labels as the dataset.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_labelled_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The dataset must be labelled with the same labels as the CP tensor.&quot;</span><span class="p">)</span>
+
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factor_matrices</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+    <span class="n">factors_with_metadata</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">mode</span><span class="p">,</span> <span class="n">factor_matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">):</span>
+        <span class="n">dim_name</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">coords</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">coords</span><span class="o">.</span><span class="n">coords</span><span class="p">})</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dim_name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">factors_with_metadata</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">factors_with_metadata</span></div>
+
+
+<span class="k">def</span> <span class="nf">_label_factor_matrices</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">xarray_to_pandas_index</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dim_name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span><span class="o">.</span><span class="n">xindexes</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_pandas_index</span><span class="p">()</span>
+
+        <span class="n">factor_matrices</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">xarray_to_pandas_index</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dim_name</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">factor_matrix</span><span class="p">,</span> <span class="n">dim_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">factor_matrices</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">index</span><span class="p">),</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;``dataset`` must be xarray.DataArray or, pandas.DataFrame &quot;</span>
+            <span class="s2">&quot;(only possible if ``len(factor_matrices) == 2``)&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">factor_matrices</span>
+
+
+<div class="viewcode-block" id="label_cp_tensor"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.label_cp_tensor">[docs]</a><span class="k">def</span> <span class="nf">label_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Label the CP tensor by converting the factor matrices into DataFrames with a sensible index.</span>
+
+<span class="sd">    Convert the factor matrices into Pandas DataFrames where the DataFrame indices</span>
+<span class="sd">    are given by the coordinate names of an xarray DataArray. If the dataset has only</span>
+<span class="sd">    two modes, then it can also be a pandas DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor</span>
+<span class="sd">        CP Tensor whose factor matrices should be labelled</span>
+<span class="sd">    dataset : xarray.DataArray of pandas.DataFrame</span>
+<span class="sd">        Dataset used to label the factor matrices</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    CPTensor</span>
+<span class="sd">        Tuple on the CPTensor format, except that the factor matrices are DataFrames.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_labelled_cp</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_labelled_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Both the CP tensor and the dataset is labelled, the labels from the cp tensor will be overwritten &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot; with the labels from the dataset.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">_unlabel_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">cp_tensor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">_label_factor_matrices</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dataset</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cp_tensor</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dataset must be either numpy array, xarray or pandas dataframe.&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the numerical values from ``x`` as a numpy array.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    x : np.ndarray or pd.DataFrame or xr.DataArray</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The numerical values of ``x`` as a numpy array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">is_labelled_cp</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if a cp tensor is labelled or not</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    cp_tensor : tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and an iterable of factor matrices as second argument</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether the factor matrices are labelled or not</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        If only some of the factor matrices are labelled (i.e. not none or all).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_dataframes</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">factor_matrix</span> <span class="ow">in</span> <span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+            <span class="n">num_dataframes</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">num_dataframes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">num_dataframes</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_dataframes</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2"> factor matrices are labelled (are DataFrames).&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot; All or none should be labelled.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">is_labelled_tucker</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if a Tucker tensor is labelled or not</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    tucker_tensor : tuple</span>
+<span class="sd">        TensorLy-style TuckerTensor object or tuple with the core array as the</span>
+<span class="sd">        first argument and an iterable of factor matrices as second argument</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether the factor matrices are labelled or not</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        If only some of the factor matrices are labelled (i.e. not none or all).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">is_labelled_cp</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">)</span>  <span class="c1"># The weights are not considered for cp, neither is the core array for tucker</span>
+
+
+<span class="k">def</span> <span class="nf">is_labelled_dataset</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns True if the dataset is labelled (is a DataFrame or DataArray).</span>
+
+<span class="sd">    This function is the same as writing ``is_dataframe(x) or is_xarray(x)``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x</span>
+<span class="sd">        Variable to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether ``x`` is labelled or not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TOTEST: is_labeled_dataset</span>
+    <span class="k">return</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_df_metadata</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">if</span> <span class="n">preserve_columns</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">metadata</span>
+
+
+<span class="c1"># TODO: Make public?</span>
+<span class="k">def</span> <span class="nf">_unlabel_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">optional</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cp_tensor</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">optional</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">cp_tensor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cp_tensor cannot be None&quot;</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+
+    <span class="c1"># Check that factor matrices are valid</span>
+    <span class="n">is_labelled</span> <span class="o">=</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span> <span class="o">!=</span> <span class="n">is_labelled</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All factor matrices must either be labelled or not labelled.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_labelled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="kc">None</span>
+
+    <span class="n">unlabelled_factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">factor_metadata</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
+        <span class="n">factor</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">_extract_df_metadata</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="n">preserve_columns</span><span class="p">)</span>
+        <span class="n">unlabelled_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+        <span class="n">factor_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">unlabelled_factors</span><span class="p">),</span> <span class="n">factor_metadata</span>
+
+
+<span class="k">def</span> <span class="nf">_relabel_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">factor_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cp_tensor</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">optional</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">factor_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cp_tensor</span>
+
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+    <span class="n">labelled_factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">factor</span><span class="p">,</span> <span class="n">metadata</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">factor_metadata</span><span class="p">):</span>
+        <span class="n">labelled_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="o">**</span><span class="n">metadata</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">labelled_factors</span>
+
+
+<span class="k">def</span> <span class="nf">_unlabel_factor_matrix</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">optional</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">factor_matrix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">optional</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">factor_matrix</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">_extract_df_metadata</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="n">preserve_columns</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_relabel_factor_matrix</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">factor_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">factor_matrix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">optional</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">factor_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">factor_matrix</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="o">**</span><span class="n">factor_metadata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_unlabel_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">optional</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">optional</span> <span class="ow">and</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Not optional and dataset is None</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Dataset cannot be None&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_xarray</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+        <span class="n">np_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">dataset_constructor</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span>
+        <span class="n">dataset_metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
+            <span class="s2">&quot;dims&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+            <span class="s2">&quot;attrs&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">elif</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+        <span class="n">np_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">dataset_constructor</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+        <span class="n">dataset_metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">np_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="n">dataset_constructor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
+        <span class="n">dataset_metadata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">np_dataset</span><span class="p">,</span> <span class="n">dataset_constructor</span><span class="p">,</span> <span class="n">dataset_metadata</span>
+
+
+<span class="k">def</span> <span class="nf">_relabel_dataset</span><span class="p">(</span><span class="n">np_dataset</span><span class="p">,</span> <span class="n">dataset_constructor</span><span class="p">,</span> <span class="n">dataset_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">optional</span> <span class="ow">and</span> <span class="n">np_dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">return</span> <span class="n">dataset_constructor</span><span class="p">(</span><span class="n">np_dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">dataset_metadata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_handle_labelled_cp</span><span class="p">(</span><span class="n">cp_tensor_name</span><span class="p">,</span> <span class="n">output_cp_tensor_index</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">_check_is_argument</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">cp_tensor_name</span><span class="p">)</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">bound_arguments</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cp_tensor_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cp_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+
+            <span class="n">cp_tensor_unlabelled</span><span class="p">,</span> <span class="n">cp_tensor_metadata</span> <span class="o">=</span> <span class="n">_unlabel_cp_tensor</span><span class="p">(</span>
+                <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="n">preserve_columns</span>
+            <span class="p">)</span>
+
+            <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">cp_tensor_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">cp_tensor_unlabelled</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">output_cp_tensor_index</span> <span class="ow">is</span> <span class="n">_SINGLETON</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">_relabel_cp_tensor</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">cp_tensor_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">output_cp_tensor_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">out_cp_tensor</span> <span class="o">=</span> <span class="n">_relabel_cp_tensor</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="n">output_cp_tensor_index</span><span class="p">],</span> <span class="n">cp_tensor_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">)</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="o">*</span><span class="n">out</span><span class="p">[:</span><span class="n">output_cp_tensor_index</span><span class="p">],</span>
+                    <span class="n">out_cp_tensor</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">out</span><span class="p">[</span><span class="n">output_cp_tensor_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:],</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="k">return</span> <span class="n">func2</span>
+
+    <span class="k">return</span> <span class="n">decorator</span>
+
+
+<span class="k">def</span> <span class="nf">_handle_labelled_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">output_dataset_index</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">_check_is_argument</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">)</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">bound_arguments</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">optional</span> <span class="ow">and</span> <span class="n">dataset_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">dataset_name</span><span class="p">]</span>
+            <span class="n">dataset_unlabelled</span><span class="p">,</span> <span class="n">dataset_constructor</span><span class="p">,</span> <span class="n">dataset_metadata</span> <span class="o">=</span> <span class="n">_unlabel_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">)</span>
+
+            <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">dataset_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset_unlabelled</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">output_dataset_index</span> <span class="ow">is</span> <span class="n">_SINGLETON</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">_relabel_dataset</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dataset_constructor</span><span class="p">,</span> <span class="n">dataset_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">output_dataset_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">out_dataset</span> <span class="o">=</span> <span class="n">_relabel_dataset</span><span class="p">(</span>
+                    <span class="n">out</span><span class="p">[</span><span class="n">output_dataset_index</span><span class="p">],</span> <span class="n">dataset_constructor</span><span class="p">,</span> <span class="n">dataset_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span>
+                <span class="p">)</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="o">*</span><span class="n">out</span><span class="p">[:</span><span class="n">output_dataset_index</span><span class="p">],</span>
+                    <span class="n">out_dataset</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">out</span><span class="p">[</span><span class="n">output_dataset_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:],</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="k">return</span> <span class="n">func2</span>
+
+    <span class="k">return</span> <span class="n">decorator</span>
+
+
+<span class="k">def</span> <span class="nf">_handle_labelled_factor_matrix</span><span class="p">(</span>
+    <span class="n">factor_matrix_name</span><span class="p">,</span> <span class="n">output_factor_matrix_index</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">_check_is_argument</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">factor_matrix_name</span><span class="p">)</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">bound_arguments</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">factor_matrix_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="n">factor_matrix_unlabelled</span><span class="p">,</span> <span class="n">factor_matrix_metadata</span> <span class="o">=</span> <span class="n">_unlabel_factor_matrix</span><span class="p">(</span>
+                <span class="n">factor_matrix</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="n">preserve_columns</span>
+            <span class="p">)</span>
+
+            <span class="n">bound_arguments</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">factor_matrix_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor_matrix_unlabelled</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">bound_arguments</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">output_factor_matrix_index</span> <span class="ow">is</span> <span class="n">_SINGLETON</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">_relabel_factor_matrix</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">factor_matrix_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">output_factor_matrix_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">out_factor_matrix</span> <span class="o">=</span> <span class="n">_relabel_factor_matrix</span><span class="p">(</span>
+                    <span class="n">out</span><span class="p">[</span><span class="n">output_factor_matrix_index</span><span class="p">],</span> <span class="n">factor_matrix_metadata</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="o">*</span><span class="n">out</span><span class="p">[:</span><span class="n">output_factor_matrix_index</span><span class="p">],</span>
+                    <span class="n">out_factor_matrix</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">out</span><span class="p">[</span><span class="n">output_factor_matrix_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:],</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="k">return</span> <span class="n">func2</span>
+
+    <span class="k">return</span> <span class="n">decorator</span>
+</pre></div>
+
+        </div>
+
+		
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

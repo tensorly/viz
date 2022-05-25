@@ -1,0 +1,724 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlviz.postprocessing &#8212; TLViz 0.0.3 documentation</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+
+        <div class="content main-content">
+          
+  <h1>Source code for tlviz.postprocessing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
+
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">sla</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">factor_tools</span>
+<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="n">is_iterable</span>
+<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span>
+<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_SINGLETON</span><span class="p">,</span>
+    <span class="n">_handle_labelled_cp</span><span class="p">,</span>
+    <span class="n">_handle_labelled_dataset</span><span class="p">,</span>
+    <span class="n">add_factor_metadata</span><span class="p">,</span>
+    <span class="n">label_cp_tensor</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">unfold_tensor</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;resolve_cp_sign_indeterminacy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;postprocess&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;factor_matrix_to_tidy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;add_factor_metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;label_cp_tensor&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="resolve_cp_sign_indeterminacy"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.resolve_cp_sign_indeterminacy">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">resolve_cp_sign_indeterminacy</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">resolve_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unresolved_mode</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;transpose&quot;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Resolve the sign indeterminacy of CP models.</span>
+
+<span class="sd">    Tensor factorisations have a sign indeterminacy that allows any change in the</span>
+<span class="sd">    sign of the component vectors in one mode, under the condition that the sign</span>
+<span class="sd">    of a component vector in another mode changes as well. This means that we can</span>
+<span class="sd">    &quot;flip&quot; any component vector so long as the corresponding component vector in</span>
+<span class="sd">    another mode is also flipped. This flipping can hurt the model&#39;s interpretability.</span>
+<span class="sd">    For example, if a factor represents a chemical spectrum, then this flipping may lead</span>
+<span class="sd">    to it being negative instead of positive.</span>
+
+<span class="sd">    To illustrate the sign indeterminacy, we start with the SVD, which is on the form</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{X} = \mathbf{U} \mathbf{S} \mathbf{V}^\mathsf{T}.</span>
+
+<span class="sd">    The factorisation above is equivalent with the following factorisation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mathbf{X} = (\mathbf{U} \text{diag}(\mathbf{f})) \mathbf{S} (\mathbf{V} \text{diag}(\mathbf{f}))^\mathsf{T},</span>
+
+<span class="sd">    where :math:`\mathbf{f}` is a vector containing only ones or negative ones. Similarly,</span>
+<span class="sd">    a CP factorisation with factor matrices :math:`\mathbf{A}, \mathbf{B}` and :math:`\mathbf{C}`</span>
+<span class="sd">    is equivalent to the CP factorisations with the following factor matrices:</span>
+
+<span class="sd">     * :math:`(\mathbf{A} \text{diag}(\mathbf{f})), (\mathbf{B} \text{diag}(\mathbf{f}))` and :math:`\mathbf{C}`</span>
+<span class="sd">     * :math:`(\mathbf{A} \text{diag}(\mathbf{f})), \mathbf{B}` and :math:`(\mathbf{C} \text{diag}(\mathbf{f}))`</span>
+<span class="sd">     * :math:`\mathbf{A}, (\mathbf{B} \text{diag}(\mathbf{f}))` and :math:`(\mathbf{C} \text{diag}(\mathbf{f}))`</span>
+
+<span class="sd">    One way to circumvent the sign indeterminacy is by imposing non-negativity. However,</span>
+<span class="sd">    that is not always a reasonable choice (e.g. if the data also contains negative entries).</span>
+<span class="sd">    When we don&#39;t want to impose non-negativity constraints, then we need some other way to</span>
+<span class="sd">    resolve the sign indeterminacy (which this function provides). The idea is easiest described</span>
+<span class="sd">    in the two-way (matrix) case.</span>
+
+<span class="sd">    Consider a data matrix, :math:`\mathbf{X}` whose columns represent samples and rows represent</span>
+<span class="sd">    measurements. Then, we want the measurement-mode component-vectors to be mostly aligned with</span>
+<span class="sd">    the data matrix. The components should describe what the data is, not what it is not.</span>
+<span class="sd">    For example, if the data is non-negative, then the measurement-mode component vectors should</span>
+<span class="sd">    be mostly non-negative. With the SVD, we can compute whether we should flip the :math:`r`-th</span>
+<span class="sd">    column of :math:`\mathbf{U}` by computing</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        f_r = \sum_{i=1^I} v_{ir}^2 \text{sign}{v_{ir}}</span>
+
+<span class="sd">    if :math:`f_r` is negative, then we should flip the sign of the :math:`r-th` column of</span>
+<span class="sd">    :math:`\mathbf{U}` and :math:`\mathbf{V}` :cite:p:`bro2008resolving`.</span>
+
+<span class="sd">    The methodology above works well in practice, and is rooted in the fact that the</span>
+<span class="sd">    :math:`i`-th row of :math:`\mathbf{V}` can be interpreted as the coordinates of the</span>
+<span class="sd">    :math:`i`-th row of :math:`\mathbf{X}` in a vector space spanned by the columns of</span>
+<span class="sd">    :math:`\mathbf{U}`. Then, the above equation will give us component vectors where the data</span>
+<span class="sd">    points is mainly located in the non-negative orthant.</span>
+
+<span class="sd">    The above interpretation is correct under the assumption: :math:`\mathbf{U}^\mathsf{T}\mathbf{U} = \mathbf{I}`.</span>
+<span class="sd">    However, the heuristic still works well when this is not the case :cite:p:`bro2013solving`.</span>
+<span class="sd">    Still, we also include a modification of the above scheme where the same interpretation</span>
+<span class="sd">    holds with non-orthogonal factors.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        f_r = \sum_{i=1}^I h_{ir}^2 \text{sign}(h_{ir}),</span>
+
+<span class="sd">    where :math:`\mathbf{H} = \mathbf{U}(\mathbf{U}^\mathsf{T}\mathbf{U})^{-1} \mathbf{X}`.</span>
+<span class="sd">    That is the rows of :math:`\mathbf{H}` represent the rows of :math:`\mathbf{X}` as</span>
+<span class="sd">    described by the column basis of :math:`\mathbf{U}`.</span>
+
+<span class="sd">    In the multiway case, when :math:`\mathcal{X}` is a tensor instead of a matrix, we can</span>
+<span class="sd">    apply the same logic :cite:p:`bro2013solving`. If we have the factor matrices</span>
+<span class="sd">    :math:`\mathbf{A}, \mathbf{B}` and :math:`\mathbf{C}`, then we flip the sign of any</span>
+<span class="sd">    factor matrix (e.g. :math:`\mathbf{A}`) by computing</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        f_r^{(\mathbf{A})} = \sum_{i=1}^I {h_{ir}^{(\mathbf{A})}}^2 \text{sign}({h_{ir}^{(\mathbf{A})}}),</span>
+
+<span class="sd">    where :math:`\mathbf{H}^{(\mathbf{A})} = \mathbf{A}^\mathsf{T} \mathbf{X}_{(0)}` or</span>
+<span class="sd">    :math:`\mathbf{H}^{(\mathbf{A})} = \mathbf{A}(\mathbf{A}^\mathsf{T}\mathbf{A})^{-1} \mathbf{X}_{(0)}`,</span>
+<span class="sd">    depending on whether the scheme based on the SVD scheme :cite:p:`bro2013solving` or the</span>
+<span class="sd">    corrected scheme. :math:`\mathbf{X}_{(0)} \in \mathbb{R}^{I \times JK}` is the tensor,</span>
+<span class="sd">    :math:`\mathcal{X}`, unfolded along the first mode. We can then correct the sign of</span>
+<span class="sd">    :math:`\mathbf{A}` by multiplying and one of the other factor matrices by</span>
+<span class="sd">    :math:`\text{diag}(\mathbf{f}^{(\mathbf{A})})`. By using this procedure, we can align all</span>
+<span class="sd">    factor matrices except for one (the unresolved mode) with the &quot;direction of the data&quot;.</span>
+
+<span class="sd">    Note that this sign indeterminacy comes as a direct consequence of the scaling indeterminacy</span>
+<span class="sd">    of component models, since :math:`\text{diag}(\mathbf{f})^{-1} = \text{diag}(\mathbf{f})`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        TensorLy-style CPTensor object or tuple with weights as first</span>
+<span class="sd">        argument and a tuple of components as second argument.</span>
+<span class="sd">    resolve_mode : int, iterable or None</span>
+<span class="sd">        Mode(s) whose factor matrix should be aligned with the data. If</span>
+<span class="sd">        None, then the sign should be corrected for all modes except the</span>
+<span class="sd">        ``unresolved_mode``.</span>
+<span class="sd">    unresolved_mode : int</span>
+<span class="sd">        Mode used to correct the sign indeterminacy in other mode(s). The</span>
+<span class="sd">        factor matrix in this mode may not be aligned with the data.</span>
+<span class="sd">    method : &quot;transpose&quot; or &quot;positive_coord&quot;</span>
+<span class="sd">        Which method to use when computing the signs. Use ``&quot;transpose&quot;``</span>
+<span class="sd">        for the method in :cite:p:`bro2008resolving,bro2013solving`, and</span>
+<span class="sd">        ``&quot;positive_coord&quot;`` for the method corrected for non-orthogonal</span>
+<span class="sd">        factor matrices described above.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    CPTensor or tuple</span>
+<span class="sd">        The CP tensor after correcting the signs.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If ``unresolved_mode`` is not between ``-dataset.ndim`` and ``dataset.ndim-1``.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If ``unresolved_mode`` is in ``resolve_mode``</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For more information, see :cite:p:`bro2008resolving,bro2013solving`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">unresolved_mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">unresolved_mode</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">+</span> <span class="n">unresolved_mode</span>
+    <span class="k">if</span> <span class="n">unresolved_mode</span> <span class="o">&gt;=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">or</span> <span class="n">unresolved_mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`unresolved_mode` must be between `-dataset.ndim` and `dataset.ndim-1`.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">resolve_mode</span> <span class="o">==</span> <span class="n">unresolved_mode</span> <span class="ow">or</span> <span class="p">(</span><span class="n">is_iterable</span><span class="p">(</span><span class="n">resolve_mode</span><span class="p">)</span> <span class="ow">and</span> <span class="n">unresolved_mode</span> <span class="ow">in</span> <span class="n">resolve_mode</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The unresolved mode cannot be resolved.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">resolve_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">resolve_mode</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">resolve_mode</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">resolve_mode</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">unresolved_mode</span><span class="p">:</span>
+                <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">resolve_cp_sign_indeterminacy</span><span class="p">(</span>
+                    <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">unresolved_mode</span><span class="o">=</span><span class="n">unresolved_mode</span><span class="p">,</span> <span class="n">resolve_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cp_tensor</span>
+
+    <span class="n">unfolded_dataset</span> <span class="o">=</span> <span class="n">unfold_tensor</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">resolve_mode</span><span class="p">)</span>
+    <span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">resolve_mode</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;transpose&quot;</span><span class="p">:</span>
+        <span class="n">sign_scores</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">unfolded_dataset</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;positive_coord&quot;</span><span class="p">:</span>
+        <span class="n">sign_scores</span> <span class="o">=</span> <span class="n">sla</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">unfolded_dataset</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be either `transpose` or `positive_coord`&quot;</span><span class="p">)</span>
+
+    <span class="n">signs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sign_scores</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">sign_scores</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">signs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">signs</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">factor_matrices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">factor_matrices</span><span class="p">[</span><span class="n">resolve_mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor_matrices</span><span class="p">[</span><span class="n">resolve_mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">signs</span>
+    <span class="n">factor_matrices</span><span class="p">[</span><span class="n">unresolved_mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor_matrices</span><span class="p">[</span><span class="n">unresolved_mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">signs</span>
+    <span class="k">return</span> <span class="n">cp_tensor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">factor_matrices</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="postprocess"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.postprocess">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;reference_cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;reference_cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span>
+    <span class="n">cp_tensor</span><span class="p">,</span>
+    <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">reference_cp_tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">permute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">resolve_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">unresolved_mode</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">flip_method</span><span class="o">=</span><span class="s2">&quot;transpose&quot;</span><span class="p">,</span>
+    <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;normalise&quot;</span><span class="p">,</span>
+    <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Standard postprocessing of a CP decomposition.</span>
+
+<span class="sd">    This function will perform standard postprocessing of a CP decomposition.</span>
+<span class="sd">    If a reference CP tensor is provided, then the columns of ``cp_tensor``&#39;s</span>
+<span class="sd">    factor matrices are aligned with the columns of ``reference_cp_tensor``&#39;s</span>
+<span class="sd">    factor matrices.</span>
+
+<span class="sd">    Next, the factor matrices of the CP tensor are scaled according the the specified</span>
+<span class="sd">    weight behaviour (default is normalised).</span>
+
+<span class="sd">    If a dataset is provided, then the sign indeterminacy is resolved and if the</span>
+<span class="sd">    dataset is labelled (i.e. is an xarray or a dataframe), then the factor matrices</span>
+<span class="sd">    of the CP tensor is labelled too.</span>
+
+<span class="sd">    This function is equivalent to calling</span>
+
+<span class="sd">     * ``permute_cp_tensor``</span>
+<span class="sd">     * ``distribute_weights``</span>
+<span class="sd">     * ``resolve_cp_sign_indeterminacy``</span>
+<span class="sd">     * ``label_cp_tensor``</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor or tuple</span>
+<span class="sd">        CPTensor to postprocess</span>
+<span class="sd">    dataset : ndarray or xarray (optional)</span>
+<span class="sd">        Dataset the CP tensor represents</span>
+<span class="sd">    reference_cp_tensor : CPTensor or tuple (optional)</span>
+<span class="sd">        If provided, then the tensor whose factors we align the CP tensor&#39;s</span>
+<span class="sd">        columns with.</span>
+<span class="sd">    permute : bool</span>
+<span class="sd">        If ``True``, then the factors are permuted in descending weight order if</span>
+<span class="sd">        ``reference_cp_tensor`` is ``None``.</span>
+<span class="sd">    resolve_mode : int, iterable or None</span>
+<span class="sd">        Mode(s) whose factor matrix should be aligned with the data. If</span>
+<span class="sd">        None, then the sign should be corrected for all modes except the</span>
+<span class="sd">        ``unresolved_mode``.</span>
+<span class="sd">    unresolved_mode : int</span>
+<span class="sd">        Mode used to correct the sign indeterminacy in other mode(s). The</span>
+<span class="sd">        factor matrix in this mode may not be aligned with the data.</span>
+<span class="sd">    method : &quot;transpose&quot; or &quot;positive_coord&quot;</span>
+<span class="sd">        Which method to use when computing the signs. Use ``&quot;transpose&quot;``</span>
+<span class="sd">        for the method in :cite:p:`bro2008resolving,bro2013solving`, and</span>
+<span class="sd">        ``&quot;positive_coord&quot;`` for the method corrected for non-orthogonal</span>
+<span class="sd">        factor matrices described above.</span>
+<span class="sd">    weight_behaviour : {&quot;ignore&quot;, &quot;normalise&quot;, &quot;evenly&quot;, &quot;one_mode&quot;} (default=&quot;normalise&quot;)</span>
+<span class="sd">        How to handle the component weights.</span>
+
+<span class="sd">         * ``&quot;ignore&quot;`` - Do nothing</span>
+<span class="sd">         * ``&quot;normalise&quot;`` - Normalise all factor matrices</span>
+<span class="sd">         * ``&quot;evenly&quot;`` - All factor matrices have equal norm</span>
+<span class="sd">         * ``&quot;one_mode&quot;`` - The weight is allocated in one mode, all other factor matrices have unit norm columns.</span>
+
+<span class="sd">    weight_mode : int (optional)</span>
+<span class="sd">        Which mode to have the component weights in (only used if ``weight_behaviour=&quot;one_mode&quot;``)</span>
+<span class="sd">    allow_smaller_rank : bool (default=False)</span>
+<span class="sd">        If ``True``, then a low rank decomposition can be permuted against one with higher rank. The &quot;missing columns&quot;</span>
+<span class="sd">        are padded by nan values</span>
+<span class="sd">    include_metadata : bool (default=True)</span>
+<span class="sd">        If ``True``, then the factor metadata will be added as columns in the factor matrices.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    CPTensor</span>
+<span class="sd">        The post processed CPTensor.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    tlviz.factor_tools.permute_cp_tensor</span>
+<span class="sd">    tlviz.factor_tools.distribute_weights</span>
+<span class="sd">    tlviz.postprocessing.resolve_cp_sign_indeterminacy</span>
+<span class="sd">    tlviz.postprocessing.label_cp_tensor</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    Here is an example were we use postprocess on a decomposition of aminoacid data</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: close-figs</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; import tlviz</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
+<span class="sd">        &gt;&gt;&gt; dataset = tlviz.data.load_aminoacids()</span>
+<span class="sd">        Loading Aminoacids dataset from:</span>
+<span class="sd">        Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems, 1997, 38, 149-171</span>
+
+<span class="sd">        The dataset is an xarray DataArray and it contains relevant side information</span>
+
+<span class="sd">        &gt;&gt;&gt; print(type(dataset))</span>
+<span class="sd">        &lt;class &#39;xarray.core.dataarray.DataArray&#39;&gt;</span>
+
+<span class="sd">        We see that after postprocessing, the cp_tensor contains pandas DataFrames</span>
+
+<span class="sd">        &gt;&gt;&gt; cp_tensor = parafac(dataset.data, 3, init=&quot;random&quot;, random_state=0)</span>
+<span class="sd">        &gt;&gt;&gt; cp_tensor_postprocessed = tlviz.postprocessing.postprocess(cp_tensor, dataset)</span>
+<span class="sd">        &gt;&gt;&gt; print(type(cp_tensor[1][0]))</span>
+<span class="sd">        &lt;class &#39;numpy.ndarray&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; print(type(cp_tensor_postprocessed[1][0]))</span>
+<span class="sd">        &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span>
+
+
+<span class="sd">        We see that after postprocessing, the factor matrix has unit norm</span>
+
+<span class="sd">        &gt;&gt;&gt; print(np.linalg.norm(cp_tensor[1][0], axis=0))</span>
+<span class="sd">        [160.82985402 182.37338941 125.3689186 ]</span>
+<span class="sd">        &gt;&gt;&gt; print(np.linalg.norm(cp_tensor_postprocessed[1][0], axis=0))</span>
+<span class="sd">        [1. 1. 1.]</span>
+
+<span class="sd">        When we construct a dense tensor from a postprocessed cp_tensor it is constructed</span>
+<span class="sd">        as an xarray DataArray</span>
+
+<span class="sd">        &gt;&gt;&gt; print(type(tlviz.utils.cp_to_tensor(cp_tensor)))</span>
+<span class="sd">        &lt;class &#39;numpy.ndarray&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; print(type(tlviz.utils.cp_to_tensor(cp_tensor_postprocessed)))</span>
+<span class="sd">        &lt;class &#39;xarray.core.dataarray.DataArray&#39;&gt;</span>
+
+<span class="sd">        The visualisation of the postprocessed cp_tensor shows that the scaling and sign indeterminacy</span>
+<span class="sd">        is taken care of and x-xaxis has correct labels and ticks</span>
+
+<span class="sd">        &gt;&gt;&gt; fig, ax = tlviz.visualisation.components_plot(cp_tensor)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">        &gt;&gt;&gt; fig, ax = tlviz.visualisation.components_plot(cp_tensor_postprocessed)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">permute</span> <span class="ow">and</span> <span class="n">reference_cp_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;``permute=False`` is ignored if a reference CP tensor is provided.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">permute</span> <span class="ow">or</span> <span class="n">reference_cp_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">factor_tools</span><span class="o">.</span><span class="n">permute_cp_tensor</span><span class="p">(</span>
+            <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">reference_cp_tensor</span><span class="o">=</span><span class="n">reference_cp_tensor</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="n">allow_smaller_rank</span>
+        <span class="p">)</span>
+
+    <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">factor_tools</span><span class="o">.</span><span class="n">distribute_weights</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="n">weight_behaviour</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="n">weight_mode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">resolve_cp_sign_indeterminacy</span><span class="p">(</span>
+            <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">resolve_mode</span><span class="o">=</span><span class="n">resolve_mode</span><span class="p">,</span> <span class="n">unresolved_mode</span><span class="o">=</span><span class="n">unresolved_mode</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">flip_method</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">label_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">include_metadata</span> <span class="ow">and</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">add_factor_metadata</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">include_metadata</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Cannot include metadata when there is no provided dataset&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cp_tensor</span></div>
+
+
+<div class="viewcode-block" id="factor_matrix_to_tidy"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.factor_matrix_to_tidy">[docs]</a><span class="k">def</span> <span class="nf">factor_matrix_to_tidy</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Component&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Signal&quot;</span><span class="p">,</span> <span class="n">id_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a factor matrix into a tidy dataset, for use with Plotly Express.</span>
+
+<span class="sd">    If we convert a factor matrix into a tidy dataset (or long table), then we get a table on the form</span>
+
+<span class="sd">    .. list-table:: Tidy format factor matrix</span>
+<span class="sd">        :widths: 25 25 25</span>
+<span class="sd">        :header-rows: 1</span>
+
+<span class="sd">        * - Index</span>
+<span class="sd">          - Component</span>
+<span class="sd">          - Signal</span>
+<span class="sd">        * - 0</span>
+<span class="sd">          - 0</span>
+<span class="sd">          - 0.1</span>
+<span class="sd">        * - 1</span>
+<span class="sd">          - 0</span>
+<span class="sd">          - 0.5</span>
+<span class="sd">        * - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">        * - 38</span>
+<span class="sd">          - 2</span>
+<span class="sd">          - 0.7</span>
+<span class="sd">        * - 39</span>
+<span class="sd">          - 2</span>
+<span class="sd">          - 0.2</span>
+
+<span class="sd">    The component vectors are all stacked on top of each other, with a separate column that specifies which</span>
+<span class="sd">    component each row belongs to. This function can also preserve metadata, which is signified by columns</span>
+<span class="sd">    that have non-integer column names. For example, if we have a dataframe on the form</span>
+
+<span class="sd">    .. list-table:: Factor matrix with metadata</span>
+<span class="sd">        :widths: 25 25 25 25 25 25</span>
+<span class="sd">        :header-rows: 1</span>
+
+<span class="sd">        * - Index</span>
+<span class="sd">          - 0</span>
+<span class="sd">          - 1</span>
+<span class="sd">          - 2</span>
+<span class="sd">          - lat</span>
+<span class="sd">          - lon</span>
+<span class="sd">        * - 0</span>
+<span class="sd">          - 0.1</span>
+<span class="sd">          - 0.2</span>
+<span class="sd">          - 0.5</span>
+<span class="sd">          - 59.91273</span>
+<span class="sd">          - 10.74609</span>
+<span class="sd">        * - 1</span>
+<span class="sd">          - 0.5</span>
+<span class="sd">          - 0.2</span>
+<span class="sd">          - 0.1</span>
+<span class="sd">          - 63.43049</span>
+<span class="sd">          - 10.39506</span>
+<span class="sd">        * - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">        * - 5</span>
+<span class="sd">          - 0.2</span>
+<span class="sd">          - 0.1</span>
+<span class="sd">          - 0.3</span>
+<span class="sd">          - 60.39299</span>
+<span class="sd">          - 5.32415</span>
+<span class="sd">        * - 5</span>
+<span class="sd">          - 0.0</span>
+<span class="sd">          - 0.2</span>
+<span class="sd">          - 0.1</span>
+<span class="sd">          - 58.97005</span>
+<span class="sd">          - 5.73332</span>
+
+<span class="sd">    and convert it into a tidy format factor matrix, then we get a table on the form</span>
+
+<span class="sd">    .. list-table:: Tidy format factor matrix with metadata</span>
+<span class="sd">        :widths: 25 25 25 25 25</span>
+<span class="sd">        :header-rows: 1</span>
+
+<span class="sd">        * - Index</span>
+<span class="sd">          - lat</span>
+<span class="sd">          - lon</span>
+<span class="sd">          - Component</span>
+<span class="sd">          - Signal</span>
+<span class="sd">        * - 0</span>
+<span class="sd">          - 59.91273</span>
+<span class="sd">          - 10.74609</span>
+<span class="sd">          - 0</span>
+<span class="sd">          - 0.1</span>
+<span class="sd">        * - 1</span>
+<span class="sd">          - 63.43049</span>
+<span class="sd">          - 10.39506</span>
+<span class="sd">          - 0</span>
+<span class="sd">          - 0.5</span>
+<span class="sd">        * - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">          - ...</span>
+<span class="sd">        * - 4</span>
+<span class="sd">          - 69.6489</span>
+<span class="sd">          - 18.95508</span>
+<span class="sd">          - 2</span>
+<span class="sd">          - 0.0</span>
+<span class="sd">        * - 5</span>
+<span class="sd">          - 58.97005</span>
+<span class="sd">          - 5.73332</span>
+<span class="sd">          - 2</span>
+<span class="sd">          - 0.1</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factor_matrix : pd.DataFrame</span>
+<span class="sd">        A labelled factor matrix potentially with metadata columns</span>
+<span class="sd">    var_name : str</span>
+<span class="sd">        Name of the column that specifies which component each row belongs to</span>
+<span class="sd">    value_name : str</span>
+<span class="sd">        Name of the column that holds the magnitude of each component entry</span>
+<span class="sd">    id_vars : iterable or None (default=None)</span>
+<span class="sd">        Which columns to interpret as metadata. The columns not specified here are considered as the components.</span>
+<span class="sd">        If ``id_vars is None``, then all columns with non-integer names are considered metadata columns.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Tidy format factor matrix</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; from tlviz.postprocessing import factor_matrix_to_tidy</span>
+<span class="sd">    &gt;&gt;&gt; rng = np.random.default_rng(0)</span>
+<span class="sd">    &gt;&gt;&gt; factor_matrix = pd.DataFrame(rng.uniform(size=(10, 3)))</span>
+<span class="sd">    &gt;&gt;&gt; factor_matrix.head()</span>
+<span class="sd">              0         1         2</span>
+<span class="sd">    0  0.636962  0.269787  0.040974</span>
+<span class="sd">    1  0.016528  0.813270  0.912756</span>
+<span class="sd">    2  0.606636  0.729497  0.543625</span>
+<span class="sd">    3  0.935072  0.815854  0.002739</span>
+<span class="sd">    4  0.857404  0.033586  0.729655</span>
+<span class="sd">    &gt;&gt;&gt; tidy_factor_matrix = factor_matrix_to_tidy(factor_matrix)</span>
+<span class="sd">    &gt;&gt;&gt; tidy_factor_matrix.head()</span>
+<span class="sd">       index Component    Signal</span>
+<span class="sd">    0      0         0  0.636962</span>
+<span class="sd">    1      1         0  0.016528</span>
+<span class="sd">    2      2         0  0.606636</span>
+<span class="sd">    3      3         0  0.935072</span>
+<span class="sd">    4      4         0  0.857404</span>
+<span class="sd">    &gt;&gt;&gt; factor_matrix_with_metadata = factor_matrix.copy()</span>
+<span class="sd">    &gt;&gt;&gt; factor_matrix_with_metadata[&quot;Metadata&quot;] = rng.uniform(size=10)</span>
+<span class="sd">    &gt;&gt;&gt; factor_matrix_with_metadata.head()</span>
+<span class="sd">              0         1         2  Metadata</span>
+<span class="sd">    0  0.636962  0.269787  0.040974  0.688447</span>
+<span class="sd">    1  0.016528  0.813270  0.912756  0.388921</span>
+<span class="sd">    2  0.606636  0.729497  0.543625  0.135097</span>
+<span class="sd">    3  0.935072  0.815854  0.002739  0.721488</span>
+<span class="sd">    4  0.857404  0.033586  0.729655  0.525354</span>
+<span class="sd">    &gt;&gt;&gt; tidy_factor_matrix_with_metadata = factor_matrix_to_tidy(factor_matrix_with_metadata)</span>
+<span class="sd">    &gt;&gt;&gt; tidy_factor_matrix_with_metadata.head()</span>
+<span class="sd">       Metadata  index Component    Signal</span>
+<span class="sd">    0  0.688447      0         0  0.636962</span>
+<span class="sd">    1  0.388921      1         0  0.016528</span>
+<span class="sd">    2  0.135097      2         0  0.606636</span>
+<span class="sd">    3  0.721488      3         0  0.935072</span>
+<span class="sd">    4  0.525354      4         0  0.857404</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">id_vars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">id_vars</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">column</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="n">id_vars</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+    <span class="n">id_vars</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">id_vars</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">factor_matrix</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">var_name</span><span class="o">=</span><span class="n">var_name</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="n">value_name</span><span class="p">,</span> <span class="n">id_vars</span><span class="o">=</span><span class="n">id_vars</span><span class="p">)</span></div>
+</pre></div>
+
+        </div>
+
+		
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>
