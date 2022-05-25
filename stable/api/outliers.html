@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Outlier detection &#8212; TLViz 0.0.9 documentation</title> 
+    <title>Outlier detection &#8212; TLViz 0.0.10 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -55,7 +55,7 @@
           <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
             <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
           </a> -->
-          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
 
@@ -103,7 +103,7 @@
               </span>
               <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
             </a> -->
-            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
                   <i class="fab fa-github"></i>
@@ -211,6 +211,30 @@
           
   <section id="module-tlviz.outliers">
 <span id="outlier-detection"></span><h1>Outlier detection<a class="headerlink" href="#module-tlviz.outliers" title="Permalink to this headline">¶</a></h1>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.outliers.compute_leverage" title="tlviz.outliers.compute_leverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_leverage</span></code></a>(factor_matrix)</p></td>
+<td><p>Compute the leverage score of the given factor matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.outliers.compute_outlier_info" title="tlviz.outliers.compute_outlier_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_outlier_info</span></code></a>(cp_tensor, true_tensor)</p></td>
+<td><p>Compute the leverage score and (normalised) slabwise SSE along one axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.outliers.compute_slabwise_sse" title="tlviz.outliers.compute_slabwise_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_slabwise_sse</span></code></a>(estimated, true[, ...])</p></td>
+<td><p>Compute the (normalised) slabwise SSE along the given mode(s).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.outliers.get_leverage_outlier_threshold" title="tlviz.outliers.get_leverage_outlier_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_leverage_outlier_threshold</span></code></a>(leverage_scores)</p></td>
+<td><p>Compute threshold for detecting possible outliers based on leverage.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.outliers.get_slabwise_sse_outlier_threshold" title="tlviz.outliers.get_slabwise_sse_outlier_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_slabwise_sse_outlier_threshold</span></code></a>(slab_sse)</p></td>
+<td><p>Compute rule-of-thumb threshold values for suspicious residuals.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.outliers.compute_leverage">
 <span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_leverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_leverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_leverage" title="Permalink to this definition">¶</a></dt>

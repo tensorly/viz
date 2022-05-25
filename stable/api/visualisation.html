@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Visualisation &#8212; TLViz 0.0.9 documentation</title> 
+    <title>Visualisation &#8212; TLViz 0.0.10 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -55,7 +55,7 @@
           <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
             <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
           </a> -->
-          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
 
@@ -103,7 +103,7 @@
               </span>
               <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
             </a> -->
-            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
                   <i class="fab fa-github"></i>
@@ -211,6 +211,48 @@
           
   <section id="module-tlviz.visualisation">
 <span id="visualisation"></span><h1>Visualisation<a class="headerlink" href="#module-tlviz.visualisation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.component_comparison_plot" title="tlviz.visualisation.component_comparison_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_comparison_plot</span></code></a>(cp_tensors[, row, ...])</p></td>
+<td><p>Create a plot to compare different CP tensors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.visualisation.component_scatterplot" title="tlviz.visualisation.component_scatterplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_scatterplot</span></code></a>(cp_tensor, mode[, ...])</p></td>
+<td><p>Scatterplot of two columns in a factor matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.components_plot" title="tlviz.visualisation.components_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">components_plot</span></code></a>(cp_tensor[, ...])</p></td>
+<td><p>Plot the component vectors of a CP model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.visualisation.core_element_heatmap" title="tlviz.visualisation.core_element_heatmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core_element_heatmap</span></code></a>(cp_tensor, dataset[, ...])</p></td>
+<td><p>Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.core_element_plot" title="tlviz.visualisation.core_element_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core_element_plot</span></code></a>(cp_tensor, dataset[, ...])</p></td>
+<td><p>Scatter plot with the elements of the optimal core tensor for a given CP tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.visualisation.histogram_of_residuals" title="tlviz.visualisation.histogram_of_residuals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">histogram_of_residuals</span></code></a>(cp_tensor, dataset[, ...])</p></td>
+<td><p>Create a histogram of model residuals (<span class="math notranslate nohighlight">\(\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.optimisation_diagnostic_plots" title="tlviz.visualisation.optimisation_diagnostic_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimisation_diagnostic_plots</span></code></a>(error_logs, ...)</p></td>
+<td><p>Diagnostic plots for the optimisation problem.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.visualisation.outlier_plot" title="tlviz.visualisation.outlier_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlier_plot</span></code></a>(cp_tensor, dataset[, mode, ...])</p></td>
+<td><p>Create the leverage-residual scatterplot to detect outliers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.percentage_variation_plot" title="tlviz.visualisation.percentage_variation_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">percentage_variation_plot</span></code></a>(cp_tensor[, ...])</p></td>
+<td><p>Bar chart showing the percentage of variation explained by each of the components.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.visualisation.residual_qq" title="tlviz.visualisation.residual_qq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual_qq</span></code></a>(cp_tensor, dataset[, ax, ...])</p></td>
+<td><p>QQ-plot of the model residuals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.scree_plot" title="tlviz.visualisation.scree_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scree_plot</span></code></a>(cp_tensors, dataset[, errors, ...])</p></td>
+<td><p>Create scree plot for the given cp tensors.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.visualisation.component_comparison_plot">
 <span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">component_comparison_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#component_comparison_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.component_comparison_plot" title="Permalink to this definition">¶</a></dt>
