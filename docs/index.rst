@@ -4,7 +4,7 @@ TLViz — Visualising and analysing component models
 .. figure:: figures/overview.png
    :alt: Illustration of figures made with TLViz
 
-TLViz, short for TensorLy-Vis, is a Python package that helps you inspect your component models with insightful analysis and beautiful visualisations!
+TLViz, short for TensorLy-Viz, is a Python package that helps you inspect your component models with insightful analysis and beautiful visualisations!
 It is designed around the TensorLy API for PARAFAC/CP decompositions to fit seamlessly into your data analysis workflow.
 With TLViz, you can combine metadata xarray DataArrays and Pandas DataFrames with your extracted factor matrices, turning them into rich DataFrames with meaningful indices.
 To get started, take a look at the :ref:`examples` or the :ref:`API`.
