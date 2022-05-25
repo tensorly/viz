@@ -196,7 +196,7 @@ Finally, we reset the backend to NumPy, because the other gallery examples assum
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.156 seconds)
+   **Total running time of the script:** ( 0 minutes  1.894 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_labelled_decompositions.py:
