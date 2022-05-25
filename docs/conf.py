@@ -109,7 +109,7 @@ html_theme = "tensorly_sphinx_theme"
 
 
 html_theme_options = {
-    "github_url": "https://github.com/marieroald/tlviz",
+    "github_url": "https://github.com/tensorly/viz",
     "searchbar_text": "Search in TLViz",
     "nav_links": [
         ("Introduction", "about_tensors"),
