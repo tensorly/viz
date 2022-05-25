@@ -12,6 +12,7 @@ tensorly
 sphinx
 sphinxcontrib-bibtex
 sphinx-gallery
+autodocsumm
 numpydoc
 tensorly_sphinx_theme
 

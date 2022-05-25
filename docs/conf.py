@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "matplotlib.sphinxext.plot_directive",
     "numpydoc",
+    "autodocsumm",
     "sphinxcontrib.bibtex",
     "sphinx_gallery.gen_gallery",
 ]
@@ -52,6 +53,7 @@ sphinx_gallery_conf = {
 
 bibtex_bibfiles = ["refs.bib"]
 
+autodoc_default_options = {"autosummary": True}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
