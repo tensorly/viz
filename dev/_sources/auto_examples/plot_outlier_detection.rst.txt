@@ -390,7 +390,7 @@ which is apparent from the factor match score.
 
  .. code-block:: none
 
-    The FMS is 0.66
+    The FMS is 0.67
 
 
 
@@ -473,7 +473,7 @@ Here, we see that we finally uncovered the true components. This is also apparen
 
  .. code-block:: none
 
-    The FMS is 0.97
+    The FMS is 0.99
 
 
 
@@ -629,7 +629,7 @@ to remove and not on a case-by-case basis.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.029 seconds)
+   **Total running time of the script:** ( 0 minutes  10.072 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_outlier_detection.py:
