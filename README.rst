@@ -23,7 +23,7 @@ Documentation
 -------------
 
 The documentation
-is available on `ReadTheDocs <https://tlviz.readthedocs.io/en/latest/?badge=latest>`_ and includes
+is available on `the TensorLy website <https://tensorly.org/lab>`_ and includes
 
 * A `primer on tensors <https://tlviz.readthedocs.io/en/latest/about_tensors.html#what-are-tensors-and-tensor-decompositions>`_, `tensor factorisations <https://tlviz.readthedocs.io/en/latest/about_tensors.html#what-are-tensor-factorisations>`_ and the `notation we use <https://tlviz.readthedocs.io/en/latest/about_tensors.html#notation>`_
 * `An example gallery <https://tlviz.readthedocs.io/en/latest/auto_examples/index.html>`_
