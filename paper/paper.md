@@ -26,11 +26,11 @@ bibliography: paper.bib
 
 # Introduction
 
-Multi-way data, also known as tensor data or data cubes occur in many applications, such as text mining [@bader2008discussion], neuroscience [@andersen2004structure] and chemical analysis [@bro1997parafac]. Uncovering the meaningful patterns within such data can provide crucial insights about the data source and tensor decompositions have proven an effective tool for this task. In particular, the PARAFAC model (also known as CANDECOMP/PARAFAC, or CP, and the canonical polyadic decomposition, or CPD), has shown great promise for extracting interpretable components. PARAFAC has, for example, extracted topics from an email corpus [@bader2008discussion] and chemical spectra from fluorescence spectroscopy data [@bro1997parafac]. For a thorough introduction to tensor methods we refer the reader to [@kolda2009tensor] and [@bro1997parafac]. The goal of TensorLy-Visualisation (TLViz) is to provide utilities for analysing, visualising and working with tensor decompositions for data analysis in Python.
+Multi-way data, also known as tensor data or data cubes, occur in many applications, such as text mining [@bader2008discussion], neuroscience [@andersen2004structure] and chemical analysis [@bro1997parafac]. Uncovering the meaningful patterns within such data can provide crucial insights into the data source, and tensor decompositions have proven an effective tool for this task. In particular, the PARAFAC model, also known as CANDECOMP/PARAFAC (CP) or the canonical polyadic decomposition (CPD), has shown great promise for extracting interpretable components. PARAFAC has, for example, extracted topics from an email corpus [@bader2008discussion] and chemical spectra from fluorescence spectroscopy data [@bro1997parafac]. For a thorough introduction to tensor methods, we refer the reader to [@kolda2009tensor] and [@bro1997parafac]. The goal of TensorLy-Visualisation (TLViz) is to provide utilities for analysing, visualising and working with tensor decompositions for data analysis in Python.
 
 # Statement of need
 
-Python has become a language of choice for data science for both industrial and academic research. Open source tools, such as scikit-learn [@pedregosa2011scikit] and Pandas [@mckinney-proc-scipy-2010] have made a variety of machine learning methods accessible within Python. Recently, TensorLy has also made tensor methods available in Python [@kossaifi2016tensorly], providing seamless integration of multi-way data mining methods within the python scientific environment. However, while TensorLy is an open-source community-driven package for calculating tensor decompositions, it does not include tools for analysing or visualising the tensor decomposition models. Because tensor decompositions provide powerful tools to extract insight from multi-way data, effective visualisations are crucial as they are needed to communicate this insight. Furthermore, visualisation and evaluation are essential steps in the multi-way analysis pipeline — without tools for these steps, we cannot find suitable models.
+Python has become a language of choice for data science for both industrial and academic research. Open source tools, such as scikit-learn [@pedregosa2011scikit] and Pandas [@mckinney-proc-scipy-2010] have made a variety of machine learning methods accessible within Python. Recently, TensorLy has also made tensor methods available in Python [@kossaifi2016tensorly], providing seamless integration of multi-way data mining methods within the python scientific environment. However, while TensorLy is an open-source, community-driven package for calculating tensor decompositions, it does not include tools for analysing or visualising the tensor decomposition models. Because tensor decompositions provide powerful tools to extract insight from multi-way data, effective visualisations are crucial as they are needed to communicate this insight. Furthermore, visualisation and evaluation are essential steps in the multi-way analysis pipeline — without tools for these steps, we cannot find suitable models.
 
 There is, to our knowledge, no free open source software (FOSS) that facilitates all these steps. For MATLAB, some tools cover part of this scope, such as Tensor Toolbox (which provides some model evaluation) [@osti_1230898] or the N-Way toolbox [@andersson2000n]. PLSToolbox covers most of our scope, but it is a closed source commercial software. There is, therefore, a growing need for FOSS tools for the visualisation and evaluation of tensor decompositions.
 
@@ -65,14 +65,14 @@ Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent
    ↩ Laboratory Systems, 1997, 38, 149-171
 ```
 
-![An example figure showing the component vectors of a three component PARAFAC model fitted to a fluoresence spectroscopy dataset](paper_demo.pdf)
+![An example figure showing the component vectors of a three-component PARAFAC model fitted to a fluorescence spectroscopy dataset](paper_demo.pdf)
 
 The above code uses TensorLy to fit five three-component PARAFAC models to the data. Then it uses TLViz to:
 
  1. Select the model that gave the lowest reconstruction error,
  1. normalise the component vectors, storing their magnitude in a separate weight-vector,
  1. permute the components in descending weight (i.e. signal strength) order,
- 1. flip the components so they point in a logical direction compared to the data,
+ 1. flip the components, so they point in a logical direction compared to the data,
  1. convert the factor matrices into Pandas DataFrames with logical indices,
  1. and plot the components using matplotlib.
 
@@ -88,7 +88,7 @@ TLViz follows the procedural paradigm, and all of TLViz’s functionality lies i
  1. `tlviz.multimodel_evaluation` - compares and evaluates multiple models at once
  1. `tlviz.outliers` - finds data points that may be outliers
  1. `tlviz.postprocessing` - post-processes PARAFAC models, usually used before visualising
- 1. `tlviz.utils` - general utilities that can be useful (e.g. forming dense tensor from decompositions)
+ 1. `tlviz.utils` - general utilities that can be useful (e.g. forming dense tensors from decompositions)
  1. `tlviz.visualisation` - visualising component models
 
 A core design choice behind TLViz is how to store metadata. Consider the example above. It is necessary to know the values along the x-axis to interpret these components. Therefore, we use xarray DataArrays to store data tensors [@hoyer2017xarray], keeping the correct indices for each tensor mode (i.e. axis), and Pandas DataFrames to store factor matrices. However, TensorLy works with NumPy arrays. TLViz, therefore, provides useful tools to add the coordinates from an xarray DataArray onto the factor matrices obtained with TensorLy. Furthermore, all functions of TLViz support both labelled and unlabelled decompositions (i.e. DataFrames and NumPy arrays) and will use the labels whenever possible.
