@@ -1,0 +1,1083 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Visualisation &#8212; TLViz 0.0.7 documentation</title> 
+<link rel="stylesheet" href="../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script src="../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example datasets" href="data.html" />
+    <link rel="prev" title="Outlier detection" href="outliers.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../index.html">
+            <img src="../_static/tlviz_logo.svg" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../about_tensors.html">
+              Introduction
+            </a>
+            <a class="navbar-item" href="../installation.html">
+              Installation
+            </a>
+            <a class="navbar-item" href="../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="https://tensorly.org" target="_blank">
+              TensorLy
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/marieroald/tlviz" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TLViz" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_tensors.html">What are tensors and tensor decompositions?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html">Post-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor_tools.html">Factor tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model_evaluation.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimodel_evaluation.html">Multi-model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="outliers.html">Outlier detection</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Visualisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Example datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tensorly_backends.html">Working with TensorLy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribution guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
+        </div>
+        
+
+        <div class="content main-content">
+          
+  <section id="module-tlviz.visualisation">
+<span id="visualisation"></span><h1>Visualisation<a class="headerlink" href="#module-tlviz.visualisation" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.component_comparison_plot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">component_comparison_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#component_comparison_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.component_comparison_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a plot to compare different CP tensors.</p>
+<p>This function creates a figure with either D columns and R rows or D columns and N rows,
+where D is the number of modes, R is the number of components and N is the number of cp tensors
+to compare.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>cp_tensors</strong><span class="classifier">dict (str -&gt; CPTensor)</span></dt><dd><p>Dictionary with model names mapping to decompositions. The model names
+are used for labels. The components of all CP tensors will be aligned
+to maximise the factor match score with the components of the first CP
+tensor in the dictionary (starting with Python 3.7, dictionaries are sorted by
+insertion order).</p>
+</dd>
+<dt><strong>row</strong><span class="classifier">{“model”, “component”}</span></dt><dd></dd>
+<dt><strong>weight_behaviour</strong><span class="classifier">{“ignore”, “normalise”, “evenly”, “one_mode”} (default=”normalise”)</span></dt><dd><p>How to handle the component weights.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ignore&quot;</span></code> - Do nothing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;normalise&quot;</span></code> - Normalise all factor matrices</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;evenly&quot;</span></code> - All factor matrices have equal norm</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;one_mode&quot;</span></code> - The weight is allocated in one mode, all other factor matrices have unit norm columns.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><strong>weight_mode</strong><span class="classifier">int (optional)</span></dt><dd><p>Which mode to have the component weights in (only used if <code class="docutils literal notranslate"><span class="pre">weight_behaviour=&quot;one_mode&quot;</span></code>)</p>
+</dd>
+<dt><strong>plot_kwargs</strong><span class="classifier">list of list of dicts</span></dt><dd><p>Nested list of dictionaries, one dictionary with keyword arguments for each subplot.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">matplotlib figure</span></dt><dd></dd>
+<dt><strong>axes</strong><span class="classifier">array of matplotlib axes</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">non_negative_parafac_hals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">component_comparison_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">postprocess</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensors</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;True&quot;</span><span class="p">:</span> <span class="n">true_cp</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;CP&quot;</span><span class="p">:</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s2">&quot;NN CP&quot;</span><span class="p">:</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">component_comparison_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-1.py">Source code</a>, <a class="reference external" href="../api/visualisation-1.png">png</a>, <a class="reference external" href="../api/visualisation-1.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-1.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-1.png" class="plot-directive" src="../_images/visualisation-1.png" />
+</figure>
+<p>If not all decompositions have the same number of components, then the components will be aligned
+with the first (reference) decomposition in the <code class="docutils literal notranslate"><span class="pre">cp_tensors</span></code>-dictionary. If one of the subsequent
+decompositions have fewer components than the reference decomposition, then the columns will be
+aligned correctly, and if one of them has more, then the additional components will be ignored.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">permute_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">postprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">component_comparison_plot</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">four_components</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">three_components</span> <span class="o">=</span> <span class="n">permute_cp_tensor</span><span class="p">(</span><span class="n">four_components</span><span class="p">,</span> <span class="n">permutation</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">two_components</span> <span class="o">=</span> <span class="n">permute_cp_tensor</span><span class="p">(</span><span class="n">four_components</span><span class="p">,</span> <span class="n">permutation</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot the decomposition</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensors</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;True&quot;</span><span class="p">:</span> <span class="n">three_components</span><span class="p">,</span>  <span class="c1"># Reference decomposition</span>
+<span class="gp">... </span>    <span class="s2">&quot;subset&quot;</span><span class="p">:</span> <span class="n">two_components</span><span class="p">,</span>  <span class="c1"># Only component 0 and 2</span>
+<span class="gp">... </span>    <span class="s2">&quot;superset&quot;</span><span class="p">:</span> <span class="n">four_components</span><span class="p">,</span>  <span class="c1"># All components in reference plus one additional</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">component_comparison_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-2.py">Source code</a>, <a class="reference external" href="../api/visualisation-2.png">png</a>, <a class="reference external" href="../api/visualisation-2.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-2.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-2.png" class="plot-directive" src="../_images/visualisation-2.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.component_scatterplot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">component_scatterplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#component_scatterplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.component_scatterplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scatterplot of two columns in a factor matrix.</p>
+<p>Create a scatterplot with the columns of a factor matrix as feature-vectors.
+Note that since factor matrices are not orthogonal, the distances between points
+can be misleading. The lack of orthogonality means that distances and angles
+are “skewed”, and two slabs with vastly different locations in the scatter plot
+can be very similar (in the case of collinear components). For more information
+about this phenomenon, see <span id="id1">[<a class="reference internal" href="../references.html#id15" title="Henk AL Kiers. Some procedures for displaying results from three-way methods. Journal of Chemometrics: A Journal of the Chemometrics Society, 14(3):151–170, 2000.">Kie00</a>]</span> and example 8.3 in
+<span id="id2">[<a class="reference internal" href="../references.html#id14" title="Age Smilde, Paul Geladi, and Rasmus Bro. Multi-way analysis: applications in the chemical sciences. John Wiley &amp; Sons, 2005.">SGB05</a>]</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>mode</strong><span class="classifier">int</span></dt><dd><p>Mode for the factor matrix whose columns are plotted</p>
+</dd>
+<dt><strong>x_component</strong><span class="classifier">int</span></dt><dd><p>Component plotted on the x-axis</p>
+</dd>
+<dt><strong>y_component</strong><span class="classifier">int</span></dt><dd><p>Component plotted on the y-axis</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes (Optional)</span></dt><dd><p>Axes to plot the scatterplot in</p>
+</dd>
+<dt><strong>axis</strong><span class="classifier">int (optional)</span></dt><dd><p>Alias for mode. If this is provided, then no value for mode can be provided.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">ax.scatter</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Small example with a simulated third order CP tensor</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_cp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">component_scatterplot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-3.py">Source code</a>, <a class="reference external" href="../api/visualisation-3.png">png</a>, <a class="reference external" href="../api/visualisation-3.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-3.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-3.png" class="plot-directive" src="../_images/visualisation-3.png" />
+</figure>
+<p>Eexample with PCA of a real stock dataset</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">label_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">component_scatterplot</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load data and convert to xarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">stocks</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;Stock&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span> <span class="o">=</span> <span class="n">stocks</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute PCA via SVD of centered data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span> <span class="o">-=</span> <span class="n">stocks</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">stocks</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Extract two components and convert to cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">num_components</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="n">num_components</span><span class="p">],</span> <span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">num_components</span><span class="p">],</span> <span class="n">Vh</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="p">:</span><span class="n">num_components</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">label_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">stocks</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Visualise the components with components_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-4.py">Source code</a>, <a class="reference external" href="../api/visualisation-4.png">png</a>, <a class="reference external" href="../api/visualisation-4.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-4.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-4.png" class="plot-directive" src="../_images/visualisation-4.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.components_plot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">components_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#components_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.components_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the component vectors of a CP model.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>weight_behaviour</strong><span class="classifier">{‘ignore’, ‘normalise’, ‘evenly’, ‘one_mode’}</span></dt><dd><p>How to handle the component weights.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>ignore - Do nothing, just plot the factor matrices</p></li>
+<li><p>normalise - Plot all components after normalising them</p></li>
+<li><p>evenly - Distribute the weight evenly across all modes</p></li>
+<li><p>one_mode - Move all the weight into one factor matrix</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><strong>weight_mode</strong><span class="classifier">int</span></dt><dd><p>The mode that the weight should be placed in (only used if <code class="docutils literal notranslate"><span class="pre">weight_behaviour='one_mode'</span></code>)</p>
+</dd>
+<dt><strong>plot_kwargs</strong><span class="classifier">list of dictionaries</span></dt><dd><p>List of same length as the number of modes. Each element is a kwargs-dict passed to
+the plot function for that mode.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">matplotlib.figure.Figure</span></dt><dd></dd>
+<dt><strong>axes</strong><span class="classifier">ndarray(dtype=matplotlib.axes.Axes)</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Small example with a simulated CP tensor</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_cp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">components_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">components_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-5.py">Source code</a>, <a class="reference external" href="../api/visualisation-5.png">png</a>, <a class="reference external" href="../api/visualisation-5.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-5.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-5.png" class="plot-directive" src="../_images/visualisation-5.png" />
+</figure>
+<p>Full example with PCA of a real stock dataset</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">label_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">components_plot</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load data and convert to xarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">stocks</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;Stock&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span> <span class="o">=</span> <span class="n">stocks</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute PCA via SVD of centered data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stocks</span> <span class="o">-=</span> <span class="n">stocks</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">stocks</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Extract two components and convert to cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">num_components</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="n">num_components</span><span class="p">],</span> <span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">num_components</span><span class="p">],</span> <span class="n">Vh</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="p">:</span><span class="n">num_components</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">label_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">stocks</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Visualise the components with components_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">components_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;one_mode&quot;</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>                            <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">[{},</span> <span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-6.py">Source code</a>, <a class="reference external" href="../api/visualisation-6.png">png</a>, <a class="reference external" href="../api/visualisation-6.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-6.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-6.png" class="plot-directive" src="../_images/visualisation-6.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.core_element_heatmap">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">core_element_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.2f'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#core_element_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.core_element_heatmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.</p>
+<p>It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which
+components that are modelling multi-linear behaviour and which are not. For example, a component that models noise is
+more likely to have strong interactions with the other components compared to a component that have a meaningful
+interpretation. In the core element heatmap, this is shown as rows, columns and/or slabs that have high entries compared
+to the diagonal.</p>
+<p>If the data follows a PARAFAC model perfectly, then there should only be one non-zero entry per slice. For the <span class="math notranslate nohighlight">\(r\)</span>-th
+slice, the <span class="math notranslate nohighlight">\((r, r)\)</span>-th entry will be 1 and all others will be 0.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The core element heatmap can only be plotted for third-order tensors.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray or xarray.DataArray</span></dt><dd><p>The dataset the CP tensor models.</p>
+</dd>
+<dt><strong>slice_mode</strong><span class="classifier">{0, 1, 2} (default=0)</span></dt><dd><p>Which mode to slice the core tensor across.</p>
+</dd>
+<dt><strong>vmax</strong><span class="classifier">float (default=None)</span></dt><dd><p>The maximum value for the colormap (a diverging colormap with center at 0 will be used).
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the maximum entry in the core tensor is used.</p>
+</dd>
+<dt><strong>annotate</strong><span class="classifier">bool (default=True)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the value of the core tensor is plotted too.</p>
+</dd>
+<dt><strong>text_kwargs</strong><span class="classifier">dict (default=None)</span></dt><dd><p>Additional keyword arguments used for plotting the text. Can for example be used to set the font size.</p>
+</dd>
+<dt><strong>text_fmt</strong><span class="classifier">str (default=”.2f”)</span></dt><dd><p>Formatting string used for annotating.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">matplotlib.figure.Figure</span></dt><dd></dd>
+<dt><strong>axes</strong><span class="classifier">ndarray(dtype=matplotlib.axes.Axes)</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">core_element_heatmap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">core_element_heatmap</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-7.py">Source code</a>, <a class="reference external" href="../api/visualisation-7.png">png</a>, <a class="reference external" href="../api/visualisation-7.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-7.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-7.png" class="plot-directive" src="../_images/visualisation-7.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.core_element_plot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">core_element_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#core_element_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.core_element_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scatter plot with the elements of the optimal core tensor for a given CP tensor.</p>
+<p>If the CP-model is appropriate for the data, then the core tensor should
+be superdiagonal, and all off-superdiagonal entries should be zero. This plot
+shows the core elements, sorted so the first R scatter-points correspond to the
+superdiagonal and the subsequent scatter-points correspond to off-diagonal entries
+in the optimal core tensor.</p>
+<p>Together with the scatter plot, there is a line-plot that indicate where the scatter-points
+should be if the CP-model perfectly describes the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray or xarray.DataArray</span></dt><dd><p>The dataset the CP tensor models.</p>
+</dd>
+<dt><strong>normalised</strong><span class="classifier">bool</span></dt><dd><p>If true then the normalised core consistency will be estimated
+(see <code class="docutils literal notranslate"><span class="pre">tlviz.model_evaluation.core_consistency</span></code>)</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd><p>Axes to plot the core element plot within</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">core_element_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est_cp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core_element_plot</span><span class="p">(</span><span class="n">est_cp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Core consistency: 99.8&#39;}, xlabel=&#39;Core element&#39;, ylabel=&#39;Value&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-8.py">Source code</a>, <a class="reference external" href="../api/visualisation-8.png">png</a>, <a class="reference external" href="../api/visualisation-8.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-8.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-8.png" class="plot-directive" src="../_images/visualisation-8.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.histogram_of_residuals">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">histogram_of_residuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#histogram_of_residuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.histogram_of_residuals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a histogram of model residuals (<span class="math notranslate nohighlight">\(\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}\)</span>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray or xarray.DataArray</span></dt><dd><p>Dataset to compare with</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes (Optional)</span></dt><dd><p>Axes to plot the histogram in</p>
+</dd>
+<dt><strong>standardised</strong><span class="classifier">bool</span></dt><dd><p>If true, then the residuals are divided by their standard deviation</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Additional keyword arguments passed to the histogram function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">histogram_of_residuals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est_cp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">histogram_of_residuals</span><span class="p">(</span><span class="n">est_cp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Histogram of residuals&#39;}, xlabel=&#39;Standardised residuals&#39;, ylabel=&#39;Frequency&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-9.py">Source code</a>, <a class="reference external" href="../api/visualisation-9.png">png</a>, <a class="reference external" href="../api/visualisation-9.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-9.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-9.png" class="plot-directive" src="../_images/visualisation-9.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.optimisation_diagnostic_plots">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">optimisation_diagnostic_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_logs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#optimisation_diagnostic_plots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.optimisation_diagnostic_plots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Diagnostic plots for the optimisation problem.</p>
+<p>This function creates two plots. One plot that shows the loss value for each initialisation
+and whether or not that initialisation converged or ran until the maximum number of iterations.
+The other plot shows the error log for each initialisation, with the initialisation with lowest
+final error in a different colour (orange).</p>
+<p>These plots can be helpful for understanding how stable the model is with respect to initialisation.
+Ideally, we should see that many initialisations converged and obtained the same, low, error.
+If models converge, but with different errors, then this can indicate that indicates that a stricter
+convergence tolerance is required, and if no models converge, then more iterations may be required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>error_logs</strong><span class="classifier">list of arrays</span></dt><dd><p>List of arrays, each containing the error per iteration for an initialisation.</p>
+</dd>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>Maximum number of iterations for the fitting procedure. Used to determine if the
+models converged or not.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">matplotlib.figure.Figure</span></dt><dd></dd>
+<dt><strong>axes</strong><span class="classifier">array(dtype=matplotlib.axes.Axes)</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Fit the wrong number of components to show local minima problems</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_cp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">optimisation_diagnostic_plots</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate random tensor and add noise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fit 10 models</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">errs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">errs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parafac</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot the diganostic plots</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errs</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-10.py">Source code</a>, <a class="reference external" href="../api/visualisation-10.png">png</a>, <a class="reference external" href="../api/visualisation-10.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-10.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-10.png" class="plot-directive" src="../_images/visualisation-10.png" />
+</figure>
+<p>Fit a model with too few iterations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_cp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">optimisation_diagnostic_plots</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate random tensor and add noise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fit 10 models</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">errs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">errs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parafac</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot the diagnostic plots</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errs</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-11.py">Source code</a>, <a class="reference external" href="../api/visualisation-11.png">png</a>, <a class="reference external" href="../api/visualisation-11.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-11.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-11.png" class="plot-directive" src="../_images/visualisation-11.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.outlier_plot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">outlier_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leverage_rules_of_thumb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual_rules_of_thumb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#outlier_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.outlier_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the leverage-residual scatterplot to detect outliers.</p>
+<p>Detecting outliers can be a difficult task, and a common way to do this is by making a scatter-plot where the
+leverage score is plotted against the slabwise SSE (or residual).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray or xarray.DataArray</span></dt><dd><p>Dataset to compare with</p>
+</dd>
+<dt><strong>mode</strong><span class="classifier">int</span></dt><dd><p>Which mode (axis) to create the outlier plot for</p>
+</dd>
+<dt><strong>leverage_rules_of_thumb</strong><span class="classifier">str or iterable of str</span></dt><dd><p>Rule of thumb(s) used to create lines for detecting outliers based on leverage score. Must be a supported
+argument for <code class="docutils literal notranslate"><span class="pre">method</span></code> with <a class="reference internal" href="outliers.html#tlviz.outliers.get_leverage_outlier_threshold" title="tlviz.outliers.get_leverage_outlier_threshold"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tlviz.outliers.get_leverage_outlier_threshold()</span></code></a>. If
+<code class="docutils literal notranslate"><span class="pre">leverage_rules_of_thumb</span></code> is an iterable of strings, then multiple lines will be drawn, one for each
+method.</p>
+</dd>
+<dt><strong>residual_rules_of_thumb</strong><span class="classifier">str or iterable of str</span></dt><dd><p>Rule of thumb(s) used to create lines for detecting outliers based on residuals. Must be a supported
+argument for <code class="docutils literal notranslate"><span class="pre">method</span></code> with <a class="reference internal" href="outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold" title="tlviz.outliers.get_slabwise_sse_outlier_threshold"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tlviz.outliers.get_slabwise_sse_outlier_threshold()</span></code></a>. If
+<code class="docutils literal notranslate"><span class="pre">residual_rules_of_thumb</span></code> is an iterable of strings, then multiple lines will be drawn, one for each
+method.</p>
+</dd>
+<dt><strong>p_value</strong><span class="classifier">float or iterable of float</span></dt><dd><p>p-value(s) to use for both the leverage and residual rules of thumb. If an iterable of floats is used,
+then there will be drawn lines for each p-value.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd><p>Axes to plot outlier plot in. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then <code class="docutils literal notranslate"><span class="pre">plt.gca()</span></code> is used.</p>
+</dd>
+<dt><strong>axis</strong><span class="classifier">int (optional)</span></dt><dd><p>Alias for mode. If set, then mode cannot be set.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd><p>Axes with outlier plot in</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="outliers.html#tlviz.outliers.compute_outlier_info" title="tlviz.outliers.compute_outlier_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlviz.outliers.compute_outlier_info</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="outliers.html#tlviz.outliers.compute_leverage" title="tlviz.outliers.compute_leverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlviz.outliers.compute_leverage</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="outliers.html#tlviz.outliers.compute_slabwise_sse" title="tlviz.outliers.compute_slabwise_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlviz.outliers.compute_slabwise_sse</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="outliers.html#tlviz.outliers.get_leverage_outlier_threshold" title="tlviz.outliers.get_leverage_outlier_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlviz.outliers.get_leverage_outlier_threshold</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold" title="tlviz.outliers.get_slabwise_sse_outlier_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlviz.outliers.get_slabwise_sse_outlier_threshold</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p>Here is a simple example demonstrating how to use the outlier plot to detect outliers based on the
+Oslo bike sharing data.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_parafac_hals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">load_oslo_city_bike</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">postprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">outlier_plot</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_oslo_city_bike</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp</span> <span class="o">=</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outlier_plot</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">cp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">leverage_rules_of_thumb</span><span class="o">=</span><span class="s1">&#39;p-value&#39;</span><span class="p">,</span> <span class="n">residual_rules_of_thumb</span><span class="o">=</span><span class="s1">&#39;p-value&#39;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-12.py">Source code</a>, <a class="reference external" href="../api/visualisation-12.png">png</a>, <a class="reference external" href="../api/visualisation-12.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-12.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-12.png" class="plot-directive" src="../_images/visualisation-12.png" />
+</figure>
+<p>We can also provide multiple types of rules of thumb</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_parafac_hals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">load_oslo_city_bike</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">postprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">outlier_plot</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_oslo_city_bike</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp</span> <span class="o">=</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outlier_plot</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">cp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">leverage_rules_of_thumb</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;huber lower&#39;</span><span class="p">,</span> <span class="s1">&#39;hw higher&#39;</span><span class="p">],</span> <span class="n">residual_rules_of_thumb</span><span class="o">=</span><span class="s1">&#39;two sigma&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-13.py">Source code</a>, <a class="reference external" href="../api/visualisation-13.png">png</a>, <a class="reference external" href="../api/visualisation-13.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-13.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-13.png" class="plot-directive" src="../_images/visualisation-13.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.percentage_variation_plot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">percentage_variation_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#percentage_variation_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.percentage_variation_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bar chart showing the percentage of variation explained by each of the components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray or xarray.DataArray</span></dt><dd><p>Dataset to compare with, only needed if <code class="docutils literal notranslate"><span class="pre">method=&quot;data&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">method=&quot;both&quot;</span></code>.</p>
+</dd>
+<dt><strong>model</strong><span class="classifier">{“model”, “data”, “both”} (default=”model”)</span></dt><dd><p>Whether the percentage variation should be computed based on the model, data or both.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">matplotlib axes</span></dt><dd><p>Axes to draw the plot in</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>matplotlib axes</dt><dd><p>Axes with the plot in</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>By default, we get the percentage of variation in the model each component explains</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">percentage_variation_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">percentage_variation_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-14.py">Source code</a>, <a class="reference external" href="../api/visualisation-14.png">png</a>, <a class="reference external" href="../api/visualisation-14.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-14.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-14.png" class="plot-directive" src="../_images/visualisation-14.png" />
+</figure>
+<p>We can also get the percentage of variation in the data that each component explains</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">percentage_variation_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">percentage_variation_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-15.py">Source code</a>, <a class="reference external" href="../api/visualisation-15.png">png</a>, <a class="reference external" href="../api/visualisation-15.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-15.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-15.png" class="plot-directive" src="../_images/visualisation-15.png" />
+</figure>
+<p>Or both the variation in the data and in the model</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">percentage_variation_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">percentage_variation_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-16.py">Source code</a>, <a class="reference external" href="../api/visualisation-16.png">png</a>, <a class="reference external" href="../api/visualisation-16.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-16.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-16.png" class="plot-directive" src="../_images/visualisation-16.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.residual_qq">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">residual_qq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pingouin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#residual_qq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.residual_qq" title="Permalink to this definition">¶</a></dt>
+<dd><p>QQ-plot of the model residuals.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> is used to create the QQ-plot. However,
+if <code class="docutils literal notranslate"><span class="pre">use_pingouin=True</span></code>, then we import the GPL-3 lisenced Pingouin
+library to create a more informative QQ-plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
+argument and a tuple of components as second argument</p>
+</dd>
+<dt><strong>dataset</strong><span class="classifier">np.ndarray or xarray.DataArray</span></dt><dd><p>Dataset to compare with</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes (Optional)</span></dt><dd><p>Axes to plot the qq-plot in</p>
+</dd>
+<dt><strong>use_pingouin</strong><span class="classifier">bool</span></dt><dd><p>If true, then the GPL-3 licensed <code class="docutils literal notranslate"><span class="pre">pingouin</span></code>-library will be used
+for generating an enhanced QQ-plot (with error bars), at the cost
+of changing the license of tlviz into a GPL-license too.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Additional keyword arguments passed to the qq-plot function
+(<code class="docutils literal notranslate"><span class="pre">statsmodels.api.qqplot</span></code> or <code class="docutils literal notranslate"><span class="pre">pingouin.qqplot</span></code>)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">residual_qq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est_cp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residual_qq</span><span class="p">(</span><span class="n">est_cp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;QQ-plot of residuals&#39;}, xlabel=&#39;Theoretical Quantiles&#39;, ylabel=&#39;Sample Quantiles&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-17.py">Source code</a>, <a class="reference external" href="../api/visualisation-17.png">png</a>, <a class="reference external" href="../api/visualisation-17.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-17.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-17.png" class="plot-directive" src="../_images/visualisation-17.png" />
+</figure>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tlviz.visualisation.scree_plot">
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">scree_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Fit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#scree_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.scree_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create scree plot for the given cp tensors.</p>
+<p>A scree plot is a plot with the model on the x-axis and a metric (often fit)
+on the y-axis. It is commonly plotted as a line plot with a scatter point located at each
+model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cp_tensor: dict[Any, CPTensor]</strong></dt><dd><p>Dictionary mapping model names (often just the number of components as an int) to a
+model.</p>
+</dd>
+<dt><strong>dataset: numpy.ndarray or xarray.DataArray</strong></dt><dd><p>Dataset to compare the model against.</p>
+</dd>
+<dt><strong>errors: dict[Any, float] (optional)</strong></dt><dd><p>The metric to plot. If given, then the cp_tensor and dataset-arguments are ignored.
+This is useful to save computation time if, for example, the fit is computed beforehand.</p>
+</dd>
+<dt><strong>metric: str or Callable</strong></dt><dd><p>Which metric to plot, should have the signature <code class="docutils literal notranslate"><span class="pre">metric(cp_tensor,</span> <span class="pre">dataset)</span></code> and return
+a float. If it is a string, then this will be used as the y-label and metric will be set to
+<code class="docutils literal notranslate"><span class="pre">metric</span> <span class="pre">=</span> <span class="pre">getattr(tlviz.model_evaluation,</span> <span class="pre">metric)</span></code>.
+Also, if <code class="docutils literal notranslate"><span class="pre">metric</span></code> is a string, then it is converted to lower-case letters and spaces
+are converted to underlines before getting the metric from the <code class="docutils literal notranslate"><span class="pre">model_evaluation</span></code> module.</p>
+</dd>
+<dt><strong>ax: matplotlib axes</strong></dt><dd><p>Matplotlib axes that the plot will be placed in. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then <code class="docutils literal notranslate"><span class="pre">plt.gca()</span></code> will be used.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ax</dt><dd><p>Matplotlib axes object with the scree plot</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Simple scree plot of fit</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">scree_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensors</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">cp_tensors</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> components&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">scree_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-18.py">Source code</a>, <a class="reference external" href="../api/visualisation-18.png">png</a>, <a class="reference external" href="../api/visualisation-18.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-18.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-18.png" class="plot-directive" src="../_images/visualisation-18.png" />
+</figure>
+<p>Scree plots for fit and core consistency in the same figure</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.visualisation</span> <span class="kn">import</span> <span class="n">scree_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensors</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">cp_tensors</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">scree_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">scree_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;Core consistency&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Names are converted to lowercase and spaces are converted to underlines when fetching metric-function,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># so &quot;Core consistency&quot; becomes getattr(tlviz.model_evaluation, &quot;core_consistency&quot;)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">xlabel</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of components&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">xticks</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">cp_tensors</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">limits</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../api/visualisation-19.py">Source code</a>, <a class="reference external" href="../api/visualisation-19.png">png</a>, <a class="reference external" href="../api/visualisation-19.hires.png">hires.png</a>, <a class="reference external" href="../api/visualisation-19.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/visualisation-19.png" class="plot-directive" src="../_images/visualisation-19.png" />
+</figure>
+</dd></dl>
+
+</section>
+
+
+        </div>
+
+		
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button is-medium pagination-previous" href="outliers.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span>Outlier detection</span>
+    </a>
+    
+    
+    <a class="button is-medium pagination-next" href="data.html" title="next page" accesskey="n">
+        <span>Example datasets </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+        
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
+        </div>
+      <div class="block">
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+      </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+    
+
+    
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>
