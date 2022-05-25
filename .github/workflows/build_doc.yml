@@ -1,4 +1,4 @@
-name: Build tensorly-viz documentation
+name: Build tlviz documentation
 
 on:
   push:
