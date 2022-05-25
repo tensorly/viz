@@ -23,19 +23,19 @@ Documentation
 -------------
 
 The documentation
-is available on `ReadTheDocs <https://tlviz.readthedocs.io/en/latest/?badge=latest>`_ and includes
+is available on `the TensorLy website <https://tensorly.org/viz>`_ and includes
 
 * A `primer on tensors <https://tlviz.readthedocs.io/en/latest/about_tensors.html#what-are-tensors-and-tensor-decompositions>`_, `tensor factorisations <https://tlviz.readthedocs.io/en/latest/about_tensors.html#what-are-tensor-factorisations>`_ and the `notation we use <https://tlviz.readthedocs.io/en/latest/about_tensors.html#notation>`_
 * `An example gallery <https://tlviz.readthedocs.io/en/latest/auto_examples/index.html>`_
 * `The API reference <https://tlviz.readthedocs.io/en/latest/api.html>`_
- 
+
 
 Dependencies
 ------------
 
 TLViz supports Python 3.7 or above (it may also work with Python 3.6, though that is not officially supported).
 
-Installation requires matplotlib, numpy, pandas, scipy, statsmodels and xarray. 
+Installation requires matplotlib, numpy, pandas, scipy, statsmodels and xarray.
 
 Installation
 ------------
@@ -62,7 +62,7 @@ Example
 -------
 
 .. code:: python
-    
+
     import tlviz
     import matplotlib.pyplot as plt
     from tensorly.decomposition import parafac
