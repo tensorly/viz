@@ -210,6 +210,24 @@
           
   <section id="module-tlviz.multimodel_evaluation">
 <span id="multi-model-evaluation"></span><h1>Multi-model evaluation<a class="headerlink" href="#module-tlviz.multimodel_evaluation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.multimodel_evaluation.get_model_with_lowest_error" title="tlviz.multimodel_evaluation.get_model_with_lowest_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model_with_lowest_error</span></code></a>(cp_tensors, dataset)</p></td>
+<td><p>Compute reconstruction error for all cp_tensors and return model with lowest error.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.multimodel_evaluation.similarity_evaluation" title="tlviz.multimodel_evaluation.similarity_evaluation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_evaluation</span></code></a>(cp_tensor, ...[, ...])</p></td>
+<td><p>Compute similarities between <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> and all <code class="docutils literal notranslate"><span class="pre">comparison_cp_tensors</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.multimodel_evaluation.sort_models_by_error" title="tlviz.multimodel_evaluation.sort_models_by_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_models_by_error</span></code></a>(cp_tensors, dataset[, ...])</p></td>
+<td><p>Sort the <code class="docutils literal notranslate"><span class="pre">cp_tensors</span></code> by their error so the model with the lowest error is first.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.multimodel_evaluation.get_model_with_lowest_error">
 <span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">get_model_with_lowest_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#get_model_with_lowest_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.get_model_with_lowest_error" title="Permalink to this definition">¶</a></dt>

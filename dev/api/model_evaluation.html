@@ -211,10 +211,37 @@
           
   <section id="module-tlviz.model_evaluation">
 <span id="model-evaluation"></span><h1>Model evaluation<a class="headerlink" href="#module-tlviz.model_evaluation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Functions:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.model_evaluation.core_consistency" title="tlviz.model_evaluation.core_consistency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core_consistency</span></code></a>(cp_tensor, dataset[, ...])</p></td>
+<td><p>Computes the core consistency <span id="id1">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.model_evaluation.estimate_core_tensor" title="tlviz.model_evaluation.estimate_core_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_core_tensor</span></code></a>(factors, dataset)</p></td>
+<td><p>Efficient estimation of the Tucker core from a factor matrices and a data tensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.model_evaluation.fit" title="tlviz.model_evaluation.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(cp_tensor, dataset[, sum_squared_dataset])</p></td>
+<td><p>Compute the fit (1-relative sum squared error) for a given cp_tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.model_evaluation.predictive_power" title="tlviz.model_evaluation.predictive_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predictive_power</span></code></a>(cp_tensor, y, sklearn_estimator)</p></td>
+<td><p>Use scikit-learn estimator to evaluate the predictive power of a factor matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.model_evaluation.relative_sse" title="tlviz.model_evaluation.relative_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_sse</span></code></a>(cp_tensor, dataset[, ...])</p></td>
+<td><p>Compute the relative sum of squared error for a given cp_tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlviz.model_evaluation.sse" title="tlviz.model_evaluation.sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sse</span></code></a>(cp_tensor, dataset)</p></td>
+<td><p>Compute the sum of squared error for a given cp_tensor.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.model_evaluation.core_consistency">
 <span class="sig-prename descclassname"><span class="pre">tlviz.model_evaluation.</span></span><span class="sig-name descname"><span class="pre">core_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/model_evaluation.html#core_consistency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.model_evaluation.core_consistency" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the core consistency <span id="id1">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span></p>
+<dd><p>Computes the core consistency <span id="id2">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span></p>
 <p>A CP model can be interpreted as a restricted Tucker model, where the
 core tensor is constrained to be superdiagonal. For a third order tensor,
 this means that the core tensor, <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, satisfy <span class="math notranslate nohighlight">\(g_{ijk}\neq0\)</span>
@@ -250,7 +277,7 @@ argument and a tuple of components as second argument</p>
 is used to normalise the core consistency. Otherwise, the number of
 components is used.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">normalised=False</span></code>, then the core consistency formula coincides
-with <span id="id2">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span>, and if <code class="docutils literal notranslate"><span class="pre">normalised=True</span></code>, the core consistency
+with <span id="id3">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span>, and if <code class="docutils literal notranslate"><span class="pre">normalised=True</span></code>, the core consistency
 formula coincides with that used in the <a class="reference external" href="http://models.life.ku.dk/nwaytoolbox">N-Way toolbox</a>,
 and is unlikely to be less than 0. For core consistencies close to
 100, the formulas approximately coincide.</p>
@@ -286,7 +313,7 @@ core consistency.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This implementation uses the fast method of estimating the core tensor
-<span id="id3">[<a class="reference internal" href="../references.html#id4" title="Paul E Buis and Wayne R Dyksen. Efficient vector and parallel manipulation of tensor products. ACM Transactions on Mathematical Software (TOMS), 22(1):18–23, 1996.">BD96</a>, <a class="reference internal" href="../references.html#id3" title="Evangelos E Papalexakis and Christos Faloutsos. Fast efficient and scalable core consistency diagnostic for the parafac decomposition for big sparse tensors. In 2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 5441–5445. IEEE, 2015.">PF15</a>]</span></p>
+<span id="id4">[<a class="reference internal" href="../references.html#id4" title="Paul E Buis and Wayne R Dyksen. Efficient vector and parallel manipulation of tensor products. ACM Transactions on Mathematical Software (TOMS), 22(1):18–23, 1996.">BD96</a>, <a class="reference internal" href="../references.html#id3" title="Evangelos E Papalexakis and Christos Faloutsos. Fast efficient and scalable core consistency diagnostic for the parafac decomposition for big sparse tensors. In 2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 5441–5445. IEEE, 2015.">PF15</a>]</span></p>
 </div>
 </dd></dl>
 
@@ -305,9 +332,9 @@ core consistency.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>In the original paper, <span id="id4">Papalexakis and Faloutsos [<a class="reference internal" href="../references.html#id3" title="Evangelos E Papalexakis and Christos Faloutsos. Fast efficient and scalable core consistency diagnostic for the parafac decomposition for big sparse tensors. In 2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 5441–5445. IEEE, 2015.">PF15</a>]</span> present an algorithm
+<p>In the original paper, <span id="id5">Papalexakis and Faloutsos [<a class="reference internal" href="../references.html#id3" title="Evangelos E Papalexakis and Christos Faloutsos. Fast efficient and scalable core consistency diagnostic for the parafac decomposition for big sparse tensors. In 2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 5441–5445. IEEE, 2015.">PF15</a>]</span> present an algorithm
 for 3-way tensors. However, it is straightforward to generalise it to N-way tensors
-by using the inverse tensor product formula in <span id="id5">[<a class="reference internal" href="../references.html#id4" title="Paul E Buis and Wayne R Dyksen. Efficient vector and parallel manipulation of tensor products. ACM Transactions on Mathematical Software (TOMS), 22(1):18–23, 1996.">BD96</a>]</span>.</p>
+by using the inverse tensor product formula in <span id="id6">[<a class="reference internal" href="../references.html#id4" title="Paul E Buis and Wayne R Dyksen. Efficient vector and parallel manipulation of tensor products. ACM Transactions on Mathematical Software (TOMS), 22(1):18–23, 1996.">BD96</a>]</span>.</p>
 </dd></dl>
 
 <dl class="py function">
