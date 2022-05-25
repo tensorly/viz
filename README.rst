@@ -10,8 +10,8 @@ TLViz — Visualising and analysing component models
     :target: https://codecov.io/gh/tensorly/viz
     :alt: Coverage
 
-.. image:: https://readthedocs.org/projects/tlvis/badge/?version=latest
-        :target: https://tlvis.readthedocs.io/en/latest/?badge=latest
+.. image:: https://github.com/tensorly/viz/actions/workflows/build_doc.yml/badge.svg
+        :target: https://github.com/tensorly/viz/actions/workflows/build_doc.yml
         :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
