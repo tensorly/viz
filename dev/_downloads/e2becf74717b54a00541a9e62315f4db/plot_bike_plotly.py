@@ -86,6 +86,7 @@ px.density_mapbox(
     zoom=10.5,
     opacity=0.5,
     mapbox_style="carto-positron",
+    width=600,
 )
 
 
@@ -110,6 +111,7 @@ px.line(
     x="Hour",
     y="Popularity",
     color="Component",
+    width=600,
 )
 
 ###############################################################################
@@ -126,7 +128,7 @@ px.line(
 tidy_day_of_week = tlviz.postprocessing.factor_matrix_to_tidy(day_of_week, value_name="Popularity")
 
 px.line(
-    tidy_day_of_week, x="Day of week", y="Popularity", color="Component",
+    tidy_day_of_week, x="Day of week", y="Popularity", color="Component", width=600
 )
 
 ###############################################################################
@@ -141,7 +143,7 @@ px.line(
 tidy_month = tlviz.postprocessing.factor_matrix_to_tidy(month, value_name="Popularity")
 
 px.line(
-    tidy_month, x="Month", y="Popularity", color="Component",
+    tidy_month, x="Month", y="Popularity", color="Component", width=600,
 )
 
 ###############################################################################
@@ -157,6 +159,7 @@ px.line(
     x="Year",
     y="Popularity",
     color="Component",
+    width=600,
 )
 
 ###############################################################################
