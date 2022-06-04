@@ -249,15 +249,17 @@ by <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, then the le
 <span class="math notranslate nohighlight">\(\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T\)</span>.
 If a given slab, <span class="math notranslate nohighlight">\(i\)</span>, has a high leverage score, then it likely has a strong
 influence on the model. A good overview of the leverage score is <span id="id1">[<a class="reference internal" href="../references.html#id21" title="Paul F Velleman and Roy E Welsch. Efficient computing of regression diagnostics. The American Statistician, 35(4):234–242, 1981.">VW81</a>]</span>.</p>
-<p>The leverage scores sum to the number of components for our model. Moreover, if a data point
-has a leverage score equal to 1, then removing the row from <span class="math notranslate nohighlight">\(A\)</span> that corresponds
-to that data point will reduce the rank of <span class="math notranslate nohighlight">\(A\)</span> by 1. The leverage can therefore be
-thought of as a measure of how many components a model “devotes” to each data point <span id="id2">[<a class="reference internal" href="../references.html#id7" title="D.A. Belsley, E. Kuh, and R.E. Welsch. Regression Diagnostics: Identifying Influential Data and Sources of Collinearity. Wiley Series in Probability and Statistics - Applied Probability and Statistics Section Series. Wiley, 1980. ISBN 9780471058564.">BKW80</a>]</span>.</p>
-<p>Another way of interpreting the leverage score is as a measure of how “similar” a data point
-is to the rest. If a data point has a leverage of 1, then there is no other similar data points.
-Likewise, if a data point has a leverage of 0.5, then there is one other “similar” data point
-(in some weighted sense), and a leverage of 0.2 means that there are five other “similar” data
-points <span id="id3">[<a class="reference internal" href="../references.html#id6" title="P.J. Huber and E.M. Ronchetti. Robust Statistics. Wiley Series in Probability and Statistics. Wiley, 2009. ISBN 9780470129906.">HR09</a>]</span>.</p>
+<p>The leverage scores sums to the number of components for our model and is always between 0 and 1.
+Moreover, if a data point has a leverage score equal to 1, then one component is solely “devoted”
+to modelling that data point, and removing the corresponding row from <span class="math notranslate nohighlight">\(A\)</span> will reduce the
+rank of <span class="math notranslate nohighlight">\(A\)</span> by 1 <span id="id2">[<a class="reference internal" href="../references.html#id7" title="D.A. Belsley, E. Kuh, and R.E. Welsch. Regression Diagnostics: Identifying Influential Data and Sources of Collinearity. Wiley Series in Probability and Statistics - Applied Probability and Statistics Section Series. Wiley, 1980. ISBN 9780471058564.">BKW80</a>]</span>.</p>
+<p>A way of interpreting the leverage score is as a measure of how “similar” a data point
+is to the rest. If a row of <span class="math notranslate nohighlight">\(A\)</span> is equal to the average row of <span class="math notranslate nohighlight">\(A\)</span>, then its leverage
+score would be equal to <span class="math notranslate nohighlight">\(\frac{1}{I}\)</span>. Likewise, if a data point has a leverage of 1, then
+no other data points have a similar model representation. If a data point has a leverage of 0.5,
+then there is one other data point (in some weighted sense) with a similar model representation,
+and a leverage of 0.2 means that there are five other data points with a similar model representation
+<span id="id3">[<a class="reference internal" href="../references.html#id6" title="P.J. Huber and E.M. Ronchetti. Robust Statistics. Wiley Series in Probability and Statistics. Wiley, 2009. ISBN 9780470129906.">HR09</a>]</span>.</p>
 <p>If the factor matrix is a dataframe, then the output is also a dataframe with that index. Otherwise,
 the output is a NumPy array.</p>
 <dl class="field-list">
