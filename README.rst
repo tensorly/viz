@@ -44,7 +44,7 @@ To install the latest stable release of TLViz and its dependencies, run:
 
 .. code:: raw
 
-    pip install tlviz
+    pip install tensorly-viz
 
 There is also functionality to create improved QQ-plots with Pingoiun.
 However, this is disabled by default due to the restrictive GPL lisence.
