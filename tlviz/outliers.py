@@ -126,16 +126,18 @@ def compute_leverage(factor_matrix):
     If a given slab, :math:`i`, has a high leverage score, then it likely has a strong
     influence on the model. A good overview of the leverage score is :cite:p:`velleman1981efficient`.
 
-    The leverage scores sum to the number of components for our model. Moreover, if a data point
-    has a leverage score equal to 1, then removing the row from :math:`A` that corresponds
-    to that data point will reduce the rank of :math:`A` by 1. The leverage can therefore be
-    thought of as a measure of how many components a model "devotes" to each data point :cite:p:`belsley1980regression`.
+    The leverage scores sums to the number of components for our model and is always between 0 and 1.
+    Moreover, if a data point has a leverage score equal to 1, then one component is solely "devoted"
+    to modelling that data point, and removing the corresponding row from :math:`A` will reduce the
+    rank of :math:`A` by 1 :cite:p:`belsley1980regression`.
 
-    Another way of interpreting the leverage score is as a measure of how "similar" a data point
-    is to the rest. If a data point has a leverage of 1, then there is no other similar data points.
-    Likewise, if a data point has a leverage of 0.5, then there is one other "similar" data point
-    (in some weighted sense), and a leverage of 0.2 means that there are five other "similar" data
-    points :cite:p:`huber2009robust`.
+    A way of interpreting the leverage score is as a measure of how "similar" a data point
+    is to the rest. If a row of :math:`A` is equal to the average row of :math:`A`, then its leverage
+    score would be equal to :math:`\frac{1}{I}`. Likewise, if a data point has a leverage of 1, then
+    no other data points have a similar model representation. If a data point has a leverage of 0.5,
+    then there is one other data point (in some weighted sense) with a similar model representation,
+    and a leverage of 0.2 means that there are five other data points with a similar model representation
+    :cite:p:`huber2009robust`.
 
     If the factor matrix is a dataframe, then the output is also a dataframe with that index. Otherwise,
     the output is a NumPy array.
