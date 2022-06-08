@@ -986,7 +986,6 @@ def component_comparison_plot(
         >>> fig, axes = component_comparison_plot(cp_tensors, row="model")
         >>> plt.show()
     """
-    cp_tensors = {key: to_numpy_cp(cp_tensor) for key, cp_tensor in cp_tensors.items()}
     main_cp_tensor = next(iter(cp_tensors.values()))
     weights, factor_matrices = main_cp_tensor
 
@@ -1000,7 +999,6 @@ def component_comparison_plot(
         )
         for key, value in cp_tensors.items()
     }
-
     num_components = factor_matrices[0].shape[1]
     num_modes = len(factor_matrices)
     num_models = len(cp_tensors)
