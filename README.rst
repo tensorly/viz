@@ -25,9 +25,9 @@ Documentation
 The documentation
 is available on `the TensorLy website <https://tensorly.org/viz>`_ and includes
 
-* A `primer on tensors <https://tlviz.readthedocs.io/en/latest/about_tensors.html#what-are-tensors-and-tensor-decompositions>`_, `tensor factorisations <https://tlviz.readthedocs.io/en/latest/about_tensors.html#what-are-tensor-factorisations>`_ and the `notation we use <https://tlviz.readthedocs.io/en/latest/about_tensors.html#notation>`_
-* `An example gallery <https://tlviz.readthedocs.io/en/latest/auto_examples/index.html>`_
-* `The API reference <https://tlviz.readthedocs.io/en/latest/api.html>`_
+* A `primer on tensors <http://tensorly.org/viz/stable/about_tensors.html#>`_, `tensor factorisations <http://tensorly.org/viz/stable/about_tensors.html#what-are-tensor-factorisations>`_ and the `notation we use <http://tensorly.org/viz/stable/about_tensors.html#notation>`_
+* `An example gallery <http://tensorly.org/viz/stable/auto_examples/index.html>`_
+* `The API reference <http://tensorly.org/viz/stable/api.html>`_
 
 
 Dependencies
@@ -44,7 +44,7 @@ To install the latest stable release of TLViz and its dependencies, run:
 
 .. code:: raw
 
-    pip install tlviz
+    pip install tensorly-viz
 
 There is also functionality to create improved QQ-plots with Pingoiun.
 However, this is disabled by default due to the restrictive GPL lisence.
@@ -100,7 +100,7 @@ This example uses TensorLy to fit five three-component PARAFAC models to the dat
 #. convert the factor matrices into Pandas DataFrames with logical indices,
 #. and plot the components using matplotlib.
 
-All these steps are described in the `API documentation <https://tlviz.readthedocs.io/en/latest/api.html>`_ with references to the literature.
+All these steps are described in the `API documentation <https://tensorly.org/viz/stable/api.html>`_ with references to the literature.
 
 Testing
 -------
@@ -126,4 +126,4 @@ To generate a coverage report, run ``coverage html``.
 Contributing
 ------------
 
-Contributions are welcome to TLViz, see the `contribution guidelines <https://tlviz.readthedocs.io/en/latest/contributing.html>`_.
+Contributions are welcome to TLViz, see the `contribution guidelines <http://tensorly.org/viz/stable/contributing.html>`_.
