@@ -565,10 +565,14 @@
         <span class="c1"># not</span>
         <span class="c1">#  A(AtA / (I-1))^-1 At</span>
         <span class="k">return</span> <span class="n">B</span> <span class="o">*</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">I</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;bonferroni p-value&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;bonferroni hotelling&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;hotelling&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;Method must be one of &#39;huber lower&#39;, &#39;huber higher&#39;, &#39;hw lower&#39; or &#39;hw higher&#39;, &quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;p-value&#39;, or &#39;hotelling&#39; not </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;p-value&#39;, &#39;bonferroni p-value&#39;, &#39;hotelling&#39; or &#39;bonferroni hotelling&#39; not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
         <span class="p">)</span></div>
 
 
@@ -671,8 +675,10 @@
         <span class="n">g</span> <span class="o">=</span> <span class="n">std</span> <span class="o">*</span> <span class="n">std</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">mean</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">/</span> <span class="n">g</span>
         <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;bonferroni p-value&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_slabwise_sse_outlier_threshold</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">),</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method must be one of &#39;two sigma&#39; and &#39;p-value&#39;, not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method must be one of &#39;two sigma&#39;, &#39;p-value&#39;, or &#39;bonferroni p-value&#39;, not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
 </pre></div>
 
         </div>
