@@ -388,7 +388,7 @@ def outlier_plot(
     ax.set_title(title)
 
     for x, y, s in zip(outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], outlier_info.index,):
-        ax.text(x, y, s, zorder=0)
+        ax.text(x, y, s, zorder=0, clip_on=True)
     # Vertical lines for leverage based rule-of-thumb thresholds
     leverage_thresholds = {}
     if leverage_rules_of_thumb is not None:
@@ -552,7 +552,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
     ax.scatter(relevant_factors[:, 0], relevant_factors[:, 1], **kwargs)
 
     for x, y, s in zip(relevant_factors[:, 0], relevant_factors[:, 1], index):
-        ax.text(x, y, s)
+        ax.text(x, y, s, clip_on=True)
 
     return ax
 
