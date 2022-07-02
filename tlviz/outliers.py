@@ -430,10 +430,14 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
         # not
         #  A(AtA / (I-1))^-1 At
         return B * (I - 1) / I
+    elif method == "bonferroni p-value":
+        return get_leverage_outlier_threshold(leverage_scores, method="p-value", p_value=p_value / len(leverage_scores))
+    elif method == "bonferroni hotelling":
+        return get_leverage_outlier_threshold(leverage_scores, method="hotelling", p_value=p_value / len(leverage_scores))
     else:
         raise ValueError(
             "Method must be one of 'huber lower', 'huber higher', 'hw lower' or 'hw higher', "
-            + f"'p-value', or 'hotelling' not {method}"
+            + f"'p-value', 'bonferroni p-value', 'hotelling' or 'bonferroni hotelling' not '{method}'"
         )
 
 
@@ -536,5 +540,7 @@ def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05,
         g = std * std / (2 * mean)
         h = mean / g
         return stats.chi2.isf(p_value, h) * g
+    elif method == "bonferroni p-value":
+        return get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=p_value/len(slab_sse), ddof=ddof)
     else:
-        raise ValueError(f"Method must be one of 'two sigma' and 'p-value', not '{method}'.")
+        raise ValueError(f"Method must be one of 'two sigma', 'p-value', or 'bonferroni p-value', not '{method}'.")

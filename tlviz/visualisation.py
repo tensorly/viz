@@ -396,9 +396,9 @@ def outlier_plot(
             leverage_rules_of_thumb = [leverage_rules_of_thumb]
 
         for leverage_rule_of_thumb in leverage_rules_of_thumb:
-            if leverage_rule_of_thumb in {"p-value", "hotelling"} and not is_iterable(p_value):
+            if leverage_rule_of_thumb.lower() in {"p-value", "hotelling", "bonferroni p-value", "bonferroni hotelling"} and not is_iterable(p_value):
                 p_values = [p_value]
-            elif leverage_rule_of_thumb in {"p-value", "hotelling"}:
+            elif leverage_rule_of_thumb.lower() in {"p-value", "hotelling", "bonferroni p-value", "bonferroni hotelling"}:
                 p_values = p_value
             else:
                 p_values = [None]  # We still need something to iterate over even if it doesn't use the p-value
@@ -408,10 +408,14 @@ def outlier_plot(
                     outlier_info[f"{_LEVERAGE_NAME}"], method=leverage_rule_of_thumb, p_value=p,
                 )
 
-                if leverage_rule_of_thumb == "p-value":
+                if leverage_rule_of_thumb.lower() == "p-value":
                     name = f"Leverage p-value: {p}"
-                elif leverage_rule_of_thumb == "hotelling":
+                elif leverage_rule_of_thumb.lower() == "hotelling":
                     name = f"Hotelling T2 p-value: {p}"
+                elif leverage_rule_of_thumb.lower() == "bonferroni p-value":
+                    name = f"Leverage p-value (Bonferroni corrected): {p}"
+                elif leverage_rule_of_thumb.lower() == "bonferroni hotelling":
+                    name = f"Hotelling T2 p-value (Bonferroni corrected): {p}"
                 else:
                     name = leverage_rule_of_thumb
                 leverage_thresholds[name] = threshold
@@ -426,9 +430,9 @@ def outlier_plot(
             residual_rules_of_thumb = [residual_rules_of_thumb]
 
         for residual_rule_of_thumb in residual_rules_of_thumb:
-            if residual_rule_of_thumb == "p-value" and not is_iterable(p_value):
+            if "p-value" in residual_rule_of_thumb.lower() and not is_iterable(p_value):
                 p_values = [p_value]
-            elif residual_rule_of_thumb == "p-value":
+            elif "p-value" in residual_rule_of_thumb.lower():
                 p_values = p_value
             else:
                 p_values = [None]  # We still need something to iterate over even if it doesn't use the p-value
@@ -437,8 +441,10 @@ def outlier_plot(
                 threshold = get_slabwise_sse_outlier_threshold(
                     outlier_info[f"{_SLABWISE_SSE_NAME}"], method=residual_rule_of_thumb, p_value=p
                 )
-                if residual_rule_of_thumb == "p-value":
+                if residual_rule_of_thumb.lower() == "p-value":
                     name = f"Residual p-value: {p}"
+                elif residual_rule_of_thumb.lower() == "bonferroni p-value":
+                    name = f"Residual p-value (Bonferroni corrected): {p}"
                 else:
                     name = residual_rule_of_thumb
                 residual_thresholds[name] = threshold
