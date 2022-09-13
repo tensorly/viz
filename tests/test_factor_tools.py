@@ -24,7 +24,10 @@ def test_factor_match_score(seed, labelled):
     w, (A, B) = cp_tensor
 
     assert factor_tools.factor_match_score((None, (A, B)), (None, (A, B))) == approx(1)
-    assert factor_tools.factor_match_score((None, (A, B)), (None, (2.0 * A, 0.5 * B)),) == approx(1)
+    assert factor_tools.factor_match_score(
+        (None, (A, B)),
+        (None, (2.0 * A, 0.5 * B)),
+    ) == approx(1)
     assert factor_tools.factor_match_score(
         (None, (A, B)), (None, (0.5 * A, 0.5 * B)), consider_weights=False
     ) == approx(1)
@@ -339,7 +342,8 @@ def test_distribute_weights_in_one_mode_distributes_correctly(seed, num_modes, l
         for i, new_factor_matrix in enumerate(new_factors):
             if i != mode:
                 np.testing.assert_allclose(
-                    np.linalg.norm(new_factor_matrix, axis=0), 1,
+                    np.linalg.norm(new_factor_matrix, axis=0),
+                    1,
                 )
 
 

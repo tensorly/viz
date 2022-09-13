@@ -47,7 +47,11 @@ def test_resolve_cp_sign_indeterminacy_flips_negative_components_for_nonnegative
             wrong_flip_cp_tensor = (w, wrong_flip_factor_matrices)
 
             sign_flipped_cp_tensor = postprocessing.resolve_cp_sign_indeterminacy(
-                wrong_flip_cp_tensor, dense_tensor, resolve_mode=flip1, unresolved_mode=flip2, method=method,
+                wrong_flip_cp_tensor,
+                dense_tensor,
+                resolve_mode=flip1,
+                unresolved_mode=flip2,
+                method=method,
             )
             assert np.all(sign_flipped_cp_tensor[1][0] >= 0)
             assert np.all(sign_flipped_cp_tensor[1][1] >= 0)

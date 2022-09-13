@@ -135,7 +135,7 @@ def core_consistency(cp_tensor, dataset, normalised=False):
     No. components: 4 - core consistency: 0
 
     .. note::
-    
+
         This implementation uses the fast method of estimating the core tensor
         :cite:p:`papalexakis2015fast,buis1996efficient`
     """
@@ -154,7 +154,7 @@ def core_consistency(cp_tensor, dataset, normalised=False):
     T = np.zeros([rank] * dataset.ndim)
     np.fill_diagonal(T, 1)
     if normalised:
-        denom = np.sum(G ** 2)
+        denom = np.sum(G**2)
     else:
         denom = rank
 
@@ -239,7 +239,7 @@ def relative_sse(cp_tensor, dataset, sum_squared_dataset=None):
     0.4817407254961442
     """
     if sum_squared_dataset is None:
-        sum_squared_x = np.sum(dataset ** 2)
+        sum_squared_x = np.sum(dataset**2)
     return sse(cp_tensor, dataset) / sum_squared_x
 
 

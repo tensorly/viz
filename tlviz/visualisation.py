@@ -387,7 +387,11 @@ def outlier_plot(
         title = f"Outlier plot for mode {mode}"
     ax.set_title(title)
 
-    for x, y, s in zip(outlier_info[f"{_LEVERAGE_NAME}"], outlier_info[f"{_SLABWISE_SSE_NAME}"], outlier_info.index,):
+    for x, y, s in zip(
+        outlier_info[f"{_LEVERAGE_NAME}"],
+        outlier_info[f"{_SLABWISE_SSE_NAME}"],
+        outlier_info.index,
+    ):
         ax.text(x, y, s, zorder=0, clip_on=True)
     # Vertical lines for leverage based rule-of-thumb thresholds
     leverage_thresholds = {}
@@ -396,16 +400,28 @@ def outlier_plot(
             leverage_rules_of_thumb = [leverage_rules_of_thumb]
 
         for leverage_rule_of_thumb in leverage_rules_of_thumb:
-            if leverage_rule_of_thumb.lower() in {"p-value", "hotelling", "bonferroni p-value", "bonferroni hotelling"} and not is_iterable(p_value):
+            if leverage_rule_of_thumb.lower() in {
+                "p-value",
+                "hotelling",
+                "bonferroni p-value",
+                "bonferroni hotelling",
+            } and not is_iterable(p_value):
                 p_values = [p_value]
-            elif leverage_rule_of_thumb.lower() in {"p-value", "hotelling", "bonferroni p-value", "bonferroni hotelling"}:
+            elif leverage_rule_of_thumb.lower() in {
+                "p-value",
+                "hotelling",
+                "bonferroni p-value",
+                "bonferroni hotelling",
+            }:
                 p_values = p_value
             else:
                 p_values = [None]  # We still need something to iterate over even if it doesn't use the p-value
 
             for p in p_values:
                 threshold = get_leverage_outlier_threshold(
-                    outlier_info[f"{_LEVERAGE_NAME}"], method=leverage_rule_of_thumb, p_value=p,
+                    outlier_info[f"{_LEVERAGE_NAME}"],
+                    method=leverage_rule_of_thumb,
+                    p_value=p,
                 )
 
                 if leverage_rule_of_thumb.lower() == "p-value":
@@ -908,7 +924,11 @@ def components_plot(cp_tensor, weight_behaviour="normalise", weight_mode=0, plot
 
 
 def component_comparison_plot(
-    cp_tensors, row="model", weight_behaviour="normalise", weight_mode=0, plot_kwargs=None,
+    cp_tensors,
+    row="model",
+    weight_behaviour="normalise",
+    weight_mode=0,
+    plot_kwargs=None,
 ):
     """Create a plot to compare different CP tensors.
 
@@ -1049,7 +1069,9 @@ def component_comparison_plot(
 
     if row == "model":
         fig.legend(
-            [f"Component {i}" for i in range(num_components)], loc="upper center", ncol=num_components,
+            [f"Component {i}" for i in range(num_components)],
+            loc="upper center",
+            ncol=num_components,
         )
         for row_idx, model_name in enumerate(cp_tensors):
             axes[row_idx, 0].set_ylabel(model_name)
@@ -1189,9 +1211,21 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
     custom_lines = [
         Line2D([0], [0], marker="o", alpha=1, color="k", linewidth=0),
         Line2D([0], [0], marker="x", alpha=1, color="k", linewidth=0),
-        Line2D([0], [0], marker="s", alpha=1, color=plt.rcParams["axes.prop_cycle"].by_key()["color"][1], linewidth=0,),
         Line2D(
-            [0], [0], marker="s", alpha=0.5, color=plt.rcParams["axes.prop_cycle"].by_key()["color"][0], linewidth=0,
+            [0],
+            [0],
+            marker="s",
+            alpha=1,
+            color=plt.rcParams["axes.prop_cycle"].by_key()["color"][1],
+            linewidth=0,
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="s",
+            alpha=0.5,
+            color=plt.rcParams["axes.prop_cycle"].by_key()["color"][0],
+            linewidth=0,
         ),
     ]
 
@@ -1208,7 +1242,10 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
 @_handle_tensorly_backends_dataset("dataset", None)
 @_handle_tensorly_backends_cp("cp_tensor", None)
 def percentage_variation_plot(
-    cp_tensor, dataset=None, method="model", ax=None,
+    cp_tensor,
+    dataset=None,
+    method="model",
+    ax=None,
 ):
     """Bar chart showing the percentage of variation explained by each of the components.
 

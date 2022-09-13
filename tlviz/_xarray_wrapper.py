@@ -442,7 +442,9 @@ def _handle_labelled_factor_matrix(
                 out = _relabel_factor_matrix(out, factor_matrix_metadata, optional=optional)
             elif output_factor_matrix_index is not None:
                 out_factor_matrix = _relabel_factor_matrix(
-                    out[output_factor_matrix_index], factor_matrix_metadata, optional=optional,
+                    out[output_factor_matrix_index],
+                    factor_matrix_metadata,
+                    optional=optional,
                 )
                 out = (
                     *out[:output_factor_matrix_index],
