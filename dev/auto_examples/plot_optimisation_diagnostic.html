@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Optimisation diagnostics with PARAFAC models &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -215,7 +216,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="optimisation-diagnostics-with-parafac-models">
-<span id="sphx-glr-auto-examples-plot-optimisation-diagnostic-py"></span><h1>Optimisation diagnostics with PARAFAC models<a class="headerlink" href="#optimisation-diagnostics-with-parafac-models" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-optimisation-diagnostic-py"></span><h1>Optimisation diagnostics with PARAFAC models<a class="headerlink" href="#optimisation-diagnostics-with-parafac-models" title="Permalink to this heading">¶</a></h1>
 <p>Fitting PARAFAC models entails solving a non-convex optimisation problem. To do this, we use alternating least squares,
 (ALS). However, ALS is not guaranteed to converge to the global minimum. It is therefore often advised to use several random
 initialisations and pick the one that obtained the lowest loss value.</p>
@@ -250,7 +251,6 @@ results.</p>
     <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># rec_errors is relative norm error, we want relative SSE</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0
 1
 2
@@ -282,7 +282,6 @@ Another thing we can look at is how similar the different initialisations are wi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.4708859077815064, 0.5920264839417511, 0.7423143022579084, 0.5533437244458281, 0.41018647713634354, 0.6463514554347419, 0.588523605705791, 0.6133154419763374, 0.4110835038963244, 1.0]
 </pre></div>
 </div>
@@ -292,7 +291,6 @@ seems unstable. Let’s also compare the selected  model with the true decomposi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.6612200819030741
 </pre></div>
 </div>
@@ -308,7 +306,6 @@ seems unstable. Let’s also compare the selected  model with the true decomposi
 <span class="n">second_attempt</span> <span class="o">=</span> <span class="n">get_model_with_lowest_error</span><span class="p">(</span><span class="n">estimated_cp_tensors</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0
 1
 2
@@ -333,7 +330,6 @@ Let’s compare the similarity between the different initialisations and the sel
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759]
 </pre></div>
 </div>
@@ -348,7 +344,6 @@ Let’s try some more initialisations before we compare with the true decomposit
 <span class="n">third_attempt</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">multimodel_evaluation</span><span class="o">.</span><span class="n">get_model_with_lowest_error</span><span class="p">(</span><span class="n">estimated_cp_tensors</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10
 11
 12
@@ -372,7 +367,6 @@ Let’s compare the similarity between them and the selected decomposition too.<
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759, 0.8190088546107898, 0.977516551984477, 0.7283332135992033, 0.990769675977103, 0.6357626037559072, 0.9775611091935582, 0.9912200986979766, 0.5736136740755067, 0.7574342297341834, 0.9889962033747992]
 </pre></div>
 </div>
@@ -393,12 +387,11 @@ Finally, let’s compare our selected model with the true decomposition!</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461235659
+<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461235659
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  16.023 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  19.244 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/00d5faeb118d62666a86b3b65b1964bb/plot_optimisation_diagnostic.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_optimisation_diagnostic.py</span></code></a></p>
 </div>

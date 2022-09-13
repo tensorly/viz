@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Model evaluation &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -210,13 +211,9 @@
         <div class="content main-content">
           
   <section id="module-tlviz.model_evaluation">
-<span id="model-evaluation"></span><h1>Model evaluation<a class="headerlink" href="#module-tlviz.model_evaluation" title="Permalink to this headline">¶</a></h1>
+<span id="model-evaluation"></span><h1>Model evaluation<a class="headerlink" href="#module-tlviz.model_evaluation" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.model_evaluation.core_consistency" title="tlviz.model_evaluation.core_consistency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core_consistency</span></code></a>(cp_tensor, dataset[, ...])</p></td>
 <td><p>Computes the core consistency <span id="id1">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span></p></td>
@@ -266,7 +263,7 @@ that describe noise or the data does not follow the model’s assumptions.
 So the core consistency can help determine if the chosen number of
 components is suitable.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -284,7 +281,7 @@ and is unlikely to be less than 0. For core consistencies close to
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>The core consistency</p>
 </dd>
@@ -322,7 +319,7 @@ core consistency.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.model_evaluation.</span></span><span class="sig-name descname"><span class="pre">estimate_core_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/model_evaluation.html#estimate_core_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.model_evaluation.estimate_core_tensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Efficient estimation of the Tucker core from a factor matrices and a data tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>factors</strong><span class="classifier">tuple</span></dt><dd><p>Tuple of factor matrices used to estimate the core tensor from</p>
 </dd>
@@ -342,7 +339,7 @@ by using the inverse tensor product formula in <span id="id6">[<a class="referen
 <span class="sig-prename descclassname"><span class="pre">tlviz.model_evaluation.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_squared_dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/model_evaluation.html#fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.model_evaluation.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the fit (1-relative sum squared error) for a given cp_tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -354,7 +351,7 @@ using this argument to avoid unnecessary recalculation.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>The relative sum of squared error, <code class="docutils literal notranslate"><span class="pre">sum((X_hat</span> <span class="pre">-</span> <span class="pre">dataset)**2)/sum(dataset**2)</span></code>,
 where <code class="docutils literal notranslate"><span class="pre">X_hat</span></code> is the dense tensor represented by <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code></p>
@@ -390,7 +387,7 @@ the sum of squared error for these two tensors.</p>
 <p>This is useful if you evaluate the components based on their predictive
 power with respect to some task.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>factor_matrix</strong><span class="classifier">ndarray(ndim=2)</span></dt><dd><p>Factor matrix from a tensor decomposition model</p>
 </dd>
@@ -413,7 +410,7 @@ obtained from <code class="docutils literal notranslate"><span class="pre">sklea
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>Score based on the estimator’s performance.</p>
 </dd>
@@ -463,7 +460,7 @@ for linear models.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.model_evaluation.</span></span><span class="sig-name descname"><span class="pre">relative_sse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_squared_dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/model_evaluation.html#relative_sse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.model_evaluation.relative_sse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the relative sum of squared error for a given cp_tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -475,7 +472,7 @@ using this argument to avoid unnecessary recalculation.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>The relative sum of squared error, <code class="docutils literal notranslate"><span class="pre">sum((X_hat</span> <span class="pre">-</span> <span class="pre">dataset)**2)/sum(dataset**2)</span></code>,
 where <code class="docutils literal notranslate"><span class="pre">X_hat</span></code> is the dense tensor represented by <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code></p>
@@ -503,7 +500,7 @@ the sum of squared error for these two tensors.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.model_evaluation.</span></span><span class="sig-name descname"><span class="pre">sse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/model_evaluation.html#sse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.model_evaluation.sse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the sum of squared error for a given cp_tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -512,7 +509,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>The sum of squared error, <code class="docutils literal notranslate"><span class="pre">sum((X_hat</span> <span class="pre">-</span> <span class="pre">dataset)**2)</span></code>, where <code class="docutils literal notranslate"><span class="pre">X_hat</span></code>
 is the dense tensor represented by <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code></p>

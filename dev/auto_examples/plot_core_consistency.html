@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Core consistency &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -216,7 +217,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="core-consistency">
-<span id="sphx-glr-auto-examples-plot-core-consistency-py"></span><span id="id1"></span><h1>Core consistency<a class="headerlink" href="#core-consistency" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-core-consistency-py"></span><span id="id1"></span><h1>Core consistency<a class="headerlink" href="#core-consistency" title="Permalink to this heading">¶</a></h1>
 <p>A popular metric for evaluating the validity of PARAFAC models is the core consistency diagnostic (sometimes called
 CORCONDIA) <span id="id2">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span>. In this example, we’ll see how, why and when the core consistency works well.</p>
 <p>We start by fitting a four-component model to the amino acids dataset. First, we import the relevant modules
@@ -250,7 +251,6 @@ and create a utility function to fit many PARAFAC models.</p>
 <span class="n">four_component_cp</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">aminoacids</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Loading Aminoacids dataset from:
 Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems, 1997, 38, 149-171
 </pre></div>
@@ -326,7 +326,7 @@ components, the core consistency becomes very small. The three-component model i
 <img src="../_images/sphx_glr_plot_core_consistency_005.png" srcset="../_images/sphx_glr_plot_core_consistency_005.png" alt="Core consistency: 99.8" class = "sphx-glr-single-img"/><p>Here, we see that <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> are very similar, which indicates that the
 three-component model could be a good choice for this dataset.</p>
 <section id="final-note">
-<h2>Final note<a class="headerlink" href="#final-note" title="Permalink to this headline">¶</a></h2>
+<h2>Final note<a class="headerlink" href="#final-note" title="Permalink to this heading">¶</a></h2>
 <p>It is important to note that the core consistency is not guaranteed to tell us which model to use. There are several
 cases where the core consistency may fail. Some examples are:</p>
 <blockquote>
@@ -343,8 +343,8 @@ know the true underlying factor matrices.</p></li>
 <p>The core consistency can be very low in all these cases, even for the “best” model. Therefore, it is essential to
 consider more than just the core consistency when selecting the best model. Examples are initialisation stability,
 split half stability, and looking at the component vectors to see if they make sense.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.509 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-core-consistency-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.906 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-core-consistency-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/6d4067d825291338758bdc518aa34e99/plot_core_consistency.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_core_consistency.py</span></code></a></p>
 </div>

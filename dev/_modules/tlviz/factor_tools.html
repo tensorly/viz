@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,6 +27,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -157,10 +158,7 @@
     <span class="n">is_dataframe</span><span class="p">,</span>
     <span class="n">validate_cp_tensor</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span>
-    <span class="n">_handle_tensorly_backends_dataset</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span>
 <span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">_SINGLETON</span><span class="p">,</span>
     <span class="n">_handle_labelled_cp</span><span class="p">,</span>
@@ -374,7 +372,10 @@
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">missing</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">missing_entries</span><span class="p">):</span>
         <span class="n">permutation</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">missing</span>
 
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">permutation</span><span class="p">):</span>
+    <span class="k">for</span> <span class="p">(</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="n">p</span><span class="p">,</span>
+    <span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">permutation</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">permutation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">NO_COLUMN</span>
 
@@ -700,8 +701,7 @@
 
 
 <span class="k">def</span> <span class="nf">_permute_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.&quot;&quot;&quot;</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
 
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1274,7 +1274,7 @@
 <span class="sd">    Sum of variation: 51</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factor_matrices</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-    <span class="n">ssc</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">ssc</span> <span class="o">=</span> <span class="n">weights</span><span class="o">**</span><span class="mi">2</span>
 
     <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
         <span class="n">warn</span><span class="p">(</span>
@@ -1288,11 +1288,11 @@
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;The dataset must be provided if method=&#39;data&#39;&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="p">(</span><span class="n">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;both&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="p">(</span><span class="n">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="p">(</span><span class="n">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be either &#39;data&#39;, &#39;model&#39; or &#39;both&quot;</span><span class="p">)</span></div>
 </pre></div>

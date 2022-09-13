@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Selecting the number of components in PARAFAC models &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -216,10 +217,10 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="selecting-the-number-of-components-in-parafac-models">
-<span id="sphx-glr-auto-examples-plot-selecting-aminoacids-components-py"></span><h1>Selecting the number of components in PARAFAC models<a class="headerlink" href="#selecting-the-number-of-components-in-parafac-models" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-selecting-aminoacids-components-py"></span><h1>Selecting the number of components in PARAFAC models<a class="headerlink" href="#selecting-the-number-of-components-in-parafac-models" title="Permalink to this heading">¶</a></h1>
 <p>In this example, we will look at some methods for selecting the number of components for a PARAFAC model.</p>
 <section id="imports-and-utilities">
-<h2>Imports and utilities<a class="headerlink" href="#imports-and-utilities" title="Permalink to this headline">¶</a></h2>
+<h2>Imports and utilities<a class="headerlink" href="#imports-and-utilities" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
 
@@ -247,7 +248,7 @@ initialisations.</p>
 </div>
 </section>
 <section id="loading-the-data">
-<h2>Loading the data<a class="headerlink" href="#loading-the-data" title="Permalink to this headline">¶</a></h2>
+<h2>Loading the data<a class="headerlink" href="#loading-the-data" title="Permalink to this heading">¶</a></h2>
 <p>Here we load the <a class="reference external" href="http://models.life.ku.dk/Amino_Acid_fluo">Aminoacids dataset</a> from <span id="id1">[<a class="reference internal" href="../references.html#id10" title="Rasmus Bro. Parafac. tutorial and applications. Chemometrics and intelligent laboratory systems, 38(2):149–171, 1997.">Bro97</a>]</span>
 and plot the EEM-matrix for each of the five samples.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aminoacids</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_aminoacids</span><span class="p">()</span>
@@ -257,21 +258,19 @@ and plot the EEM-matrix for each of the five samples.</p>
     <span class="n">sample</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_001.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_001.png" alt="Sample = 0, Sample = 1, Sample = 2, Sample = 3, Sample = 4" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Loading Aminoacids dataset from:
+<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_001.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_001.png" alt="Sample = 0, Sample = 1, Sample = 2, Sample = 3, Sample = 4" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Loading Aminoacids dataset from:
 Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems, 1997, 38, 149-171
 </pre></div>
 </div>
 </section>
 <section id="fit-models">
-<h2>Fit models<a class="headerlink" href="#fit-models" title="Permalink to this headline">¶</a></h2>
+<h2>Fit models<a class="headerlink" href="#fit-models" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> components&quot;</span><span class="p">)</span>
     <span class="n">models</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_many_parafac</span><span class="p">(</span><span class="n">aminoacids</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1 components
 2 components
 3 components
@@ -281,7 +280,7 @@ Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laborat
 </div>
 </section>
 <section id="sort-the-initialisation-by-their-sse">
-<h2>Sort the initialisation by their SSE<a class="headerlink" href="#sort-the-initialisation-by-their-sse" title="Permalink to this headline">¶</a></h2>
+<h2>Sort the initialisation by their SSE<a class="headerlink" href="#sort-the-initialisation-by-their-sse" title="Permalink to this heading">¶</a></h2>
 <p>For each rank, we pick the initialization run that achieved the lowest reconstruction error.
 To do this, we first sort each initialization run by its final relative sum squared error (rel. SSE).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="p">{}</span>
@@ -295,7 +294,7 @@ To do this, we first sort each initialization run by its final relative sum squa
 </div>
 </section>
 <section id="examine-model-uniqueness">
-<h2>Examine model uniqueness<a class="headerlink" href="#examine-model-uniqueness" title="Permalink to this headline">¶</a></h2>
+<h2>Examine model uniqueness<a class="headerlink" href="#examine-model-uniqueness" title="Permalink to this heading">¶</a></h2>
 <p>To examine whether we have found the global minimum, we compare each initialization run with the initialization
 run that achieved the lowest rel. SSE. Ideally, we want the initialization runs to have reached the same point,
 and if that is the case, they should have the same rel. SSE and similar components. To measure the component
@@ -318,7 +317,7 @@ that the components are equivalent. The FMS is given by</p>
 </div>
 </section>
 <section id="plot-uniqueness-information">
-<h2>Plot uniqueness information<a class="headerlink" href="#plot-uniqueness-information" title="Permalink to this headline">¶</a></h2>
+<h2>Plot uniqueness information<a class="headerlink" href="#plot-uniqueness-information" title="Permalink to this heading">¶</a></h2>
 <p>A visual way to examine the uniqueness is to plot the rel. SSE on one axis and the FMS with selected initialization
 on the other axis for each initialization run. We create one such plot for each rank to compare different choices of
 rank</p>
@@ -342,7 +341,7 @@ if we decide to go with the four or five component models, we should run even mo
 we can get the same components for more than just one initialization.</p>
 </section>
 <section id="scree-plot-of-fit-and-core-consistency">
-<h2>Scree plot of fit and core consistency<a class="headerlink" href="#scree-plot-of-fit-and-core-consistency" title="Permalink to this headline">¶</a></h2>
+<h2>Scree plot of fit and core consistency<a class="headerlink" href="#scree-plot-of-fit-and-core-consistency" title="Permalink to this heading">¶</a></h2>
 <p>Another common strategy for determining the number of components is the fit and core consistency diagnostic. The fit
 measures how well the model describes the data. By plotting this value for each rank choice, we can see how much
 additional components improve the model fit. We are looking for a “shoulder” where the fit increase slows down,
@@ -367,7 +366,7 @@ Hence, a low core consistency alone is not necessarily a bad sign.</p>
 </div>
 <img src="../_images/sphx_glr_plot_selecting_aminoacids_components_003.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_003.png" alt="plot selecting aminoacids components" class = "sphx-glr-single-img"/></section>
 <section id="core-element-plot">
-<h2>Core element plot<a class="headerlink" href="#core-element-plot" title="Permalink to this headline">¶</a></h2>
+<h2>Core element plot<a class="headerlink" href="#core-element-plot" title="Permalink to this heading">¶</a></h2>
 <p>The core element plot shows the elements of the core tensor. Ideally “Superdiagonal” entries should be 1 and
 off-diagonal entries should be zero which means no interaction.</p>
 <p>One thing to note is that as the number of components increases, so does the number of possible interactions.
@@ -387,7 +386,7 @@ needs a high number of components.</p>
 <a class="reference internal" href="plot_core_consistency.html#core-consistency"><span class="std std-ref">core consistency example</span></a>.</p>
 </section>
 <section id="split-half-analysis">
-<h2>Split-half analysis<a class="headerlink" href="#split-half-analysis" title="Permalink to this headline">¶</a></h2>
+<h2>Split-half analysis<a class="headerlink" href="#split-half-analysis" title="Permalink to this heading">¶</a></h2>
 <p>Another way to select the number of components is with <em>split-half analysis</em>. With split-half analysis, we
 divide the dataset in to along one mode, and fit two different models, one for each split. Then, we compare
 the similarity of the decomposition for the modes where we did not perform the split.</p>
@@ -397,12 +396,12 @@ of samples even further can make it difficult to find the correct decomposition.
 split-half analysis here. Instead, we have devoted a <a class="reference internal" href="plot_split_half_analysis.html#split-half"><span class="std std-ref">separate example for split-half analysis</span></a>.</p>
 </section>
 <section id="component-plots">
-<h2>Component plots<a class="headerlink" href="#component-plots" title="Permalink to this headline">¶</a></h2>
+<h2>Component plots<a class="headerlink" href="#component-plots" title="Permalink to this heading">¶</a></h2>
 <p>When deciding the number of components, the most important consideration is the components themselves.
 It is therefore essential to visualize the components and evaluate whether they are meaningful in terms
 of the application</p>
 <section id="components">
-<h3>3 components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h3>
+<h3>3 components<a class="headerlink" href="#components" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_3comp</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">postprocessing</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">selected_models</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">dataset</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span>
 <span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">components_plot</span><span class="p">(</span><span class="n">model_3comp</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -416,7 +415,7 @@ of the application</p>
 </div>
 <img src="../_images/sphx_glr_plot_selecting_aminoacids_components_006.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_006.png" alt="plot selecting aminoacids components" class = "sphx-glr-single-img"/></section>
 <section id="id2">
-<h3>4 components<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3>4 components<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_4comp</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">postprocessing</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">selected_models</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">dataset</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span>
 <span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">components_plot</span><span class="p">(</span><span class="n">model_4comp</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -432,8 +431,8 @@ knowledge about the data. The data is samples from mixtures of three different a
 component shows the concentration of each chemicaland the emission- and excitation-mode components show the
 emission- and excitation-spectra of the chemicals (all in arbitrary units). With more than three components,
 we find that one of the components have negative, and therefore unphysical, components.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.560 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-selecting-aminoacids-components-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  13.118 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-selecting-aminoacids-components-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/98929c246383aff86d593be63ad84c4a/plot_selecting_aminoacids_components.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_selecting_aminoacids_components.py</span></code></a></p>
 </div>

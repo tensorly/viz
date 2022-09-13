@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Visualisation &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -210,13 +211,9 @@
         <div class="content main-content">
           
   <section id="module-tlviz.visualisation">
-<span id="visualisation"></span><h1>Visualisation<a class="headerlink" href="#module-tlviz.visualisation" title="Permalink to this headline">¶</a></h1>
+<span id="visualisation"></span><h1>Visualisation<a class="headerlink" href="#module-tlviz.visualisation" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.visualisation.component_comparison_plot" title="tlviz.visualisation.component_comparison_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_comparison_plot</span></code></a>(cp_tensors[, row, ...])</p></td>
 <td><p>Create a plot to compare different CP tensors.</p></td>
@@ -261,7 +258,7 @@
 where D is the number of modes, R is the number of components and N is the number of cp tensors
 to compare.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>cp_tensors</strong><span class="classifier">dict (str -&gt; CPTensor)</span></dt><dd><p>Dictionary with model names mapping to decompositions. The model names
 are used for labels. The components of all CP tensors will be aligned
@@ -286,7 +283,7 @@ insertion order).</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>fig</strong><span class="classifier">matplotlib figure</span></dt><dd></dd>
 <dt><strong>axes</strong><span class="classifier">array of matplotlib axes</span></dt><dd></dd>
@@ -355,7 +352,7 @@ can be very similar (in the case of collinear components). For more information
 about this phenomenon, see <span id="id1">[<a class="reference internal" href="../references.html#id15" title="Henk AL Kiers. Some procedures for displaying results from three-way methods. Journal of Chemometrics: A Journal of the Chemometrics Society, 14(3):151–170, 2000.">Kie00</a>]</span> and example 8.3 in
 <span id="id2">[<a class="reference internal" href="../references.html#id14" title="Age Smilde, Paul Geladi, and Rasmus Bro. Multi-way analysis: applications in the chemical sciences. John Wiley &amp; Sons, 2005.">SGB05</a>]</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -374,7 +371,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
 </dl>
@@ -434,7 +431,7 @@ argument and a tuple of components as second argument</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">components_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#components_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.components_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the component vectors of a CP model.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -456,7 +453,7 @@ the plot function for that mode.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>fig</strong><span class="classifier">matplotlib.figure.Figure</span></dt><dd></dd>
 <dt><strong>axes</strong><span class="classifier">ndarray(dtype=matplotlib.axes.Axes)</span></dt><dd></dd>
@@ -527,7 +524,7 @@ slice, the <span class="math notranslate nohighlight">\((r, r)\)</span>-th entry
 <p>The core element heatmap can only be plotted for third-order tensors.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -547,7 +544,7 @@ If <code class="docutils literal notranslate"><span class="pre">None</span></cod
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>fig</strong><span class="classifier">matplotlib.figure.Figure</span></dt><dd></dd>
 <dt><strong>axes</strong><span class="classifier">ndarray(dtype=matplotlib.axes.Axes)</span></dt><dd></dd>
@@ -581,7 +578,7 @@ in the optimal core tensor.</p>
 <p>Together with the scatter plot, there is a line-plot that indicate where the scatter-points
 should be if the CP-model perfectly describes the data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -595,7 +592,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
 </dl>
@@ -624,7 +621,7 @@ argument and a tuple of components as second argument</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">histogram_of_residuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#histogram_of_residuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.histogram_of_residuals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a histogram of model residuals (<span class="math notranslate nohighlight">\(\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}\)</span>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -639,7 +636,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
 </dl>
@@ -676,7 +673,7 @@ Ideally, we should see that many initialisations converged and obtained the same
 If models converge, but with different errors, then this can indicate that indicates that a stricter
 convergence tolerance is required, and if no models converge, then more iterations may be required.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>error_logs</strong><span class="classifier">list of arrays</span></dt><dd><p>List of arrays, each containing the error per iteration for an initialisation.</p>
 </dd>
@@ -685,7 +682,7 @@ models converged or not.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>fig</strong><span class="classifier">matplotlib.figure.Figure</span></dt><dd></dd>
 <dt><strong>axes</strong><span class="classifier">array(dtype=matplotlib.axes.Axes)</span></dt><dd></dd>
@@ -754,7 +751,7 @@ models converged or not.</p>
 <p>Detecting outliers can be a difficult task, and a common way to do this is by making a scatter-plot where the
 leverage score is plotted against the slabwise SSE (or residual).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -782,7 +779,7 @@ then there will be drawn lines for each p-value.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd><p>Axes with outlier plot in</p>
 </dd>
@@ -854,7 +851,7 @@ Oslo bike sharing data.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">percentage_variation_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#percentage_variation_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.percentage_variation_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bar chart showing the percentage of variation explained by each of the components.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -867,7 +864,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>matplotlib axes</dt><dd><p>Axes with the plot in</p>
 </dd>
@@ -927,7 +924,7 @@ argument and a tuple of components as second argument</p>
 if <code class="docutils literal notranslate"><span class="pre">use_pingouin=True</span></code>, then we import the GPL-3 lisenced Pingouin
 library to create a more informative QQ-plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -945,7 +942,7 @@ of changing the license of tlviz into a GPL-license too.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Matplotlib axes</span></dt><dd></dd>
 </dl>
@@ -977,7 +974,7 @@ of changing the license of tlviz into a GPL-license too.</p>
 on the y-axis. It is commonly plotted as a line plot with a scatter point located at each
 model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor: dict[Any, CPTensor]</strong></dt><dd><p>Dictionary mapping model names (often just the number of components as an int) to a
 model.</p>
@@ -997,7 +994,7 @@ are converted to underlines before getting the metric from the <code class="docu
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>ax</dt><dd><p>Matplotlib axes object with the scree plot</p>
 </dd>

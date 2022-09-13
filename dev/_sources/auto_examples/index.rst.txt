@@ -1,9 +1,5 @@
 :orphan:
 
-
-
-.. _sphx_glr_auto_examples:
-
 .. _examples:
 
 Gallery of examples
@@ -12,14 +8,144 @@ Gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="TLViz uses labelled decompositions, implemented by storing the factor matrices as Pandas DataFr...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_labelled_decompositions_thumb.png
-     :alt: Labelled decompositions
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_labelled_decompositions_thumb.png
+    :alt: Labelled decompositions
 
-     :ref:`sphx_glr_auto_examples_plot_labelled_decompositions.py`
+  :ref:`sphx_glr_auto_examples_plot_labelled_decompositions.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Labelled decompositions</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="TLViz recommends storing your datasets as `xarray DataArrays &lt;https://docs.xarray.dev/en/stable...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_working_with_xarray_thumb.png
+    :alt: Working with xarray
+
+  :ref:`sphx_glr_auto_examples_plot_working_with_xarray.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Working with xarray</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A popular metric for evaluating the validity of PARAFAC models is the core consistency diagnost...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_core_consistency_thumb.png
+    :alt: Core consistency
+
+  :ref:`sphx_glr_auto_examples_plot_core_consistency.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Core consistency</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we&#x27;ll see how TLViz can be used together with PlotLy Express to produce rich, ...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bike_plotly_thumb.png
+    :alt: TLViz + PlotLy for interactive visualisations
+
+  :ref:`sphx_glr_auto_examples_plot_bike_plotly.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">TLViz + PlotLy for interactive visualisations</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we will look at how we can use split-half analysis to select the number of PAR...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_split_half_analysis_thumb.png
+    :alt: Split-half analysis for selecting the number of components
+
+  :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Split-half analysis for selecting the number of components</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Fitting PARAFAC models entails solving a non-convex optimisation problem. To do this, we use al...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimisation_diagnostic_thumb.png
+    :alt: Optimisation diagnostics with PARAFAC models
+
+  :ref:`sphx_glr_auto_examples_plot_optimisation_diagnostic.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Optimisation diagnostics with PARAFAC models</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we will look at some methods for selecting the number of components for a PARA...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_selecting_aminoacids_components_thumb.png
+    :alt: Selecting the number of components in PARAFAC models
+
+  :ref:`sphx_glr_auto_examples_plot_selecting_aminoacids_components.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Selecting the number of components in PARAFAC models</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="There are two metrics that are commonly used for detecting outliers in PARAFAC models: *leverag...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_outlier_detection_thumb.png
+    :alt: Outlier detection with PARAFAC
+
+  :ref:`sphx_glr_auto_examples_plot_outlier_detection.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Outlier detection with PARAFAC</div>
+    </div>
+
 
 .. raw:: html
 
@@ -30,174 +156,26 @@ Gallery of examples
    :hidden:
 
    /auto_examples/plot_labelled_decompositions
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="TLViz recommends storing your datasets as `xarray DataArrays &lt;https://docs.xarray.dev/en/stable...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_working_with_xarray_thumb.png
-     :alt: Working with xarray
-
-     :ref:`sphx_glr_auto_examples_plot_working_with_xarray.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_working_with_xarray
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="A popular metric for evaluating the validity of PARAFAC models is the core consistency diagnost...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_core_consistency_thumb.png
-     :alt: Core consistency
-
-     :ref:`sphx_glr_auto_examples_plot_core_consistency.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_core_consistency
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we&#x27;ll see how TLViz can be used together with PlotLy Express to produce rich, ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_bike_plotly_thumb.png
-     :alt: TLViz + PlotLy for interactive visualisations
-
-     :ref:`sphx_glr_auto_examples_plot_bike_plotly.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_bike_plotly
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we will look at how we can use split-half analysis to select the number of PAR...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_split_half_analysis_thumb.png
-     :alt: Split-half analysis for selecting the number of components
-
-     :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_split_half_analysis
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Fitting PARAFAC models entails solving a non-convex optimisation problem. To do this, we use al...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_optimisation_diagnostic_thumb.png
-     :alt: Optimisation diagnostics with PARAFAC models
-
-     :ref:`sphx_glr_auto_examples_plot_optimisation_diagnostic.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_optimisation_diagnostic
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we will look at some methods for selecting the number of components for a PARA...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_selecting_aminoacids_components_thumb.png
-     :alt: Selecting the number of components in PARAFAC models
-
-     :ref:`sphx_glr_auto_examples_plot_selecting_aminoacids_components.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_selecting_aminoacids_components
+   /auto_examples/plot_outlier_detection
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="There are two metrics that are commonly used for detecting outliers in PARAFAC models: *leverag...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_outlier_detection_thumb.png
-     :alt: Outlier detection with PARAFAC
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
 
-     :ref:`sphx_glr_auto_examples_plot_outlier_detection.py`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-.. raw:: html
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
-    </div>
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_outlier_detection
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
-
-
-
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-gallery
-
-
-  .. container:: sphx-glr-download sphx-glr-download-python
-
-    :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
-
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Example datasets &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -209,13 +210,9 @@
         <div class="content main-content">
           
   <section id="module-tlviz.data">
-<span id="example-datasets"></span><h1>Example datasets<a class="headerlink" href="#module-tlviz.data" title="Permalink to this headline">¶</a></h1>
+<span id="example-datasets"></span><h1>Example datasets<a class="headerlink" href="#module-tlviz.data" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.data.download_city_bike" title="tlviz.data.download_city_bike"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_city_bike</span></code></a>([source, years])</p></td>
 <td><p>Download bike data from the bike sharing system in Oslo.</p></td>
@@ -247,7 +244,7 @@ time period and station. For example, the index <code class="docutils literal no
 to the number of trips that ended at station 377 at 1pm (CET time) on Mondays in May of 2020.</p>
 <p>The data was collected using the open urbansharing API.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>source</strong><span class="classifier">str</span></dt><dd><p>String to download data from. The API endpoint becomes:
 <a class="reference external" href="https://data.urbansharing.com">https://data.urbansharing.com</a>/{source}/trips/v1/{year}/{month:02d}.csv
@@ -264,7 +261,7 @@ Some end-points that are known to work are:</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>xarray.DataArray</dt><dd><p>Data array whose data is the dataset and coordinates are bike station ID, year, month, day of week
 and hour of day. There are also three metadata-coordinates along the “Bike station ID”-axis containing
@@ -288,14 +285,14 @@ The data stems from five samples with different amounts of the aminoacids tyrosi
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>save_data</strong><span class="classifier">bool (default=True)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the dataset is saved in <code class="docutils literal notranslate"><span class="pre">tlviz.data.DOWNLOAD_PARENT</span></code> to avoid having to download
 it in the future.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>xarray.DataArray</dt><dd><p>The Aminoacids dataset</p>
 </dd>
@@ -323,7 +320,7 @@ time period and station. For example, the index <code class="docutils literal no
 to the number of trips that ended at station 377 at 1pm (CET time) on Mondays in May of 2020.</p>
 <p>The data was collected using the open API of <a class="reference external" href="https://oslobysykkel.no/en/open-data">https://oslobysykkel.no/en/open-data</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>xarray.DataArray</dt><dd><p>Data array whose data is the dataset and coordinates are bike station ID, year, month, day of week
 and hour of day. There are also three metadata-coordinates along the “Bike station ID”-axis containing

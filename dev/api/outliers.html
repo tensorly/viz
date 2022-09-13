@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Outlier detection &#8212; TLViz 0.1.4 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -210,13 +211,9 @@
         <div class="content main-content">
           
   <section id="module-tlviz.outliers">
-<span id="outlier-detection"></span><h1>Outlier detection<a class="headerlink" href="#module-tlviz.outliers" title="Permalink to this headline">¶</a></h1>
+<span id="outlier-detection"></span><h1>Outlier detection<a class="headerlink" href="#module-tlviz.outliers" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.outliers.compute_leverage" title="tlviz.outliers.compute_leverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_leverage</span></code></a>(factor_matrix)</p></td>
 <td><p>Compute the leverage score of the given factor matrix.</p></td>
@@ -263,13 +260,13 @@ and a leverage of 0.2 means that there are five other data points with a similar
 <p>If the factor matrix is a dataframe, then the output is also a dataframe with that index. Otherwise,
 the output is a NumPy array.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>factor_matrix</strong><span class="classifier">DataFrame or numpy array</span></dt><dd><p>The factor matrix whose leverage we compute</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>leverage</strong><span class="classifier">DataFrame or numpy array</span></dt><dd><p>The leverage scores, if the input is a dataframe, then the index is preserved.</p>
 </dd>
@@ -305,7 +302,7 @@ is equal to a scaled version of leverage computed based on centered factor matri
 <dd><p>Compute the leverage score and (normalised) slabwise SSE along one axis.</p>
 <p>These metrics are often plotted against each other to discover outliers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -320,7 +317,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>DataFrame</dt><dd><p>Dataframe with two columns, “Leverage score” and “Slabwise SSE”.</p>
 </dd>
@@ -355,7 +352,7 @@ we compute the <span class="math notranslate nohighlight">\(i\)</span>-th normal
 sample. If a sample, <span class="math notranslate nohighlight">\(i\)</span>, has a high residual, then that indicates that
 the model is not able to describe its behaviour.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>estimated</strong><span class="classifier">xarray or numpy array</span></dt><dd><p>Estimated dataset, if this is an xarray, then the output is too.</p>
 </dd>
@@ -370,7 +367,7 @@ The output will still have these axes.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>slab_sse</strong><span class="classifier">xarray or numpy array</span></dt><dd><p>The (normalised) slabwise SSE, if true tensor input is an xarray array,
 then the returned tensor is too.</p>
@@ -426,7 +423,7 @@ large numbers of components. In that case, the false positive rate will be highe
 p-value, even if the components follow a standard normal distribution (see example below).</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>leverage_scores</strong><span class="classifier">np.ndarray or pd.DataFrame</span></dt><dd></dd>
 <dt><strong>method</strong><span class="classifier">{“huber lower”, “huber higher”, “hw lower”, “hw higher”, “p-value”, “hotelling”}</span></dt><dd></dd>
@@ -434,7 +431,7 @@ p-value, even if the components follow a standard normal distribution (see examp
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>threshold</strong><span class="classifier">float</span></dt><dd><p>Threshold value, data points with a leverage score larger than the threshold are suspicious
 and may be outliers.</p>
@@ -544,7 +541,7 @@ SSE <span id="id15">[<a class="reference internal" href="../references.html#id24
 that two times the standard deviation of the slabwise SSE can be used for
 determining data points with a suspiciously high residual.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>slab_sse</strong><span class="classifier">np.ndarray or pd.DataFrame</span></dt><dd></dd>
 <dt><strong>method</strong><span class="classifier">{“two_sigma”, “p-value”}</span></dt><dd></dd>
@@ -552,7 +549,7 @@ determining data points with a suspiciously high residual.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>threshold</strong><span class="classifier">float</span></dt><dd><p>Threshold value, data points with a higher SSE than the threshold are suspicious
 and may be outliers.</p>

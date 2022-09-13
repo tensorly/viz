@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,6 +27,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -568,7 +569,9 @@
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;bonferroni p-value&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">))</span>
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;bonferroni hotelling&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;hotelling&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">get_leverage_outlier_threshold</span><span class="p">(</span>
+            <span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;hotelling&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;Method must be one of &#39;huber lower&#39;, &#39;huber higher&#39;, &#39;hw lower&#39; or &#39;hw higher&#39;, &quot;</span>
@@ -676,7 +679,9 @@
         <span class="n">h</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">/</span> <span class="n">g</span>
         <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span>
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;bonferroni p-value&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">get_slabwise_sse_outlier_threshold</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">),</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">get_slabwise_sse_outlier_threshold</span><span class="p">(</span>
+            <span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="n">p_value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">),</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method must be one of &#39;two sigma&#39;, &#39;p-value&#39;, or &#39;bonferroni p-value&#39;, not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
 </pre></div>
