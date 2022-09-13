@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Contribution guidelines &#8212; TLViz 0.1.4 documentation</title> 
+    <title>Contribution guidelines &#8212; TLViz 0.1.5 documentation</title> 
 <link rel="stylesheet" href="_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="_static/favicon/favicon-32x32.png">
@@ -28,6 +28,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
  <script src="_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -207,11 +208,11 @@
         <div class="content main-content">
           
   <section id="contribution-guidelines">
-<h1>Contribution guidelines<a class="headerlink" href="#contribution-guidelines" title="Permalink to this headline">¶</a></h1>
+<h1>Contribution guidelines<a class="headerlink" href="#contribution-guidelines" title="Permalink to this heading">¶</a></h1>
 <p>All contributions to TLViz are welcome! If you find a bug or an error in the documentation, we very much appreciate
 an issue or a pull request!</p>
 <section id="how-to-contribute">
-<h2>How to contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
+<h2>How to contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this heading">¶</a></h2>
 <p>If you find a bug, or have an idea for a new feature, and you want to know if the contribution is relevant and not
 being worked on, you can open a <a class="reference external" href="https://github.com/MarieRoald/tlviz/issues">new issue</a>. For major
 bugs, it can also be useful to include a <a class="reference external" href="https://stackoverflow.com/help/minimal-reproducible-example">minimal, reproducible example</a>,
@@ -219,7 +220,7 @@ to make it as easy as possible to fix it.</p>
 <p>You can submit implementation of new features or bug/documentation fixes as a <a class="reference external" href="https://github.com/MarieRoald/tlviz/pulls">pull-request</a>.</p>
 </section>
 <section id="development-environment">
-<h2>Development environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h2>
+<h2>Development environment<a class="headerlink" href="#development-environment" title="Permalink to this heading">¶</a></h2>
 <p>We recommend using a virtual environment to develop TLViz locally on your machine. For example, with Anaconda</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n tlviz <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 anaconda
 </pre></div>
@@ -234,7 +235,7 @@ pip install -e .<span class="o">[</span>devel,test,docs<span class="o">]</span>
 version too.</p>
 </section>
 <section id="style-guide">
-<h2>Style guide<a class="headerlink" href="#style-guide" title="Permalink to this headline">¶</a></h2>
+<h2>Style guide<a class="headerlink" href="#style-guide" title="Permalink to this heading">¶</a></h2>
 <p>TLViz follows the <a class="reference external" href="https://github.com/psf/black">Black</a> style (with a maximum line length of 120 characters) and
 follows most of the <a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> guidelines (except E203, W503). Most style errors
 will be fixed automatically in VSCode if you include the following lines in your <cite>settings.json</cite> file</p>
@@ -259,7 +260,7 @@ will be fixed automatically in VSCode if you include the following lines in your
 </div>
 </section>
 <section id="unit-tests">
-<h2>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h2>
+<h2>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading">¶</a></h2>
 <p>TLViz aims to have a high test coverage, so any new code should also include tests, including visualisation.
 You can run the tests by running</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest
@@ -272,7 +273,7 @@ You can run the tests by running</p>
 <p>This will generate a HTML report where you can see all lines not covered by any tests.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h2>
 <p>The documentation is generated using sphinx with automatic API documentation from the docstrings and
 MathJax for equations. We use <a class="reference external" href="https://sphinx-gallery.github.io/stable/index.html">sphinx-gallery</a>
 to generate the example gallery. To expand this, simply add a new example script with a name matching

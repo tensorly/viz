@@ -170,8 +170,6 @@ We split the data randomly along the second mode
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     1 components
@@ -308,8 +306,6 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     1 components
@@ -330,28 +326,23 @@ further with five components. This indicates that three components is a good cho
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  20.072 seconds)
+   **Total running time of the script:** ( 1 minutes  21.834 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_split_half_analysis.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_split_half_analysis.py <plot_split_half_analysis.py>`
 
-     :download:`Download Python source code: plot_split_half_analysis.py <plot_split_half_analysis.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_split_half_analysis.ipynb <plot_split_half_analysis.ipynb>`
+      :download:`Download Jupyter notebook: plot_split_half_analysis.ipynb <plot_split_half_analysis.ipynb>`
 
 
 .. only:: html

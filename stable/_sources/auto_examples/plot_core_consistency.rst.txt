@@ -85,8 +85,6 @@ Then we load the data and fit a PARAFAC model to it.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     Loading Aminoacids dataset from:
@@ -292,28 +290,23 @@ split half stability, and looking at the component vectors to see if they make s
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.390 seconds)
+   **Total running time of the script:** ( 0 minutes  16.459 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_core_consistency.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_core_consistency.py <plot_core_consistency.py>`
 
-     :download:`Download Python source code: plot_core_consistency.py <plot_core_consistency.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_core_consistency.ipynb <plot_core_consistency.ipynb>`
+      :download:`Download Jupyter notebook: plot_core_consistency.ipynb <plot_core_consistency.ipynb>`
 
 
 .. only:: html

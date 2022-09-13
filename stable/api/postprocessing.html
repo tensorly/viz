@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Post-processing &#8212; TLViz 0.1.4 documentation</title> 
+    <title>Post-processing &#8212; TLViz 0.1.5 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -210,13 +211,9 @@
         <div class="content main-content">
           
   <section id="module-tlviz.postprocessing">
-<span id="post-processing"></span><h1>Post-processing<a class="headerlink" href="#module-tlviz.postprocessing" title="Permalink to this headline">¶</a></h1>
+<span id="post-processing"></span><h1>Post-processing<a class="headerlink" href="#module-tlviz.postprocessing" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.postprocessing.add_factor_metadata" title="tlviz.postprocessing.add_factor_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_factor_metadata</span></code></a>(cp_tensor, dataset)</p></td>
 <td><p>Adds the additional coordinates along each dataset dimension as new columns in the factor matrices.</p></td>
@@ -244,13 +241,13 @@ coordinates that are not used for indexing purposes. This function will iterate 
 a dataset and a labelled CP tensor and add the additional coordinates as new columns in the factor
 matrices.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">labelled CP Tensor</span></dt><dd></dd>
 <dt><strong>dataset</strong><span class="classifier">xarray.DataArray</span></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>tuple</dt><dd><p>CP-tensor like tuple where the factor matrices are augmented with additional metadata.</p>
 </dd>
@@ -295,12 +292,12 @@ to the dataframe.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">factor_matrix_to_tidy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Signal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#factor_matrix_to_tidy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.factor_matrix_to_tidy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a factor matrix into a tidy dataset, for use with Plotly Express.</p>
 <p>If we convert a factor matrix into a tidy dataset (or long table), then we get a table on the form</p>
-<table class="colwidths-given docutils align-default" id="id8">
+<table class="docutils align-default" id="id8">
 <caption><span class="caption-text">Tidy format factor matrix</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
@@ -334,15 +331,15 @@ to the dataframe.</p>
 <p>The component vectors are all stacked on top of each other, with a separate column that specifies which
 component each row belongs to. This function can also preserve metadata, which is signified by columns
 that have non-integer column names. For example, if we have a dataframe on the form</p>
-<table class="colwidths-given docutils align-default" id="id9">
+<table class="docutils align-default" id="id9">
 <caption><span class="caption-text">Factor matrix with metadata</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
 <colgroup>
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
@@ -392,14 +389,14 @@ that have non-integer column names. For example, if we have a dataframe on the f
 </tbody>
 </table>
 <p>and convert it into a tidy format factor matrix, then we get a table on the form</p>
-<table class="colwidths-given docutils align-default" id="id10">
+<table class="docutils align-default" id="id10">
 <caption><span class="caption-text">Tidy format factor matrix with metadata</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
@@ -443,7 +440,7 @@ that have non-integer column names. For example, if we have a dataframe on the f
 </tbody>
 </table>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>factor_matrix</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>A labelled factor matrix potentially with metadata columns</p>
 </dd>
@@ -456,7 +453,7 @@ If <code class="docutils literal notranslate"><span class="pre">id_vars</span> <
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>pd.DataFrame</dt><dd><p>Tidy format factor matrix</p>
 </dd>
@@ -513,7 +510,7 @@ If <code class="docutils literal notranslate"><span class="pre">id_vars</span> <
 are given by the coordinate names of an xarray DataArray. If the dataset has only
 two modes, then it can also be a pandas DataFrame.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor</span></dt><dd><p>CP Tensor whose factor matrices should be labelled</p>
 </dd>
@@ -521,7 +518,7 @@ two modes, then it can also be a pandas DataFrame.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>CPTensor</dt><dd><p>Tuple on the CPTensor format, except that the factor matrices are DataFrames.</p>
 </dd>
@@ -532,7 +529,7 @@ two modes, then it can also be a pandas DataFrame.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.postprocess">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_cp_tensor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#postprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.postprocess" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_cp_tensor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#postprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.postprocess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard postprocessing of a CP decomposition.</p>
 <p>This function will perform standard postprocessing of a CP decomposition.
 If a reference CP tensor is provided, then the columns of <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code>’s
@@ -553,7 +550,7 @@ of the CP tensor is labelled too.</p>
 </ul>
 </div></blockquote>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>CPTensor to postprocess</p>
 </dd>
@@ -596,7 +593,7 @@ are padded by nan values</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>CPTensor</dt><dd><p>The post processed CPTensor.</p>
 </dd>
@@ -674,7 +671,7 @@ is taken care of and x-xaxis has correct labels and ticks</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.resolve_cp_sign_indeterminacy">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">resolve_cp_sign_indeterminacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#resolve_cp_sign_indeterminacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.resolve_cp_sign_indeterminacy" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">resolve_cp_sign_indeterminacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#resolve_cp_sign_indeterminacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.resolve_cp_sign_indeterminacy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resolve the sign indeterminacy of CP models.</p>
 <p>Tensor factorisations have a sign indeterminacy that allows any change in the
 sign of the component vectors in one mode, under the condition that the sign
@@ -745,7 +742,7 @@ factor matrices except for one (the unresolved mode) with the “direction of th
 <p>Note that this sign indeterminacy comes as a direct consequence of the scaling indeterminacy
 of component models, since <span class="math notranslate nohighlight">\(\text{diag}(\mathbf{f})^{-1} = \text{diag}(\mathbf{f})\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument.</p>
@@ -764,13 +761,13 @@ factor matrices described above.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>CPTensor or tuple</dt><dd><p>The CP tensor after correcting the signs.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">unresolved_mode</span></code> is not between <code class="docutils literal notranslate"><span class="pre">-dataset.ndim</span></code> and <code class="docutils literal notranslate"><span class="pre">dataset.ndim-1</span></code>.</p>
 </dd>

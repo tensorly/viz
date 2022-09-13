@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Multi-model evaluation &#8212; TLViz 0.1.4 documentation</title> 
+    <title>Multi-model evaluation &#8212; TLViz 0.1.5 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -209,13 +210,9 @@
         <div class="content main-content">
           
   <section id="module-tlviz.multimodel_evaluation">
-<span id="multi-model-evaluation"></span><h1>Multi-model evaluation<a class="headerlink" href="#module-tlviz.multimodel_evaluation" title="Permalink to this headline">¶</a></h1>
+<span id="multi-model-evaluation"></span><h1>Multi-model evaluation<a class="headerlink" href="#module-tlviz.multimodel_evaluation" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlviz.multimodel_evaluation.get_model_with_lowest_error" title="tlviz.multimodel_evaluation.get_model_with_lowest_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model_with_lowest_error</span></code></a>(cp_tensors, dataset)</p></td>
 <td><p>Compute reconstruction error for all cp_tensors and return model with lowest error.</p></td>
@@ -236,7 +233,7 @@
 initialisations are used to fit the model. By default, the relative SSE
 is used, but another error function can be used too.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensors</strong><span class="classifier">list of CPTensors</span></dt><dd><p>List of all CP tensors to compare</p>
 </dd>
@@ -252,7 +249,7 @@ is relative SSE.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>CPTensor</dt><dd><p>The CP tensor with the lowest error</p>
 </dd>
@@ -315,7 +312,7 @@ of all model candidates.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">similarity_evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#similarity_evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.similarity_evaluation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute similarities between <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> and all <code class="docutils literal notranslate"><span class="pre">comparison_cp_tensors</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensor</strong><span class="classifier">CPTensor or tuple</span></dt><dd><p>TensorLy-style CPTensor object or tuple with weights as first
 argument and a tuple of components as second argument</p>
@@ -328,7 +325,7 @@ argument and a tuple of components as second argument</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>similarity</strong><span class="classifier">float</span></dt><dd></dd>
 </dl>
@@ -371,7 +368,7 @@ and the model that obtained the lowest error.</p>
 <span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">sort_models_by_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#sort_models_by_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.sort_models_by_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort the <code class="docutils literal notranslate"><span class="pre">cp_tensors</span></code> by their error so the model with the lowest error is first.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>cp_tensors</strong><span class="classifier">list of CPTensors</span></dt><dd><p>List of all CP tensors</p>
 </dd>
@@ -382,7 +379,7 @@ that should return a measure of the modelling error (e.g. SSE).</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of CPTensors</dt><dd><p>List of all CP tensors sorted so the CP tensor with the lowest error
 is first and highest error is last.</p>

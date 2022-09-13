@@ -109,8 +109,6 @@ and plot the EEM-matrix for each of the five samples.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     Loading Aminoacids dataset from:
@@ -139,8 +137,6 @@ Fit models
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -341,7 +337,7 @@ needs a high number of components.
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_selecting_aminoacids_components_004.png
-   :alt: Core consistency: 100.0, Core consistency: 100.0, Core consistency: 99.1, Core consistency: -2670218.5, Core consistency: -1211539713761016.0
+   :alt: Core consistency: 100.0, Core consistency: 100.0, Core consistency: 99.1, Core consistency: -2670218.5, Core consistency: -1211539707318756.5
    :srcset: /auto_examples/images/sphx_glr_plot_selecting_aminoacids_components_004.png
    :class: sphx-glr-single-img
 
@@ -480,28 +476,23 @@ we find that one of the components have negative, and therefore unphysical, comp
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  13.645 seconds)
+   **Total running time of the script:** ( 0 minutes  18.924 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_selecting_aminoacids_components.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_selecting_aminoacids_components.py <plot_selecting_aminoacids_components.py>`
 
-     :download:`Download Python source code: plot_selecting_aminoacids_components.py <plot_selecting_aminoacids_components.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_selecting_aminoacids_components.ipynb <plot_selecting_aminoacids_components.ipynb>`
+      :download:`Download Jupyter notebook: plot_selecting_aminoacids_components.ipynb <plot_selecting_aminoacids_components.ipynb>`
 
 
 .. only:: html

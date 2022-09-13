@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>What are tensors and tensor decompositions? &#8212; TLViz 0.1.4 documentation</title> 
+    <title>What are tensors and tensor decompositions? &#8212; TLViz 0.1.5 documentation</title> 
 <link rel="stylesheet" href="_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="_static/favicon/favicon-32x32.png">
@@ -28,6 +28,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="_static/navbar_burger.js"></script>
@@ -205,7 +206,7 @@
         <div class="content main-content">
           
   <section id="what-are-tensors-and-tensor-decompositions">
-<span id="about-tensors"></span><h1>What are tensors and tensor decompositions?<a class="headerlink" href="#what-are-tensors-and-tensor-decompositions" title="Permalink to this headline">¶</a></h1>
+<span id="about-tensors"></span><h1>What are tensors and tensor decompositions?<a class="headerlink" href="#what-are-tensors-and-tensor-decompositions" title="Permalink to this heading">¶</a></h1>
 <p>Tensors are higher-order generalisations of a matrix.
 A matrix is a square of numbers and is, therefore, a second-order tensor.
 However, we can also have a cube of numbers, which would be a third-order tensor.
@@ -216,7 +217,7 @@ dimension for tensors. Instead, we use the word <em>mode</em> <span id="id1">[<a
 Therefore, in TLViz, we alias <code class="docutils literal notranslate"><span class="pre">mode</span></code> and <code class="docutils literal notranslate"><span class="pre">axis</span></code> in all the function calls.
 However, the word <code class="docutils literal notranslate"><span class="pre">mode</span></code> is generally used in the documentation.</p>
 <section id="notation">
-<h2>Notation<a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
+<h2>Notation<a class="headerlink" href="#notation" title="Permalink to this heading">¶</a></h2>
 <figure class="align-default">
 <a class="reference internal image-reference" href="_images/cp_tensor.svg"><img alt="Illustration of a CP tensor" src="_images/cp_tensor.svg" width="90%" /></a>
 </figure>
@@ -237,7 +238,7 @@ TLViz can seamlessly work with both labelled and unlabelled data and decompositi
 but we recommend using the labelled variant whenever possible.</p>
 </section>
 <section id="what-are-tensor-factorisations">
-<h2>What are tensor factorisations?<a class="headerlink" href="#what-are-tensor-factorisations" title="Permalink to this headline">¶</a></h2>
+<h2>What are tensor factorisations?<a class="headerlink" href="#what-are-tensor-factorisations" title="Permalink to this heading">¶</a></h2>
 <p>Similarly to matrix factorisation methods, tensor factorisation methods decompose a tensor into low-rank components.
 These components can be very informative and give insight into the patterns in the data.
 One of the most commonly used tensor factorisation methods is PARAFAC (also known as CP and CPD).

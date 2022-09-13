@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Split-half analysis for selecting the number of components &#8212; TLViz 0.1.4 documentation</title> 
+    <title>Split-half analysis for selecting the number of components &#8212; TLViz 0.1.5 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -28,6 +28,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -215,7 +216,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="split-half-analysis-for-selecting-the-number-of-components">
-<span id="split-half"></span><span id="sphx-glr-auto-examples-plot-split-half-analysis-py"></span><h1>Split-half analysis for selecting the number of components<a class="headerlink" href="#split-half-analysis-for-selecting-the-number-of-components" title="Permalink to this headline">¶</a></h1>
+<span id="split-half"></span><span id="sphx-glr-auto-examples-plot-split-half-analysis-py"></span><h1>Split-half analysis for selecting the number of components<a class="headerlink" href="#split-half-analysis-for-selecting-the-number-of-components" title="Permalink to this heading">¶</a></h1>
 <p>In this example, we will look at how we can use split-half analysis to select the number of PARAFAC components.</p>
 <p>The idea of split-half analysis is that we want to find the same underlying patterns if we look at different representative subsets of the same data.
 To accomplish this, we split the dataset in two equally sized non-overlapping pieces along one mode and fit a PARAFAC model to both pieces.
@@ -224,7 +225,7 @@ Then, we compare the similarity of the factors in the other, non-split modes.</p
 if we have a time series and expect the same patterns to be present in two subsequent periods, then we may split
 the data along the temporal mode instead.</p>
 <section id="imports-and-utilities">
-<h2>Imports and utilities<a class="headerlink" href="#imports-and-utilities" title="Permalink to this headline">¶</a></h2>
+<h2>Imports and utilities<a class="headerlink" href="#imports-and-utilities" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -256,14 +257,14 @@ initialisations.</p>
 </div>
 </section>
 <section id="creating-simulated-data">
-<h2>Creating simulated data<a class="headerlink" href="#creating-simulated-data" title="Permalink to this headline">¶</a></h2>
+<h2>Creating simulated data<a class="headerlink" href="#creating-simulated-data" title="Permalink to this heading">¶</a></h2>
 <p>We start with some simulated data, since then, we know exactly how many components there are in the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">labelled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="splitting-the-data">
-<h2>Splitting the data<a class="headerlink" href="#splitting-the-data" title="Permalink to this headline">¶</a></h2>
+<h2>Splitting the data<a class="headerlink" href="#splitting-the-data" title="Permalink to this heading">¶</a></h2>
 <p>We split the data randomly along the second mode</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span>
 
@@ -276,7 +277,7 @@ initialisations.</p>
 </div>
 </section>
 <section id="fitting-models-to-the-split-data">
-<h2>Fitting models to the split data<a class="headerlink" href="#fitting-models-to-the-split-data" title="Permalink to this headline">¶</a></h2>
+<h2>Fitting models to the split data<a class="headerlink" href="#fitting-models-to-the-split-data" title="Permalink to this heading">¶</a></h2>
 <p>We split the data randomly along the second mode</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
@@ -288,7 +289,6 @@ initialisations.</p>
         <span class="n">models</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_model</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1 components
 2 components
 3 components
@@ -298,7 +298,7 @@ initialisations.</p>
 </div>
 </section>
 <section id="computing-factor-similarity">
-<h2>Computing factor similarity<a class="headerlink" href="#computing-factor-similarity" title="Permalink to this headline">¶</a></h2>
+<h2>Computing factor similarity<a class="headerlink" href="#computing-factor-similarity" title="Permalink to this heading">¶</a></h2>
 <p>Now, we compute the similarity between the two splits for the different numbers of components.
 However, we cannot compare the second mode (<code class="docutils literal notranslate"><span class="pre">mode=1</span></code>), since that was the mode we sampled randomly
 in. Also, we cannot consider the weights in the factor match score since the weight will also be
@@ -311,7 +311,7 @@ affected by the sampling.</p>
 </div>
 </section>
 <section id="plotting-the-factor-similarity">
-<h2>Plotting the  factor similarity<a class="headerlink" href="#plotting-the-factor-similarity" title="Permalink to this headline">¶</a></h2>
+<h2>Plotting the  factor similarity<a class="headerlink" href="#plotting-the-factor-similarity" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">split_half_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">split_half_stability</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -327,7 +327,7 @@ sharp drop we see in the plot.</p>
 use to model your data.</p>
 </section>
 <section id="split-half-analysis-for-the-bike-sharing-data">
-<h2>Split-half analysis for the bike sharing data<a class="headerlink" href="#split-half-analysis-for-the-bike-sharing-data" title="Permalink to this headline">¶</a></h2>
+<h2>Split-half analysis for the bike sharing data<a class="headerlink" href="#split-half-analysis-for-the-bike-sharing-data" title="Permalink to this heading">¶</a></h2>
 <p>Here, we try split-half analysis on bike sharing data from Oslo. This dataset has five modes:</p>
 <blockquote>
 <div><ul class="simple">
@@ -367,8 +367,7 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_split_half_analysis_002.png" srcset="../_images/sphx_glr_plot_split_half_analysis_002.png" alt="plot split half analysis" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1 components
+<img src="../_images/sphx_glr_plot_split_half_analysis_002.png" srcset="../_images/sphx_glr_plot_split_half_analysis_002.png" alt="plot split half analysis" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1 components
 2 components
 3 components
 4 components
@@ -378,8 +377,8 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
 <p>Based on this split-half analysis, we see that we find three components that are present in both
 years. The moment we go up to four components, the stability drastically falls, and it falls even
 further with five components. This indicates that three components is a good choice for the model.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  20.072 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-split-half-analysis-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  21.834 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-split-half-analysis-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/0e39f97161617046c828b84f5b1099ea/plot_split_half_analysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_split_half_analysis.py</span></code></a></p>
 </div>

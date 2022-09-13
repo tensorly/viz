@@ -74,8 +74,6 @@ Here we load the `Aminoacids dataset <http://models.life.ku.dk/Amino_Acid_fluo>`
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     Loading Aminoacids dataset from:
@@ -196,28 +194,23 @@ Finally, we reset the backend to NumPy, because the other gallery examples assum
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.615 seconds)
+   **Total running time of the script:** ( 0 minutes  2.859 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_labelled_decompositions.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_labelled_decompositions.py <plot_labelled_decompositions.py>`
 
-     :download:`Download Python source code: plot_labelled_decompositions.py <plot_labelled_decompositions.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_labelled_decompositions.ipynb <plot_labelled_decompositions.ipynb>`
+      :download:`Download Jupyter notebook: plot_labelled_decompositions.ipynb <plot_labelled_decompositions.ipynb>`
 
 
 .. only:: html
