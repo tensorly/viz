@@ -58,6 +58,9 @@ this repo or run
     pip install git+https://github.com/marieroald/tlviz.git
 
 
+Some extra dependencies are needed to run the examples, tests or build the documentation.
+For more information about installing these dependencies, see the `installation guide <https://tensorly.org/viz/stable/installation.html>`_.
+
 Example
 -------
 
