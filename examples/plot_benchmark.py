@@ -1,11 +1,12 @@
 """
-Benchmarking
-=======================
+Benchmarking the TensorLy PARAFAC methods
+=================================================
 
 This example demonstrates how to benchmark Tensorly methods, using dataset available in Tensorly.
 The user may also compare built-in methods with any external method. 
 
-Note: our goal is to provide more generalized benchmark functions to Tensorly users in the future versions of Tensorly.
+.. note::
+    Our goal is to provide more generalized benchmark functions to Tensorly users in the future versions of Tensorly.
 """
 
 ##############################################################################
