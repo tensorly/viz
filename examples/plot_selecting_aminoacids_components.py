@@ -61,8 +61,8 @@ for rank in [1, 2, 3, 4, 5]:
 # Sort the initialisation by their SSE
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# For each rank, we pick the initialization run that achieved the lowest reconstruction error.
-# To do this, we first sort each initialization run by its final relative sum squared error (rel. SSE).
+# For each rank, we pick the initialization that achieved the lowest reconstruction error.
+# To do this, we first sort each initialization by its final relative sum squared error (rel. SSE).
 
 errors = {}
 for rank, inits in models.items():
@@ -76,8 +76,8 @@ selected_models = {rank: inits[0] for rank, inits in models.items()}
 # Examine model uniqueness
 # ^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# To examine whether we have found the global minimum, we compare each initialization run with the initialization
-# run that achieved the lowest rel. SSE. Ideally, we want the initialization runs to have reached the same point,
+# To examine whether we have found the global minimum, we compare each initialization with the initialization
+# that achieved the lowest rel. SSE. Ideally, we want the initializations to have reached the same point,
 # and if that is the case, they should have the same rel. SSE and similar components. To measure the component
 # similarity, we use the factor match score (FMS), similar to the cosine similarity score. An FMS value of 1 indicates
 # that the components are equivalent. The FMS is given by
@@ -103,7 +103,7 @@ for rank, inits in models.items():
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # A visual way to examine the uniqueness is to plot the rel. SSE on one axis and the FMS with selected initialization
-# on the other axis for each initialization run. We create one such plot for each rank to compare different choices of
+# on the other axis for each initialization. We create one such plot for each rank to compare different choices of
 # rank
 
 fig, axes = plt.subplots(1, 5, figsize=(15, 3), tight_layout=True, sharex=True, sharey=True)
@@ -118,9 +118,9 @@ axes[0].set_ylabel("Relative SSE")
 plt.show()
 
 ###############################################################################
-# From this plot, we see that for 1-3 components, all initialization runs seem to achieve the same rel. SSE and
+# From this plot, we see that for 1-3 components, all initializations seem to achieve the same rel. SSE and
 # similar components. This similarity indicates that the models are unique. However, for 4-5 components, we see
-# that the "FMS with best" value is low, which means that the selected initialization run is quite different from
+# that the "FMS with best" value is low, which means that the selected initialization is quite different from
 # the rest. This difference indicates that we either have a non-unique model or problems with local minima. Therefore,
 # if we decide to go with the four or five component models, we should run even more initializations to ensure that
 # we can get the same components for more than just one initialization.
@@ -181,7 +181,7 @@ plt.show()
 # ^^^^^^^^^^^^^^^^^^^
 #
 # Another way to select the number of components is with *split-half analysis*. With split-half analysis, we
-# divide the dataset in to along one mode, and fit two different models, one for each split. Then, we compare
+# divide the dataset in two along one mode, and fit two different models, one for each split. Then, we compare
 # the similarity of the decomposition for the modes where we did not perform the split.
 #
 # For split-half analysis, it is important to choose a split that makes sense. We need to expect that all
@@ -226,8 +226,7 @@ tlviz.visualisation.percentage_variation_plot(model_4comp, aminoacids.data, meth
 ax.set_yscale("log")
 
 ###############################################################################
-# We see that the four-component model consists of three clear chemical spectra, which coincides well with our
-# knowledge about the data. The data is samples from mixtures of three different aminoacids. The sample-mode
-# component shows the concentration of each chemicaland the emission- and excitation-mode components show the
-# emission- and excitation-spectra of the chemicals (all in arbitrary units). With more than three components,
-# we find that one of the components have negative, and therefore unphysical, components.
+# We see that the three-component model consists of three clear chemical spectra, which coincides well with our knowledge of the data.
+# The data contains five samples, and each sample represents the emission excitation matrix of a mixture of three aminoacids.
+# The sample-mode component shows the concentration of each chemical, and the emission- and excitation-mode components show the emission- and excitation-spectra of the chemicals (all in arbitrary units).
+# With more than three components, we find that one of the components has negative, and therefore unphysical, values.
