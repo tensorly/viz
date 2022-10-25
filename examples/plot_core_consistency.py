@@ -43,11 +43,11 @@ four_component_cp = fit_parafac(aminoacids.data, 4, num_inits=5)
 
 ###############################################################################
 # Now, we want to check the validity of this model. We know that with PARAFAC, we cannot have any interactions between
-# the components. Mathematically this means that our tensor entries, :math:`x_{ijk}` is described by
+# the components. Mathematically this means that our tensor entries, :math:`x_{ijk}` is described by    
 #
 # .. math::
 #
-#     {ijk} = \sum_{r=1}^R a_{ir}b_{jr}c_{kr},
+#     x_{ijk} = \sum_{r=1}^R a_{ir}b_{jr}c_{kr},
 #
 # where :math:`a_{ir},b_{jr}` and :math:`c_{kr}` are entries in the factor matrices, :math:`\mathbf{A}, \mathbf{B}` and
 # :math:`\mathbf{C}`, respectively (we keep the weight multiplied into the factor matrices).
@@ -76,7 +76,7 @@ plt.show()
 
 ###############################################################################
 # This plot shows interaction between the different components. For example, we see that there are high values
-# in the four corners of slab 0 and 3, which indicates a strong two-compponent interaction between component 3 and
+# in the four corners of slab 0 and 3, which indicates a strong two-component interaction between component 3 and
 # component 1. There are also high values in the four corners of slab 1, which shows that there is a three-component
 # interaction between component 0, 1 and 3.
 #
