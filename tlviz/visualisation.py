@@ -667,7 +667,15 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     ax.legend()
     ax.set_xlabel("Core element")
     ax.set_ylabel("Value")
-    ax.set_title(f"Core consistency: {core_consistency:.1f}")
+    
+    ymin, ymax = ax.get_ylim()
+    ymin = min(ymin, 0)
+    ymax = max(ymax, 1.1)
+    ax.set_ylim(ymin, ymax)
+    if core_consistency >= 0:
+        ax.set_title(f"Core consistency: {core_consistency:.1f}")
+    else:
+        ax.set_title(f"Core consistency: <0")
 
     return ax
 
@@ -708,8 +716,8 @@ def _get_core_tensor_index(slab_idx, slice_mode):
     return tuple(slices), slice_str
 
 
-def _apply_cmap(selected_slab, vmax):
-    cmap = cm.get_cmap("coolwarm")
+def _apply_diverging_cmap(selected_slab, vmax, cmap):
+    cmap = cm.get_cmap(cmap)
     scaled_slab = (selected_slab + vmax) / (2 * vmax)
     scaled_slab[scaled_slab > 1] = 1
     scaled_slab[scaled_slab < 0] = 0
@@ -726,7 +734,7 @@ def _get_text_color(bg_rgb):
 
 @_handle_tensorly_backends_cp("cp_tensor", None)
 @_handle_none_weights_cp_tensor("cp_tensor")
-def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, text_kwargs=None, text_fmt=".2f"):
+def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, colorbar=True, text_kwargs=None, text_fmt=".2f"):
     """Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.
 
     It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which
@@ -804,8 +812,8 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
     for slab, ax in enumerate(axes):
         slices, slice_str = _get_core_tensor_index(slab, slice_mode)
         selected_slab = core_tensor[slices]
-        image = _apply_cmap(selected_slab, vmax)
-        ax.imshow(image)
+        image = _apply_diverging_cmap(selected_slab, vmax, "coolwarm")
+        im = ax.imshow(selected_slab, "coolwarm", vmin=-vmax, vmax=vmax)
 
         if annotate:
             for index, value in np.ndenumerate(selected_slab):
@@ -821,6 +829,11 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
         ax.set_xticks(np.arange(num_components))
         ax.set_yticks(np.arange(num_components))
         ax.set_title(f"core_tensor[{slice_str}]")
+
+    if colorbar:
+        geom = ax.get_position()
+        cax = fig.add_axes([geom.x1+0.01, geom.y0, 0.02, geom.height])
+        fig.colorbar(im, cax=cax)
 
     return fig, axes
 
@@ -1172,7 +1185,8 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> fig, axes = optimisation_diagnostic_plots(errs, 50)
         >>> plt.show()
     """
-    fig, axes = plt.subplots(1, 2, figsize=(16, 4.5), tight_layout=True)
+    fig, axes = plt.subplots(1, 2, figsize=(16, 4.5))
+    fig.subplots_adjust(top=0.95, bottom=0.2)
 
     selected_init = None
     lowest_error = np.inf
@@ -1233,7 +1247,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         custom_lines,
         ["Converged", "Did not converge", "Lowest final error", "Other runs"],
         ncol=2,
-        bbox_to_anchor=(0.5, -0.1),
+        bbox_to_anchor=(0.5, 0.01),
         loc="lower center",
     )
     return fig, axes
