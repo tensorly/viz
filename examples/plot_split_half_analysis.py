@@ -107,7 +107,11 @@ for rank, (cp_1, cp_2) in models.items():
 # Plotting the  factor similarity
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-plt.plot(split_half_stability.keys(), split_half_stability.values(), "-o")
+fig, ax = plt.subplots()
+ax.plot(split_half_stability.keys(), split_half_stability.values(), "-o")
+ax.set_xticks(list(split_half_stability.keys()))
+ax.set_xlabel("Number of components")
+ax.set_ylabel("Split half stability")
 plt.show()
 
 ###############################################################################
@@ -160,7 +164,11 @@ for rank, (cp_1, cp_2) in bike_models.items():
     bike_stability[rank] = fms
 
 
-plt.plot(bike_stability.keys(), bike_stability.values(), "-o")
+fig, ax = plt.subplots()
+ax.plot(bike_stability.keys(), bike_stability.values(), "-o")
+ax.set_xticks(list(split_half_stability.keys()))
+ax.set_xlabel("Number of components")
+ax.set_ylabel("Split half stability")
 plt.show()
 
 

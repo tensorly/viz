@@ -177,7 +177,7 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> histogram_of_residuals(est_cp, X)
-        <AxesSubplot:title={'center':'Histogram of residuals'}, xlabel='Standardised residuals', ylabel='Frequency'>
+        <AxesSubplot: title={'center': 'Histogram of residuals'}, xlabel='Standardised residuals', ylabel='Frequency'>
         >>> plt.show()
     """
     estimated_dataset = cp_to_tensor(cp_tensor)
@@ -244,7 +244,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> residual_qq(est_cp, X)
-        <AxesSubplot:title={'center':'QQ-plot of residuals'}, xlabel='Theoretical Quantiles', ylabel='Sample Quantiles'>
+        <AxesSubplot: title={'center': 'QQ-plot of residuals'}, xlabel='Theoretical Quantiles', ylabel='Sample Quantiles'>
         >>> plt.show()
     """
     estimated_dataset = cp_to_tensor(cp_tensor)
@@ -337,7 +337,7 @@ def outlier_plot(
         >>> outlier_plot(
         ...     cp, data, leverage_rules_of_thumb='p-value', residual_rules_of_thumb='p-value', p_value=[0.05, 0.01]
         ... )
-        <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
+        <AxesSubplot: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
 
     We can also provide multiple types of rules of thumb
@@ -360,7 +360,7 @@ def outlier_plot(
         >>> outlier_plot(
         ...     cp, data, leverage_rules_of_thumb=['huber lower', 'hw higher'], residual_rules_of_thumb='two sigma'
         ... )
-        <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
+        <AxesSubplot: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
 
     See Also
@@ -521,7 +521,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor = random_cp(shape=(5,10,15), rank=2)
         >>> component_scatterplot(cp_tensor, mode=0)
-        <AxesSubplot:title={'center':'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
+        <AxesSubplot: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
         >>> plt.show()
 
     Eexample with PCA of a real stock dataset
@@ -553,7 +553,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>>
         >>> # Visualise the components with components_plot
         >>> component_scatterplot(cp_tensor, mode=1)
-        <AxesSubplot:title={'center':'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
+        <AxesSubplot: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
         >>> plt.show()
     """
     if ax is None:
@@ -624,7 +624,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=42)
         >>> est_cp = parafac(X, 3)
         >>> core_element_plot(est_cp, X)
-        <AxesSubplot:title={'center':'Core consistency: 99.8'}, xlabel='Core element', ylabel='Value'>
+        <AxesSubplot: title={'center': 'Core consistency: 99.8'}, xlabel='Core element', ylabel='Value'>
         >>> plt.show()
     """
     weights, factors = cp_tensor
@@ -667,7 +667,15 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
     ax.legend()
     ax.set_xlabel("Core element")
     ax.set_ylabel("Value")
-    ax.set_title(f"Core consistency: {core_consistency:.1f}")
+    
+    ymin, ymax = ax.get_ylim()
+    ymin = min(ymin, 0)
+    ymax = max(ymax, 1.1)
+    ax.set_ylim(ymin, ymax)
+    if core_consistency >= 0:
+        ax.set_title(f"Core consistency: {core_consistency:.1f}")
+    else:
+        ax.set_title(f"Core consistency: <0")
 
     return ax
 
@@ -708,8 +716,8 @@ def _get_core_tensor_index(slab_idx, slice_mode):
     return tuple(slices), slice_str
 
 
-def _apply_cmap(selected_slab, vmax):
-    cmap = cm.get_cmap("coolwarm")
+def _apply_diverging_cmap(selected_slab, vmax, cmap):
+    cmap = cm.get_cmap(cmap)
     scaled_slab = (selected_slab + vmax) / (2 * vmax)
     scaled_slab[scaled_slab > 1] = 1
     scaled_slab[scaled_slab < 0] = 0
@@ -726,7 +734,7 @@ def _get_text_color(bg_rgb):
 
 @_handle_tensorly_backends_cp("cp_tensor", None)
 @_handle_none_weights_cp_tensor("cp_tensor")
-def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, text_kwargs=None, text_fmt=".2f"):
+def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=True, colorbar=True, text_kwargs=None, text_fmt=".2f"):
     """Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.
 
     It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which
@@ -804,8 +812,8 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
     for slab, ax in enumerate(axes):
         slices, slice_str = _get_core_tensor_index(slab, slice_mode)
         selected_slab = core_tensor[slices]
-        image = _apply_cmap(selected_slab, vmax)
-        ax.imshow(image)
+        image = _apply_diverging_cmap(selected_slab, vmax, "coolwarm")
+        im = ax.imshow(selected_slab, "coolwarm", vmin=-vmax, vmax=vmax)
 
         if annotate:
             for index, value in np.ndenumerate(selected_slab):
@@ -821,6 +829,11 @@ def core_element_heatmap(cp_tensor, dataset, slice_mode=0, vmax=None, annotate=T
         ax.set_xticks(np.arange(num_components))
         ax.set_yticks(np.arange(num_components))
         ax.set_title(f"core_tensor[{slice_str}]")
+
+    if colorbar:
+        geom = ax.get_position()
+        cax = fig.add_axes([geom.x1+0.01, geom.y0, 0.02, geom.height])
+        fig.colorbar(im, cax=cax)
 
     return fig, axes
 
@@ -1172,7 +1185,8 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         >>> fig, axes = optimisation_diagnostic_plots(errs, 50)
         >>> plt.show()
     """
-    fig, axes = plt.subplots(1, 2, figsize=(16, 4.5), tight_layout=True)
+    fig, axes = plt.subplots(1, 2, figsize=(16, 4.5))
+    fig.subplots_adjust(top=0.95, bottom=0.2)
 
     selected_init = None
     lowest_error = np.inf
@@ -1233,7 +1247,7 @@ def optimisation_diagnostic_plots(error_logs, n_iter_max):
         custom_lines,
         ["Converged", "Did not converge", "Lowest final error", "Other runs"],
         ncol=2,
-        bbox_to_anchor=(0.5, -0.1),
+        bbox_to_anchor=(0.5, 0.01),
         loc="lower center",
     )
     return fig, axes
@@ -1280,7 +1294,7 @@ def percentage_variation_plot(
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor)
-        <AxesSubplot:xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        <AxesSubplot: xlabel='Component number', ylabel='Percentage variation explained [%]'>
         >>> plt.show()
 
     We can also get the percentage of variation in the data that each component explains
@@ -1294,7 +1308,7 @@ def percentage_variation_plot(
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor, dataset, method="data")
-        <AxesSubplot:xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        <AxesSubplot: xlabel='Component number', ylabel='Percentage variation explained [%]'>
         >>> plt.show()
 
     Or both the variation in the data and in the model
@@ -1308,7 +1322,7 @@ def percentage_variation_plot(
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor, dataset, method="both")
-        <AxesSubplot:xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        <AxesSubplot: xlabel='Component number', ylabel='Percentage variation explained [%]'>
         >>> plt.show()
     """
     if ax is None:
