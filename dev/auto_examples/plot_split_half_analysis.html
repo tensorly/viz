@@ -30,13 +30,14 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Optimisation diagnostics with PARAFAC models" href="plot_optimisation_diagnostic.html" />
-    <link rel="prev" title="TLViz + PlotLy for interactive visualisations" href="plot_bike_plotly.html" />
+    <link rel="next" title="Selecting the number of components in PARAFAC models" href="plot_selecting_aminoacids_components.html" />
+    <link rel="prev" title="Optimisation diagnostics with PARAFAC models" href="plot_optimisation_diagnostic.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -176,8 +177,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_working_with_xarray.html">Working with xarray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_core_consistency.html">Core consistency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bike_plotly.html">TLViz + PlotLy for interactive visualisations</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_optimisation_diagnostic.html">Optimisation diagnostics with PARAFAC models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_outlier_detection.html">Outlier detection with PARAFAC</a></li>
 </ul>
@@ -312,7 +313,11 @@ affected by the sampling.</p>
 </section>
 <section id="plotting-the-factor-similarity">
 <h2>Plotting the  factor similarity<a class="headerlink" href="#plotting-the-factor-similarity" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">split_half_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">split_half_stability</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">split_half_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">split_half_stability</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">split_half_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of components&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Split half stability&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -363,7 +368,11 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
     <span class="n">bike_stability</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">fms</span>
 
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bike_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">bike_stability</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bike_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">bike_stability</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">split_half_stability</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of components&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Split half stability&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -377,7 +386,7 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
 <p>Based on this split-half analysis, we see that we find three components that are present in both
 years. The moment we go up to four components, the stability drastically falls, and it falls even
 further with five components. This indicates that three components is a good choice for the model.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  31.360 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  16.033 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-split-half-analysis-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/0e39f97161617046c828b84f5b1099ea/plot_split_half_analysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_split_half_analysis.py</span></code></a></p>
@@ -396,16 +405,16 @@ further with five components. This indicates that three components is a good cho
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="plot_bike_plotly.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="plot_optimisation_diagnostic.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>TLViz + PlotLy for interactive visualisations</span>
+        <span>Optimisation diagnostics with PARAFAC models</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="plot_optimisation_diagnostic.html" title="next page" accesskey="n">
-        <span>Optimisation diagnostics with PARAFAC models </span>
+    <a class="button is-medium pagination-next" href="plot_selecting_aminoacids_components.html" title="next page" accesskey="n">
+        <span>Selecting the number of components in PARAFAC models </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>

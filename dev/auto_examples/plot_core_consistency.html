@@ -30,6 +30,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -177,8 +178,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_working_with_xarray.html">Working with xarray</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Core consistency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bike_plotly.html">TLViz + PlotLy for interactive visualisations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_optimisation_diagnostic.html">Optimisation diagnostics with PARAFAC models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_outlier_detection.html">Outlier detection with PARAFAC</a></li>
 </ul>
@@ -258,7 +259,7 @@ Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laborat
 <p>Now, we want to check the validity of this model. We know that with PARAFAC, we cannot have any interactions between
 the components. Mathematically this means that our tensor entries, <span class="math notranslate nohighlight">\(x_{ijk}\)</span> is described by</p>
 <div class="math notranslate nohighlight">
-\[{ijk} = \sum_{r=1}^R a_{ir}b_{jr}c_{kr},\]</div>
+\[x_{ijk} = \sum_{r=1}^R a_{ir}b_{jr}c_{kr},\]</div>
 <p>where <span class="math notranslate nohighlight">\(a_{ir},b_{jr}\)</span> and <span class="math notranslate nohighlight">\(c_{kr}\)</span> are entries in the factor matrices, <span class="math notranslate nohighlight">\(\mathbf{A}, \mathbf{B}\)</span> and
 <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>, respectively (we keep the weight multiplied into the factor matrices).</p>
 <p>If we want to allow for interactions between our components, we could use a <em>Tucker model</em>. This model introduces
@@ -278,7 +279,7 @@ optimal <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> given 
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_core_consistency_001.png" srcset="../_images/sphx_glr_plot_core_consistency_001.png" alt="core_tensor[0, :, :], core_tensor[1, :, :], core_tensor[2, :, :], core_tensor[3, :, :]" class = "sphx-glr-single-img"/><p>This plot shows interaction between the different components. For example, we see that there are high values
-in the four corners of slab 0 and 3, which indicates a strong two-compponent interaction between component 3 and
+in the four corners of slab 0 and 3, which indicates a strong two-component interaction between component 3 and
 component 1. There are also high values in the four corners of slab 1, which shows that there is a three-component
 interaction between component 0, 1 and 3.</p>
 <p>A downside with the core element heatmap is that we can only create it for third-order tensors. Also, while the
@@ -289,7 +290,7 @@ off-diagonal entries are plotted afterwards.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_core_consistency_002.png" srcset="../_images/sphx_glr_plot_core_consistency_002.png" alt="Core consistency: -6437.6" class = "sphx-glr-single-img"/><p>Here, we also see that the core tensor is not similar to <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> (which is plotted with the straight
+<img src="../_images/sphx_glr_plot_core_consistency_002.png" srcset="../_images/sphx_glr_plot_core_consistency_002.png" alt="Core consistency: <0" class = "sphx-glr-single-img"/><p>Here, we also see that the core tensor is not similar to <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> (which is plotted with the straight
 line). Therefore, we can conclude that the amino acids dataset likely does not follow a 4-component PARAFAC model.</p>
 <p>To understand why this works, we can consider a noisy dataset that follows an <span class="math notranslate nohighlight">\(R\)</span>-component PARAFAC model. If
 we fit an <span class="math notranslate nohighlight">\(R\)</span>-component model to this data, we should find the components, and there will be no interaction
@@ -343,7 +344,7 @@ know the true underlying factor matrices.</p></li>
 <p>The core consistency can be very low in all these cases, even for the “best” model. Therefore, it is essential to
 consider more than just the core consistency when selecting the best model. Examples are initialisation stability,
 split half stability, and looking at the component vectors to see if they make sense.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  16.933 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.509 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-core-consistency-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/6d4067d825291338758bdc518aa34e99/plot_core_consistency.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_core_consistency.py</span></code></a></p>

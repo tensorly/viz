@@ -30,6 +30,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -384,7 +385,7 @@ argument and a tuple of components as second argument</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -416,7 +417,7 @@ argument and a tuple of components as second argument</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Visualise the components with components_plot</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -510,7 +511,7 @@ the plot function for that mode.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.visualisation.core_element_heatmap">
-<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">core_element_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.2f'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#core_element_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.core_element_heatmap" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.visualisation.</span></span><span class="sig-name descname"><span class="pre">core_element_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.2f'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/visualisation.html#core_element_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.visualisation.core_element_heatmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.</p>
 <p>It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which
 components that are modelling multi-linear behaviour and which are not. For example, a component that models noise is
@@ -606,7 +607,7 @@ argument and a tuple of components as second argument</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">est_cp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">core_element_plot</span><span class="p">(</span><span class="n">est_cp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Core consistency: 99.8&#39;}, xlabel=&#39;Core element&#39;, ylabel=&#39;Value&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;Core consistency: 99.8&#39;}, xlabel=&#39;Core element&#39;, ylabel=&#39;Value&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -650,7 +651,7 @@ argument and a tuple of components as second argument</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">est_cp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">histogram_of_residuals</span><span class="p">(</span><span class="n">est_cp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Histogram of residuals&#39;}, xlabel=&#39;Standardised residuals&#39;, ylabel=&#39;Frequency&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;Histogram of residuals&#39;}, xlabel=&#39;Standardised residuals&#39;, ylabel=&#39;Frequency&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -813,7 +814,7 @@ Oslo bike sharing data.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">outlier_plot</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">cp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">leverage_rules_of_thumb</span><span class="o">=</span><span class="s1">&#39;p-value&#39;</span><span class="p">,</span> <span class="n">residual_rules_of_thumb</span><span class="o">=</span><span class="s1">&#39;p-value&#39;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -836,7 +837,7 @@ Oslo bike sharing data.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">outlier_plot</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">cp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">leverage_rules_of_thumb</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;huber lower&#39;</span><span class="p">,</span> <span class="s1">&#39;hw higher&#39;</span><span class="p">],</span> <span class="n">residual_rules_of_thumb</span><span class="o">=</span><span class="s1">&#39;two sigma&#39;</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -878,7 +879,7 @@ argument and a tuple of components as second argument</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">percentage_variation_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -892,7 +893,7 @@ argument and a tuple of components as second argument</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">percentage_variation_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -906,7 +907,7 @@ argument and a tuple of components as second argument</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">percentage_variation_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -956,7 +957,7 @@ of changing the license of tlviz into a GPL-license too.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">true_cp</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">est_cp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">residual_qq</span><span class="p">(</span><span class="n">est_cp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="go">&lt;AxesSubplot:title={&#39;center&#39;:&#39;QQ-plot of residuals&#39;}, xlabel=&#39;Theoretical Quantiles&#39;, ylabel=&#39;Sample Quantiles&#39;&gt;</span>
+<span class="go">&lt;AxesSubplot: title={&#39;center&#39;: &#39;QQ-plot of residuals&#39;}, xlabel=&#39;Theoretical Quantiles&#39;, ylabel=&#39;Sample Quantiles&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1095,6 +1096,31 @@ are converted to underlines before getting the metric from the <code class="docu
 
 	
     
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc">  
+        <div class="menu menu-list">
+        <p class="menu-label">On this page</p>
+        <ul>
+<li><a class="reference internal" href="#">Visualisation</a><ul>
+<li><a class="reference internal" href="#tlviz.visualisation.component_comparison_plot"><code class="docutils literal notranslate"><span class="pre">component_comparison_plot()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.component_scatterplot"><code class="docutils literal notranslate"><span class="pre">component_scatterplot()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.components_plot"><code class="docutils literal notranslate"><span class="pre">components_plot()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.core_element_heatmap"><code class="docutils literal notranslate"><span class="pre">core_element_heatmap()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.core_element_plot"><code class="docutils literal notranslate"><span class="pre">core_element_plot()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.histogram_of_residuals"><code class="docutils literal notranslate"><span class="pre">histogram_of_residuals()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.optimisation_diagnostic_plots"><code class="docutils literal notranslate"><span class="pre">optimisation_diagnostic_plots()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.outlier_plot"><code class="docutils literal notranslate"><span class="pre">outlier_plot()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.percentage_variation_plot"><code class="docutils literal notranslate"><span class="pre">percentage_variation_plot()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.residual_qq"><code class="docutils literal notranslate"><span class="pre">residual_qq()</span></code></a></li>
+<li><a class="reference internal" href="#tlviz.visualisation.scree_plot"><code class="docutils literal notranslate"><span class="pre">scree_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
 
     
 

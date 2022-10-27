@@ -96,11 +96,11 @@ Then we load the data and fit a PARAFAC model to it.
 .. GENERATED FROM PYTHON SOURCE LINES 45-72
 
 Now, we want to check the validity of this model. We know that with PARAFAC, we cannot have any interactions between
-the components. Mathematically this means that our tensor entries, :math:`x_{ijk}` is described by
+the components. Mathematically this means that our tensor entries, :math:`x_{ijk}` is described by    
 
 .. math::
 
-    {ijk} = \sum_{r=1}^R a_{ir}b_{jr}c_{kr},
+    x_{ijk} = \sum_{r=1}^R a_{ir}b_{jr}c_{kr},
 
 where :math:`a_{ir},b_{jr}` and :math:`c_{kr}` are entries in the factor matrices, :math:`\mathbf{A}, \mathbf{B}` and
 :math:`\mathbf{C}`, respectively (we keep the weight multiplied into the factor matrices).
@@ -145,7 +145,7 @@ Let's look at the entries we get for :math:`\mathcal{G}` with the PARAFAC model 
 .. GENERATED FROM PYTHON SOURCE LINES 78-87
 
 This plot shows interaction between the different components. For example, we see that there are high values
-in the four corners of slab 0 and 3, which indicates a strong two-compponent interaction between component 3 and
+in the four corners of slab 0 and 3, which indicates a strong two-component interaction between component 3 and
 component 1. There are also high values in the four corners of slab 1, which shows that there is a three-component
 interaction between component 0, 1 and 3.
 
@@ -165,7 +165,7 @@ off-diagonal entries are plotted afterwards.
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_core_consistency_002.png
-   :alt: Core consistency: -6437.6
+   :alt: Core consistency: <0
    :srcset: /auto_examples/images/sphx_glr_plot_core_consistency_002.png
    :class: sphx-glr-single-img
 
@@ -290,7 +290,7 @@ split half stability, and looking at the component vectors to see if they make s
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  16.933 seconds)
+   **Total running time of the script:** ( 0 minutes  11.509 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_core_consistency.py:

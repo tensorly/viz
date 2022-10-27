@@ -14,5 +14,5 @@ cp_tensor = s[:num_components], (U[:, :num_components], Vh.T[:, :num_components]
 cp_tensor = label_cp_tensor(cp_tensor, stocks)
 component_scatterplot(cp_tensor, mode=1)
 # Expected:
-## <AxesSubplot:title={'center':'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
+## <AxesSubplot: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
 plt.show()

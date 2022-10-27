@@ -214,12 +214,16 @@ affected by the sampling.
 Plotting the  factor similarity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-113
+.. GENERATED FROM PYTHON SOURCE LINES 109-117
 
 .. code-block:: default
 
 
-    plt.plot(split_half_stability.keys(), split_half_stability.values(), "-o")
+    fig, ax = plt.subplots()
+    ax.plot(split_half_stability.keys(), split_half_stability.values(), "-o")
+    ax.set_xticks(list(split_half_stability.keys()))
+    ax.set_xlabel("Number of components")
+    ax.set_ylabel("Split half stability")
     plt.show()
 
 
@@ -234,7 +238,7 @@ Plotting the  factor similarity
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-124
+.. GENERATED FROM PYTHON SOURCE LINES 118-128
 
 As we can see, there is a sharp drop in stability when increasing from four to five components.
 This drop indicates that the patterns we find with a five-component model are not robust to small changes in the data.
@@ -247,7 +251,7 @@ sharp drop we see in the plot.
 So we see that visualising the split-half stability can be a helpful way to evaluate how many components you should
 use to model your data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-140
+.. GENERATED FROM PYTHON SOURCE LINES 130-144
 
 Split-half analysis for the bike sharing data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -264,7 +268,7 @@ The dataset covers all bike trips during 2020 and 2021, and we would expect to f
 the same patterns for the two years. We can therefore form two new tensors, one for 2020 and one
 for 2021, fit PARAFAC models for these two datasets and compare the similarity of the components.
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-167
+.. GENERATED FROM PYTHON SOURCE LINES 144-175
 
 .. code-block:: default
 
@@ -291,7 +295,11 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
         bike_stability[rank] = fms
 
 
-    plt.plot(bike_stability.keys(), bike_stability.values(), "-o")
+    fig, ax = plt.subplots()
+    ax.plot(bike_stability.keys(), bike_stability.values(), "-o")
+    ax.set_xticks(list(split_half_stability.keys()))
+    ax.set_xlabel("Number of components")
+    ax.set_ylabel("Split half stability")
     plt.show()
 
 
@@ -317,7 +325,7 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-171
+.. GENERATED FROM PYTHON SOURCE LINES 176-179
 
 Based on this split-half analysis, we see that we find three components that are present in both
 years. The moment we go up to four components, the stability drastically falls, and it falls even
@@ -326,7 +334,7 @@ further with five components. This indicates that three components is a good cho
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  31.360 seconds)
+   **Total running time of the script:** ( 1 minutes  16.033 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_split_half_analysis.py:

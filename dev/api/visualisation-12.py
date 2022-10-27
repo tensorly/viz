@@ -11,5 +11,5 @@ outlier_plot(
     cp, data, leverage_rules_of_thumb='p-value', residual_rules_of_thumb='p-value', p_value=[0.05, 0.01]
 )
 # Expected:
-## <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
+## <AxesSubplot: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
 plt.show()
