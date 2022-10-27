@@ -34,12 +34,12 @@ rng = np.random.default_rng(0)
 # initialisations.
 
 
-def fit_many_parafac(X, num_components, num_inits=5):
+def fit_many_parafac(X, num_components, num_inits=10):
     return [
         parafac(
             X,
             num_components,
-            n_iter_max=1000,
+            n_iter_max=2000,
             tol=1e-8,
             init="random",
             orthogonalise=True,
