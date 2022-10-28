@@ -39,8 +39,8 @@ bike_data
 # Fitting the model
 # ^^^^^^^^^^^^^^^^^
 #
-# We know from the :ref:`split-half analysis example <split-half>` that 3 components is a good choice for this data.
-# Therefore, we fit five model candidates with three components and select the one with the lowest error.
+# We fit five three-component PARAFAC2 model candidates to this data and select the one with the lowest error
+# (to see why a three-component model is a good choice, see the :ref:`split-half analysis example <split-half>`).
 
 model_candidates = fit_many_nn_parafac(bike_data.data, 3, num_inits=5)
 selected_cp = tlviz.multimodel_evaluation.get_model_with_lowest_error(model_candidates, bike_data)
