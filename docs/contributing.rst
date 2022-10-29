@@ -10,11 +10,11 @@ How to contribute
 -----------------
 
 If you find a bug, or have an idea for a new feature, and you want to know if the contribution is relevant and not
-being worked on, you can open a `new issue <https://github.com/MarieRoald/tlviz/issues>`_. For major
+being worked on, you can open a `new issue <https://github.com/tensorly/viz/issues>`_. For major
 bugs, it can also be useful to include a `minimal, reproducible example <https://stackoverflow.com/help/minimal-reproducible-example>`_,
 to make it as easy as possible to fix it.
 
-You can submit implementation of new features or bug/documentation fixes as a `pull-request <https://github.com/MarieRoald/tlviz/pulls>`_.
+You can submit implementation of new features or bug/documentation fixes as a `pull-request <https://github.com/tensorly/viz/pulls>`_.
 
 -----------------------
 Development environment
@@ -30,8 +30,8 @@ Then, you can download the TLViz source code and install it together with all th
 
 .. code:: bash
 
-    git clone https://github.com/marieroald/tlviz.git
-    cd tlviz
+    git clone https://github.com/tensorly/viz.git
+    cd viz
     pip install -e .[devel,test,docs]
 
 This will install TLViz in editable mode, so any change to the source code will be applied to the installed
