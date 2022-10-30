@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python: ['3.7', '3.8', '3.9', '3.10']
+        python: ['3.8', '3.9', '3.10']
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -18,9 +18,9 @@ jobs:
           python -m pip install --upgrade pip wheel
           python -m pip install -e .[test,all]
       - name: run tests
-        run: python3 -m pytest --cov=tlviz --cov-report=xml
+        run: python3 -m pytest --cov=tlviz
       - name: upload coverage to Codecov
-        if: ${{matrix.os == 'ubuntu-latest'}}
+        if: ${{matrix.os == 'ubuntu-latest' && matrix.python == '3.10'}}
         uses: codecov/codecov-action@v2
         with:
           verbose: true

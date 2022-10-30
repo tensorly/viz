@@ -66,9 +66,9 @@ def test_core_element_plot_normalised_flag(seed, normalised):
 
     superdiag_x, superdiag_y = ax.lines[-2].get_data()
     offdiag_x, offdiag_y = ax.lines[-1].get_data()
-    squared_core_error = np.sum(offdiag_y ** 2) + np.sum((superdiag_y - 1) ** 2)
+    squared_core_error = np.sum(offdiag_y**2) + np.sum((superdiag_y - 1) ** 2)
     if normalised:
-        denom = np.sum(superdiag_y ** 2) + np.sum(offdiag_y ** 2)
+        denom = np.sum(superdiag_y**2) + np.sum(offdiag_y**2)
     else:
         denom = rank
     assert 100 - 100 * (squared_core_error / denom) == pytest.approx(core_consistency)

@@ -18,8 +18,7 @@ def _estimate_core_tensor(factors, X):
 
 
 def test_estimate_core_tensor_against_reference(rng):
-    """Test that the fast core estimation algorithm by Papalexakis and Faloutsos coincide with the reference
-    """
+    """Test that the fast core estimation algorithm by Papalexakis and Faloutsos coincide with the reference"""
     A = rng.standard_normal(size=(4, 3))
     B = rng.standard_normal(size=(5, 3))
     C = rng.standard_normal(size=(6, 3))
@@ -95,7 +94,7 @@ def test_core_consistency_with_known_tucker(rng):
     core_consistency = 100 - 100 * core_error / 3
     assert model_evaluation.core_consistency(cp_tensor, X, normalised=False) == pytest.approx(core_consistency)
 
-    core_consistency = 100 - 100 * core_error / np.sum(core ** 2)
+    core_consistency = 100 - 100 * core_error / np.sum(core**2)
     assert model_evaluation.core_consistency(cp_tensor, X, normalised=True) == pytest.approx(core_consistency)
 
 
@@ -216,7 +215,7 @@ def test_sse(rng):
     tensor = cp.to_tensor()
     noise = rng.random_sample((4, 5, 6))
     sse = model_evaluation.sse(cp, tensor + noise)
-    assert sse == pytest.approx(tl.sum(noise ** 2))
+    assert sse == pytest.approx(tl.sum(noise**2))
 
 
 def test_relative_sse(rng):
@@ -224,7 +223,7 @@ def test_relative_sse(rng):
     tensor = cp.to_tensor()
     noise = rng.random_sample((4, 5, 6))
     rel_sse = model_evaluation.relative_sse(cp, tensor + noise)
-    assert rel_sse == pytest.approx(tl.sum(noise ** 2) / tl.sum((tensor + noise) ** 2))
+    assert rel_sse == pytest.approx(tl.sum(noise**2) / tl.sum((tensor + noise) ** 2))
 
 
 def test_fit(rng):
@@ -232,4 +231,4 @@ def test_fit(rng):
     tensor = cp.to_tensor()
     noise = rng.random_sample((4, 5, 6))
     fit = model_evaluation.fit(cp, tensor + noise)
-    assert fit == pytest.approx(1 - tl.sum(noise ** 2) / tl.sum((tensor + noise) ** 2))
+    assert fit == pytest.approx(1 - tl.sum(noise**2) / tl.sum((tensor + noise) ** 2))

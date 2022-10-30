@@ -22,10 +22,7 @@ from ._module_utils import (
     is_dataframe,
     validate_cp_tensor,
 )
-from ._tl_utils import (
-    _handle_tensorly_backends_cp,
-    _handle_tensorly_backends_dataset
-)
+from ._tl_utils import _handle_tensorly_backends_cp, _handle_tensorly_backends_dataset
 from ._xarray_wrapper import (
     _SINGLETON,
     _handle_labelled_cp,
@@ -239,7 +236,10 @@ def _get_linear_sum_assignment_permutation(cost_matrix, allow_smaller_rank):
     for i, missing in enumerate(missing_entries):
         permutation[i + len(row_index)] = missing
 
-    for i, p, in enumerate(permutation):
+    for (
+        i,
+        p,
+    ) in enumerate(permutation):
         if p is None:
             permutation[i] = NO_COLUMN
 
@@ -565,8 +565,7 @@ def degeneracy_score(cp_tensor):
 
 
 def _permute_cp_tensor(cp_tensor, permutation):
-    """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.
-    """
+    """Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead."""
     weights, factors = cp_tensor
 
     if weights is not None:
@@ -1139,7 +1138,7 @@ def percentage_variation(cp_tensor, dataset=None, method="model"):
     Sum of variation: 51
     """
     weights, factor_matrices = cp_tensor
-    ssc = weights ** 2
+    ssc = weights**2
 
     if dataset is not None and method == "model":
         warn(
@@ -1153,10 +1152,10 @@ def percentage_variation(cp_tensor, dataset=None, method="model"):
     if method == "data":
         if dataset is None:
             raise TypeError("The dataset must be provided if method='data'")
-        return 100 * ssc / np.sum(dataset ** 2)
+        return 100 * ssc / np.sum(dataset**2)
     elif method == "model":
         return 100 * ssc / (cp_norm(cp_tensor) ** 2)
     elif method == "both":
-        return 100 * ssc / np.sum(dataset ** 2), 100 * ssc / (cp_norm(cp_tensor) ** 2)
+        return 100 * ssc / np.sum(dataset**2), 100 * ssc / (cp_norm(cp_tensor) ** 2)
     else:
         raise ValueError("Method must be either 'data', 'model' or 'both")

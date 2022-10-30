@@ -2,6 +2,8 @@ from functools import wraps
 from inspect import signature
 from textwrap import dedent
 
+import numpy as np
+
 try:
     import tensorly as tl
 except ImportError:
@@ -63,8 +65,9 @@ def to_numpy_cp(cp_tensor, cast_labelled_cp=True):
 
     weights, factors = cp_tensor
     if weights is not None:
-        weights = tl.to_numpy(weights)
-    factors = [tl.to_numpy(factor_matrix) for factor_matrix in factors]
+        weights = to_numpy(weights)
+
+    factors = [to_numpy(factor_matrix) for factor_matrix in factors]
 
     return weights, factors
 
@@ -76,7 +79,7 @@ def to_numpy(x, cast_labelled=True):
         return x.values
 
     if not HAS_TENSORLY:
-        return x
+        return np.asarray(x)
     return tl.to_numpy(x)
 
 

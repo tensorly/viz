@@ -170,7 +170,11 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
         for mode in resolve_mode:
             if mode != unresolved_mode:
                 cp_tensor = resolve_cp_sign_indeterminacy(
-                    cp_tensor, dataset, unresolved_mode=unresolved_mode, resolve_mode=mode, method=method,
+                    cp_tensor,
+                    dataset,
+                    unresolved_mode=unresolved_mode,
+                    resolve_mode=mode,
+                    method=method,
                 )
 
         return cp_tensor
@@ -185,7 +189,7 @@ def resolve_cp_sign_indeterminacy(cp_tensor, dataset, resolve_mode=None, unresol
     else:
         raise ValueError("Method must be either `transpose` or `positive_coord`")
 
-    signs = np.sign(np.sum(sign_scores ** 2 * np.sign(sign_scores), axis=1))
+    signs = np.sign(np.sum(sign_scores**2 * np.sign(sign_scores), axis=1))
     signs = np.asarray(signs).reshape(1, -1)
 
     factor_matrices = list(cp_tensor[1])
@@ -353,7 +357,11 @@ def postprocess(
 
     if dataset is not None:
         cp_tensor = resolve_cp_sign_indeterminacy(
-            cp_tensor, dataset, resolve_mode=resolve_mode, unresolved_mode=unresolved_mode, method=flip_method,
+            cp_tensor,
+            dataset,
+            resolve_mode=resolve_mode,
+            unresolved_mode=unresolved_mode,
+            method=flip_method,
         )
 
         cp_tensor = label_cp_tensor(cp_tensor, dataset)

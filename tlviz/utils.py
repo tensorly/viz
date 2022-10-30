@@ -251,7 +251,11 @@ def tucker_to_tensor(tucker_tensor):
         einsum_input += f", {idx}{rank_idx}"
         einsum_output += idx
 
-    tensor = np.einsum(f"{einsum_core}{einsum_input} -> {einsum_output}", tucker_tensor[0], *tucker_tensor[1],)
+    tensor = np.einsum(
+        f"{einsum_core}{einsum_input} -> {einsum_output}",
+        tucker_tensor[0],
+        *tucker_tensor[1],
+    )
     if not is_labelled_tucker(tucker_tensor):
         return tensor
 

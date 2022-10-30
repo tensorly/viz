@@ -59,7 +59,7 @@ def test_get_model_with_lowest_error(rng, labelled, seed):
 
     assert check_cp_tensor_equal(selected_cp_tensor, (w, (A, B, C)))
     for cp_tensor, error in zip(cp_tensors, errors):
-        rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
+        rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X**2)
         assert error == approx(rel_sse)
 
     out = multimodel_evaluation.get_model_with_lowest_error(cp_tensors, X, return_errors=False, return_index=False)
@@ -97,7 +97,7 @@ def test_sort_models_by_error(seed, labelled):
     assert errors == sorted(errors)
 
     for cp_tensor, error in zip(sorted_cp_tensors, errors):
-        rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X ** 2)
+        rel_sse = np.sum((X - cp_to_tensor(cp_tensor)) ** 2) / np.sum(X**2)
         assert error == rel_sse
 
 

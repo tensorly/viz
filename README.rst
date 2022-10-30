@@ -33,7 +33,7 @@ is available on `the TensorLy website <https://tensorly.org/viz>`_ and includes
 Dependencies
 ------------
 
-TLViz supports Python 3.7 or above (it may also work with Python 3.6, though that is not officially supported).
+TLViz supports Python 3.8 or above (it may also work with Python 3.6 and 3.7, though that is not officially supported).
 
 Installation requires matplotlib, numpy, pandas, scipy, statsmodels and xarray.
 
@@ -57,6 +57,9 @@ this repo or run
 
     pip install git+https://github.com/marieroald/tlviz.git
 
+
+Some extra dependencies are needed to run the examples, tests or build the documentation.
+For more information about installing these dependencies, see the `installation guide <https://tensorly.org/viz/stable/installation.html>`_.
 
 Example
 -------
