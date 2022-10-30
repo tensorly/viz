@@ -67,14 +67,14 @@ Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent
 
 ![An example figure showing the component vectors of a three-component PARAFAC model fitted to a fluorescence spectroscopy dataset](paper_demo.pdf)
 
-The above code uses TensorLy to fit five three-component PARAFAC models to the data. Then it uses TLViz to:
+The above code uses TensorLy to fit five three-component PARAFAC models to the data. Then it uses TLViz to do the following steps:
 
- 1. Select the model that gave the lowest reconstruction error,
- 1. normalise the component vectors, storing their magnitude in a separate weight-vector,
- 1. permute the components in descending weight (i.e. signal strength) order,
- 1. flip the components, so they point in a logical direction compared to the data,
- 1. convert the factor matrices into Pandas DataFrames with logical indices,
- 1. and plot the components using matplotlib.
+ 1. Select the model that gave the lowest reconstruction error.
+ 1. Normalise the component vectors, storing their magnitude in a separate weight-vector.
+ 1. Permute the components in descending weight (i.e. signal strength) order.
+ 1. Flip the components, so they point in a logical direction compared to the data.
+ 1. Convert the factor matrices into Pandas DataFrames with logical indices.
+ 1. Plot the components using matplotlib.
 
 All these steps are well documented with references to the literature. This makes it easy for new practitioners to analyse multi-way data without falling for known pitfalls.
 
