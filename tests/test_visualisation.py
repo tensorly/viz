@@ -53,16 +53,64 @@ def test_core_element_plot_works_labelled_and_unlabelled(seed, labelled):
     assert isinstance(ax, matplotlib.axes.Axes)
 
 
+@pytest.mark.parametrize("weight_scale", [1, 100, 0.01])
 @pytest.mark.parametrize("normalised", [True, False])
-def test_core_element_plot_normalised_flag(seed, normalised):
+def test_core_element_has_correct_title(seed, normalised, weight_scale):
+    """This test checks that the title of the core element plot is correct.
+    
+    There are six scenarios to test (CC=Core consistency):
+
+    1. CC = 100, normalised=True
+    2. CC = 100, normalised=False
+    3. 0 <= CC < 100, normalised=True
+    4. 0 <= CC < 100, normalised=False
+    5. CC < 0, normalised=True
+    6. CC < 0, normalised=False
+    
+    To test both scenarios when CC = 100, we have a noise-free dataset and the correct
+    decomposition.
+
+    To test scenario 3, we need that :math:`0 < \|G - T\| \leq \|G\|`. To accomplish this, can
+    have large entries in :math:`G` that point in the "same direction" as :math:`T`. Similarly, to
+    test scenario 4, we need that :math:`0 < \|G - T\| \geq R`, which we can accomplish by having
+    small entries in :math:`G` that point in the "same direction" as :math:`T`.
+
+    To test scenario 5, we need that :math:`\|G - T\| > \|G\|`, which we can accomplish by having
+    small entries in :math:`G`. To test scenario 6, we need that :math:`\|G - T\| > R`, which we
+    can accomplish by having large entries in :math:`G`.
+
+    We can, in other words, create decompositions that cover all 6 above scenarios so long as we
+    can create decompositions whose optimal core tensor "points in the same direction" as the 
+    superdiagonal tensor consisting only ones and whose optimal core tensor's magnitude we can
+    control. Luckily, we can control this by only scaling the weights by positive number. Then,
+    the optimal core tensor will be a superdiagonal tensor whose elements are the reciprocal of
+    the scaling coefficient. 
+    """
     rank = 3
-    cp_tensor, X = simulated_random_cp_tensor((10, 20, 30), rank, noise_level=0.2, seed=seed)
-    # If not normalised
+    cp_tensor, X = simulated_random_cp_tensor((10, 20, 30), rank, noise_level=0.0, seed=seed)
+    cp_tensor[0][:] *= weight_scale
+
     ax = visualisation.core_element_plot(cp_tensor, X, normalised=normalised)
     title = ax.get_title()
-    title_core_consistency = float(title.split(": ")[1])
     core_consistency = model_evaluation.core_consistency(cp_tensor, X, normalised=normalised)
-    assert title_core_consistency == pytest.approx(core_consistency, abs=0.1)
+
+    # Case 5 and 6, respectively:
+    if (weight_scale > 1 and normalised) or (weight_scale < 1 and not normalised):
+        assert title.split(": ")[1] == "<0"
+    else:
+        title_core_consistency = float(title.split(": ")[1])
+        assert title_core_consistency == pytest.approx(core_consistency, abs=0.1)
+
+
+@pytest.mark.parametrize("weight_scale", [1, 100, 0.01])
+@pytest.mark.parametrize("normalised", [True, False])
+def test_core_element_has_core_element_scatter_points(seed, normalised, weight_scale):
+    rank = 3
+    cp_tensor, X = simulated_random_cp_tensor((10, 20, 30), rank, noise_level=0.1, seed=seed)
+    cp_tensor[0][:] *= weight_scale
+
+    ax = visualisation.core_element_plot(cp_tensor, X, normalised=normalised)
+    core_consistency = model_evaluation.core_consistency(cp_tensor, X, normalised=normalised)
 
     superdiag_x, superdiag_y = ax.lines[-2].get_data()
     offdiag_x, offdiag_y = ax.lines[-1].get_data()
