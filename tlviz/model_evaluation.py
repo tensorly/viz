@@ -334,15 +334,15 @@ def predictive_power(cp_tensor, y, sklearn_estimator, mode=0, metric=None, axis=
     >>> from tlviz.data import simulated_random_cp_tensor
     >>> import numpy as np
     >>> rng = np.random.default_rng(0)
-    >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=rng)
+    >>> cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 3, noise_level=0.1, seed=rng)
     >>> weights, (A, B, C) = cp_tensor
-    >>> regression_coefficients = rng.standard_normal((5, 1))
+    >>> regression_coefficients = rng.standard_normal((3, 1))
     >>> Y = A @ regression_coefficients
 
     Next, we fit a PARAFAC model to this data
 
     >>> from tensorly.decomposition import parafac
-    >>> est_cp_tensor = parafac(X, 5)
+    >>> est_cp_tensor = parafac(X, 3)
 
     Finally, we see how well the estimated decomposition can describe our target variable, ``Y``.
     This will use the :math:`R^2`-coefficient for scoring, as that is the default scoring method
