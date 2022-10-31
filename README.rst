@@ -94,14 +94,14 @@ Example
     :width: 800
     :alt: An example figure showing the component vectors of a three component PARAFAC model fitted to a fluoresence spectroscopy dataset.
 
-This example uses TensorLy to fit five three-component PARAFAC models to the data. Then it uses TLViz to:
+This example uses TensorLy to fit five three-component PARAFAC models to the data. Then it uses TLViz to do the following steps:
 
-#. Select the model that gave the lowest reconstruction error,
-#. normalise the component vectors, storing their magnitude in a separate weight-vector,
-#. permute the components in descending weight (i.e. signal strength) order,
-#. flip the components so they point in a logical direction compared to the data,
-#. convert the factor matrices into Pandas DataFrames with logical indices,
-#. and plot the components using matplotlib.
+#. Select the model that gave the lowest reconstruction error.
+#. Normalise the component vectors, storing their magnitude in a separate weight-vector.
+#. Permute the components in descending weight (i.e. signal strength) order.
+#. Flip the components so they point in a logical direction compared to the data.
+#. Convert the factor matrices into Pandas DataFrames with logical indices.
+#. Plot the components using matplotlib.
 
 All these steps are described in the `API documentation <https://tensorly.org/viz/stable/api.html>`_ with references to the literature.
 
