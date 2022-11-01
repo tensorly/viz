@@ -5,22 +5,22 @@
 
 Computation times
 =================
-**03:53.059** total execution time for **auto_examples** files:
+**03:40.407** total execution time for **auto_examples** files:
 
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py` (``plot_split_half_analysis.py``)                         | 02:28.592 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py` (``plot_split_half_analysis.py``)                         | 02:33.131 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_optimisation_diagnostic.py` (``plot_optimisation_diagnostic.py``)                 | 00:24.706 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_optimisation_diagnostic.py` (``plot_optimisation_diagnostic.py``)                 | 00:18.689 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_selecting_aminoacids_components.py` (``plot_selecting_aminoacids_components.py``) | 00:18.734 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_selecting_aminoacids_components.py` (``plot_selecting_aminoacids_components.py``) | 00:14.588 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_core_consistency.py` (``plot_core_consistency.py``)                               | 00:16.790 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_core_consistency.py` (``plot_core_consistency.py``)                               | 00:12.631 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_outlier_detection.py` (``plot_outlier_detection.py``)                             | 00:10.930 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_bike_plotly.py` (``plot_bike_plotly.py``)                                         | 00:10.175 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bike_plotly.py` (``plot_bike_plotly.py``)                                         | 00:09.286 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_outlier_detection.py` (``plot_outlier_detection.py``)                             | 00:08.012 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_labelled_decompositions.py` (``plot_labelled_decompositions.py``)                 | 00:03.749 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_labelled_decompositions.py` (``plot_labelled_decompositions.py``)                 | 00:02.974 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_working_with_xarray.py` (``plot_working_with_xarray.py``)                         | 00:00.273 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_working_with_xarray.py` (``plot_working_with_xarray.py``)                         | 00:00.207 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
