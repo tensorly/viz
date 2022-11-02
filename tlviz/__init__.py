@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "Marie Roald & Yngve Mardal Moe"
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 
 
 from . import (
