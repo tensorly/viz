@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Outlier detection with PARAFAC &#8212; TLViz 0.1.5 documentation</title> 
+    <title>Outlier detection with PARAFAC &#8212; TLViz 0.1.6 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -30,6 +30,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -177,8 +178,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_working_with_xarray.html">Working with xarray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_core_consistency.html">Core consistency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bike_plotly.html">TLViz + PlotLy for interactive visualisations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_optimisation_diagnostic.html">Optimisation diagnostics with PARAFAC models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Outlier detection with PARAFAC</a></li>
 </ul>
@@ -407,7 +408,7 @@ the model much, while sample 3 has a low error, but does affect the model. Let u
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The FMS is </span><span class="si">{</span><span class="n">fms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.97
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.99
 </pre></div>
 </div>
 <div class="admonition note">
@@ -487,7 +488,7 @@ However, with real data, it is usually not this clear.
 Different cut-off values can give different outliers.
 Therefore, it is crucial to look at the data and evaluate which data points
 to remove and not on a case-by-case basis.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.945 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.762 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-outlier-detection-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/8ef23ee1eaf9bbf29ebce5cb807c84f3/plot_outlier_detection.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_outlier_detection.py</span></code></a></p>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Selecting the number of components in PARAFAC models &#8212; TLViz 0.1.5 documentation</title> 
+    <title>Selecting the number of components in PARAFAC models &#8212; TLViz 0.1.6 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -30,6 +30,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -37,7 +38,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Outlier detection with PARAFAC" href="plot_outlier_detection.html" />
-    <link rel="prev" title="Optimisation diagnostics with PARAFAC models" href="plot_optimisation_diagnostic.html" />
+    <link rel="prev" title="Split-half analysis for selecting the number of components" href="plot_split_half_analysis.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -177,8 +178,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_working_with_xarray.html">Working with xarray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_core_consistency.html">Core consistency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bike_plotly.html">TLViz + PlotLy for interactive visualisations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_optimisation_diagnostic.html">Optimisation diagnostics with PARAFAC models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_outlier_detection.html">Outlier detection with PARAFAC</a></li>
 </ul>
@@ -281,8 +282,8 @@ Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laborat
 </section>
 <section id="sort-the-initialisation-by-their-sse">
 <h2>Sort the initialisation by their SSE<a class="headerlink" href="#sort-the-initialisation-by-their-sse" title="Permalink to this heading">¶</a></h2>
-<p>For each rank, we pick the initialization run that achieved the lowest reconstruction error.
-To do this, we first sort each initialization run by its final relative sum squared error (rel. SSE).</p>
+<p>For each rank, we pick the initialization that achieved the lowest reconstruction error.
+To do this, we first sort each initialization by its final relative sum squared error (rel. SSE).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">inits</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">sorted_inits</span><span class="p">,</span> <span class="n">sorted_errors</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">multimodel_evaluation</span><span class="o">.</span><span class="n">sort_models_by_error</span><span class="p">(</span><span class="n">inits</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -295,8 +296,8 @@ To do this, we first sort each initialization run by its final relative sum squa
 </section>
 <section id="examine-model-uniqueness">
 <h2>Examine model uniqueness<a class="headerlink" href="#examine-model-uniqueness" title="Permalink to this heading">¶</a></h2>
-<p>To examine whether we have found the global minimum, we compare each initialization run with the initialization
-run that achieved the lowest rel. SSE. Ideally, we want the initialization runs to have reached the same point,
+<p>To examine whether we have found the global minimum, we compare each initialization with the initialization
+that achieved the lowest rel. SSE. Ideally, we want the initializations to have reached the same point,
 and if that is the case, they should have the same rel. SSE and similar components. To measure the component
 similarity, we use the factor match score (FMS), similar to the cosine similarity score. An FMS value of 1 indicates
 that the components are equivalent. The FMS is given by</p>
@@ -319,7 +320,7 @@ that the components are equivalent. The FMS is given by</p>
 <section id="plot-uniqueness-information">
 <h2>Plot uniqueness information<a class="headerlink" href="#plot-uniqueness-information" title="Permalink to this heading">¶</a></h2>
 <p>A visual way to examine the uniqueness is to plot the rel. SSE on one axis and the FMS with selected initialization
-on the other axis for each initialization run. We create one such plot for each rank to compare different choices of
+on the other axis for each initialization. We create one such plot for each rank to compare different choices of
 rank</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -333,9 +334,9 @@ rank</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_002.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_002.png" alt="1 components, 2 components, 3 components, 4 components, 5 components" class = "sphx-glr-single-img"/><p>From this plot, we see that for 1-3 components, all initialization runs seem to achieve the same rel. SSE and
+<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_002.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_002.png" alt="1 components, 2 components, 3 components, 4 components, 5 components" class = "sphx-glr-single-img"/><p>From this plot, we see that for 1-3 components, all initializations seem to achieve the same rel. SSE and
 similar components. This similarity indicates that the models are unique. However, for 4-5 components, we see
-that the “FMS with best” value is low, which means that the selected initialization run is quite different from
+that the “FMS with best” value is low, which means that the selected initialization is quite different from
 the rest. This difference indicates that we either have a non-unique model or problems with local minima. Therefore,
 if we decide to go with the four or five component models, we should run even more initializations to ensure that
 we can get the same components for more than just one initialization.</p>
@@ -382,13 +383,13 @@ needs a high number of components.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_004.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_004.png" alt="Core consistency: 100.0, Core consistency: 100.0, Core consistency: 99.1, Core consistency: -2670218.5, Core consistency: -1211539707318756.5" class = "sphx-glr-single-img"/><p>For more information about the core consistency and core element plot, see the
+<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_004.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_004.png" alt="Core consistency: 100.0, Core consistency: 100.0, Core consistency: 99.1, Core consistency: <0, Core consistency: <0" class = "sphx-glr-single-img"/><p>For more information about the core consistency and core element plot, see the
 <a class="reference internal" href="plot_core_consistency.html#core-consistency"><span class="std std-ref">core consistency example</span></a>.</p>
 </section>
 <section id="split-half-analysis">
 <h2>Split-half analysis<a class="headerlink" href="#split-half-analysis" title="Permalink to this heading">¶</a></h2>
 <p>Another way to select the number of components is with <em>split-half analysis</em>. With split-half analysis, we
-divide the dataset in to along one mode, and fit two different models, one for each split. Then, we compare
+divide the dataset in two along one mode, and fit two different models, one for each split. Then, we compare
 the similarity of the decomposition for the modes where we did not perform the split.</p>
 <p>For split-half analysis, it is important to choose a split that makes sense. We need to expect that all
 components will be present in both splits! In this case, we only have five samples, and reducing the number
@@ -426,12 +427,11 @@ of the application</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_008.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_008.png" alt="plot selecting aminoacids components" class = "sphx-glr-single-img"/><p>We see that the four-component model consists of three clear chemical spectra, which coincides well with our
-knowledge about the data. The data is samples from mixtures of three different aminoacids. The sample-mode
-component shows the concentration of each chemicaland the emission- and excitation-mode components show the
-emission- and excitation-spectra of the chemicals (all in arbitrary units). With more than three components,
-we find that one of the components have negative, and therefore unphysical, components.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  18.924 seconds)</p>
+<img src="../_images/sphx_glr_plot_selecting_aminoacids_components_008.png" srcset="../_images/sphx_glr_plot_selecting_aminoacids_components_008.png" alt="plot selecting aminoacids components" class = "sphx-glr-single-img"/><p>We see that the three-component model consists of three clear chemical spectra, which coincides well with our knowledge of the data.
+The data contains five samples, and each sample represents the emission excitation matrix of a mixture of three aminoacids.
+The sample-mode component shows the concentration of each chemical, and the emission- and excitation-mode components show the emission- and excitation-spectra of the chemicals (all in arbitrary units).
+With more than three components, we find that one of the components has negative, and therefore unphysical, values.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.854 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-selecting-aminoacids-components-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/98929c246383aff86d593be63ad84c4a/plot_selecting_aminoacids_components.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_selecting_aminoacids_components.py</span></code></a></p>
@@ -451,11 +451,11 @@ we find that one of the components have negative, and therefore unphysical, comp
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="plot_optimisation_diagnostic.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="plot_split_half_analysis.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Optimisation diagnostics with PARAFAC models</span>
+        <span>Split-half analysis for selecting the number of components</span>
     </a>
     
     

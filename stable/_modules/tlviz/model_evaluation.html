@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tlviz.model_evaluation &#8212; TLViz 0.1.5 documentation</title> 
+    <title>tlviz.model_evaluation &#8212; TLViz 0.1.6 documentation</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -29,6 +29,7 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -470,15 +471,15 @@
 <span class="sd">    &gt;&gt;&gt; from tlviz.data import simulated_random_cp_tensor</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; rng = np.random.default_rng(0)</span>
-<span class="sd">    &gt;&gt;&gt; cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 5, noise_level=0.3, seed=rng)</span>
+<span class="sd">    &gt;&gt;&gt; cp_tensor, X = simulated_random_cp_tensor((30, 10, 10), 3, noise_level=0.1, seed=rng)</span>
 <span class="sd">    &gt;&gt;&gt; weights, (A, B, C) = cp_tensor</span>
-<span class="sd">    &gt;&gt;&gt; regression_coefficients = rng.standard_normal((5, 1))</span>
+<span class="sd">    &gt;&gt;&gt; regression_coefficients = rng.standard_normal((3, 1))</span>
 <span class="sd">    &gt;&gt;&gt; Y = A @ regression_coefficients</span>
 
 <span class="sd">    Next, we fit a PARAFAC model to this data</span>
 
 <span class="sd">    &gt;&gt;&gt; from tensorly.decomposition import parafac</span>
-<span class="sd">    &gt;&gt;&gt; est_cp_tensor = parafac(X, 5)</span>
+<span class="sd">    &gt;&gt;&gt; est_cp_tensor = parafac(X, 3)</span>
 
 <span class="sd">    Finally, we see how well the estimated decomposition can describe our target variable, ``Y``.</span>
 <span class="sd">    This will use the :math:`R^2`-coefficient for scoring, as that is the default scoring method</span>

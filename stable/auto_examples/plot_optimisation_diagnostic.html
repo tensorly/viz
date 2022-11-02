@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Optimisation diagnostics with PARAFAC models &#8212; TLViz 0.1.5 documentation</title> 
+    <title>Optimisation diagnostics with PARAFAC models &#8212; TLViz 0.1.6 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -30,13 +30,14 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Selecting the number of components in PARAFAC models" href="plot_selecting_aminoacids_components.html" />
-    <link rel="prev" title="Split-half analysis for selecting the number of components" href="plot_split_half_analysis.html" />
+    <link rel="next" title="Split-half analysis for selecting the number of components" href="plot_split_half_analysis.html" />
+    <link rel="prev" title="TLViz + PlotLy for interactive visualisations" href="plot_bike_plotly.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -176,8 +177,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_working_with_xarray.html">Working with xarray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_core_consistency.html">Core consistency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bike_plotly.html">TLViz + PlotLy for interactive visualisations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Optimisation diagnostics with PARAFAC models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_outlier_detection.html">Outlier detection with PARAFAC</a></li>
 </ul>
@@ -282,7 +283,7 @@ Another thing we can look at is how similar the different initialisations are wi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.4708859077816065, 0.5920264839417668, 0.7423143022579965, 0.5533437244458191, 0.41018647713639156, 0.6463514554347937, 0.5885236057058195, 0.6133154419764226, 0.4110835038964159, 1.0]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.4708859077815064, 0.5920264839417511, 0.7423143022579084, 0.5533437244458281, 0.41018647713634354, 0.6463514554347419, 0.588523605705791, 0.6133154419763374, 0.4110835038963244, 1.0]
 </pre></div>
 </div>
 <p>We see that the different initialisations do not resemble the selected initialisation much. So the optimisation
@@ -291,7 +292,7 @@ seems unstable. Let’s also compare the selected  model with the true decomposi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.661220081903154
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.6612200819030741
 </pre></div>
 </div>
 <p>So the decomposition is, as we expected, not very good… Let’s try to increase the maximum number of iterations!</p>
@@ -330,7 +331,7 @@ Let’s compare the similarity between the different initialisations and the sel
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280856999, 0.606859833896397, 1.0, 0.4978209914212613, 0.48813790247490785, 0.6744315207762905, 0.7619003379202949, 0.8086975562738052, 0.5034024525851196, 0.9914718665027473]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759]
 </pre></div>
 </div>
 <p>Ok, we got two similar decompositions.
@@ -367,7 +368,7 @@ Let’s compare the similarity between them and the selected decomposition too.<
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280856999, 0.606859833896397, 1.0, 0.4978209914212613, 0.48813790247490785, 0.6744315207762905, 0.7619003379202949, 0.8086975562738052, 0.5034024525851196, 0.9914718665027473, 0.8190088546107898, 0.9775165519845326, 0.7283332135993017, 0.9907696759771684, 0.6357626037558843, 0.9775611091933246, 0.9912200986980304, 0.5736136740754808, 0.757434229734632, 0.9889962033748507]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759, 0.8190088546107898, 0.977516551984477, 0.7283332135992033, 0.990769675977103, 0.6357626037559072, 0.9775611091935582, 0.9912200986979766, 0.5736136740755067, 0.7574342297341834, 0.9889962033747992]
 </pre></div>
 </div>
 <p>Here we also see that many of the initialisations were similar.
@@ -387,10 +388,10 @@ Finally, let’s compare our selected model with the true decomposition!</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461236122
+<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461235659
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  24.441 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  15.941 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/00d5faeb118d62666a86b3b65b1964bb/plot_optimisation_diagnostic.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_optimisation_diagnostic.py</span></code></a></p>
@@ -408,16 +409,16 @@ Finally, let’s compare our selected model with the true decomposition!</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="plot_split_half_analysis.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="plot_bike_plotly.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Split-half analysis for selecting the number of components</span>
+        <span>TLViz + PlotLy for interactive visualisations</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="plot_selecting_aminoacids_components.html" title="next page" accesskey="n">
-        <span>Selecting the number of components in PARAFAC models </span>
+    <a class="button is-medium pagination-next" href="plot_split_half_analysis.html" title="next page" accesskey="n">
+        <span>Split-half analysis for selecting the number of components </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>

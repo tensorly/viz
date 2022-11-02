@@ -81,23 +81,6 @@ Gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we will look at how we can use split-half analysis to select the number of PAR...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_split_half_analysis_thumb.png
-    :alt: Split-half analysis for selecting the number of components
-
-  :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Split-half analysis for selecting the number of components</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Fitting PARAFAC models entails solving a non-convex optimisation problem. To do this, we use al...">
 
 .. only:: html
@@ -110,6 +93,23 @@ Gallery of examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Optimisation diagnostics with PARAFAC models</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we will look at how we can use split-half analysis to select the number of PAR...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_split_half_analysis_thumb.png
+    :alt: Split-half analysis for selecting the number of components
+
+  :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Split-half analysis for selecting the number of components</div>
     </div>
 
 
@@ -159,8 +159,8 @@ Gallery of examples
    /auto_examples/plot_working_with_xarray
    /auto_examples/plot_core_consistency
    /auto_examples/plot_bike_plotly
-   /auto_examples/plot_split_half_analysis
    /auto_examples/plot_optimisation_diagnostic
+   /auto_examples/plot_split_half_analysis
    /auto_examples/plot_selecting_aminoacids_components
    /auto_examples/plot_outlier_detection
 

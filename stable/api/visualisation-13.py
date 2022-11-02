@@ -11,5 +11,5 @@ outlier_plot(
     cp, data, leverage_rules_of_thumb=['huber lower', 'hw higher'], residual_rules_of_thumb='two sigma'
 )
 # Expected:
-## <AxesSubplot:title={'center':'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
+## <AxesSubplot: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
 plt.show()

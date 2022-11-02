@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API Reference &#8212; TLViz 0.1.5 documentation</title> 
+    <title>API Reference &#8212; TLViz 0.1.6 documentation</title> 
 <link rel="stylesheet" href="_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="_static/favicon/favicon-32x32.png">
@@ -30,6 +30,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
  <script src="_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -213,13 +214,75 @@
 <span id="api"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/postprocessing.html">Post-processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/factor_tools.html">Factor tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/model_evaluation.html">Model evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/multimodel_evaluation.html">Multi-model evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/outliers.html">Outlier detection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/visualisation.html">Visualisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/data.html">Example datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/postprocessing.html">Post-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/postprocessing.html#tlviz.postprocessing.add_factor_metadata"><code class="docutils literal notranslate"><span class="pre">add_factor_metadata()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/postprocessing.html#tlviz.postprocessing.factor_matrix_to_tidy"><code class="docutils literal notranslate"><span class="pre">factor_matrix_to_tidy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/postprocessing.html#tlviz.postprocessing.label_cp_tensor"><code class="docutils literal notranslate"><span class="pre">label_cp_tensor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/postprocessing.html#tlviz.postprocessing.postprocess"><code class="docutils literal notranslate"><span class="pre">postprocess()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/postprocessing.html#tlviz.postprocessing.resolve_cp_sign_indeterminacy"><code class="docutils literal notranslate"><span class="pre">resolve_cp_sign_indeterminacy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/factor_tools.html">Factor tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.check_cp_tensor_equal"><code class="docutils literal notranslate"><span class="pre">check_cp_tensor_equal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.check_cp_tensors_equivalent"><code class="docutils literal notranslate"><span class="pre">check_cp_tensors_equivalent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.check_factor_matrix_close"><code class="docutils literal notranslate"><span class="pre">check_factor_matrix_close()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.check_factor_matrix_equal"><code class="docutils literal notranslate"><span class="pre">check_factor_matrix_equal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.degeneracy_score"><code class="docutils literal notranslate"><span class="pre">degeneracy_score()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.distribute_weights"><code class="docutils literal notranslate"><span class="pre">distribute_weights()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.distribute_weights_evenly"><code class="docutils literal notranslate"><span class="pre">distribute_weights_evenly()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.distribute_weights_in_one_mode"><code class="docutils literal notranslate"><span class="pre">distribute_weights_in_one_mode()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.factor_match_score"><code class="docutils literal notranslate"><span class="pre">factor_match_score()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.get_cp_permutation"><code class="docutils literal notranslate"><span class="pre">get_cp_permutation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.get_factor_matrix_permutation"><code class="docutils literal notranslate"><span class="pre">get_factor_matrix_permutation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.normalise_cp_tensor"><code class="docutils literal notranslate"><span class="pre">normalise_cp_tensor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.percentage_variation"><code class="docutils literal notranslate"><span class="pre">percentage_variation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/factor_tools.html#tlviz.factor_tools.permute_cp_tensor"><code class="docutils literal notranslate"><span class="pre">permute_cp_tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/model_evaluation.html">Model evaluation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html#tlviz.model_evaluation.core_consistency"><code class="docutils literal notranslate"><span class="pre">core_consistency()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html#tlviz.model_evaluation.estimate_core_tensor"><code class="docutils literal notranslate"><span class="pre">estimate_core_tensor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html#tlviz.model_evaluation.fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html#tlviz.model_evaluation.predictive_power"><code class="docutils literal notranslate"><span class="pre">predictive_power()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html#tlviz.model_evaluation.relative_sse"><code class="docutils literal notranslate"><span class="pre">relative_sse()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model_evaluation.html#tlviz.model_evaluation.sse"><code class="docutils literal notranslate"><span class="pre">sse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/multimodel_evaluation.html">Multi-model evaluation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/multimodel_evaluation.html#tlviz.multimodel_evaluation.get_model_with_lowest_error"><code class="docutils literal notranslate"><span class="pre">get_model_with_lowest_error()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/multimodel_evaluation.html#tlviz.multimodel_evaluation.similarity_evaluation"><code class="docutils literal notranslate"><span class="pre">similarity_evaluation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/multimodel_evaluation.html#tlviz.multimodel_evaluation.sort_models_by_error"><code class="docutils literal notranslate"><span class="pre">sort_models_by_error()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/outliers.html">Outlier detection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/outliers.html#tlviz.outliers.compute_leverage"><code class="docutils literal notranslate"><span class="pre">compute_leverage()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/outliers.html#tlviz.outliers.compute_outlier_info"><code class="docutils literal notranslate"><span class="pre">compute_outlier_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/outliers.html#tlviz.outliers.compute_slabwise_sse"><code class="docutils literal notranslate"><span class="pre">compute_slabwise_sse()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/outliers.html#tlviz.outliers.get_leverage_outlier_threshold"><code class="docutils literal notranslate"><span class="pre">get_leverage_outlier_threshold()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold"><code class="docutils literal notranslate"><span class="pre">get_slabwise_sse_outlier_threshold()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualisation.html">Visualisation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.component_comparison_plot"><code class="docutils literal notranslate"><span class="pre">component_comparison_plot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.component_scatterplot"><code class="docutils literal notranslate"><span class="pre">component_scatterplot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.components_plot"><code class="docutils literal notranslate"><span class="pre">components_plot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.core_element_heatmap"><code class="docutils literal notranslate"><span class="pre">core_element_heatmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.core_element_plot"><code class="docutils literal notranslate"><span class="pre">core_element_plot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.histogram_of_residuals"><code class="docutils literal notranslate"><span class="pre">histogram_of_residuals()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.optimisation_diagnostic_plots"><code class="docutils literal notranslate"><span class="pre">optimisation_diagnostic_plots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.outlier_plot"><code class="docutils literal notranslate"><span class="pre">outlier_plot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.percentage_variation_plot"><code class="docutils literal notranslate"><span class="pre">percentage_variation_plot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.residual_qq"><code class="docutils literal notranslate"><span class="pre">residual_qq()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualisation.html#tlviz.visualisation.scree_plot"><code class="docutils literal notranslate"><span class="pre">scree_plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/data.html">Example datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/data.html#tlviz.data.download_city_bike"><code class="docutils literal notranslate"><span class="pre">download_city_bike()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/data.html#tlviz.data.load_aminoacids"><code class="docutils literal notranslate"><span class="pre">load_aminoacids()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/data.html#tlviz.data.load_oslo_city_bike"><code class="docutils literal notranslate"><span class="pre">load_oslo_city_bike()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
