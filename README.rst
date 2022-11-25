@@ -4,18 +4,23 @@ TLViz — Visualising and analysing component models
 
 .. image:: https://github.com/tensorly/viz/workflows/tests/badge.svg
     :target: https://github.com/tensorly/viz/actions/workflows/tests.yml
-    :alt: Tests
+    :alt: Tests Status
 
 .. image:: https://codecov.io/gh/tensorly/viz/branch/main/graph/badge.svg?token=QhgCjtr2qk
     :target: https://codecov.io/gh/tensorly/viz
-    :alt: Coverage
+    :alt: Coverage Status
 
 .. image:: https://github.com/tensorly/viz/actions/workflows/build_doc.yml/badge.svg
-        :target: https://github.com/tensorly/viz/actions/workflows/build_doc.yml
-        :alt: Documentation Status
+    :target: https://github.com/tensorly/viz/actions/workflows/build_doc.yml
+    :alt: Documentation Status
+
+.. image:: https://joss.theoj.org/papers/10.21105/joss.04754/status.svg
+    :target: https://doi.org/10.21105/joss.04754
+    :alt: JOSS | 10.21105/joss.04754
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
+    :alt: Code style: Black
 
 TLViz is a Python package for visualising component-based decomposition models like PARAFAC and PCA.
 
