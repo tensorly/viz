@@ -14,6 +14,10 @@ TLViz — Visualising and analysing component models
     :target: https://github.com/tensorly/viz/actions/workflows/build_doc.yml
     :alt: Documentation Status
 
+.. image:: https://zenodo.org/badge/354456143.svg
+   :target: https://zenodo.org/badge/latestdoi/354456143
+   :alt: Zenodo DOI
+
 .. image:: https://joss.theoj.org/papers/10.21105/joss.04754/status.svg
     :target: https://doi.org/10.21105/joss.04754
     :alt: JOSS | 10.21105/joss.04754
