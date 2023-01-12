@@ -646,9 +646,15 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
 
     core_consistency = 100 - 100 * np.sum((core_tensor - T) ** 2) / denom
 
+    # Define bool type that works across numpy versions
+    try:
+        bool_type = np.bool_
+    except AttributeError:
+        bool_type = np.bool
+
     # Extract superdiagonal and offdiagonal elements
     core_elements = np.zeros_like(core_tensor.ravel())
-    diagonal_mask = np.zeros([rank] * dataset.ndim, dtype=np.bool)
+    diagonal_mask = np.zeros([rank] * dataset.ndim, dtype=bool_type)
     np.fill_diagonal(diagonal_mask, 1)
 
     core_elements[:rank] = core_tensor[diagonal_mask]
