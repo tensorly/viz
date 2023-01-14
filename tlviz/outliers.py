@@ -332,27 +332,27 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     ...     return (h > th).mean()
 
     >>> np.random.seed(0)
-    >>> n_samples = 1_000
+    >>> n_samples = 2_000
     >>> leverages = [compute_false_positive_rate(10, 2, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0815, 0.0897]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.083, 0.089]
 
     We see that the false positive rate is almost twice what we prescribe (0.05). However, if we increase
     the number of components, then the false positive rate improves
 
     >>> leverages = [compute_false_positive_rate(10, 9, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0468, 0.0554]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.049, 0.056]
 
     This indicates that the false positive rate is most accurate when the number of components is equal
     to the number of samples - 1. We can increase the number of samples to assess this conjecture
 
     >>> leverages = [compute_false_positive_rate(100, 9, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0558, 0.0581]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.055, 0.056]
 
     The increase in the false positive rate supports the conjecture that :cite:author:`belsley1980regression`'s
     method for computing the p-value is accurate only when the number of components is high. Still, it is
@@ -373,25 +373,25 @@ def get_leverage_outlier_threshold(leverage_scores, method="p_value", p_value=0.
     We set the simulation parameters and the seed
 
     >>> np.random.seed(0)
-    >>> n_samples = 1_000
+    >>> n_samples = 2_000
     >>> fprs = [compute_hotelling_false_positive_rate(10, 2, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0492, 0.0568]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.052, 0.058]
 
     However, if we increase the number of components, then the false positive rate becomes to large
 
     >>> fprs = [compute_hotelling_false_positive_rate(10, 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0738, 0.0833]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.078, 0.084]
 
     But if we increase the number of samples, then the estimate is good again
 
     >>> fprs = [compute_hotelling_false_positive_rate(100, 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0494, 0.0515]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.049, 0.051]
     """
     num_samples = int(round(len(leverage_scores)))
     num_components = int(round(np.sum(leverage_scores)))
@@ -509,19 +509,19 @@ def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05,
     that it is approximately correct.
 
     >>> np.random.seed(0)
-    >>> n_samples = 1_000
+    >>> n_samples = 2_000
     >>> slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0434, 0.0474]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.044, 0.047]
 
     We see that the 95% confidence interval lies just below our goal of 0.05! Let's also try
     with a false positive rate of 0.1
 
     >>> slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.1) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0972, 0.1021]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.097, 0.100]
 
     Here we see that the false positive rate is sufficiently estimated. It may have been too low
     above since we either did not have enough samples in the first mode (which we compute) the
@@ -531,8 +531,8 @@ def get_slabwise_sse_outlier_threshold(slab_sse, method="p-value", p_value=0.05,
 
     >>> slab_sse = [compute_false_positive_rate((200, 20, 10), 5, 0.05) for _ in range(n_samples)],
     >>> fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval
-    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]")
-    95% confidence interval for the false positive rate: [0.0494, 0.0507]
+    >>> print(f"95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]")
+    95% confidence interval for the false positive rate: [0.049, 0.050]
     """
     std = np.std(slab_sse, ddof=ddof)
     mean = np.mean(slab_sse)
