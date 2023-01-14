@@ -8,7 +8,7 @@ authors:
     given-names: Moe
     orcid: https://orcid.org/0000-0002-5159-9012
 title: "TensorLy-Viz"
-version: 0.1.6
+version: 0.1.7
 preferred-citation:
   authors:
     - family-names: Marie
