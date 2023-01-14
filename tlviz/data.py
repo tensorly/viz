@@ -20,10 +20,9 @@ DATASET_PARENT = Path(__file__).parent / "datasets"
 DOWNLOADED_PARENT = DATASET_PARENT / "downloads"
 
 
-class RemoteZip:
-    def __init__(self, url):
-        req = requests.get(url)
-        self.zip = zipfile.ZipFile(BytesIO(req.content))
+class ZipFile:
+    def __init__(self, stream):
+        self.zip = zipfile.ZipFile(stream)
 
     @property
     def contents(self):
@@ -38,6 +37,13 @@ class RemoteZip:
         return {filename: self.extract_file(filename) for filename in self.contents}
 
 
+class RemoteZipFile(ZipFile):
+    def __init__(self, url):
+        req = requests.get(url)
+        super().__init__(BytesIO(req.content))
+
+
+
 def load_aminoacids(save_data=True):
     """Load the Aminoacids dataset from "PARAFAC. Tutorial and applications" by Rasmus Bro :cite:p:`bro1997parafac`.
 
@@ -45,8 +51,6 @@ def load_aminoacids(save_data=True):
     The data stems from five samples with different amounts of the aminoacids tyrosine, tryptophan and phenylalanine.
 
     See here for more information about the data:
-        http://models.life.ku.dk/Amino_Acid_fluo
-    Or archived version here:
         https://web.archive.org/web/20210413050155/http://models.life.ku.dk/Amino_Acid_fluo
 
     Parameters
@@ -70,7 +74,8 @@ def load_aminoacids(save_data=True):
     if filename.is_file():
         return xr.open_dataarray(filename)
 
-    aminoacids_zip = RemoteZip("http://models.life.ku.dk/sites/default/files/Amino_Acid_fluo.zip")
+    aminoacids_nested_zip = RemoteZipFile("https://sid.erda.dk/share_redirect/AWqL5T6JCZ")
+    aminoacids_zip = ZipFile(aminoacids_nested_zip.extract_file("Amino_Acid_fluo.zip"))
     matlab_variables = loadmat(aminoacids_zip.extract_file("amino.mat"))
 
     I, K, J = matlab_variables["DimX"].squeeze().astype(int)
@@ -268,4 +273,3 @@ def simulated_random_cp_tensor(shape, rank, noise_level=0.1, labelled=False, see
 
 # TODO: Add more example datasets
 # TODO: Enron data
-# TOTEST: data.py
