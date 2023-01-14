@@ -44,15 +44,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../../index.html">
             <img src="../../_static/tlviz_logo.svg" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -66,41 +62,27 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../../about_tensors.html">
+            
+              <a class="navbar-item" href="../../about_tensors.html">
               Introduction
             </a>
-            <a class="navbar-item" href="../../installation.html">
+              <a class="navbar-item" href="../../installation.html">
               Installation
             </a>
-            <a class="navbar-item" href="../../auto_examples/index.html">
+              <a class="navbar-item" href="../../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../../api.html">
+              <a class="navbar-item" href="../../api.html">
               API
             </a>
-            <a class="navbar-item" href="https://tensorly.org" target="_blank">
-              TensorLy
-            </a>
-
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -108,32 +90,33 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
+      
+      
 
-        <div class="content main-content">
-          
+      <div class="container content main-content">
+        
   <h1>Source code for tlviz._xarray_wrapper</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;This module contains utilities for seamlessly handling DataFrames as factor matrices and xarray DataArrays as data</span>
@@ -168,7 +151,7 @@
 
 
 <div class="viewcode-block" id="add_factor_metadata"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.add_factor_metadata">[docs]</a><span class="k">def</span> <span class="nf">add_factor_metadata</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adds the additional coordinates along each dataset dimension as new columns in the factor matrices.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the additional coordinates along each dataset dimension as new columns in the factor matrices.</span>
 
 <span class="sd">    The coordinates of xarray DataArrays can contain metadata. For each dimension, there may be additional</span>
 <span class="sd">    coordinates that are not used for indexing purposes. This function will iterate over all modes of</span>
@@ -257,7 +240,7 @@
 
 
 <div class="viewcode-block" id="label_cp_tensor"><a class="viewcode-back" href="../../api/postprocessing.html#tlviz.postprocessing.label_cp_tensor">[docs]</a><span class="k">def</span> <span class="nf">label_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Label the CP tensor by converting the factor matrices into DataFrames with a sensible index.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Label the CP tensor by converting the factor matrices into DataFrames with a sensible index.</span>
 
 <span class="sd">    Convert the factor matrices into Pandas DataFrames where the DataFrame indices</span>
 <span class="sd">    are given by the coordinate names of an xarray DataArray. If the dataset has only</span>
@@ -291,7 +274,7 @@
 
 
 <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract the numerical values from ``x`` as a numpy array.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the numerical values from ``x`` as a numpy array.</span>
 
 <span class="sd">    Arguments</span>
 <span class="sd">    ---------</span>
@@ -310,7 +293,7 @@
 
 
 <span class="k">def</span> <span class="nf">is_labelled_cp</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check if a cp tensor is labelled or not</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a cp tensor is labelled or not</span>
 
 <span class="sd">    Arguments</span>
 <span class="sd">    ---------</span>
@@ -345,7 +328,7 @@
 
 
 <span class="k">def</span> <span class="nf">is_labelled_tucker</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check if a Tucker tensor is labelled or not</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a Tucker tensor is labelled or not</span>
 
 <span class="sd">    Arguments</span>
 <span class="sd">    ---------</span>
@@ -367,7 +350,7 @@
 
 
 <span class="k">def</span> <span class="nf">is_labelled_dataset</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns True if the dataset is labelled (is a DataFrame or DataArray).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if the dataset is labelled (is a DataFrame or DataArray).</span>
 
 <span class="sd">    This function is the same as writing ``is_dataframe(x) or is_xarray(x)``.</span>
 
@@ -595,11 +578,9 @@
     <span class="k">return</span> <span class="n">decorator</span>
 </pre></div>
 
-        </div>
+      </div>
 
-		
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -607,19 +588,21 @@
           &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
         </div>
       <div class="block">
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="http://tensorly.org"><strong>TensorLy</strong></a> theme by <a href="http://jeankossaifi.com">Jean Kossaifi</a>.
       </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");
