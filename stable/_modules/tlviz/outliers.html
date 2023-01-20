@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tlviz.outliers &#8212; TLViz 0.1.6 documentation</title> 
+    <title>tlviz.outliers &#8212; TLViz 0.1.7 documentation</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -25,9 +25,6 @@
 
   
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
@@ -44,15 +41,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../../index.html">
             <img src="../../_static/tlviz_logo.svg" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -66,41 +59,27 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../../about_tensors.html">
+            
+              <a class="navbar-item" href="../../about_tensors.html">
               Introduction
             </a>
-            <a class="navbar-item" href="../../installation.html">
+              <a class="navbar-item" href="../../installation.html">
               Installation
             </a>
-            <a class="navbar-item" href="../../auto_examples/index.html">
+              <a class="navbar-item" href="../../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../../api.html">
+              <a class="navbar-item" href="../../api.html">
               API
             </a>
-            <a class="navbar-item" href="https://tensorly.org" target="_blank">
-              TensorLy
-            </a>
-
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -108,32 +87,33 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
+      
+      
 
-        <div class="content main-content">
-          
+      <div class="container content main-content">
+        
   <h1>Source code for tlviz.outliers</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -183,7 +163,7 @@
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;estimated&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the (normalised) slabwise SSE along the given mode(s).</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the (normalised) slabwise SSE along the given mode(s).</span>
 
 <span class="sd">    For a tensor, :math:`\mathcal{X}`, and an estimated tensor :math:`\hat{\mathcal{X}}`,</span>
 <span class="sd">    we compute the :math:`i`-th normalised slabwise residual as</span>
@@ -247,7 +227,7 @@
 
 <div class="viewcode-block" id="compute_leverage"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_leverage">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the leverage score of the given factor matrix.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the leverage score of the given factor matrix.</span>
 
 <span class="sd">    The leverage score is a measure of how much &quot;influence&quot; a slab (often representing a sample)</span>
 <span class="sd">    has on a tensor factorisation model. To compute the leverage score for the different slabs,</span>
@@ -324,7 +304,7 @@
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;true_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_outlier_info</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">true_tensor</span><span class="p">,</span> <span class="n">normalise_sse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the leverage score and (normalised) slabwise SSE along one axis.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the leverage score and (normalised) slabwise SSE along one axis.</span>
 
 <span class="sd">    These metrics are often plotted against each other to discover outliers.</span>
 
@@ -382,7 +362,7 @@
 
 <div class="viewcode-block" id="get_leverage_outlier_threshold"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_leverage_outlier_threshold">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;leverage_scores&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p_value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute threshold for detecting possible outliers based on leverage.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute threshold for detecting possible outliers based on leverage.</span>
 
 <span class="sd">    **Huber&#39;s heuristic for selecting outliers**</span>
 
@@ -469,27 +449,27 @@
 <span class="sd">    ...     return (h &gt; th).mean()</span>
 
 <span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
-<span class="sd">    &gt;&gt;&gt; n_samples = 1_000</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 2_000</span>
 <span class="sd">    &gt;&gt;&gt; leverages = [compute_false_positive_rate(10, 2, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0815, 0.0897]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.083, 0.089]</span>
 
 <span class="sd">    We see that the false positive rate is almost twice what we prescribe (0.05). However, if we increase</span>
 <span class="sd">    the number of components, then the false positive rate improves</span>
 
 <span class="sd">    &gt;&gt;&gt; leverages = [compute_false_positive_rate(10, 9, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0468, 0.0554]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.049, 0.056]</span>
 
 <span class="sd">    This indicates that the false positive rate is most accurate when the number of components is equal</span>
 <span class="sd">    to the number of samples - 1. We can increase the number of samples to assess this conjecture</span>
 
 <span class="sd">    &gt;&gt;&gt; leverages = [compute_false_positive_rate(100, 9, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(leverages, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0558, 0.0581]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.055, 0.056]</span>
 
 <span class="sd">    The increase in the false positive rate supports the conjecture that :cite:author:`belsley1980regression`&#39;s</span>
 <span class="sd">    method for computing the p-value is accurate only when the number of components is high. Still, it is</span>
@@ -510,25 +490,25 @@
 <span class="sd">    We set the simulation parameters and the seed</span>
 
 <span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
-<span class="sd">    &gt;&gt;&gt; n_samples = 1_000</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 2_000</span>
 <span class="sd">    &gt;&gt;&gt; fprs = [compute_hotelling_false_positive_rate(10, 2, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0492, 0.0568]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.052, 0.058]</span>
 
 <span class="sd">    However, if we increase the number of components, then the false positive rate becomes to large</span>
 
 <span class="sd">    &gt;&gt;&gt; fprs = [compute_hotelling_false_positive_rate(10, 5, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0738, 0.0833]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.078, 0.084]</span>
 
 <span class="sd">    But if we increase the number of samples, then the estimate is good again</span>
 
 <span class="sd">    &gt;&gt;&gt; fprs = [compute_hotelling_false_positive_rate(100, 5, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(fprs, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0494, 0.0515]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.049, 0.051]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">num_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">)))</span>
     <span class="n">num_components</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">)))</span>
@@ -582,7 +562,7 @@
 
 <div class="viewcode-block" id="get_slabwise_sse_outlier_threshold"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;slab_sse&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_slabwise_sse_outlier_threshold</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute rule-of-thumb threshold values for suspicious residuals.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute rule-of-thumb threshold values for suspicious residuals.</span>
 
 <span class="sd">    One way to determine possible outliers is to examine how well the model describes</span>
 <span class="sd">    the different data points. A standard way of measuring this, is by the slab-wise</span>
@@ -646,19 +626,19 @@
 <span class="sd">    that it is approximately correct.</span>
 
 <span class="sd">    &gt;&gt;&gt; np.random.seed(0)</span>
-<span class="sd">    &gt;&gt;&gt; n_samples = 1_000</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 2_000</span>
 <span class="sd">    &gt;&gt;&gt; slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0434, 0.0474]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.044, 0.047]</span>
 
 <span class="sd">    We see that the 95% confidence interval lies just below our goal of 0.05! Let&#39;s also try</span>
 <span class="sd">    with a false positive rate of 0.1</span>
 
 <span class="sd">    &gt;&gt;&gt; slab_sse = [compute_false_positive_rate((20, 20, 10), 5, 0.1) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0972, 0.1021]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.097, 0.100]</span>
 
 <span class="sd">    Here we see that the false positive rate is sufficiently estimated. It may have been too low</span>
 <span class="sd">    above since we either did not have enough samples in the first mode (which we compute) the</span>
@@ -668,8 +648,8 @@
 
 <span class="sd">    &gt;&gt;&gt; slab_sse = [compute_false_positive_rate((200, 20, 10), 5, 0.05) for _ in range(n_samples)],</span>
 <span class="sd">    &gt;&gt;&gt; fpr_low, fpr_high = bootstrap(slab_sse, np.mean).confidence_interval</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.4f}, {fpr_high:.4f}]&quot;)</span>
-<span class="sd">    95% confidence interval for the false positive rate: [0.0494, 0.0507]</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;95% confidence interval for the false positive rate: [{fpr_low:.3f}, {fpr_high:.3f}]&quot;)</span>
+<span class="sd">    95% confidence interval for the false positive rate: [0.049, 0.050]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="n">ddof</span><span class="p">)</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">)</span>
@@ -687,11 +667,9 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method must be one of &#39;two sigma&#39;, &#39;p-value&#39;, or &#39;bonferroni p-value&#39;, not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
 </pre></div>
 
-        </div>
+      </div>
 
-		
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -699,19 +677,21 @@
           &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
         </div>
       <div class="block">
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="http://tensorly.org"><strong>TensorLy</strong></a> theme by <a href="http://jeankossaifi.com">Jean Kossaifi</a>.
       </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Outlier detection &#8212; TLViz 0.1.6 documentation</title> 
+    <title>Outlier detection &#8212; TLViz 0.1.7 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -26,9 +26,6 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -48,15 +45,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
             <img src="../_static/tlviz_logo.svg" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -70,41 +63,27 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../about_tensors.html">
+            
+              <a class="navbar-item" href="../about_tensors.html">
               Introduction
             </a>
-            <a class="navbar-item" href="../installation.html">
+              <a class="navbar-item" href="../installation.html">
               Installation
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../api.html">
+              <a class="navbar-item" href="../api.html">
               API
             </a>
-            <a class="navbar-item" href="https://tensorly.org" target="_blank">
-              TensorLy
-            </a>
-
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/viz" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -112,61 +91,39 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TLViz" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TLViz" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -194,23 +151,23 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="module-tlviz.outliers">
 <span id="outlier-detection"></span><h1>Outlier detection<a class="headerlink" href="#module-tlviz.outliers" title="Permalink to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
@@ -460,27 +417,27 @@ is valid only for large number of components.</p>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1_000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2_000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">leverages</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_false_positive_rate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">leverages</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0815, 0.0897]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.083, 0.089]</span>
 </pre></div>
 </div>
 <p>We see that the false positive rate is almost twice what we prescribe (0.05). However, if we increase
 the number of components, then the false positive rate improves</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">leverages</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_false_positive_rate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">leverages</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0468, 0.0554]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.049, 0.056]</span>
 </pre></div>
 </div>
 <p>This indicates that the false positive rate is most accurate when the number of components is equal
 to the number of samples - 1. We can increase the number of samples to assess this conjecture</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">leverages</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_false_positive_rate</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">leverages</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0558, 0.0581]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.055, 0.056]</span>
 </pre></div>
 </div>
 <p>The increase in the false positive rate supports the conjecture that <span id="id14"><a class="reference internal" href="../references.html#id7" title="D.A. Belsley, E. Kuh, and R.E. Welsch. Regression Diagnostics: Identifying Influential Data and Sources of Collinearity. Wiley Series in Probability and Statistics - Applied Probability and Statistics Section Series. Wiley, 1980. ISBN 9780471058564.">Belsley <em>et al.</em></a></span>’s
@@ -500,25 +457,25 @@ many samples.</p>
 </div>
 <p>We set the simulation parameters and the seed</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1_000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2_000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_hotelling_false_positive_rate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">fprs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0492, 0.0568]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.052, 0.058]</span>
 </pre></div>
 </div>
 <p>However, if we increase the number of components, then the false positive rate becomes to large</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_hotelling_false_positive_rate</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">fprs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0738, 0.0833]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.078, 0.084]</span>
 </pre></div>
 </div>
 <p>But if we increase the number of samples, then the estimate is good again</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_hotelling_false_positive_rate</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">fprs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0494, 0.0515]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.049, 0.051]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -587,19 +544,19 @@ bootstrap estimate for the true false positive rate.</p>
 <p>Finally, we estimate the 95% confidence interval of the false positive rate to validate
 that it is approximately correct.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1_000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2_000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">slab_sse</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_false_positive_rate</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0434, 0.0474]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.044, 0.047]</span>
 </pre></div>
 </div>
 <p>We see that the 95% confidence interval lies just below our goal of 0.05! Let’s also try
 with a false positive rate of 0.1</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slab_sse</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_false_positive_rate</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0972, 0.1021]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.097, 0.100]</span>
 </pre></div>
 </div>
 <p>Here we see that the false positive rate is sufficiently estimated. It may have been too low
@@ -609,8 +566,8 @@ false positive rate of 0.05. If we increase the number of samples to 200 instead
 the false positive rate is within our expected bounds.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slab_sse</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_false_positive_rate</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fpr_low</span><span class="p">,</span> <span class="n">fpr_high</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">confidence_interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-<span class="go">95% confidence interval for the false positive rate: [0.0494, 0.0507]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;95% confidence interval for the false positive rate: [</span><span class="si">{</span><span class="n">fpr_low</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fpr_high</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">95% confidence interval for the false positive rate: [0.049, 0.050]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -618,12 +575,12 @@ the false positive rate is within our expected bounds.</p>
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="multimodel_evaluation.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="multimodel_evaluation.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -631,7 +588,7 @@ the false positive rate is within our expected bounds.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="visualisation.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="visualisation.html" title="next page" accesskey="n">
         <span>Visualisation </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -640,9 +597,7 @@ the false positive rate is within our expected bounds.</p>
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -650,20 +605,28 @@ the false positive rate is within our expected bounds.</p>
           &copy; Copyright 2021, Marie Roald &amp; Yngve Mardal Moe.<br/>
         </div>
       <div class="block">
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="tensorly.org"><strong>TensorLy</strong></a> theme by <a href="jeankossaifi.com">Jean Kossaifi</a>.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> and the <a href="http://tensorly.org"><strong>TensorLy</strong></a> theme by <a href="http://jeankossaifi.com">Jean Kossaifi</a>.
       </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">Outlier detection</a><ul>
 <li><a class="reference internal" href="#tlviz.outliers.compute_leverage"><code class="docutils literal notranslate"><span class="pre">compute_leverage()</span></code></a></li>
@@ -679,12 +642,12 @@ the false positive rate is within our expected bounds.</p>
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");
