@@ -194,7 +194,7 @@ def sse(cp_tensor, dataset):
     >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
     >>> X = rng.random_sample((4, 5, 6))
     >>> sse(cp, X)
-    18.948918157419186
+    np.float64(18.948918157419186)
     """
     X_hat = cp_to_tensor(cp_tensor)
     return np.sum((dataset - X_hat) ** 2)
@@ -236,7 +236,7 @@ def relative_sse(cp_tensor, dataset, sum_squared_dataset=None):
     >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
     >>> X = rng.random_sample((4, 5, 6))
     >>> relative_sse(cp, X)
-    0.4817407254961442
+    np.float64(0.4817407254961442)
     """
     if sum_squared_dataset is None:
         sum_squared_x = np.sum(dataset**2)
@@ -279,13 +279,13 @@ def fit(cp_tensor, dataset, sum_squared_dataset=None):
     >>> cp = random_cp((4, 5, 6), 3, random_state=rng)
     >>> X = rng.random_sample((4, 5, 6))
     >>> fit(cp, X)
-    0.5182592745038558
+    np.float64(0.5182592745038558)
 
     We can see that it is equal to 1 - relative SSE
 
     >>> from tlviz.model_evaluation import relative_sse
     >>> 1 - relative_sse(cp, X)
-    0.5182592745038558
+    np.float64(0.5182592745038558)
     """
     return 1 - relative_sse(cp_tensor, dataset, sum_squared_dataset=sum_squared_dataset)
 
