@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_outlier_detection.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_outlier_detection.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -62,7 +62,7 @@ find and remove the outliers in a dataset.
 
 .. GENERATED FROM PYTHON SOURCE LINES 44-51
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -85,7 +85,7 @@ Utility for fitting PARAFAC models and sampling CP tensors
 
 .. GENERATED FROM PYTHON SOURCE LINES 54-87
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -137,7 +137,7 @@ and the other two modes represent some signal we have measured.
 
 .. GENERATED FROM PYTHON SOURCE LINES 93-110
 
-.. code-block:: default
+.. code-block:: Python
 
 
     I, J, K = 20, 30, 40
@@ -170,7 +170,7 @@ Plotting the components
 
 .. GENERATED FROM PYTHON SOURCE LINES 113-118
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tlviz.visualisation.components_plot(true_model)
@@ -196,7 +196,7 @@ Adding artificial noise
 
 .. GENERATED FROM PYTHON SOURCE LINES 121-126
 
-.. code-block:: default
+.. code-block:: Python
 
 
     X = tlviz.utils.cp_to_tensor(true_model)
@@ -218,7 +218,7 @@ We need three outliers to find; let's make three of the first four samples into 
 
 .. GENERATED FROM PYTHON SOURCE LINES 130-135
 
-.. code-block:: default
+.. code-block:: Python
 
 
     X[0] = np.random.standard_normal(X[0].shape)
@@ -239,7 +239,7 @@ Fitting a PARAFAC model to this data and plotting the components
 
 .. GENERATED FROM PYTHON SOURCE LINES 138-143
 
-.. code-block:: default
+.. code-block:: Python
 
 
     first_attempt = fit_parafac(X, rank, num_inits=5)
@@ -264,7 +264,7 @@ We see that some of the components are wrong, and to quantify this, we can look 
 
 .. GENERATED FROM PYTHON SOURCE LINES 145-149
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fms = tlviz.factor_tools.factor_match_score(true_model, first_attempt)
@@ -289,7 +289,7 @@ Next, we can create a scatter plot where we plot the leverage and residuals for 
 
 .. GENERATED FROM PYTHON SOURCE LINES 151-155
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tlviz.visualisation.outlier_plot(first_attempt, X)
@@ -319,7 +319,7 @@ Let's start by removing the most problematic sample: Sample 2.
 
 .. GENERATED FROM PYTHON SOURCE LINES 163-170
 
-.. code-block:: default
+.. code-block:: Python
 
 
     samples_to_remove = {2}
@@ -345,7 +345,7 @@ Otherwise, we could not align the components.
 
 .. GENERATED FROM PYTHON SOURCE LINES 176-181
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sampled_true_cp = index_cp_tensor(true_model, selected_samples, mode=0)
@@ -371,7 +371,7 @@ which is apparent from the factor match score.
 
 .. GENERATED FROM PYTHON SOURCE LINES 184-189
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fms = tlviz.factor_tools.factor_match_score(sampled_true_cp, second_attempt)
@@ -397,7 +397,7 @@ We can also create the outlier plot again to see which samples are suspicious.
 
 .. GENERATED FROM PYTHON SOURCE LINES 191-196
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tlviz.visualisation.outlier_plot(second_attempt, sampled_X)
@@ -423,7 +423,7 @@ the model much, while sample 3 has a low error, but does affect the model. Let u
 
 .. GENERATED FROM PYTHON SOURCE LINES 199-209
 
-.. code-block:: default
+.. code-block:: Python
 
 
     samples_to_remove = {2, 3}
@@ -453,7 +453,7 @@ Here, we see that we finally uncovered the true components. This is also apparen
 
 .. GENERATED FROM PYTHON SOURCE LINES 211-215
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fms = tlviz.factor_tools.factor_match_score(sampled_true_cp, third_attempt)
@@ -467,7 +467,7 @@ Here, we see that we finally uncovered the true components. This is also apparen
 
  .. code-block:: none
 
-    The FMS is 0.99
+    The FMS is 0.96
 
 
 
@@ -489,7 +489,7 @@ We can also create the outlier plot again to see if there still are any suspicio
 
 .. GENERATED FROM PYTHON SOURCE LINES 229-233
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tlviz.visualisation.outlier_plot(third_attempt, sampled_X)
@@ -513,7 +513,7 @@ Let's see what happens when we also remove the final suspicious sample
 
 .. GENERATED FROM PYTHON SOURCE LINES 235-245
 
-.. code-block:: default
+.. code-block:: Python
 
 
     samples_to_remove = {0, 2, 3}
@@ -587,7 +587,7 @@ Visualising the rules-of-thumb on our first attempted PARAFAC model
 
 .. GENERATED FROM PYTHON SOURCE LINES 289-299
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tlviz.visualisation.outlier_plot(
@@ -623,7 +623,7 @@ to remove and not on a case-by-case basis.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.485 seconds)
+   **Total running time of the script:** (0 minutes 5.004 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_outlier_detection.py:
@@ -632,14 +632,17 @@ to remove and not on a case-by-case basis.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_outlier_detection.ipynb <plot_outlier_detection.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_outlier_detection.py <plot_outlier_detection.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_outlier_detection.ipynb <plot_outlier_detection.ipynb>`
+      :download:`Download zipped: plot_outlier_detection.zip <plot_outlier_detection.zip>`
 
 
 .. only:: html

@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Optimisation diagnostics with PARAFAC models &#8212; TLViz 0.1.7 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,21 +15,18 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -173,11 +169,11 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="optimisation-diagnostics-with-parafac-models">
-<span id="sphx-glr-auto-examples-plot-optimisation-diagnostic-py"></span><h1>Optimisation diagnostics with PARAFAC models<a class="headerlink" href="#optimisation-diagnostics-with-parafac-models" title="Permalink to this heading">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-optimisation-diagnostic-py"></span><h1>Optimisation diagnostics with PARAFAC models<a class="headerlink" href="#optimisation-diagnostics-with-parafac-models" title="Link to this heading">¶</a></h1>
 <p>Fitting PARAFAC models entails solving a non-convex optimisation problem. To do this, we use alternating least squares,
 (ALS). However, ALS is not guaranteed to converge to the global minimum. It is therefore often advised to use several random
 initialisations and pick the one that obtained the lowest loss value.</p>
@@ -185,25 +181,25 @@ initialisations and pick the one that obtained the lowest loss value.</p>
 unfortunately, no easy answer to this question. But, if we inspect the runs, we can become more confident in our
 results.</p>
 <p>We start by importing the relevant code.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 
-<span class="kn">import</span> <span class="nn">tlviz</span>
-<span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">factor_match_score</span>
-<span class="kn">from</span> <span class="nn">tlviz.multimodel_evaluation</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tlviz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.factor_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">factor_match_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.multimodel_evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_model_with_lowest_error</span><span class="p">,</span>
     <span class="n">similarity_evaluation</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>Then we create a simulated dataset</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rank</span> <span class="o">=</span> <span class="mi">5</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">rank</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">simulated_random_cp_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">rank</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Next, we fit ten random initialisations to this dataset, storing the CP tensors and relative SSE.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_cp_tensors</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_cp_tensors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
@@ -225,11 +221,11 @@ results.</p>
 </pre></div>
 </div>
 <p>And get the initialisation</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">first_attempt</span> <span class="o">=</span> <span class="n">get_model_with_lowest_error</span><span class="p">(</span><span class="n">estimated_cp_tensors</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">first_attempt</span> <span class="o">=</span> <span class="n">get_model_with_lowest_error</span><span class="p">(</span><span class="n">estimated_cp_tensors</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To see if we have a good initialisation, we use the optimisation diagnostics plots,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -240,23 +236,23 @@ We also want the initialisations to converge.</p>
 <p>In this case, we see that we get many different loss values, and they did not converge.
 These observations indicate that our optimisation procedure did not converge to a good minimum.
 Another thing we can look at is how similar the different initialisations are with the selected initialisation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.4708859077815064, 0.5920264839417511, 0.7423143022579084, 0.5533437244458281, 0.41018647713634354, 0.6463514554347419, 0.588523605705791, 0.6133154419763374, 0.4110835038963244, 1.0]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.4708859077815532), np.float64(0.5920264839417724), np.float64(0.7423143022576455), np.float64(0.5533437244458712), np.float64(0.4101864771363849), np.float64(0.6463514554346694), np.float64(0.5885236057058181), np.float64(0.613315441976393), np.float64(0.4110835038963997), np.float64(0.9999999999999998)]
 </pre></div>
 </div>
 <p>We see that the different initialisations do not resemble the selected initialisation much. So the optimisation
 seems unstable. Let’s also compare the selected  model with the true decomposition
 (which is only possible because we have simulated data and therefore know the true decomposition).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.6612200819030741
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.661220081903127
 </pre></div>
 </div>
 <p>So the decomposition is, as we expected, not very good… Let’s try to increase the maximum number of iterations!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_cp_tensors</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_cp_tensors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">final_errors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -280,7 +276,7 @@ seems unstable. Let’s also compare the selected  model with the true decomposi
 </pre></div>
 </div>
 <p>And plot the optimisation diagnostics plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -288,16 +284,16 @@ seems unstable. Let’s also compare the selected  model with the true decomposi
 These results are better but not ideal.
 We don’t want it to be challenging to find a good initialisation!
 Let’s compare the similarity between the different initialisations and the selected initialisation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575)]
 </pre></div>
 </div>
 <p>Ok, we got two similar decompositions.
 Not ideal, but at least there was more than one good initialisation.
 Let’s try some more initialisations before we compare with the true decomposition.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
     <span class="n">est_cp</span><span class="p">,</span> <span class="n">rec_errors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">init</span><span class="p">)</span>
     <span class="n">estimated_cp_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">est_cp</span><span class="p">)</span>
@@ -318,17 +314,17 @@ Let’s try some more initialisations before we compare with the true decomposit
 </pre></div>
 </div>
 <p>And let’s look at the optimisation diagnostics plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_optimisation_diagnostic_003.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_003.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><p>Now we have many initialisations that converged to the same loss value!
 That is exactly the behaviour that we want.
 Let’s compare the similarity between them and the selected decomposition too.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759, 0.8190088546107898, 0.977516551984477, 0.7283332135992033, 0.990769675977103, 0.6357626037559072, 0.9775611091935582, 0.9912200986979766, 0.5736136740755067, 0.7574342297341834, 0.9889962033747992]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575), np.float64(0.819008854610944), np.float64(0.9775165519843764), np.float64(0.728333213598958), np.float64(0.9907696759770085), np.float64(0.6357626037558778), np.float64(0.9775611091931088), np.float64(0.9912200986978796), np.float64(0.5736136740755045), np.float64(0.7574342297344882), np.float64(0.9889962033747185)]
 </pre></div>
 </div>
 <p>Here we also see that many of the initialisations were similar.
@@ -336,7 +332,7 @@ If these were different, we would be in trouble.
 Since then, there would likely be many different minima with the same loss value.
 Luckily, that was not the case.
 Finally, let’s compare our selected model with the true decomposition!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">third_attempt</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">third_attempt</span><span class="p">))</span>
 
 <span class="n">decompositions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;True&quot;</span><span class="p">:</span> <span class="n">cp_tensor</span><span class="p">,</span>
@@ -348,16 +344,19 @@ Finally, let’s compare our selected model with the true decomposition!</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461235659
+<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461234626
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  15.671 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.833 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a83bc4cc697ea80937f6c10d46189a40/plot_optimisation_diagnostic.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimisation_diagnostic.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/00d5faeb118d62666a86b3b65b1964bb/plot_optimisation_diagnostic.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_optimisation_diagnostic.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/a83bc4cc697ea80937f6c10d46189a40/plot_optimisation_diagnostic.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimisation_diagnostic.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/99c2f979c063f4088511e62081aaae16/plot_optimisation_diagnostic.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_optimisation_diagnostic.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

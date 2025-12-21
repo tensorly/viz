@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_labelled_decompositions.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_labelled_decompositions.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -38,7 +38,7 @@ non-numpy backends, please let us know by using submitting a new
 
 .. GENERATED FROM PYTHON SOURCE LINES 19-27
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import tlviz
@@ -63,7 +63,7 @@ Here we load the `Aminoacids dataset <http://models.life.ku.dk/Amino_Acid_fluo>`
 
 .. GENERATED FROM PYTHON SOURCE LINES 31-34
 
-.. code-block:: default
+.. code-block:: Python
 
     aminoacids = tlviz.data.load_aminoacids()
 
@@ -93,7 +93,7 @@ decompositions with and without labels, we fit only one model.
 
 .. GENERATED FROM PYTHON SOURCE LINES 41-45
 
-.. code-block:: default
+.. code-block:: Python
 
 
     X = tl.tensor(aminoacids.data)
@@ -115,7 +115,7 @@ Next, we plot the components without postprocessing the decomposition.
 
 .. GENERATED FROM PYTHON SOURCE LINES 50-54
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig, ax = tlviz.visualisation.components_plot(cp_tensor)
@@ -147,7 +147,7 @@ And finally, we plot the postprocessed decomposition instead.
 
 .. GENERATED FROM PYTHON SOURCE LINES 63-68
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cp_tensor_postprocessed = tlviz.postprocessing.postprocess(cp_tensor, aminoacids)
@@ -181,7 +181,7 @@ Finally, we reset the backend to NumPy, because the other gallery examples assum
 
 .. GENERATED FROM PYTHON SOURCE LINES 78-79
 
-.. code-block:: default
+.. code-block:: Python
 
     tl.set_backend("numpy")
 
@@ -194,7 +194,7 @@ Finally, we reset the backend to NumPy, because the other gallery examples assum
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.150 seconds)
+   **Total running time of the script:** (0 minutes 3.497 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_labelled_decompositions.py:
@@ -203,14 +203,17 @@ Finally, we reset the backend to NumPy, because the other gallery examples assum
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_labelled_decompositions.ipynb <plot_labelled_decompositions.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_labelled_decompositions.py <plot_labelled_decompositions.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_labelled_decompositions.ipynb <plot_labelled_decompositions.ipynb>`
+      :download:`Download zipped: plot_labelled_decompositions.zip <plot_labelled_decompositions.zip>`
 
 
 .. only:: html

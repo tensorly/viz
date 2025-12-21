@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_optimisation_diagnostic.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_optimisation_diagnostic.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -33,7 +33,7 @@ We start by importing the relevant code.
 
 .. GENERATED FROM PYTHON SOURCE LINES 15-27
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -60,7 +60,7 @@ Then we create a simulated dataset
 
 .. GENERATED FROM PYTHON SOURCE LINES 29-34
 
-.. code-block:: default
+.. code-block:: Python
 
 
     rank = 5
@@ -80,7 +80,7 @@ Next, we fit ten random initialisations to this dataset, storing the CP tensors 
 
 .. GENERATED FROM PYTHON SOURCE LINES 36-45
 
-.. code-block:: default
+.. code-block:: Python
 
 
     estimated_cp_tensors = []
@@ -119,7 +119,7 @@ And get the initialisation
 
 .. GENERATED FROM PYTHON SOURCE LINES 47-49
 
-.. code-block:: default
+.. code-block:: Python
 
     first_attempt = get_model_with_lowest_error(estimated_cp_tensors, X)
 
@@ -136,7 +136,7 @@ To see if we have a good initialisation, we use the optimisation diagnostics plo
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-54
 
-.. code-block:: default
+.. code-block:: Python
 
     tlviz.visualisation.optimisation_diagnostic_plots(errors, n_iter_max=100)
     plt.show()
@@ -166,7 +166,7 @@ Another thing we can look at is how similar the different initialisations are wi
 
 .. GENERATED FROM PYTHON SOURCE LINES 63-66
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(similarity_evaluation(first_attempt, estimated_cp_tensors))
@@ -179,7 +179,7 @@ Another thing we can look at is how similar the different initialisations are wi
 
  .. code-block:: none
 
-    [0.4708859077815064, 0.5920264839417511, 0.7423143022579084, 0.5533437244458281, 0.41018647713634354, 0.6463514554347419, 0.588523605705791, 0.6133154419763374, 0.4110835038963244, 1.0]
+    [np.float64(0.4708859077815532), np.float64(0.5920264839417724), np.float64(0.7423143022576455), np.float64(0.5533437244458712), np.float64(0.4101864771363849), np.float64(0.6463514554346694), np.float64(0.5885236057058181), np.float64(0.613315441976393), np.float64(0.4110835038963997), np.float64(0.9999999999999998)]
 
 
 
@@ -192,7 +192,7 @@ seems unstable. Let's also compare the selected  model with the true decompositi
 
 .. GENERATED FROM PYTHON SOURCE LINES 70-73
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(factor_match_score(first_attempt, cp_tensor))
@@ -205,7 +205,7 @@ seems unstable. Let's also compare the selected  model with the true decompositi
 
  .. code-block:: none
 
-    0.6612200819030741
+    0.661220081903127
 
 
 
@@ -216,7 +216,7 @@ So the decomposition is, as we expected, not very good... Let's try to increase 
 
 .. GENERATED FROM PYTHON SOURCE LINES 75-86
 
-.. code-block:: default
+.. code-block:: Python
 
 
     estimated_cp_tensors = []
@@ -257,7 +257,7 @@ And plot the optimisation diagnostics plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 88-93
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tlviz.visualisation.optimisation_diagnostic_plots(errors, 1000)
@@ -285,7 +285,7 @@ Let's compare the similarity between the different initialisations and the selec
 
 .. GENERATED FROM PYTHON SOURCE LINES 98-102
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(similarity_evaluation(second_attempt, estimated_cp_tensors))
@@ -299,7 +299,7 @@ Let's compare the similarity between the different initialisations and the selec
 
  .. code-block:: none
 
-    [0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759]
+    [np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575)]
 
 
 
@@ -312,7 +312,7 @@ Let's try some more initialisations before we compare with the true decompositio
 
 .. GENERATED FROM PYTHON SOURCE LINES 106-114
 
-.. code-block:: default
+.. code-block:: Python
 
     for init in range(10, 20):
         print(init)
@@ -350,7 +350,7 @@ And let's look at the optimisation diagnostics plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 116-119
 
-.. code-block:: default
+.. code-block:: Python
 
     tlviz.visualisation.optimisation_diagnostic_plots(errors, 1000)
     plt.show()
@@ -375,7 +375,7 @@ Let's compare the similarity between them and the selected decomposition too.
 
 .. GENERATED FROM PYTHON SOURCE LINES 123-126
 
-.. code-block:: default
+.. code-block:: Python
 
     print(similarity_evaluation(third_attempt, estimated_cp_tensors))
 
@@ -388,7 +388,7 @@ Let's compare the similarity between them and the selected decomposition too.
 
  .. code-block:: none
 
-    [0.5126378280857843, 0.6068598338964568, 0.9999999999999998, 0.4978209914213384, 0.4881379024749818, 0.674431520776292, 0.7619003379207319, 0.8086975562733881, 0.5034024525851725, 0.9914718665026759, 0.8190088546107898, 0.977516551984477, 0.7283332135992033, 0.990769675977103, 0.6357626037559072, 0.9775611091935582, 0.9912200986979766, 0.5736136740755067, 0.7574342297341834, 0.9889962033747992]
+    [np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575), np.float64(0.819008854610944), np.float64(0.9775165519843764), np.float64(0.728333213598958), np.float64(0.9907696759770085), np.float64(0.6357626037558778), np.float64(0.9775611091931088), np.float64(0.9912200986978796), np.float64(0.5736136740755045), np.float64(0.7574342297344882), np.float64(0.9889962033747185)]
 
 
 
@@ -403,7 +403,7 @@ Finally, let's compare our selected model with the true decomposition!
 
 .. GENERATED FROM PYTHON SOURCE LINES 132-142
 
-.. code-block:: default
+.. code-block:: Python
 
     print(factor_match_score(cp_tensor, third_attempt))
 
@@ -428,7 +428,7 @@ Finally, let's compare our selected model with the true decomposition!
 
  .. code-block:: none
 
-    0.9321826461235659
+    0.9321826461234626
 
 
 
@@ -436,7 +436,7 @@ Finally, let's compare our selected model with the true decomposition!
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.671 seconds)
+   **Total running time of the script:** (0 minutes 6.833 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimisation_diagnostic.py:
@@ -445,14 +445,17 @@ Finally, let's compare our selected model with the true decomposition!
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_optimisation_diagnostic.ipynb <plot_optimisation_diagnostic.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_optimisation_diagnostic.py <plot_optimisation_diagnostic.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_optimisation_diagnostic.ipynb <plot_optimisation_diagnostic.ipynb>`
+      :download:`Download zipped: plot_optimisation_diagnostic.zip <plot_optimisation_diagnostic.zip>`
 
 
 .. only:: html

@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Outlier detection with PARAFAC &#8212; TLViz 0.1.7 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,21 +15,18 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -174,14 +170,14 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-outlier-detection-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-outlier-detection-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="outlier-detection-with-parafac">
-<span id="outlier-detection"></span><span id="sphx-glr-auto-examples-plot-outlier-detection-py"></span><h1>Outlier detection with PARAFAC<a class="headerlink" href="#outlier-detection-with-parafac" title="Permalink to this heading">¶</a></h1>
+<span id="outlier-detection"></span><span id="sphx-glr-auto-examples-plot-outlier-detection-py"></span><h1>Outlier detection with PARAFAC<a class="headerlink" href="#outlier-detection-with-parafac" title="Link to this heading">¶</a></h1>
 <p>There are two metrics that are commonly used for detecting outliers in PARAFAC models: <em>leverage</em> and <em>residuals</em>.</p>
 <section id="residuals">
-<h2>Residuals<a class="headerlink" href="#residuals" title="Permalink to this heading">¶</a></h2>
+<h2>Residuals<a class="headerlink" href="#residuals" title="Link to this heading">¶</a></h2>
 <p>The residuals measure how well the PARAFAC model represents the data. For detecting outliers, it is common
 to compute the sum of squared error for each sample. Since each sample corresponds to a slab in the data tensor,
 we use the name <em>slabwise SSE</em> in TLViz. For a third-order tensor, <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>, and its PARAFAC
@@ -192,7 +188,7 @@ estimate, <span class="math notranslate nohighlight">\(\hat{\mathcal{X}}\)</span
 residual, then that indicates that our PARAFAC model cannot describe its behaviour.</p>
 </section>
 <section id="leverage">
-<h2>Leverage<a class="headerlink" href="#leverage" title="Permalink to this heading">¶</a></h2>
+<h2>Leverage<a class="headerlink" href="#leverage" title="Link to this heading">¶</a></h2>
 <p>The leverage score measures how “influential” the different samples are for the PARAFAC model. There
 are several interpretations of the leverage score <span id="id1">[<a class="reference internal" href="../references.html#id21" title="Paul F Velleman and Roy E Welsch. Efficient computing of regression diagnostics. The American Statistician, 35(4):234–242, 1981.">VW81</a>]</span>, one of them is the
 number of components we devote to a given data point. To compute the leverage score for the different samples,
@@ -204,20 +200,20 @@ then the leverage score is defined as</p>
 <span class="math notranslate nohighlight">\(\mathbf{A} \left(\mathbf{A}^T \mathbf{A}\right)^{-1} \mathbf{A}^T\)</span>.</p>
 </section>
 <section id="examples-with-code">
-<h2>Examples with code<a class="headerlink" href="#examples-with-code" title="Permalink to this heading">¶</a></h2>
+<h2>Examples with code<a class="headerlink" href="#examples-with-code" title="Link to this heading">¶</a></h2>
 <p>Below, we show some examples with simulated data to illustrate how we can use the leverage and residuals to
 find and remove the outliers in a dataset.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 
-<span class="kn">import</span> <span class="nn">tlviz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tlviz</span>
 </pre></div>
 </div>
 <section id="utility-for-fitting-parafac-models-and-sampling-cp-tensors">
-<h3>Utility for fitting PARAFAC models and sampling CP tensors<a class="headerlink" href="#utility-for-fitting-parafac-models-and-sampling-cp-tensors" title="Permalink to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fit_parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<h3>Utility for fitting PARAFAC models and sampling CP tensors<a class="headerlink" href="#utility-for-fitting-parafac-models-and-sampling-cp-tensors" title="Link to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fit_parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">model_candidates</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">parafac</span><span class="p">(</span>
             <span class="n">X</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
@@ -235,7 +231,7 @@ find and remove the outliers in a dataset.</p>
     <span class="k">return</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">postprocessing</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">index_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">index_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
     <span class="n">new_factors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -250,10 +246,10 @@ find and remove the outliers in a dataset.</p>
 </div>
 </section>
 <section id="generate-simulated-dataset">
-<h3>Generate simulated dataset<a class="headerlink" href="#generate-simulated-dataset" title="Permalink to this heading">¶</a></h3>
+<h3>Generate simulated dataset<a class="headerlink" href="#generate-simulated-dataset" title="Link to this heading">¶</a></h3>
 <p>We start by generating a random CP Tensor where the first mode represents the sample mode,
 and the other two modes represent some signal we have measured.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span>
 <span class="n">rank</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
@@ -271,38 +267,38 @@ and the other two modes represent some signal we have measured.</p>
 </div>
 </section>
 <section id="plotting-the-components">
-<h3>Plotting the components<a class="headerlink" href="#plotting-the-components" title="Permalink to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">components_plot</span><span class="p">(</span><span class="n">true_model</span><span class="p">)</span>
+<h3>Plotting the components<a class="headerlink" href="#plotting-the-components" title="Link to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">components_plot</span><span class="p">(</span><span class="n">true_model</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_outlier_detection_001.png" srcset="../_images/sphx_glr_plot_outlier_detection_001.png" alt="plot outlier detection" class = "sphx-glr-single-img"/></section>
 <section id="adding-artificial-noise">
-<h3>Adding artificial noise<a class="headerlink" href="#adding-artificial-noise" title="Permalink to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">true_model</span><span class="p">)</span>
+<h3>Adding artificial noise<a class="headerlink" href="#adding-artificial-noise" title="Link to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">true_model</span><span class="p">)</span>
 <span class="n">noise</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">noise</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="adding-artificial-outliers">
-<h3>Adding artificial outliers<a class="headerlink" href="#adding-artificial-outliers" title="Permalink to this heading">¶</a></h3>
+<h3>Adding artificial outliers<a class="headerlink" href="#adding-artificial-outliers" title="Link to this heading">¶</a></h3>
 <p>We need three outliers to find; let’s make three of the first four samples into outliers.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">10</span>
 <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">5</span>
 </pre></div>
 </div>
 </section>
 <section id="fitting-a-parafac-model-to-this-data-and-plotting-the-components">
-<h3>Fitting a PARAFAC model to this data and plotting the components<a class="headerlink" href="#fitting-a-parafac-model-to-this-data-and-plotting-the-components" title="Permalink to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">first_attempt</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<h3>Fitting a PARAFAC model to this data and plotting the components<a class="headerlink" href="#fitting-a-parafac-model-to-this-data-and-plotting-the-components" title="Link to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">first_attempt</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">component_comparison_plot</span><span class="p">({</span><span class="s2">&quot;True&quot;</span><span class="p">:</span> <span class="n">true_model</span><span class="p">,</span> <span class="s2">&quot;First attempt&quot;</span><span class="p">:</span> <span class="n">first_attempt</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_outlier_detection_002.png" srcset="../_images/sphx_glr_plot_outlier_detection_002.png" alt="plot outlier detection" class = "sphx-glr-single-img"/><p>We see that some of the components are wrong, and to quantify this, we can look at the factor match score:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fms</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">factor_tools</span><span class="o">.</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">true_model</span><span class="p">,</span> <span class="n">first_attempt</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fms</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">factor_tools</span><span class="o">.</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">true_model</span><span class="p">,</span> <span class="n">first_attempt</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The FMS is </span><span class="si">{</span><span class="n">fms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -310,7 +306,7 @@ and the other two modes represent some signal we have measured.</p>
 </pre></div>
 </div>
 <p>Next, we can create a scatter plot where we plot the leverage and residuals for each sample.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -321,7 +317,7 @@ And still, it is poorly described by the model.
 We also see that sample 3 has a high leverage and low error,
 and sample 0 has a low leverage and a high error.
 Let’s start by removing the most problematic sample: Sample 2.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">samples_to_remove</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">}</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">samples_to_remove</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">}</span>
 <span class="n">selected_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">samples_to_remove</span><span class="p">]</span>
 <span class="n">sampled_X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s2">&quot;Mode 0&quot;</span><span class="p">:</span> <span class="n">selected_samples</span><span class="p">}]</span>
 <span class="n">second_attempt</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">sampled_X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -332,14 +328,14 @@ However, since we have removed a slab from the dataset,
 we also need to remove the corresponding row from <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>
 before we can compare the components.
 Otherwise, we could not align the components.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_true_cp</span> <span class="o">=</span> <span class="n">index_cp_tensor</span><span class="p">(</span><span class="n">true_model</span><span class="p">,</span> <span class="n">selected_samples</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_true_cp</span> <span class="o">=</span> <span class="n">index_cp_tensor</span><span class="p">(</span><span class="n">true_model</span><span class="p">,</span> <span class="n">selected_samples</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">component_comparison_plot</span><span class="p">({</span><span class="s2">&quot;True&quot;</span><span class="p">:</span> <span class="n">sampled_true_cp</span><span class="p">,</span> <span class="s2">&quot;Second attempt&quot;</span><span class="p">:</span> <span class="n">second_attempt</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_outlier_detection_004.png" srcset="../_images/sphx_glr_plot_outlier_detection_004.png" alt="plot outlier detection" class = "sphx-glr-single-img"/><p>Still, we have not successfully recovered the correct components,
 which is apparent from the factor match score.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fms</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">factor_tools</span><span class="o">.</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">sampled_true_cp</span><span class="p">,</span> <span class="n">second_attempt</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fms</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">factor_tools</span><span class="o">.</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">sampled_true_cp</span><span class="p">,</span> <span class="n">second_attempt</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The FMS is </span><span class="si">{</span><span class="n">fms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -347,13 +343,13 @@ which is apparent from the factor match score.</p>
 </pre></div>
 </div>
 <p>We can also create the outlier plot again to see which samples are suspicious.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">sampled_X</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">sampled_X</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_outlier_detection_005.png" srcset="../_images/sphx_glr_plot_outlier_detection_005.png" alt="Outlier plot for Mode 0" class = "sphx-glr-single-img"/><p>We see that sample 0 and 3 still show the same behaviour as before. Sample 0 has a high error, but does not affect
 the model much, while sample 3 has a low error, but does affect the model. Let us therefore remove sample 3 now.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">samples_to_remove</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">samples_to_remove</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
 <span class="n">selected_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">samples_to_remove</span><span class="p">]</span>
 <span class="n">sampled_X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s2">&quot;Mode 0&quot;</span><span class="p">:</span> <span class="n">selected_samples</span><span class="p">}]</span>
 <span class="n">third_attempt</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">sampled_X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -364,11 +360,11 @@ the model much, while sample 3 has a low error, but does affect the model. Let u
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_outlier_detection_006.png" srcset="../_images/sphx_glr_plot_outlier_detection_006.png" alt="plot outlier detection" class = "sphx-glr-single-img"/><p>Here, we see that we finally uncovered the true components. This is also apparent from the FMS</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fms</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">factor_tools</span><span class="o">.</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">sampled_true_cp</span><span class="p">,</span> <span class="n">third_attempt</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fms</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">factor_tools</span><span class="o">.</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">sampled_true_cp</span><span class="p">,</span> <span class="n">third_attempt</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The FMS is </span><span class="si">{</span><span class="n">fms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.99
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.96
 </pre></div>
 </div>
 <div class="admonition note">
@@ -381,12 +377,12 @@ In this example, we could have increased the number of components by one
 and recovered the correct components without removing this sample.</p>
 </div>
 <p>We can also create the outlier plot again to see if there still are any suspicious samples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">sampled_X</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">sampled_X</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_outlier_detection_007.png" srcset="../_images/sphx_glr_plot_outlier_detection_007.png" alt="Outlier plot for Mode 0" class = "sphx-glr-single-img"/><p>Let’s see what happens when we also remove the final suspicious sample</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">samples_to_remove</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">samples_to_remove</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
 <span class="n">selected_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">samples_to_remove</span><span class="p">]</span>
 <span class="n">sampled_X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s2">&quot;Mode 0&quot;</span><span class="p">:</span> <span class="n">selected_samples</span><span class="p">}]</span>
 <span class="n">fourth_attempt</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">sampled_X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -405,7 +401,7 @@ So, in cases where a data point has high residual but not high leverage,
 it might be sensible not to remove it.</p>
 </section>
 <section id="rules-of-thumb-for-selecting-the-samples-that-may-be-outliers">
-<h3>Rules-of-thumb for selecting the samples that may be outliers<a class="headerlink" href="#rules-of-thumb-for-selecting-the-samples-that-may-be-outliers" title="Permalink to this heading">¶</a></h3>
+<h3>Rules-of-thumb for selecting the samples that may be outliers<a class="headerlink" href="#rules-of-thumb-for-selecting-the-samples-that-may-be-outliers" title="Link to this heading">¶</a></h3>
 <p>Unfortunately, there are no hard rules for selecting which samples to remove as outliers.
 Instead, we generally have to consider each suspected outlier individually.
 However, there are some useful rules-of-thumb discussed in the literature.
@@ -432,8 +428,8 @@ and compute the cut-off values with p-values via a chi-squared distribution
 or we can set the cut-off equal to twice the standard deviation of the SSE <span id="id7">[<a class="reference internal" href="../references.html#id8" title="Tormod Næs, Tomas Isaksson, Tom Fearn, and Tony Davies. A user-friendly guide to multivariate calibration and classification. Volume 6. NIR Chichester, 2002.">NaesIFD02</a>]</span>.</p>
 </section>
 <section id="visualising-the-rules-of-thumb-on-our-first-attempted-parafac-model">
-<h3>Visualising the rules-of-thumb on our first attempted PARAFAC model<a class="headerlink" href="#visualising-the-rules-of-thumb-on-our-first-attempted-parafac-model" title="Permalink to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span>
+<h3>Visualising the rules-of-thumb on our first attempted PARAFAC model<a class="headerlink" href="#visualising-the-rules-of-thumb-on-our-first-attempted-parafac-model" title="Link to this heading">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">outlier_plot</span><span class="p">(</span>
     <span class="n">first_attempt</span><span class="p">,</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">leverage_rules_of_thumb</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="s2">&quot;hotelling&quot;</span><span class="p">,</span> <span class="s2">&quot;huber higher&quot;</span><span class="p">,</span> <span class="s2">&quot;huber lower&quot;</span><span class="p">,</span> <span class="s2">&quot;hw lower&quot;</span><span class="p">,</span> <span class="s2">&quot;hw higher&quot;</span><span class="p">],</span>
@@ -448,13 +444,16 @@ However, with real data, it is usually not this clear.
 Different cut-off values can give different outliers.
 Therefore, it is crucial to look at the data and evaluate which data points
 to remove and not on a case-by-case basis.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.485 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.004 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-outlier-detection-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/114ec741bad9663cf99bd36ece9955e8/plot_outlier_detection.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_outlier_detection.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/8ef23ee1eaf9bbf29ebce5cb807c84f3/plot_outlier_detection.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_outlier_detection.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/114ec741bad9663cf99bd36ece9955e8/plot_outlier_detection.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_outlier_detection.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/fd4e03f71a443129e4175dab5891ca99/plot_outlier_detection.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_outlier_detection.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

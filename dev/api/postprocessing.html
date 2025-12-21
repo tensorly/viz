@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Post-processing &#8212; TLViz 0.1.7 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,21 +15,18 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -172,7 +168,7 @@
       <div class="container content main-content">
         
   <section id="module-tlviz.postprocessing">
-<span id="post-processing"></span><h1>Post-processing<a class="headerlink" href="#module-tlviz.postprocessing" title="Permalink to this heading">¶</a></h1>
+<span id="post-processing"></span><h1>Post-processing<a class="headerlink" href="#module-tlviz.postprocessing" title="Link to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -195,7 +191,7 @@
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.add_factor_metadata">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">add_factor_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/_xarray_wrapper.html#add_factor_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.add_factor_metadata" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">add_factor_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/_xarray_wrapper.html#add_factor_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.add_factor_metadata" title="Link to this definition">¶</a></dt>
 <dd><p>Adds the additional coordinates along each dataset dimension as new columns in the factor matrices.</p>
 <p>The coordinates of xarray DataArrays can contain metadata. For each dimension, there may be additional
 coordinates that are not used for indexing purposes. This function will iterate over all modes of
@@ -216,19 +212,19 @@ matrices.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">load_oslo_city_bike</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">postprocess</span><span class="p">,</span> <span class="n">add_factor_metadata</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_oslo_city_bike</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.postprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">postprocess</span><span class="p">,</span> <span class="n">add_factor_metadata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bikes</span> <span class="o">=</span> <span class="n">load_oslo_city_bike</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bikes</span><span class="o">.</span><span class="n">coords</span>
 <span class="go">Coordinates:</span>
-<span class="go">  * End station name  (End station name) object &#39;7 Juni Plassen&#39; ... &#39;Økernve...</span>
-<span class="go">    lat               (End station name) float64 59.92 59.93 ... 59.93 59.92</span>
-<span class="go">    lon               (End station name) float64 10.73 10.75 ... 10.8 10.78</span>
-<span class="go">  * Hour              (Hour) int32 0 1 2 3 4 5 6 7 8 ... 16 17 18 19 20 21 22 23</span>
-<span class="go">  * Month             (Month) int32 1 2 3 4 5 6 7 8 9 10 11 12</span>
-<span class="go">  * Day of week       (Day of week) int32 0 1 2 3 4 5 6</span>
-<span class="go">  * Year              (Year) int32 2020 2021</span>
+<span class="go">  * End station name  (End station name) object 2kB &#39;7 Juni Plassen&#39; ... &#39;Øke...</span>
+<span class="go">  * Year              (Year) int32 8B 2020 2021</span>
+<span class="go">  * Month             (Month) int32 48B 1 2 3 4 5 6 7 8 9 10 11 12</span>
+<span class="go">  * Day of week       (Day of week) int32 28B 0 1 2 3 4 5 6</span>
+<span class="go">  * Hour              (Hour) int32 96B 0 1 2 3 4 5 6 7 ... 17 18 19 20 21 22 23</span>
+<span class="go">    lat               (End station name) float64 2kB 59.92 59.93 ... 59.93 59.92</span>
+<span class="go">    lon               (End station name) float64 2kB 10.73 10.75 ... 10.8 10.78</span>
 </pre></div>
 </div>
 <p>We see that the <code class="docutils literal notranslate"><span class="pre">End</span> <span class="pre">station</span> <span class="pre">name</span></code> dimension has two additional columns: <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code>.
@@ -250,11 +246,11 @@ to the dataframe.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.factor_matrix_to_tidy">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">factor_matrix_to_tidy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Signal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#factor_matrix_to_tidy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.factor_matrix_to_tidy" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">factor_matrix_to_tidy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Signal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#factor_matrix_to_tidy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.factor_matrix_to_tidy" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a factor matrix into a tidy dataset, for use with Plotly Express.</p>
 <p>If we convert a factor matrix into a tidy dataset (or long table), then we get a table on the form</p>
 <table class="docutils align-default" id="id8">
-<caption><span class="caption-text">Tidy format factor matrix</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Tidy format factor matrix</span><a class="headerlink" href="#id8" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 33.3%" />
@@ -293,7 +289,7 @@ to the dataframe.</p>
 component each row belongs to. This function can also preserve metadata, which is signified by columns
 that have non-integer column names. For example, if we have a dataframe on the form</p>
 <table class="docutils align-default" id="id9">
-<caption><span class="caption-text">Factor matrix with metadata</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Factor matrix with metadata</span><a class="headerlink" href="#id9" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 16.7%" />
 <col style="width: 16.7%" />
@@ -351,7 +347,7 @@ that have non-integer column names. For example, if we have a dataframe on the f
 </table>
 <p>and convert it into a tidy format factor matrix, then we get a table on the form</p>
 <table class="docutils align-default" id="id10">
-<caption><span class="caption-text">Tidy format factor matrix with metadata</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Tidy format factor matrix with metadata</span><a class="headerlink" href="#id10" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 20.0%" />
@@ -422,9 +418,9 @@ If <code class="docutils literal notranslate"><span class="pre">id_vars</span> <
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.postprocessing</span> <span class="kn">import</span> <span class="n">factor_matrix_to_tidy</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.postprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">factor_matrix_to_tidy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">factor_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">factor_matrix</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -465,7 +461,7 @@ If <code class="docutils literal notranslate"><span class="pre">id_vars</span> <
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.label_cp_tensor">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">label_cp_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/_xarray_wrapper.html#label_cp_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.label_cp_tensor" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">label_cp_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/_xarray_wrapper.html#label_cp_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.label_cp_tensor" title="Link to this definition">¶</a></dt>
 <dd><p>Label the CP tensor by converting the factor matrices into DataFrames with a sensible index.</p>
 <p>Convert the factor matrices into Pandas DataFrames where the DataFrame indices
 are given by the coordinate names of an xarray DataArray. If the dataset has only
@@ -490,7 +486,7 @@ two modes, then it can also be a pandas DataFrame.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.postprocess">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_cp_tensor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#postprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.postprocess" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_cp_tensor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_behaviour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normalise'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_smaller_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#postprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.postprocess" title="Link to this definition">¶</a></dt>
 <dd><p>Standard postprocessing of a CP decomposition.</p>
 <p>This function will perform standard postprocessing of a CP decomposition.
 If a reference CP tensor is provided, then the columns of <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code>’s
@@ -572,10 +568,10 @@ are padded by nan values</p>
 </div>
 <p class="rubric">Examples</p>
 <p>Here is an example were we use postprocess on a decomposition of aminoacid data</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tlviz</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tlviz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_aminoacids</span><span class="p">()</span>
 <span class="go">Loading Aminoacids dataset from:</span>
 <span class="go">Bro, R, PARAFAC: Tutorial and applications, Chemometrics and Intelligent Laboratory Systems, 1997, 38, 149-171</span>
@@ -616,7 +612,7 @@ is taken care of and x-xaxis has correct labels and ticks</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../api/postprocessing-1.py">Source code</a>, <a class="reference external" href="../api/postprocessing-1_00_00.png">png</a>, <a class="reference external" href="../api/postprocessing-1_00_00.hires.png">hires.png</a>, <a class="reference external" href="../api/postprocessing-1_00_00.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/1049a0dc4662fbe1469bbf207e94de22/postprocessing-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/bebc792c44bc5f411e38d0a4ecd5566c/postprocessing-1_00_00.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/931dcf406c1f88f3bf8bd6090eff8525/postprocessing-1_00_00.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/be5ec8d61a04c42011c301dd8dbc299e/postprocessing-1_00_00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <figure class="align-default">
 <img alt="../_images/postprocessing-1_00_00.png" class="plot-directive" src="../_images/postprocessing-1_00_00.png" />
 </figure>
@@ -624,7 +620,7 @@ is taken care of and x-xaxis has correct labels and ticks</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../api/postprocessing-1_01_00.png">png</a>, <a class="reference external" href="../api/postprocessing-1_01_00.hires.png">hires.png</a>, <a class="reference external" href="../api/postprocessing-1_01_00.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/0ca70728bbb01e0ed17de3636a539e0d/postprocessing-1_01_00.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/e46827665d943c3c3a962da242d1f809/postprocessing-1_01_00.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/de1eb0df5f442a3c0349076ff8e3b5d0/postprocessing-1_01_00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <figure class="align-default">
 <img alt="../_images/postprocessing-1_01_00.png" class="plot-directive" src="../_images/postprocessing-1_01_00.png" />
 </figure>
@@ -632,7 +628,7 @@ is taken care of and x-xaxis has correct labels and ticks</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.postprocessing.resolve_cp_sign_indeterminacy">
-<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">resolve_cp_sign_indeterminacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#resolve_cp_sign_indeterminacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.resolve_cp_sign_indeterminacy" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.postprocessing.</span></span><span class="sig-name descname"><span class="pre">resolve_cp_sign_indeterminacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolve_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unresolved_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transpose'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/postprocessing.html#resolve_cp_sign_indeterminacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.postprocessing.resolve_cp_sign_indeterminacy" title="Link to this definition">¶</a></dt>
 <dd><p>Resolve the sign indeterminacy of CP models.</p>
 <p>Tensor factorisations have a sign indeterminacy that allows any change in the
 sign of the component vectors in one mode, under the condition that the sign

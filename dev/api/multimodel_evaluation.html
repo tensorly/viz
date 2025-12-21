@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Multi-model evaluation &#8212; TLViz 0.1.7 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,21 +15,18 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -171,7 +167,7 @@
       <div class="container content main-content">
         
   <section id="module-tlviz.multimodel_evaluation">
-<span id="multi-model-evaluation"></span><h1>Multi-model evaluation<a class="headerlink" href="#module-tlviz.multimodel_evaluation" title="Permalink to this heading">¶</a></h1>
+<span id="multi-model-evaluation"></span><h1>Multi-model evaluation<a class="headerlink" href="#module-tlviz.multimodel_evaluation" title="Link to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -188,7 +184,7 @@
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.multimodel_evaluation.get_model_with_lowest_error">
-<span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">get_model_with_lowest_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#get_model_with_lowest_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.get_model_with_lowest_error" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">get_model_with_lowest_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#get_model_with_lowest_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.get_model_with_lowest_error" title="Link to this definition">¶</a></dt>
 <dd><p>Compute reconstruction error for all cp_tensors and return model with lowest error.</p>
 <p>This is useful to select the best initialisation if several random
 initialisations are used to fit the model. By default, the relative SSE
@@ -228,11 +224,11 @@ order as <code class="docutils literal notranslate"><span class="pre">cp_tensors
 of model candidates, and how we can also get the errors for all model candidates and the index of the selected
 initialisation.</p>
 <p>We start by importing the relevant functionality</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.multimodel_evaluation</span> <span class="kn">import</span> <span class="n">sort_models_by_error</span><span class="p">,</span> <span class="n">get_model_with_lowest_error</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.model_evaluation</span> <span class="kn">import</span> <span class="n">relative_sse</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.factor_tools</span> <span class="kn">import</span> <span class="n">check_cp_tensor_equal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.multimodel_evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">sort_models_by_error</span><span class="p">,</span> <span class="n">get_model_with_lowest_error</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.model_evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">relative_sse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.factor_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_cp_tensor_equal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 </pre></div>
 </div>
 <p>Then, we create a simulated dataset and fit five model candidates using different random initialisations.</p>
@@ -258,19 +254,19 @@ of all model candidates.</p>
 </div>
 <p>And that it is the model that has the lowest error</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">errors</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
-<span class="go">True</span>
+<span class="go">np.True_</span>
 </pre></div>
 </div>
 <p>And finally that this error is equal to the relative SSE</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">errors</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="n">relative_sse</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
-<span class="go">True</span>
+<span class="go">np.True_</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.multimodel_evaluation.similarity_evaluation">
-<span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">similarity_evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#similarity_evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.similarity_evaluation" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">similarity_evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#similarity_evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.similarity_evaluation" title="Link to this definition">¶</a></dt>
 <dd><p>Compute similarities between <code class="docutils literal notranslate"><span class="pre">cp_tensor</span></code> and all <code class="docutils literal notranslate"><span class="pre">comparison_cp_tensors</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -296,9 +292,9 @@ argument and a tuple of components as second argument</p>
 <p>In this example, we will fit several PARAFAC models to a simulated dataset and use <code class="docutils literal notranslate"><span class="pre">similarity_evaluation</span></code> to
 compute the similarities between the different fitted models and the model that obtained the lowest error.</p>
 <p>We start by importing the relevant functionality</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.multimodel_evaluation</span> <span class="kn">import</span> <span class="n">sort_models_by_error</span><span class="p">,</span> <span class="n">similarity_evaluation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.multimodel_evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">sort_models_by_error</span><span class="p">,</span> <span class="n">similarity_evaluation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 </pre></div>
 </div>
 <p>Then, we create a random simulated dataset and fit five parafac models to it.</p>
@@ -326,7 +322,7 @@ and the model that obtained the lowest error.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.multimodel_evaluation.sort_models_by_error">
-<span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">sort_models_by_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#sort_models_by_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.sort_models_by_error" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.multimodel_evaluation.</span></span><span class="sig-name descname"><span class="pre">sort_models_by_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/multimodel_evaluation.html#sort_models_by_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.multimodel_evaluation.sort_models_by_error" title="Link to this definition">¶</a></dt>
 <dd><p>Sort the <code class="docutils literal notranslate"><span class="pre">cp_tensors</span></code> by their error so the model with the lowest error is first.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -353,9 +349,9 @@ is first and highest error is last.</p>
 <p class="rubric">Examples</p>
 <p>Here, we see how <code class="docutils literal notranslate"><span class="pre">sort_models_by_error</span></code> can be useful to get a collection of model candidates in a logical order.</p>
 <p>We start by importing the relevant functionality.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.multimodel_evaluation</span> <span class="kn">import</span> <span class="n">sort_models_by_error</span><span class="p">,</span> <span class="n">get_model_with_lowest_error</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.data</span> <span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.multimodel_evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">sort_models_by_error</span><span class="p">,</span> <span class="n">get_model_with_lowest_error</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">simulated_random_cp_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 </pre></div>
 </div>
 <p>Then, we simulate a random dataset and fit five model candidates to it.</p>

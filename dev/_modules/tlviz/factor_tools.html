@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,21 +14,18 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -131,25 +127,25 @@
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
 
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linear_sum_assignment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_sum_assignment</span>
 
-<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._module_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_handle_none_weights_cp_tensor</span><span class="p">,</span>
     <span class="n">is_dataframe</span><span class="p">,</span>
     <span class="n">validate_cp_tensor</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span>
-<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._tl_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._xarray_wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_SINGLETON</span><span class="p">,</span>
     <span class="n">_handle_labelled_cp</span><span class="p">,</span>
     <span class="n">_handle_labelled_dataset</span><span class="p">,</span>
     <span class="n">_handle_labelled_factor_matrix</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_norm</span><span class="p">,</span> <span class="n">extract_singleton</span><span class="p">,</span> <span class="n">normalise</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_norm</span><span class="p">,</span> <span class="n">extract_singleton</span><span class="p">,</span> <span class="n">normalise</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;normalise_cp_tensor&quot;</span><span class="p">,</span>
@@ -170,9 +166,11 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="normalise_cp_tensor"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.normalise_cp_tensor">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+<div class="viewcode-block" id="normalise_cp_tensor">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.normalise_cp_tensor">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">normalise_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalise_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that the all factor matrices have unit norm, and all weight is stored in the weight-vector</span>
 
 <span class="sd">    Parameters</span>
@@ -202,9 +200,12 @@
     <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_factors</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="distribute_weights_evenly"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.distribute_weights_evenly">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+
+<div class="viewcode-block" id="distribute_weights_evenly">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.distribute_weights_evenly">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">distribute_weights_evenly</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">distribute_weights_evenly</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that the weight-vector consists of ones and all factor matrices have equal norm</span>
 
 <span class="sd">    Parameters</span>
@@ -226,10 +227,13 @@
     <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span></div>
 
 
-<div class="viewcode-block" id="distribute_weights_in_one_mode"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.distribute_weights_in_one_mode">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+
+<div class="viewcode-block" id="distribute_weights_in_one_mode">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.distribute_weights_in_one_mode">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_alias_mode_axis</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">distribute_weights_in_one_mode</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">distribute_weights_in_one_mode</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise all factors and multiply the weights into one mode.</span>
 
 <span class="sd">    The CP tensor is scaled so all factor matrices except one have unit norm</span>
@@ -255,7 +259,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="n">factors</span></div>
 
 
-<div class="viewcode-block" id="distribute_weights"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.distribute_weights">[docs]</a><span class="k">def</span> <span class="nf">distribute_weights</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="distribute_weights">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.distribute_weights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">distribute_weights</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Utility to distribute the weights of a CP tensor.</span>
 
 <span class="sd">    Parameters</span>
@@ -302,11 +309,14 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;weight_behaviour must be either &#39;ignore&#39;, &#39;normalise&#39;, &#39;evenly&#39;, or &#39;one_mode&#39;&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cosine_similarity"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.cosine_similarity">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="cosine_similarity">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.cosine_similarity">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_factor_matrix</span><span class="p">(</span><span class="s2">&quot;factor_matrix2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_factor_matrix</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The average cosine similarity (Tucker congruence) with optimal column permutation.</span>
 
 <span class="sd">    The cosine similarity between two vectors is computed as</span>
@@ -336,10 +346,11 @@
     <span class="k">return</span> <span class="n">extract_singleton</span><span class="p">(</span><span class="n">congruence</span><span class="p">[</span><span class="n">permutation</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span></div>
 
 
+
 <span class="n">NO_COLUMN</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_linear_sum_assignment_permutation</span><span class="p">(</span><span class="n">cost_matrix</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_linear_sum_assignment_permutation</span><span class="p">(</span><span class="n">cost_matrix</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="p">):</span>
     <span class="n">row_index</span><span class="p">,</span> <span class="n">column_index</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span><span class="o">-</span><span class="n">cost_matrix</span><span class="p">)</span>
 
     <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span> <span class="o">=</span> <span class="n">cost_matrix</span><span class="o">.</span><span class="n">shape</span>
@@ -366,9 +377,11 @@
     <span class="k">return</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">column_index</span><span class="p">,</span> <span class="n">permutation</span>
 
 
-<div class="viewcode-block" id="get_factor_matrix_permutation"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.get_factor_matrix_permutation">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="viewcode-block" id="get_factor_matrix_permutation">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.get_factor_matrix_permutation">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_factor_matrix_permutation</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">ignore_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_factor_matrix_permutation</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">ignore_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Find optimal permutation of the factor matrices</span>
 
 <span class="sd">    Efficient estimation of the optimal permutation for two factor matrices.</span>
@@ -418,9 +431,12 @@
     <span class="k">return</span> <span class="n">_get_linear_sum_assignment_permutation</span><span class="p">(</span><span class="n">congruence_product</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="n">allow_smaller_rank</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="factor_match_score"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.factor_match_score">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="factor_match_score">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.factor_match_score">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">factor_match_score</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">factor_match_score</span><span class="p">(</span>
     <span class="n">cp_tensor1</span><span class="p">,</span>
     <span class="n">cp_tensor2</span><span class="p">,</span>
     <span class="n">consider_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -567,8 +583,11 @@
     <span class="k">return</span> <span class="n">congruence_product</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">permutation</span></div>
 
 
-<div class="viewcode-block" id="degeneracy_score"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.degeneracy_score">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">degeneracy_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+
+<div class="viewcode-block" id="degeneracy_score">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.degeneracy_score">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">degeneracy_score</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the degeneracy score for a given decomposition.</span>
 
 <span class="sd">    PARAFAC models can be degenerate, which is a sign that we should</span>
@@ -684,7 +703,8 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tucker_congruence_scores</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span></div>
 
 
-<span class="k">def</span> <span class="nf">_permute_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="p">):</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_permute_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal function, does not handle labelled cp tensors. Use ``permute_cp_tensor`` instead.&quot;&quot;&quot;</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
 
@@ -712,9 +732,11 @@
     <span class="k">return</span> <span class="n">new_weights</span><span class="p">,</span> <span class="n">new_factors</span>
 
 
-<div class="viewcode-block" id="get_cp_permutation"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.get_cp_permutation">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="viewcode-block" id="get_cp_permutation">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.get_cp_permutation">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_cp_permutation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">reference_cp_tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">consider_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cp_permutation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">reference_cp_tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">consider_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the optimal permutation between two CP tensors.</span>
 
 <span class="sd">    This function supports two ways of finding the permutation of a CP tensor: Aligning the components</span>
@@ -765,9 +787,12 @@
     <span class="k">return</span> <span class="n">permutation</span></div>
 
 
-<div class="viewcode-block" id="permute_cp_tensor"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.permute_cp_tensor">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+
+<div class="viewcode-block" id="permute_cp_tensor">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.permute_cp_tensor">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">,</span> <span class="n">preserve_columns</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">permute_cp_tensor</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">permute_cp_tensor</span><span class="p">(</span>
     <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_cp_tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">consider_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_smaller_rank</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Permute the CP tensor</span>
@@ -824,9 +849,12 @@
     <span class="k">return</span> <span class="n">_permute_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">permutation</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="check_factor_matrix_equal"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_factor_matrix_equal">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="check_factor_matrix_equal">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_factor_matrix_equal">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">check_factor_matrix_equal</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_factor_matrix_equal</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.</span>
 
 <span class="sd">    This function is similar to ``numpy.allclose``, but works on both labelled and unlabelled factor</span>
@@ -907,9 +935,12 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="check_cp_tensor_equal"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_cp_tensor_equal">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="check_cp_tensor_equal">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_cp_tensor_equal">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">check_cp_tensor_equal</span><span class="p">(</span><span class="n">cp_tensor1</span><span class="p">,</span> <span class="n">cp_tensor2</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_cp_tensor_equal</span><span class="p">(</span><span class="n">cp_tensor1</span><span class="p">,</span> <span class="n">cp_tensor2</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the factor matrices and weights are equal.</span>
 
 <span class="sd">    This will check if the factor matrices and weights are exactly equal</span>
@@ -995,9 +1026,12 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="check_factor_matrix_close"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_factor_matrix_close">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="check_factor_matrix_close">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_factor_matrix_close">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">check_factor_matrix_close</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_factor_matrix_close</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that all entries in a factor matrix are close, if labelled, then label equality is also checked.</span>
 
 <span class="sd">    This function is similar to ``numpy.allclose``, but works on both labelled and unlabelled factor</span>
@@ -1078,11 +1112,14 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">factor_matrix1</span><span class="p">,</span> <span class="n">factor_matrix2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="check_cp_tensors_equivalent"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_cp_tensors_equivalent">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="check_cp_tensors_equivalent">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.check_cp_tensors_equivalent">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor2&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor1&quot;</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor2&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">check_cp_tensors_equivalent</span><span class="p">(</span><span class="n">cp_tensor1</span><span class="p">,</span> <span class="n">cp_tensor2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_cp_tensors_equivalent</span><span class="p">(</span><span class="n">cp_tensor1</span><span class="p">,</span> <span class="n">cp_tensor2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">ignore_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the decompositions are equivalent</span>
 
 <span class="sd">    This will check if the factor matrices and weights are equivalent. That is</span>
@@ -1172,12 +1209,15 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="percentage_variation"><a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.percentage_variation">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="percentage_variation">
+<a class="viewcode-back" href="../../api/factor_tools.html#tlviz.factor_tools.percentage_variation">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">percentage_variation</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the percentage of variation captured by each component.</span>
 
 <span class="sd">    The (possible) non-orthogonality of CP factor matrices makes it less straightforward</span>
@@ -1279,6 +1319,7 @@
         <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ssc</span> <span class="o">/</span> <span class="p">(</span><span class="n">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be either &#39;data&#39;, &#39;model&#39; or &#39;both&quot;</span><span class="p">)</span></div>
+
 </pre></div>
 
       </div>

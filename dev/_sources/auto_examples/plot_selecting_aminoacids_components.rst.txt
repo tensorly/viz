@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_selecting_aminoacids_components.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_selecting_aminoacids_components.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -30,7 +30,7 @@ Imports and utilities
 
 .. GENERATED FROM PYTHON SOURCE LINES 11-17
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -53,7 +53,7 @@ initialisations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 21-39
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -89,7 +89,7 @@ and plot the EEM-matrix for each of the five samples.
 
 .. GENERATED FROM PYTHON SOURCE LINES 44-51
 
-.. code-block:: default
+.. code-block:: Python
 
 
     aminoacids = tlviz.data.load_aminoacids()
@@ -124,7 +124,7 @@ Fit models
 
 .. GENERATED FROM PYTHON SOURCE LINES 54-60
 
-.. code-block:: default
+.. code-block:: Python
 
 
     models = {}
@@ -159,7 +159,7 @@ To do this, we first sort each initialization by its final relative sum squared 
 
 .. GENERATED FROM PYTHON SOURCE LINES 66-75
 
-.. code-block:: default
+.. code-block:: Python
 
 
     errors = {}
@@ -202,7 +202,7 @@ where the the parameters without a hat correspond the the parameters of the refe
 
 .. GENERATED FROM PYTHON SOURCE LINES 96-101
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fms_with_selected = {}
@@ -227,7 +227,7 @@ rank
 
 .. GENERATED FROM PYTHON SOURCE LINES 108-120
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig, axes = plt.subplots(1, 5, figsize=(15, 3), tight_layout=True, sharex=True, sharey=True)
@@ -283,7 +283,7 @@ Hence, a low core consistency alone is not necessarily a bad sign.
 
 .. GENERATED FROM PYTHON SOURCE LINES 145-155
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig, axes = plt.subplots(1, 2, figsize=(7, 3), tight_layout=True)
@@ -322,7 +322,7 @@ needs a high number of components.
 
 .. GENERATED FROM PYTHON SOURCE LINES 166-175
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig, axes = plt.subplots(1, 5, figsize=(15, 3), tight_layout=True, sharex=False, sharey=False)
@@ -380,7 +380,7 @@ of the application
 
 .. GENERATED FROM PYTHON SOURCE LINES 205-210
 
-.. code-block:: default
+.. code-block:: Python
 
 
     model_3comp = tlviz.postprocessing.postprocess(selected_models[3], dataset=aminoacids)
@@ -401,7 +401,7 @@ of the application
 
 .. GENERATED FROM PYTHON SOURCE LINES 211-216
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(figsize=(3 * 1.6, 3), tight_layout=True)
     tlviz.visualisation.percentage_variation_plot(model_3comp, aminoacids.data, method="both", ax=ax)
@@ -427,7 +427,7 @@ of the application
 
 .. GENERATED FROM PYTHON SOURCE LINES 219-223
 
-.. code-block:: default
+.. code-block:: Python
 
     model_4comp = tlviz.postprocessing.postprocess(selected_models[4], dataset=aminoacids)
     tlviz.visualisation.components_plot(model_4comp)
@@ -447,7 +447,7 @@ of the application
 
 .. GENERATED FROM PYTHON SOURCE LINES 224-228
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(figsize=(3 * 1.6, 3), tight_layout=True)
     tlviz.visualisation.percentage_variation_plot(model_4comp, aminoacids.data, method="both", ax=ax)
@@ -475,7 +475,7 @@ With more than three components, we find that one of the components has negative
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  11.987 seconds)
+   **Total running time of the script:** (0 minutes 8.841 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_selecting_aminoacids_components.py:
@@ -484,14 +484,17 @@ With more than three components, we find that one of the components has negative
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_selecting_aminoacids_components.ipynb <plot_selecting_aminoacids_components.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_selecting_aminoacids_components.py <plot_selecting_aminoacids_components.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_selecting_aminoacids_components.ipynb <plot_selecting_aminoacids_components.ipynb>`
+      :download:`Download zipped: plot_selecting_aminoacids_components.zip <plot_selecting_aminoacids_components.zip>`
 
 
 .. only:: html
