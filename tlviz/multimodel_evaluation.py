@@ -149,12 +149,12 @@ def get_model_with_lowest_error(cp_tensors, dataset, error_function=None, return
     And that it is the model that has the lowest error
 
     >>> errors[index] == min(errors)
-    True
+    np.True_
 
     And finally that this error is equal to the relative SSE
 
     >>> errors[index] == relative_sse(model, dataset)
-    True
+    np.True_
     """
     if error_function is None:
         error_function = model_evaluation.relative_sse

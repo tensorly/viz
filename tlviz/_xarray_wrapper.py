@@ -56,13 +56,13 @@ def add_factor_metadata(cp_tensor, dataset):
     >>> bikes = load_oslo_city_bike()
     >>> bikes.coords
     Coordinates:
-      * End station name  (End station name) object '7 Juni Plassen' ... 'Økernve...
-        lat               (End station name) float64 59.92 59.93 ... 59.93 59.92
-        lon               (End station name) float64 10.73 10.75 ... 10.8 10.78
-      * Hour              (Hour) int32 0 1 2 3 4 5 6 7 8 ... 16 17 18 19 20 21 22 23
-      * Month             (Month) int32 1 2 3 4 5 6 7 8 9 10 11 12
-      * Day of week       (Day of week) int32 0 1 2 3 4 5 6
-      * Year              (Year) int32 2020 2021
+      * End station name  (End station name) object 2kB '7 Juni Plassen' ... 'Øke...
+      * Year              (Year) int32 8B 2020 2021
+      * Month             (Month) int32 48B 1 2 3 4 5 6 7 8 9 10 11 12
+      * Day of week       (Day of week) int32 28B 0 1 2 3 4 5 6
+      * Hour              (Hour) int32 96B 0 1 2 3 4 5 6 7 ... 17 18 19 20 21 22 23
+        lat               (End station name) float64 2kB 59.92 59.93 ... 59.93 59.92
+        lon               (End station name) float64 2kB 10.73 10.75 ... 10.8 10.78
 
     We see that the ``End station name`` dimension has two additional columns: ``lat`` and ``lon``.
     These contain metadata about the end station coordinates, and it can be useful to have these

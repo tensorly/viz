@@ -39,6 +39,21 @@ __all__ = [
 ]
 
 
+def _get_next_style(ax):
+    """Get the next style of the matplotlib axes property cycler and increment its position.
+
+    Before Matplotlib v3.8, we directly accessed the prop_cycler of ax._get_lines. However this attribute
+    was deleted to make pickling work correctly for Matplotlib axes, so now we need this workaround.
+    """
+    lines = ax._get_lines
+    if hasattr(lines, "prop_cycler"):
+        return next(lines.prop_cycler)
+    else:
+        out = lines._cycler_items[lines._idx]
+        lines._idx = (lines._idx + 1) % len(lines._cycler_items)
+        return out
+
+
 def scree_plot(cp_tensors, dataset, errors=None, metric="Fit", ax=None):
     """Create scree plot for the given cp tensors.
 
@@ -177,7 +192,7 @@ def histogram_of_residuals(cp_tensor, dataset, ax=None, standardised=True, **kwa
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> histogram_of_residuals(est_cp, X)
-        <AxesSubplot: title={'center': 'Histogram of residuals'}, xlabel='Standardised residuals', ylabel='Frequency'>
+        <Axes: title={'center': 'Histogram of residuals'}, xlabel='Standardised residuals', ylabel='Frequency'>
         >>> plt.show()
     """
     estimated_dataset = cp_to_tensor(cp_tensor)
@@ -244,7 +259,7 @@ def residual_qq(cp_tensor, dataset, ax=None, use_pingouin=False, **kwargs):
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)
         >>> est_cp = parafac(X, 3)
         >>> residual_qq(est_cp, X)
-        <AxesSubplot: title={'center': 'QQ-plot of residuals'}, xlabel='Theoretical Quantiles', ylabel='Sample Quantiles'>
+        <Axes: title={'center': 'QQ-plot of residuals'}, xlabel='Theoretical Quantiles', ylabel='Sample Quantiles'>
         >>> plt.show()
     """
     estimated_dataset = cp_to_tensor(cp_tensor)
@@ -337,7 +352,7 @@ def outlier_plot(
         >>> outlier_plot(
         ...     cp, data, leverage_rules_of_thumb='p-value', residual_rules_of_thumb='p-value', p_value=[0.05, 0.01]
         ... )
-        <AxesSubplot: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
+        <Axes: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
 
     We can also provide multiple types of rules of thumb
@@ -360,7 +375,7 @@ def outlier_plot(
         >>> outlier_plot(
         ...     cp, data, leverage_rules_of_thumb=['huber lower', 'hw higher'], residual_rules_of_thumb='two sigma'
         ... )
-        <AxesSubplot: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
+        <Axes: title={'center': 'Outlier plot for End station name'}, xlabel='Leverage score', ylabel='Slabwise SSE'>
         >>> plt.show()
 
     See Also
@@ -438,7 +453,7 @@ def outlier_plot(
 
     # Draw the lines
     for key, value in leverage_thresholds.items():
-        ax.axvline(value, label=key, **next(ax._get_lines.prop_cycler))
+        ax.axvline(value, label=key, **_get_next_style(ax))
 
     residual_thresholds = {}
     if residual_rules_of_thumb is not None:
@@ -465,7 +480,7 @@ def outlier_plot(
                     name = residual_rule_of_thumb
                 residual_thresholds[name] = threshold
     for key, value in residual_thresholds.items():
-        ax.axhline(value, label=key, **next(ax._get_lines.prop_cycler))
+        ax.axhline(value, label=key, **_get_next_style(ax))
 
     if len(leverage_thresholds) > 0 or len(residual_thresholds) > 0:
         ax.legend()
@@ -521,7 +536,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor = random_cp(shape=(5,10,15), rank=2)
         >>> component_scatterplot(cp_tensor, mode=0)
-        <AxesSubplot: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
+        <Axes: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
         >>> plt.show()
 
     Eexample with PCA of a real stock dataset
@@ -553,7 +568,7 @@ def component_scatterplot(cp_tensor, mode, x_component=0, y_component=1, ax=None
         >>>
         >>> # Visualise the components with components_plot
         >>> component_scatterplot(cp_tensor, mode=1)
-        <AxesSubplot: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
+        <Axes: title={'center': 'Component plot'}, xlabel='Component 0', ylabel='Component 1'>
         >>> plt.show()
     """
     if ax is None:
@@ -624,7 +639,7 @@ def core_element_plot(cp_tensor, dataset, normalised=False, ax=None):
         >>> true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=42)
         >>> est_cp = parafac(X, 3)
         >>> core_element_plot(est_cp, X)
-        <AxesSubplot: title={'center': 'Core consistency: 99.8'}, xlabel='Core element', ylabel='Value'>
+        <Axes: title={'center': 'Core consistency: 99.8'}, xlabel='Core element', ylabel='Value'>
         >>> plt.show()
     """
     weights, factors = cp_tensor
@@ -1300,7 +1315,7 @@ def percentage_variation_plot(
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor)
-        <AxesSubplot: xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        <Axes: xlabel='Component number', ylabel='Percentage variation explained [%]'>
         >>> plt.show()
 
     We can also get the percentage of variation in the data that each component explains
@@ -1314,7 +1329,7 @@ def percentage_variation_plot(
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor, dataset, method="data")
-        <AxesSubplot: xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        <Axes: xlabel='Component number', ylabel='Percentage variation explained [%]'>
         >>> plt.show()
 
     Or both the variation in the data and in the model
@@ -1328,7 +1343,7 @@ def percentage_variation_plot(
         >>> import matplotlib.pyplot as plt
         >>> cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)
         >>> percentage_variation_plot(cp_tensor, dataset, method="both")
-        <AxesSubplot: xlabel='Component number', ylabel='Percentage variation explained [%]'>
+        <Axes: xlabel='Component number', ylabel='Percentage variation explained [%]'>
         >>> plt.show()
     """
     if ax is None:
