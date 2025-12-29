@@ -95,10 +95,7 @@ for rank in [2, 3, 4, 5]:
     for split_no, (train_index, _) in enumerate(rskf.split(dataset)):
         repeat_no = split_no // splits
 
-        # Sort rows for consistent ordering (not necessary)
-
-        sorted_train_index = sorted(train_index)
-        train = dataset[sorted_train_index]
+        train = dataset[train_index]
 
         train = train / tl.norm(train)  # Pre-process the tensor without leaking info from other folds
 
@@ -113,7 +110,7 @@ for rank in [2, 3, 4, 5]:
         if repeat_no not in split_indices[rank].keys():
             split_indices[rank][repeat_no] = []
 
-        split_indices[rank][repeat_no].append(sorted_train_index)
+        split_indices[rank][repeat_no].append(train_index)
 
 
 ###############################################################################
@@ -176,10 +173,10 @@ for rank in [2, 3, 4, 5]:
                     weights_i, (A_i, B_i, C_i) = cp_i
                     weights_j, (A_j, B_j, C_j) = cp_j
 
-                    indices_subset_i = sorted(split_indices[rank][repeat_no][i])
-                    indices_subset_j = sorted(split_indices[rank][repeat_no][j])
+                    indices_subset_i = list(split_indices[rank][repeat_no][i])
+                    indices_subset_j = list(split_indices[rank][repeat_no][j])
 
-                    common_indices = sorted(list(set(indices_subset_i).intersection(set(indices_subset_j))))
+                    common_indices = list(set(indices_subset_i).intersection(set(indices_subset_j)))
 
                     indices2use_i = []
                     indices2use_j = []
