@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:49.126** total execution time for 9 files **from all galleries**:
+**02:50.952** total execution time for 9 files **from all galleries**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_replicability_analysis.py` (``../examples/plot_replicability_analysis.py``)
-     - 02:49.126
+     - 02:50.952
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bike_plotly.py` (``../examples/plot_bike_plotly.py``)
      - 00:00.000

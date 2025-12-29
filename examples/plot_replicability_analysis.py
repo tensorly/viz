@@ -89,8 +89,8 @@ for rank in [2, 3, 4, 5]:
 
     rskf = RepeatedKFold(n_splits=splits, n_repeats=repeats, random_state=1)
 
-    models[rank] = {}
-    split_indices[rank] = {}
+    models[rank] = [[] for _ in range(repeats)]
+    split_indices[rank] = [[] for _ in range(repeats)]
 
     for split_no, (train_index, _) in enumerate(rskf.split(dataset)):
         repeat_no = split_no // splits
@@ -102,15 +102,9 @@ for rank in [2, 3, 4, 5]:
         current_models = fit_many_parafac(train.data, rank)
         current_model = tlviz.multimodel_evaluation.get_model_with_lowest_error(current_models, train)
 
-        if repeat_no not in models[rank].keys():
-            models[rank][repeat_no] = []
-
         models[rank][repeat_no].append(current_model)
 
-        if repeat_no not in split_indices[rank].keys():
-            split_indices[rank][repeat_no] = []
-
-        split_indices[rank][repeat_no].append(train_index)
+        split_indices[rank][repeat_no].append(train_index) # Keeping track of the indices of each fold
 
 
 ###############################################################################
@@ -131,14 +125,15 @@ for rank in [2, 3, 4, 5]:
 # Here, we are skipping the mode we split (``mode=0``).
 
 replicability_stability = {}
-for rank in [2, 3, 4, 5]:
+for rank in models.keys():
     replicability_stability[rank] = []
-    for repeat_no in models[rank].keys():
-        for i, cp_i in enumerate(models[rank][repeat_no]):
-            for j, cp_j in enumerate(models[rank][repeat_no]):
-                if i < j:  # include every pair only once and omit i == j
-                    fms = tlviz.factor_tools.factor_match_score(cp_i, cp_j, consider_weights=False, skip_mode=0)
-                    replicability_stability[rank].append(fms)
+    for repeat_no, current_models in enumerate(models[rank]):
+        for i, cp_i in enumerate(current_models):
+            for j, cp_j in enumerate(current_models):
+                if i >= j:  # include every pair only once and omit i == j
+                    continue
+                fms = tlviz.factor_tools.factor_match_score(cp_i, cp_j, consider_weights=False, skip_mode=0)
+                replicability_stability[rank].append(fms)
 
 ranks = sorted(replicability_stability.keys())
 data = [np.ravel(replicability_stability[r]) for r in ranks]
@@ -163,35 +158,36 @@ plt.show()
 # present in both subsets.
 
 replicability_stability_alt = {}
-for rank in [2, 3, 4, 5]:
+for rank in models.keys():
     replicability_stability_alt[rank] = []
-    for repeat_no in models[rank].keys():
-        for i, cp_i in enumerate(models[rank][repeat_no]):
-            for j, cp_j in enumerate(models[rank][repeat_no]):
-                if i < j:  # include every pair only once and omit i == j
+    for repeat_no, current_models in enumerate(models[rank]):
+        for i, cp_i in enumerate(current_models):
+            for j, cp_j in enumerate(current_models):
+                if i >= j:  # include every pair only once and omit i == j
+                    continue
 
-                    weights_i, (A_i, B_i, C_i) = cp_i
-                    weights_j, (A_j, B_j, C_j) = cp_j
+                weights_i, (A_i, B_i, C_i) = cp_i
+                weights_j, (A_j, B_j, C_j) = cp_j
 
-                    indices_subset_i = list(split_indices[rank][repeat_no][i])
-                    indices_subset_j = list(split_indices[rank][repeat_no][j])
+                indices_subset_i = list(split_indices[rank][repeat_no][i])
+                indices_subset_j = list(split_indices[rank][repeat_no][j])
 
-                    common_indices = list(set(indices_subset_i).intersection(set(indices_subset_j)))
+                common_indices = list(set(indices_subset_i).intersection(set(indices_subset_j)))
 
-                    indices2use_i = []
-                    indices2use_j = []
+                indices2use_i = []
+                indices2use_j = []
 
-                    for common_idx in common_indices:
-                        indices2use_i.append(indices_subset_i.index(common_idx))
-                        indices2use_j.append(indices_subset_j.index(common_idx))
+                for common_idx in common_indices:
+                    indices2use_i.append(indices_subset_i.index(common_idx))
+                    indices2use_j.append(indices_subset_j.index(common_idx))
 
-                    A_i = A_i[indices2use_i, :]
-                    A_j = A_j[indices2use_j, :]
+                A_i = A_i[indices2use_i, :]
+                A_j = A_j[indices2use_j, :]
 
-                    fms = tlviz.factor_tools.factor_match_score(
-                        (weights_i, (A_i, B_i, C_i)), (weights_j, (A_j, B_j, C_j)), consider_weights=False
-                    )
-                    replicability_stability_alt[rank].append(fms)
+                fms = tlviz.factor_tools.factor_match_score(
+                    (weights_i, (A_i, B_i, C_i)), (weights_j, (A_j, B_j, C_j)), consider_weights=False
+                )
+                replicability_stability_alt[rank].append(fms)
 
 ranks = sorted(replicability_stability_alt.keys())
 data = [np.ravel(replicability_stability_alt[r]) for r in ranks]
