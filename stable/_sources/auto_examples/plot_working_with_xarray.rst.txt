@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_working_with_xarray.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_working_with_xarray.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -37,7 +37,7 @@ Imports and utilities
 
 .. GENERATED FROM PYTHON SOURCE LINES 18-24
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -59,7 +59,7 @@ Creating the simulated dataset
 
 .. GENERATED FROM PYTHON SOURCE LINES 27-32
 
-.. code-block:: default
+.. code-block:: Python
 
     numpy_data = rng.poisson(10, size=(24, 7, 12))
     hour_label = range(1, 25)
@@ -80,7 +80,7 @@ Storing this dataset as an xarray data array
 
 .. GENERATED FROM PYTHON SOURCE LINES 35-46
 
-.. code-block:: default
+.. code-block:: Python
 
     dataset = xr.DataArray(
         data=numpy_data,
@@ -116,38 +116,87 @@ Storing this dataset as an xarray data array
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
-    html[theme=dark],
-    body[data-theme=dark],
+    html[theme="dark"],
+    html[data-theme="dark"],
+    body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1F1F1F;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -158,8 +207,11 @@ Storing this dataset as an xarray data array
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -170,39 +222,62 @@ Storing this dataset as an xarray data array
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
-      grid-template-columns: 150px auto auto 1fr 20px 20px;
+      grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: none;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
+      opacity: 0;
+      height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
+    }
+
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -210,11 +285,25 @@ Storing this dataset as an xarray data array
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -223,7 +312,7 @@ Storing this dataset as an xarray data array
 
     .xr-section-summary-in + label:before {
       display: inline-block;
-      content: '►';
+      content: "►";
       font-size: 11px;
       width: 15px;
       text-align: center;
@@ -234,7 +323,7 @@ Storing this dataset as an xarray data array
     }
 
     .xr-section-summary-in:checked + label:before {
-      content: '▼';
+      content: "▼";
     }
 
     .xr-section-summary-in:checked + label > span {
@@ -242,9 +331,9 @@ Storing this dataset as an xarray data array
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -252,13 +341,79 @@ Storing this dataset as an xarray data array
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -306,15 +461,15 @@ Storing this dataset as an xarray data array
     }
 
     .xr-dim-list:before {
-      content: '(';
+      content: "(";
     }
 
     .xr-dim-list:after {
-      content: ')';
+      content: ")";
     }
 
     .xr-dim-list li:not(:last-child):after {
-      content: ',';
+      content: ",";
       padding-right: 5px;
     }
 
@@ -331,7 +486,9 @@ Storing this dataset as an xarray data array
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -342,6 +499,7 @@ Storing this dataset as an xarray data array
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -391,8 +549,15 @@ Storing this dataset as an xarray data array
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -403,6 +568,12 @@ Storing this dataset as an xarray data array
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -464,7 +635,15 @@ Storing this dataset as an xarray data array
       stroke: currentColor;
       fill: currentColor;
     }
-    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (hour: 24, day-of-week: 7, month: 12)&gt;
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
+    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (hour: 24, day-of-week: 7, month: 12)&gt; Size: 16kB
     array([[[11,  2, 11, ..., 11, 12, 12],
             [ 6, 10, 10, ..., 13, 14,  8],
             [ 9,  7,  9, ..., 10,  9, 10],
@@ -505,11 +684,11 @@ Storing this dataset as an xarray data array
             ...,
             [12,  7,  5, ...,  9, 15,  5],
             [ 9,  5, 13, ..., 10, 11, 13],
-            [ 9, 13, 13, ...,  9, 17,  8]]])
+            [ 9, 13, 13, ...,  9, 17,  8]]], shape=(24, 7, 12))
     Coordinates:
-      * month        (month) &lt;U3 &#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; &#x27;Apr&#x27; ... &#x27;Sep&#x27; &#x27;Oct&#x27; &#x27;Nov&#x27; &#x27;Dec&#x27;
-      * day-of-week  (day-of-week) &lt;U3 &#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; &#x27;Thu&#x27; &#x27;Fri&#x27; &#x27;Sat&#x27; &#x27;Sun&#x27;
-      * hour         (hour) int64 1 2 3 4 5 6 7 8 9 ... 16 17 18 19 20 21 22 23 24</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span class='xr-has-index'>hour</span>: 24</li><li><span class='xr-has-index'>day-of-week</span>: 7</li><li><span class='xr-has-index'>month</span>: 12</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-f3d55940-dc53-4e98-a85f-1b4d12b5c5f4' class='xr-array-in' type='checkbox' checked><label for='section-f3d55940-dc53-4e98-a85f-1b4d12b5c5f4' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11 2 11 13 14 12 14 8 12 11 12 12 6 ... 9 13 13 5 14 12 14 9 12 9 17 8</span></div><div class='xr-array-data'><pre>array([[[11,  2, 11, ..., 11, 12, 12],
+      * hour         (hour) int64 192B 1 2 3 4 5 6 7 8 9 ... 17 18 19 20 21 22 23 24
+      * day-of-week  (day-of-week) &lt;U3 84B &#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; &#x27;Thu&#x27; &#x27;Fri&#x27; &#x27;Sat&#x27; &#x27;Sun&#x27;
+      * month        (month) &lt;U3 144B &#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; &#x27;Apr&#x27; ... &#x27;Oct&#x27; &#x27;Nov&#x27; &#x27;Dec&#x27;</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'></div><ul class='xr-dim-list'><li><span class='xr-has-index'>hour</span>: 24</li><li><span class='xr-has-index'>day-of-week</span>: 7</li><li><span class='xr-has-index'>month</span>: 12</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-331476b3-9bda-4928-9528-8e14c3cfc099' class='xr-array-in' type='checkbox' checked><label for='section-331476b3-9bda-4928-9528-8e14c3cfc099' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11 2 11 13 14 12 14 8 12 11 12 12 6 ... 9 13 13 5 14 12 14 9 12 9 17 8</span></div><div class='xr-array-data'><pre>array([[[11,  2, 11, ..., 11, 12, 12],
             [ 6, 10, 10, ..., 13, 14,  8],
             [ 9,  7,  9, ..., 10,  9, 10],
             ...,
@@ -549,13 +728,9 @@ Storing this dataset as an xarray data array
             ...,
             [12,  7,  5, ...,  9, 15,  5],
             [ 9,  5, 13, ..., 10, 11, 13],
-            [ 9, 13, 13, ...,  9, 17,  8]]])</pre></div></div></li><li class='xr-section-item'><input id='section-455fe12f-1d98-4411-bfe8-1f14f17759d9' class='xr-section-summary-in' type='checkbox'  checked><label for='section-455fe12f-1d98-4411-bfe8-1f14f17759d9' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; ... &#x27;Nov&#x27; &#x27;Dec&#x27;</div><input id='attrs-806be7c5-afc7-4c48-a6c1-b67cae3e7ea6' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-806be7c5-afc7-4c48-a6c1-b67cae3e7ea6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a1aac993-1e3d-4a99-acc7-23a589fe413c' class='xr-var-data-in' type='checkbox'><label for='data-a1aac993-1e3d-4a99-acc7-23a589fe413c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;,
-           &#x27;Nov&#x27;, &#x27;Dec&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>day-of-week</span></div><div class='xr-var-dims'>(day-of-week)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; ... &#x27;Sat&#x27; &#x27;Sun&#x27;</div><input id='attrs-4dfbd51e-cc05-4881-a5c8-49a028641bb6' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4dfbd51e-cc05-4881-a5c8-49a028641bb6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e59b399b-a7d3-4c78-9e94-5c12328f5aeb' class='xr-var-data-in' type='checkbox'><label for='data-e59b399b-a7d3-4c78-9e94-5c12328f5aeb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>hour</span></div><div class='xr-var-dims'>(hour)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3 4 5 6 7 ... 19 20 21 22 23 24</div><input id='attrs-b88eebe9-73da-4c53-9f87-aa84331d4d3f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b88eebe9-73da-4c53-9f87-aa84331d4d3f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7320069c-e4f4-4e27-bd32-5b10075ab983' class='xr-var-data-in' type='checkbox'><label for='data-7320069c-e4f4-4e27-bd32-5b10075ab983' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-           19, 20, 21, 22, 23, 24])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-f507946f-b9da-4bf3-a929-cb9a5fb67fa2' class='xr-section-summary-in' type='checkbox'  ><label for='section-f507946f-b9da-4bf3-a929-cb9a5fb67fa2' class='xr-section-summary' >Indexes: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>month</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-701bc479-c958-4d7c-ae6f-cf7fff9d6f7c' class='xr-index-data-in' type='checkbox'/><label for='index-701bc479-c958-4d7c-ae6f-cf7fff9d6f7c' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;,
-           &#x27;Nov&#x27;, &#x27;Dec&#x27;],
-          dtype=&#x27;object&#x27;, name=&#x27;month&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>day-of-week</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-4307f346-2c8d-4598-a3b0-fba240c47891' class='xr-index-data-in' type='checkbox'/><label for='index-4307f346-2c8d-4598-a3b0-fba240c47891' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;], dtype=&#x27;object&#x27;, name=&#x27;day-of-week&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>hour</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-5d3d615b-13cb-43f1-8781-88e4d0b334af' class='xr-index-data-in' type='checkbox'/><label for='index-5d3d615b-13cb-43f1-8781-88e4d0b334af' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Int64Index([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
-                18, 19, 20, 21, 22, 23, 24],
-               dtype=&#x27;int64&#x27;, name=&#x27;hour&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0575c0cb-c6a8-4f19-afc1-717aa3cdafd1' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-0575c0cb-c6a8-4f19-afc1-717aa3cdafd1' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+            [ 9, 13, 13, ...,  9, 17,  8]]], shape=(24, 7, 12))</pre></div></div></li><li class='xr-section-item'><input id='section-3de409c7-c998-4cae-9ce0-678f1f9f8678' class='xr-section-summary-in' type='checkbox' checked /><label for='section-3de409c7-c998-4cae-9ce0-678f1f9f8678' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>hour</span></div><div class='xr-var-dims'>(hour)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3 4 5 6 7 ... 19 20 21 22 23 24</div><input id='attrs-638399c4-6974-49d3-a420-74fdeee43e00' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-638399c4-6974-49d3-a420-74fdeee43e00' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-73d4174f-61a1-46f8-9b99-b9412942a3b3' class='xr-var-data-in' type='checkbox'><label for='data-73d4174f-61a1-46f8-9b99-b9412942a3b3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+           19, 20, 21, 22, 23, 24])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>day-of-week</span></div><div class='xr-var-dims'>(day-of-week)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; ... &#x27;Sat&#x27; &#x27;Sun&#x27;</div><input id='attrs-63e08eb0-8043-4e0a-8ce9-7550db779b6b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-63e08eb0-8043-4e0a-8ce9-7550db779b6b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5dbd2726-e445-4fdd-ae50-be966732ad09' class='xr-var-data-in' type='checkbox'><label for='data-5dbd2726-e445-4fdd-ae50-be966732ad09' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; ... &#x27;Nov&#x27; &#x27;Dec&#x27;</div><input id='attrs-fa6d0cd9-7c48-42cb-8fc0-8ee36983ec7c' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-fa6d0cd9-7c48-42cb-8fc0-8ee36983ec7c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ae428b74-5cb0-493e-85ba-be89b6291117' class='xr-var-data-in' type='checkbox'><label for='data-ae428b74-5cb0-493e-85ba-be89b6291117' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;,
+           &#x27;Nov&#x27;, &#x27;Dec&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li></ul></div></li></ul></div></div>
     </div>
     <br />
     <br />
@@ -569,7 +744,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-54
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dataset[0, 0, 0]
@@ -597,38 +772,87 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
-    html[theme=dark],
-    body[data-theme=dark],
+    html[theme="dark"],
+    html[data-theme="dark"],
+    body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1F1F1F;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -639,8 +863,11 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -651,39 +878,62 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
-      grid-template-columns: 150px auto auto 1fr 20px 20px;
+      grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: none;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
+      opacity: 0;
+      height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
+    }
+
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -691,11 +941,25 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -704,7 +968,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
     .xr-section-summary-in + label:before {
       display: inline-block;
-      content: '►';
+      content: "►";
       font-size: 11px;
       width: 15px;
       text-align: center;
@@ -715,7 +979,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-summary-in:checked + label:before {
-      content: '▼';
+      content: "▼";
     }
 
     .xr-section-summary-in:checked + label > span {
@@ -723,9 +987,9 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -733,13 +997,79 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -787,15 +1117,15 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-dim-list:before {
-      content: '(';
+      content: "(";
     }
 
     .xr-dim-list:after {
-      content: ')';
+      content: ")";
     }
 
     .xr-dim-list li:not(:last-child):after {
-      content: ',';
+      content: ",";
       padding-right: 5px;
     }
 
@@ -812,7 +1142,9 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -823,6 +1155,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -872,8 +1205,15 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -884,6 +1224,12 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -945,19 +1291,27 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
       stroke: currentColor;
       fill: currentColor;
     }
-    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt;
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
+    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt; Size: 8B
     array(11)
     Coordinates:
-        month        &lt;U3 &#x27;Jan&#x27;
-        day-of-week  &lt;U3 &#x27;Mon&#x27;
-        hour         int64 1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-90e8e8c8-157a-4d26-9ee4-2569d9530ae2' class='xr-array-in' type='checkbox' checked><label for='section-90e8e8c8-157a-4d26-9ee4-2569d9530ae2' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11</span></div><div class='xr-array-data'><pre>array(11)</pre></div></div></li><li class='xr-section-item'><input id='section-5d743b12-d451-48a5-8cf8-d462ea72272d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-5d743b12-d451-48a5-8cf8-d462ea72272d' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27;</div><input id='attrs-a8fda68b-4e4c-42d4-b4d1-87752e9ad4b7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a8fda68b-4e4c-42d4-b4d1-87752e9ad4b7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5dee778f-ff95-409b-a2dd-b7945cdd024d' class='xr-var-data-in' type='checkbox'><label for='data-5dee778f-ff95-409b-a2dd-b7945cdd024d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Jan&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>day-of-week</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27;</div><input id='attrs-e852fd9e-11a0-4e1a-9df9-6466e4b3bfb0' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-e852fd9e-11a0-4e1a-9df9-6466e4b3bfb0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b4e7073b-bf17-4d9c-9b9b-300b06016905' class='xr-var-data-in' type='checkbox'><label for='data-b4e7073b-bf17-4d9c-9b9b-300b06016905' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Mon&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hour</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-1d3c54ff-3ae4-422c-b193-b5e20252b096' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1d3c54ff-3ae4-422c-b193-b5e20252b096' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1455d290-913c-477d-84e6-640ed3826404' class='xr-var-data-in' type='checkbox'><label for='data-1455d290-913c-477d-84e6-640ed3826404' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-69acd2a7-1f0c-492e-87d0-da10ce2b9900' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-69acd2a7-1f0c-492e-87d0-da10ce2b9900' class='xr-section-summary'  title='Expand/collapse section'>Indexes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-d8bfdbde-253d-4a2e-b673-89ef282f2bee' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-d8bfdbde-253d-4a2e-b673-89ef282f2bee' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+        month        &lt;U3 12B &#x27;Jan&#x27;
+        day-of-week  &lt;U3 12B &#x27;Mon&#x27;
+        hour         int64 8B 1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-c3720df7-464b-4266-83c0-b85b15801b81' class='xr-array-in' type='checkbox' checked><label for='section-c3720df7-464b-4266-83c0-b85b15801b81' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11</span></div><div class='xr-array-data'><pre>array(11)</pre></div></div></li><li class='xr-section-item'><input id='section-73098fad-f294-4b22-b305-a31739c506ef' class='xr-section-summary-in' type='checkbox' checked /><label for='section-73098fad-f294-4b22-b305-a31739c506ef' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27;</div><input id='attrs-9f3d054a-50bc-476f-b7e4-b3f53037a3a9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9f3d054a-50bc-476f-b7e4-b3f53037a3a9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-24840ed8-292b-42b8-b220-0795c577d390' class='xr-var-data-in' type='checkbox'><label for='data-24840ed8-292b-42b8-b220-0795c577d390' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Jan&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>day-of-week</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27;</div><input id='attrs-4346db49-3cf2-460d-ba9a-e3a37a06e338' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4346db49-3cf2-460d-ba9a-e3a37a06e338' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a42d6319-94bb-4b10-9abd-dedc81930a6f' class='xr-var-data-in' type='checkbox'><label for='data-a42d6319-94bb-4b10-9abd-dedc81930a6f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Mon&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hour</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-dbc3874b-34e7-4fea-863d-12bfd708c661' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-dbc3874b-34e7-4fea-863d-12bfd708c661' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-54f4700c-1cc1-4b5c-aa97-6d6e445e95ae' class='xr-var-data-in' type='checkbox'><label for='data-54f4700c-1cc1-4b5c-aa97-6d6e445e95ae' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li></ul></div></li></ul></div></div>
     </div>
     <br />
     <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 55-57
 
-.. code-block:: default
+.. code-block:: Python
 
     dataset.loc[1, "Mon", "Jan"]
 
@@ -984,38 +1338,87 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
-    html[theme=dark],
-    body[data-theme=dark],
+    html[theme="dark"],
+    html[data-theme="dark"],
+    body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1F1F1F;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -1026,8 +1429,11 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -1038,39 +1444,62 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
-      grid-template-columns: 150px auto auto 1fr 20px 20px;
+      grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: none;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
+      opacity: 0;
+      height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
+    }
+
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -1078,11 +1507,25 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -1091,7 +1534,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
     .xr-section-summary-in + label:before {
       display: inline-block;
-      content: '►';
+      content: "►";
       font-size: 11px;
       width: 15px;
       text-align: center;
@@ -1102,7 +1545,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-summary-in:checked + label:before {
-      content: '▼';
+      content: "▼";
     }
 
     .xr-section-summary-in:checked + label > span {
@@ -1110,9 +1553,9 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -1120,13 +1563,79 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -1174,15 +1683,15 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-dim-list:before {
-      content: '(';
+      content: "(";
     }
 
     .xr-dim-list:after {
-      content: ')';
+      content: ")";
     }
 
     .xr-dim-list li:not(:last-child):after {
-      content: ',';
+      content: ",";
       padding-right: 5px;
     }
 
@@ -1199,7 +1708,9 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -1210,6 +1721,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -1259,8 +1771,15 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -1271,6 +1790,12 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -1332,19 +1857,27 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
       stroke: currentColor;
       fill: currentColor;
     }
-    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt;
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
+    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt; Size: 8B
     array(11)
     Coordinates:
-        month        &lt;U3 &#x27;Jan&#x27;
-        day-of-week  &lt;U3 &#x27;Mon&#x27;
-        hour         int64 1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-f1d73e62-cd47-4209-b4d2-73a277201fe8' class='xr-array-in' type='checkbox' checked><label for='section-f1d73e62-cd47-4209-b4d2-73a277201fe8' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11</span></div><div class='xr-array-data'><pre>array(11)</pre></div></div></li><li class='xr-section-item'><input id='section-bad6a041-7e18-422d-bda2-94411ca6f0f3' class='xr-section-summary-in' type='checkbox'  checked><label for='section-bad6a041-7e18-422d-bda2-94411ca6f0f3' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27;</div><input id='attrs-00948392-5955-45c1-93db-0ccd7c95de3e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-00948392-5955-45c1-93db-0ccd7c95de3e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c6813885-2f82-4f28-92fc-0e235464ff1f' class='xr-var-data-in' type='checkbox'><label for='data-c6813885-2f82-4f28-92fc-0e235464ff1f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Jan&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>day-of-week</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27;</div><input id='attrs-72f6a37d-ddd8-429c-b3c4-5911aac55655' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-72f6a37d-ddd8-429c-b3c4-5911aac55655' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9e2800a6-6350-4e28-86c2-ba295d7596f7' class='xr-var-data-in' type='checkbox'><label for='data-9e2800a6-6350-4e28-86c2-ba295d7596f7' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Mon&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hour</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-9b07d760-ec07-4232-9858-5f3757782a04' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9b07d760-ec07-4232-9858-5f3757782a04' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d7535d98-8f6a-4560-9275-82901c645cf4' class='xr-var-data-in' type='checkbox'><label for='data-d7535d98-8f6a-4560-9275-82901c645cf4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8385da23-763e-4678-9102-e92d198cc1b5' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-8385da23-763e-4678-9102-e92d198cc1b5' class='xr-section-summary'  title='Expand/collapse section'>Indexes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-da06ff87-479f-4751-afa4-689b274c199a' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-da06ff87-479f-4751-afa4-689b274c199a' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+        month        &lt;U3 12B &#x27;Jan&#x27;
+        day-of-week  &lt;U3 12B &#x27;Mon&#x27;
+        hour         int64 8B 1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-9bad12e2-b158-4eb4-98f8-32b6f27f4418' class='xr-array-in' type='checkbox' checked><label for='section-9bad12e2-b158-4eb4-98f8-32b6f27f4418' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11</span></div><div class='xr-array-data'><pre>array(11)</pre></div></div></li><li class='xr-section-item'><input id='section-f1d28eb3-42d5-48c4-9d4e-ef64131f97a1' class='xr-section-summary-in' type='checkbox' checked /><label for='section-f1d28eb3-42d5-48c4-9d4e-ef64131f97a1' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27;</div><input id='attrs-09876b7d-3593-4173-b627-c7d321ee029a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-09876b7d-3593-4173-b627-c7d321ee029a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7ff4408d-328c-444f-9e17-e37e0fb411ba' class='xr-var-data-in' type='checkbox'><label for='data-7ff4408d-328c-444f-9e17-e37e0fb411ba' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Jan&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>day-of-week</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27;</div><input id='attrs-fdd59af5-3d81-4681-ae74-02ebcb98ad97' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-fdd59af5-3d81-4681-ae74-02ebcb98ad97' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d7373b1f-cec0-4d32-ab27-61c6f7991ec8' class='xr-var-data-in' type='checkbox'><label for='data-d7373b1f-cec0-4d32-ab27-61c6f7991ec8' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Mon&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hour</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-7d61da89-27e8-4593-9c0b-73ca3114beba' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7d61da89-27e8-4593-9c0b-73ca3114beba' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e23028b4-5243-434e-b9f5-eacfa12dc06a' class='xr-var-data-in' type='checkbox'><label for='data-e23028b4-5243-434e-b9f5-eacfa12dc06a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li></ul></div></li></ul></div></div>
     </div>
     <br />
     <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 58-60
 
-.. code-block:: default
+.. code-block:: Python
 
     dataset.loc[{"month": "Jan", "hour": 1, "day-of-week": "Mon"}]
 
@@ -1371,38 +1904,87 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
-    html[theme=dark],
-    body[data-theme=dark],
+    html[theme="dark"],
+    html[data-theme="dark"],
+    body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1F1F1F;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -1413,8 +1995,11 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -1425,39 +2010,62 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
-      grid-template-columns: 150px auto auto 1fr 20px 20px;
+      grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: none;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
+      opacity: 0;
+      height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
+    }
+
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -1465,11 +2073,25 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -1478,7 +2100,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
     .xr-section-summary-in + label:before {
       display: inline-block;
-      content: '►';
+      content: "►";
       font-size: 11px;
       width: 15px;
       text-align: center;
@@ -1489,7 +2111,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-summary-in:checked + label:before {
-      content: '▼';
+      content: "▼";
     }
 
     .xr-section-summary-in:checked + label > span {
@@ -1497,9 +2119,9 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -1507,13 +2129,79 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -1561,15 +2249,15 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     }
 
     .xr-dim-list:before {
-      content: '(';
+      content: "(";
     }
 
     .xr-dim-list:after {
-      content: ')';
+      content: ")";
     }
 
     .xr-dim-list li:not(:last-child):after {
-      content: ',';
+      content: ",";
       padding-right: 5px;
     }
 
@@ -1586,7 +2274,9 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -1597,6 +2287,7 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -1646,8 +2337,15 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -1658,6 +2356,12 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -1719,12 +2423,20 @@ There are two common ways to slice xarray DataArrays, either by numerical index 
       stroke: currentColor;
       fill: currentColor;
     }
-    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt;
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
+    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt; Size: 8B
     array(11)
     Coordinates:
-        month        &lt;U3 &#x27;Jan&#x27;
-        day-of-week  &lt;U3 &#x27;Mon&#x27;
-        hour         int64 1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-8cb185b5-321b-4d98-854c-4e0b90b9279a' class='xr-array-in' type='checkbox' checked><label for='section-8cb185b5-321b-4d98-854c-4e0b90b9279a' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11</span></div><div class='xr-array-data'><pre>array(11)</pre></div></div></li><li class='xr-section-item'><input id='section-fb7a6e91-9cbd-4de6-91fe-755ddd1c5e6f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-fb7a6e91-9cbd-4de6-91fe-755ddd1c5e6f' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27;</div><input id='attrs-7eb763ad-e2a4-4732-b07b-3b0abb678521' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7eb763ad-e2a4-4732-b07b-3b0abb678521' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-be066d6f-5294-46f4-82ed-460bafb3c333' class='xr-var-data-in' type='checkbox'><label for='data-be066d6f-5294-46f4-82ed-460bafb3c333' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Jan&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>day-of-week</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27;</div><input id='attrs-8c470686-110b-4b58-9365-11a98f28cc33' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8c470686-110b-4b58-9365-11a98f28cc33' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7b2cd927-1d19-46b4-89af-b6966a4f41d2' class='xr-var-data-in' type='checkbox'><label for='data-7b2cd927-1d19-46b4-89af-b6966a4f41d2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Mon&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hour</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-d2cf1572-fbe0-485f-9c16-8e99476f8435' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-d2cf1572-fbe0-485f-9c16-8e99476f8435' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-191c196e-3dcb-44ce-a143-ef979fdce1a9' class='xr-var-data-in' type='checkbox'><label for='data-191c196e-3dcb-44ce-a143-ef979fdce1a9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-132d90ec-2340-4a7a-a1ff-9d0dc601e5fa' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-132d90ec-2340-4a7a-a1ff-9d0dc601e5fa' class='xr-section-summary'  title='Expand/collapse section'>Indexes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-dc18aae9-011f-4abc-814a-ffa3d6b6d76b' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-dc18aae9-011f-4abc-814a-ffa3d6b6d76b' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+        month        &lt;U3 12B &#x27;Jan&#x27;
+        day-of-week  &lt;U3 12B &#x27;Mon&#x27;
+        hour         int64 8B 1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-81a23566-9a03-4977-9db0-e68ad213fa71' class='xr-array-in' type='checkbox' checked><label for='section-81a23566-9a03-4977-9db0-e68ad213fa71' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>11</span></div><div class='xr-array-data'><pre>array(11)</pre></div></div></li><li class='xr-section-item'><input id='section-22907172-e1f5-4738-b100-d42f201db99b' class='xr-section-summary-in' type='checkbox' checked /><label for='section-22907172-e1f5-4738-b100-d42f201db99b' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27;</div><input id='attrs-ca3f7069-1fd5-4fef-8262-c2b17a38ccce' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ca3f7069-1fd5-4fef-8262-c2b17a38ccce' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5faed437-ab9d-407b-84ea-d3765b951eef' class='xr-var-data-in' type='checkbox'><label for='data-5faed437-ab9d-407b-84ea-d3765b951eef' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Jan&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>day-of-week</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27;</div><input id='attrs-a32f0b62-4486-4cbf-ac57-5a5dc7a296d5' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a32f0b62-4486-4cbf-ac57-5a5dc7a296d5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e15481e3-8d92-4869-810e-fafd0f2c11c5' class='xr-var-data-in' type='checkbox'><label for='data-e15481e3-8d92-4869-810e-fafd0f2c11c5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(&#x27;Mon&#x27;, dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hour</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-8c252a9a-f15f-476d-bcab-b8d72bf73425' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8c252a9a-f15f-476d-bcab-b8d72bf73425' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4846dd00-5b35-44ab-b810-28a089b555e9' class='xr-var-data-in' type='checkbox'><label for='data-4846dd00-5b35-44ab-b810-28a089b555e9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(1)</pre></div></li></ul></div></li></ul></div></div>
     </div>
     <br />
     <br />
@@ -1739,7 +2451,7 @@ the hour mode.
 
 .. GENERATED FROM PYTHON SOURCE LINES 66-69
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dataset.mean("hour")
@@ -1767,38 +2479,87 @@ the hour mode.
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
-    html[theme=dark],
-    body[data-theme=dark],
+    html[theme="dark"],
+    html[data-theme="dark"],
+    body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1F1F1F;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -1809,8 +2570,11 @@ the hour mode.
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -1821,39 +2585,62 @@ the hour mode.
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
-      grid-template-columns: 150px auto auto 1fr 20px 20px;
+      grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: none;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
+      opacity: 0;
+      height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
+    }
+
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -1861,11 +2648,25 @@ the hour mode.
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -1874,7 +2675,7 @@ the hour mode.
 
     .xr-section-summary-in + label:before {
       display: inline-block;
-      content: '►';
+      content: "►";
       font-size: 11px;
       width: 15px;
       text-align: center;
@@ -1885,7 +2686,7 @@ the hour mode.
     }
 
     .xr-section-summary-in:checked + label:before {
-      content: '▼';
+      content: "▼";
     }
 
     .xr-section-summary-in:checked + label > span {
@@ -1893,9 +2694,9 @@ the hour mode.
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -1903,13 +2704,79 @@ the hour mode.
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -1957,15 +2824,15 @@ the hour mode.
     }
 
     .xr-dim-list:before {
-      content: '(';
+      content: "(";
     }
 
     .xr-dim-list:after {
-      content: ')';
+      content: ")";
     }
 
     .xr-dim-list li:not(:last-child):after {
-      content: ',';
+      content: ",";
       padding-right: 5px;
     }
 
@@ -1982,7 +2849,9 @@ the hour mode.
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -1993,6 +2862,7 @@ the hour mode.
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -2042,8 +2912,15 @@ the hour mode.
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -2054,6 +2931,12 @@ the hour mode.
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -2115,7 +2998,15 @@ the hour mode.
       stroke: currentColor;
       fill: currentColor;
     }
-    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (day-of-week: 7, month: 12)&gt;
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
+    </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (day-of-week: 7, month: 12)&gt; Size: 672B
     array([[ 9.16666667, 10.33333333, 10.04166667,  9.29166667,  9.45833333,
              9.125     , 10.20833333, 11.25      , 10.33333333, 10.29166667,
              9.08333333, 10.75      ],
@@ -2138,8 +3029,8 @@ the hour mode.
             11.625     ,  9.625     , 10.58333333,  9.54166667, 10.75      ,
             10.83333333,  9.58333333]])
     Coordinates:
-      * month        (month) &lt;U3 &#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; &#x27;Apr&#x27; ... &#x27;Sep&#x27; &#x27;Oct&#x27; &#x27;Nov&#x27; &#x27;Dec&#x27;
-      * day-of-week  (day-of-week) &lt;U3 &#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; &#x27;Thu&#x27; &#x27;Fri&#x27; &#x27;Sat&#x27; &#x27;Sun&#x27;</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span class='xr-has-index'>day-of-week</span>: 7</li><li><span class='xr-has-index'>month</span>: 12</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-a6e236e5-3fe2-4af1-bdd5-d05ccad77bbe' class='xr-array-in' type='checkbox' checked><label for='section-a6e236e5-3fe2-4af1-bdd5-d05ccad77bbe' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>9.167 10.33 10.04 9.292 9.458 9.125 ... 10.58 9.542 10.75 10.83 9.583</span></div><div class='xr-array-data'><pre>array([[ 9.16666667, 10.33333333, 10.04166667,  9.29166667,  9.45833333,
+      * day-of-week  (day-of-week) &lt;U3 84B &#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; &#x27;Thu&#x27; &#x27;Fri&#x27; &#x27;Sat&#x27; &#x27;Sun&#x27;
+      * month        (month) &lt;U3 144B &#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; &#x27;Apr&#x27; ... &#x27;Oct&#x27; &#x27;Nov&#x27; &#x27;Dec&#x27;</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'></div><ul class='xr-dim-list'><li><span class='xr-has-index'>day-of-week</span>: 7</li><li><span class='xr-has-index'>month</span>: 12</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-38acc8cd-a75a-4a8b-a69b-5cde60ac185c' class='xr-array-in' type='checkbox' checked><label for='section-38acc8cd-a75a-4a8b-a69b-5cde60ac185c' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>9.167 10.33 10.04 9.292 9.458 9.125 ... 10.58 9.542 10.75 10.83 9.583</span></div><div class='xr-array-data'><pre>array([[ 9.16666667, 10.33333333, 10.04166667,  9.29166667,  9.45833333,
              9.125     , 10.20833333, 11.25      , 10.33333333, 10.29166667,
              9.08333333, 10.75      ],
            [ 9.75      , 10.125     ,  9.125     ,  9.        ,  9.79166667,
@@ -2159,10 +3050,8 @@ the hour mode.
             10.875     , 10.5       ],
            [ 9.91666667, 10.83333333, 10.04166667,  9.875     ,  9.95833333,
             11.625     ,  9.625     , 10.58333333,  9.54166667, 10.75      ,
-            10.83333333,  9.58333333]])</pre></div></div></li><li class='xr-section-item'><input id='section-904f8c3d-2002-4839-b958-5635bfed7c08' class='xr-section-summary-in' type='checkbox'  checked><label for='section-904f8c3d-2002-4839-b958-5635bfed7c08' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; ... &#x27;Nov&#x27; &#x27;Dec&#x27;</div><input id='attrs-a700df4b-7041-4604-89dd-bbe041908f7a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a700df4b-7041-4604-89dd-bbe041908f7a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e55a71ed-77c2-481c-a275-5ee96987aaec' class='xr-var-data-in' type='checkbox'><label for='data-e55a71ed-77c2-481c-a275-5ee96987aaec' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;,
-           &#x27;Nov&#x27;, &#x27;Dec&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>day-of-week</span></div><div class='xr-var-dims'>(day-of-week)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; ... &#x27;Sat&#x27; &#x27;Sun&#x27;</div><input id='attrs-60d8ab3a-e6f3-4678-9cbb-154dfbcbedd3' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-60d8ab3a-e6f3-4678-9cbb-154dfbcbedd3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ce00eacd-8a9a-46d9-8e0f-e4cd7bac3d85' class='xr-var-data-in' type='checkbox'><label for='data-ce00eacd-8a9a-46d9-8e0f-e4cd7bac3d85' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-69ff9484-1442-4720-9fc1-47665841c322' class='xr-section-summary-in' type='checkbox'  ><label for='section-69ff9484-1442-4720-9fc1-47665841c322' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>month</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-529b467e-0476-4a75-8e57-61ecca2c6f4a' class='xr-index-data-in' type='checkbox'/><label for='index-529b467e-0476-4a75-8e57-61ecca2c6f4a' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;,
-           &#x27;Nov&#x27;, &#x27;Dec&#x27;],
-          dtype=&#x27;object&#x27;, name=&#x27;month&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>day-of-week</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-f2b77be7-53d8-4281-89be-ff7a3f9edb09' class='xr-index-data-in' type='checkbox'/><label for='index-f2b77be7-53d8-4281-89be-ff7a3f9edb09' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;], dtype=&#x27;object&#x27;, name=&#x27;day-of-week&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0a1634d6-3195-4b50-90f5-ab7468e7a881' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-0a1634d6-3195-4b50-90f5-ab7468e7a881' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+            10.83333333,  9.58333333]])</pre></div></div></li><li class='xr-section-item'><input id='section-0b14168d-a072-4a01-92d7-7e8d6659a1f0' class='xr-section-summary-in' type='checkbox' checked /><label for='section-0b14168d-a072-4a01-92d7-7e8d6659a1f0' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>day-of-week</span></div><div class='xr-var-dims'>(day-of-week)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Mon&#x27; &#x27;Tue&#x27; &#x27;Wed&#x27; ... &#x27;Sat&#x27; &#x27;Sun&#x27;</div><input id='attrs-bb3fbdf8-4e2e-4ef2-ba59-78e9a3611153' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-bb3fbdf8-4e2e-4ef2-ba59-78e9a3611153' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-41614122-e6df-4ecb-b696-0792709a864a' class='xr-var-data-in' type='checkbox'><label for='data-41614122-e6df-4ecb-b696-0792709a864a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Jan&#x27; &#x27;Feb&#x27; &#x27;Mar&#x27; ... &#x27;Nov&#x27; &#x27;Dec&#x27;</div><input id='attrs-6f862f68-5c8e-4da0-8f60-adb20d687c70' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6f862f68-5c8e-4da0-8f60-adb20d687c70' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-cbb41589-249b-49ef-adb6-169f182f13c2' class='xr-var-data-in' type='checkbox'><label for='data-cbb41589-249b-49ef-adb6-169f182f13c2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;,
+           &#x27;Nov&#x27;, &#x27;Dec&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li></ul></div></li></ul></div></div>
     </div>
     <br />
     <br />
@@ -2178,7 +3067,7 @@ heatmaps and histograms. For more examples of the xarray functionality, see the
 
 .. GENERATED FROM PYTHON SOURCE LINES 76-80
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dataset.plot()
@@ -2198,7 +3087,7 @@ heatmaps and histograms. For more examples of the xarray functionality, see the
 
 .. GENERATED FROM PYTHON SOURCE LINES 81-84
 
-.. code-block:: default
+.. code-block:: Python
 
     dataset.mean(dim="hour").plot()
     plt.show()
@@ -2226,7 +3115,7 @@ to access the NumPy array that xarray stores the data in behind the scenes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 91-92
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dataset.data
@@ -2286,14 +3175,14 @@ to access the NumPy array that xarray stores the data in behind the scenes.
             ...,
             [12,  7,  5, ...,  9, 15,  5],
             [ 9,  5, 13, ..., 10, 11, 13],
-            [ 9, 13, 13, ...,  9, 17,  8]]])
+            [ 9, 13, 13, ...,  9, 17,  8]]], shape=(24, 7, 12))
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.187 seconds)
+   **Total running time of the script:** (0 minutes 0.143 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_working_with_xarray.py:
@@ -2302,14 +3191,17 @@ to access the NumPy array that xarray stores the data in behind the scenes.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_working_with_xarray.ipynb <plot_working_with_xarray.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_working_with_xarray.py <plot_working_with_xarray.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_working_with_xarray.ipynb <plot_working_with_xarray.ipynb>`
+      :download:`Download zipped: plot_working_with_xarray.zip <plot_working_with_xarray.zip>`
 
 
 .. only:: html

@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Core consistency &#8212; TLViz 0.1.7 documentation</title> 
+    <title>Core consistency &#8212; TLViz 0.1.8 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -16,19 +15,20 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/documentation_options.js?v=22607128"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -139,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_outlier_detection.html">Outlier detection with PARAFAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_replicability_analysis.html">Replicability analysis</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
@@ -171,22 +172,22 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-core-consistency-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-core-consistency-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="core-consistency">
-<span id="sphx-glr-auto-examples-plot-core-consistency-py"></span><span id="id1"></span><h1>Core consistency<a class="headerlink" href="#core-consistency" title="Permalink to this heading">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-core-consistency-py"></span><span id="id1"></span><h1>Core consistency<a class="headerlink" href="#core-consistency" title="Link to this heading">¶</a></h1>
 <p>A popular metric for evaluating the validity of PARAFAC models is the core consistency diagnostic (sometimes called
 CORCONDIA) <span id="id2">[<a class="reference internal" href="../references.html#id2" title="Rasmus Bro and Henk AL Kiers. A new efficient method for determining the number of components in parafac models. Journal of Chemometrics: A Journal of the Chemometrics Society, 17(5):274–286, 2003.">BK03</a>]</span>. In this example, we’ll see how, why and when the core consistency works well.</p>
 <p>We start by fitting a four-component model to the amino acids dataset. First, we import the relevant modules
 and create a utility function to fit many PARAFAC models.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorly.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">parafac</span>
 
-<span class="kn">import</span> <span class="nn">tlviz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tlviz</span>
 
 
-<span class="k">def</span> <span class="nf">fit_parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">model_candidates</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">parafac</span><span class="p">(</span>
             <span class="n">X</span><span class="p">,</span>
@@ -205,7 +206,7 @@ and create a utility function to fit many PARAFAC models.</p>
 </pre></div>
 </div>
 <p>Then we load the data and fit a PARAFAC model to it.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aminoacids</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_aminoacids</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">aminoacids</span> <span class="o">=</span> <span class="n">tlviz</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_aminoacids</span><span class="p">()</span>
 <span class="n">four_component_cp</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">aminoacids</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -231,7 +232,7 @@ off-diagonal entries are equal to <span class="math notranslate nohighlight">\(0
 get a better fit by allowing for interactions between the components. To check this, we can compute and inspect the
 optimal <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> given the factor matrices we found with PARAFAC.</p>
 <p>Let’s look at the entries we get for <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> with the PARAFAC model we fitted to the amino acids dataset.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_heatmap</span><span class="p">(</span><span class="n">four_component_cp</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_heatmap</span><span class="p">(</span><span class="n">four_component_cp</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -243,7 +244,7 @@ interaction between component 0, 1 and 3.</p>
 heatmap shows where the interactions are, it can be difficult to see exactly how strong they are. It is, therefore,
 also helpful to look at a plot of the core elements, sorted, so the superdiagonal are plotted first, and the
 off-diagonal entries are plotted afterwards.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_plot</span><span class="p">(</span><span class="n">four_component_cp</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_plot</span><span class="p">(</span><span class="n">four_component_cp</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -262,7 +263,7 @@ with the other modes.</p>
 indicates that we can improve the fit by including linear interactions (sometimes, the core consistency is defined
 by dividing by <span class="math notranslate nohighlight">\(\| \mathcal{G} \|^2\)</span> instead of R). We can use the core consistency to select an appropriate
 PARAFAC model from a set of candidates. Below is an example where we have done that</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
     <span class="n">models</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_parafac</span><span class="p">(</span><span class="n">aminoacids</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">num_inits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
@@ -273,18 +274,18 @@ PARAFAC model from a set of candidates. Below is an example where we have done t
 </div>
 <img src="../_images/sphx_glr_plot_core_consistency_003.png" srcset="../_images/sphx_glr_plot_core_consistency_003.png" alt="plot core consistency" class = "sphx-glr-single-img"/><p>Here, we see that for one, two and three components, the core consistency is high, but when we look at four
 components, the core consistency becomes very small. The three-component model is, therefore, a good choice.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_heatmap</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">aminoacids</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_heatmap</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">aminoacids</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_core_consistency_004.png" srcset="../_images/sphx_glr_plot_core_consistency_004.png" alt="core_tensor[0, :, :], core_tensor[1, :, :], core_tensor[2, :, :]" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_plot</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">aminoacids</span><span class="p">)</span>
+<img src="../_images/sphx_glr_plot_core_consistency_004.png" srcset="../_images/sphx_glr_plot_core_consistency_004.png" alt="core_tensor[0, :, :], core_tensor[1, :, :], core_tensor[2, :, :]" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tlviz</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">core_element_plot</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">aminoacids</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_core_consistency_005.png" srcset="../_images/sphx_glr_plot_core_consistency_005.png" alt="Core consistency: 99.8" class = "sphx-glr-single-img"/><p>Here, we see that <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> are very similar, which indicates that the
 three-component model could be a good choice for this dataset.</p>
 <section id="final-note">
-<h2>Final note<a class="headerlink" href="#final-note" title="Permalink to this heading">¶</a></h2>
+<h2>Final note<a class="headerlink" href="#final-note" title="Link to this heading">¶</a></h2>
 <p>It is important to note that the core consistency is not guaranteed to tell us which model to use. There are several
 cases where the core consistency may fail. Some examples are:</p>
 <blockquote>
@@ -301,13 +302,16 @@ know the true underlying factor matrices.</p></li>
 <p>The core consistency can be very low in all these cases, even for the “best” model. Therefore, it is essential to
 consider more than just the core consistency when selecting the best model. Examples are initialisation stability,
 split half stability, and looking at the component vectors to see if they make sense.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.948 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.158 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-core-consistency-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e2811346db51d1fc8049078e572db601/plot_core_consistency.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_core_consistency.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/6d4067d825291338758bdc518aa34e99/plot_core_consistency.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_core_consistency.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/e2811346db51d1fc8049078e572db601/plot_core_consistency.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_core_consistency.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/3bba550212ddc01d6c48641283dd35b0/plot_core_consistency.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_core_consistency.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

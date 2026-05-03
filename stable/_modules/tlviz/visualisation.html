@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tlviz.visualisation &#8212; TLViz 0.1.7 documentation</title> 
+    <title>tlviz.visualisation &#8212; TLViz 0.1.8 documentation</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -15,18 +14,19 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=22607128"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -119,27 +119,27 @@
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
 
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.lines</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line2D</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">factor_tools</span><span class="p">,</span> <span class="n">model_evaluation</span><span class="p">,</span> <span class="n">postprocessing</span>
-<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="n">_handle_none_weights_cp_tensor</span><span class="p">,</span> <span class="n">is_dataframe</span><span class="p">,</span> <span class="n">is_iterable</span>
-<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">to_numpy_cp</span>
-<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="n">_handle_labelled_cp</span><span class="p">,</span> <span class="n">_handle_labelled_dataset</span>
-<span class="kn">from</span> <span class="nn">.model_evaluation</span> <span class="kn">import</span> <span class="n">estimate_core_tensor</span>
-<span class="kn">from</span> <span class="nn">.outliers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">factor_tools</span><span class="p">,</span> <span class="n">model_evaluation</span><span class="p">,</span> <span class="n">postprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._module_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_handle_none_weights_cp_tensor</span><span class="p">,</span> <span class="n">is_dataframe</span><span class="p">,</span> <span class="n">is_iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._tl_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">to_numpy_cp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._xarray_wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">_handle_labelled_cp</span><span class="p">,</span> <span class="n">_handle_labelled_dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.model_evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">estimate_core_tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.outliers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_LEVERAGE_NAME</span><span class="p">,</span>
     <span class="n">_SLABWISE_SSE_NAME</span><span class="p">,</span>
     <span class="n">compute_outlier_info</span><span class="p">,</span>
     <span class="n">get_leverage_outlier_threshold</span><span class="p">,</span>
     <span class="n">get_slabwise_sse_outlier_threshold</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;scree_plot&quot;</span><span class="p">,</span>
@@ -156,7 +156,24 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="scree_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.scree_plot">[docs]</a><span class="k">def</span> <span class="nf">scree_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;Fit&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_next_style</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the next style of the matplotlib axes property cycler and increment its position.</span>
+
+<span class="sd">    Before Matplotlib v3.8, we directly accessed the prop_cycler of ax._get_lines. However this attribute</span>
+<span class="sd">    was deleted to make pickling work correctly for Matplotlib axes, so now we need this workaround.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">_get_lines</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="s2">&quot;prop_cycler&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">lines</span><span class="o">.</span><span class="n">prop_cycler</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">_cycler_items</span><span class="p">[</span><span class="n">lines</span><span class="o">.</span><span class="n">_idx</span><span class="p">]</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">lines</span><span class="o">.</span><span class="n">_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="o">.</span><span class="n">_cycler_items</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="scree_plot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.scree_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">scree_plot</span><span class="p">(</span><span class="n">cp_tensors</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;Fit&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create scree plot for the given cp tensors.</span>
 
 <span class="sd">    A scree plot is a plot with the model on the x-axis and a metric (often fit)</span>
@@ -255,11 +272,14 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="histogram_of_residuals"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.histogram_of_residuals">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="histogram_of_residuals">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.histogram_of_residuals">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">histogram_of_residuals</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">standardised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">histogram_of_residuals</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">standardised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a histogram of model residuals (:math:`\hat{\mathbf{\mathcal{X}}} - \mathbf{\mathcal{X}}`).</span>
 
 <span class="sd">    Parameters</span>
@@ -294,7 +314,7 @@
 <span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)</span>
 <span class="sd">        &gt;&gt;&gt; est_cp = parafac(X, 3)</span>
 <span class="sd">        &gt;&gt;&gt; histogram_of_residuals(est_cp, X)</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;Histogram of residuals&#39;}, xlabel=&#39;Standardised residuals&#39;, ylabel=&#39;Frequency&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;Histogram of residuals&#39;}, xlabel=&#39;Standardised residuals&#39;, ylabel=&#39;Frequency&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">estimated_dataset</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
@@ -315,11 +335,14 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="residual_qq"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.residual_qq">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="residual_qq">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.residual_qq">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_labelled_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">residual_qq</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_pingouin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">residual_qq</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_pingouin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;QQ-plot of the model residuals.</span>
 
 <span class="sd">    By default, ``statsmodels`` is used to create the QQ-plot. However,</span>
@@ -361,7 +384,7 @@
 <span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=0)</span>
 <span class="sd">        &gt;&gt;&gt; est_cp = parafac(X, 3)</span>
 <span class="sd">        &gt;&gt;&gt; residual_qq(est_cp, X)</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;QQ-plot of residuals&#39;}, xlabel=&#39;Theoretical Quantiles&#39;, ylabel=&#39;Sample Quantiles&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;QQ-plot of residuals&#39;}, xlabel=&#39;Theoretical Quantiles&#39;, ylabel=&#39;Sample Quantiles&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">estimated_dataset</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
@@ -371,7 +394,7 @@
         <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">use_pingouin</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="kn">from</span> <span class="nn">pingouin</span> <span class="kn">import</span> <span class="n">qqplot</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pingouin</span><span class="w"> </span><span class="kn">import</span> <span class="n">qqplot</span>
 
         <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;GPL-3 Lisenced code is loaded, so this code also follows the GPL-3 license.&quot;</span><span class="p">)</span>
         <span class="n">qqplot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -382,9 +405,12 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="outlier_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.outlier_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="outlier_plot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.outlier_plot">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_alias_mode_axis</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">outlier_plot</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">outlier_plot</span><span class="p">(</span>
     <span class="n">cp_tensor</span><span class="p">,</span>
     <span class="n">dataset</span><span class="p">,</span>
     <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -454,7 +480,7 @@
 <span class="sd">        &gt;&gt;&gt; outlier_plot(</span>
 <span class="sd">        ...     cp, data, leverage_rules_of_thumb=&#39;p-value&#39;, residual_rules_of_thumb=&#39;p-value&#39;, p_value=[0.05, 0.01]</span>
 <span class="sd">        ... )</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">    We can also provide multiple types of rules of thumb</span>
@@ -477,7 +503,7 @@
 <span class="sd">        &gt;&gt;&gt; outlier_plot(</span>
 <span class="sd">        ...     cp, data, leverage_rules_of_thumb=[&#39;huber lower&#39;, &#39;hw higher&#39;], residual_rules_of_thumb=&#39;two sigma&#39;</span>
 <span class="sd">        ... )</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;Outlier plot for End station name&#39;}, xlabel=&#39;Leverage score&#39;, ylabel=&#39;Slabwise SSE&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">    See Also</span>
@@ -555,7 +581,7 @@
 
     <span class="c1"># Draw the lines</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">leverage_thresholds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="nb">next</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">_get_lines</span><span class="o">.</span><span class="n">prop_cycler</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">_get_next_style</span><span class="p">(</span><span class="n">ax</span><span class="p">))</span>
 
     <span class="n">residual_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">residual_rules_of_thumb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -582,17 +608,20 @@
                     <span class="n">name</span> <span class="o">=</span> <span class="n">residual_rule_of_thumb</span>
                 <span class="n">residual_thresholds</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">residual_thresholds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="nb">next</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">_get_lines</span><span class="o">.</span><span class="n">prop_cycler</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">_get_next_style</span><span class="p">(</span><span class="n">ax</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">leverage_thresholds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_thresholds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="component_scatterplot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.component_scatterplot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="component_scatterplot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.component_scatterplot">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
 <span class="nd">@_alias_mode_axis</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">x_component</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_component</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">component_scatterplot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">x_component</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_component</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scatterplot of two columns in a factor matrix.</span>
 
 <span class="sd">    Create a scatterplot with the columns of a factor matrix as feature-vectors.</span>
@@ -638,7 +667,7 @@
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; cp_tensor = random_cp(shape=(5,10,15), rank=2)</span>
 <span class="sd">        &gt;&gt;&gt; component_scatterplot(cp_tensor, mode=0)</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">    Eexample with PCA of a real stock dataset</span>
@@ -670,7 +699,7 @@
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; # Visualise the components with components_plot</span>
 <span class="sd">        &gt;&gt;&gt; component_scatterplot(cp_tensor, mode=1)</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;Component plot&#39;}, xlabel=&#39;Component 0&#39;, ylabel=&#39;Component 1&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -696,9 +725,12 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="core_element_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.core_element_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="core_element_plot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.core_element_plot">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">core_element_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">core_element_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scatter plot with the elements of the optimal core tensor for a given CP tensor.</span>
 
 <span class="sd">    If the CP-model is appropriate for the data, then the core tensor should</span>
@@ -741,7 +773,7 @@
 <span class="sd">        &gt;&gt;&gt; true_cp, X = simulated_random_cp_tensor((10, 20, 30), 3, seed=42)</span>
 <span class="sd">        &gt;&gt;&gt; est_cp = parafac(X, 3)</span>
 <span class="sd">        &gt;&gt;&gt; core_element_plot(est_cp, X)</span>
-<span class="sd">        &lt;AxesSubplot: title={&#39;center&#39;: &#39;Core consistency: 99.8&#39;}, xlabel=&#39;Core element&#39;, ylabel=&#39;Value&#39;&gt;</span>
+<span class="sd">        &lt;Axes: title={&#39;center&#39;: &#39;Core consistency: 99.8&#39;}, xlabel=&#39;Core element&#39;, ylabel=&#39;Value&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
@@ -803,7 +835,8 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<span class="k">def</span> <span class="nf">_srgb_to_luminance</span><span class="p">(</span><span class="n">srgb</span><span class="p">):</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_srgb_to_luminance</span><span class="p">(</span><span class="n">srgb</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the Y of XYZ.</span>
 
 <span class="sd">    Computed based on a preview of the IEC 61966-2-1:1999/AMD1:2003 standard. Downloaded</span>
@@ -824,7 +857,7 @@
     <span class="k">return</span> <span class="n">srgb_linear</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2126</span><span class="p">,</span> <span class="mf">0.7152</span><span class="p">,</span> <span class="mf">0.0722</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">_get_core_tensor_index</span><span class="p">(</span><span class="n">slab_idx</span><span class="p">,</span> <span class="n">slice_mode</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_core_tensor_index</span><span class="p">(</span><span class="n">slab_idx</span><span class="p">,</span> <span class="n">slice_mode</span><span class="p">):</span>
     <span class="n">slices</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">slice_strs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
@@ -839,7 +872,7 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">slices</span><span class="p">),</span> <span class="n">slice_str</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_diverging_cmap</span><span class="p">(</span><span class="n">selected_slab</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_diverging_cmap</span><span class="p">(</span><span class="n">selected_slab</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span><span class="p">):</span>
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
     <span class="n">scaled_slab</span> <span class="o">=</span> <span class="p">(</span><span class="n">selected_slab</span> <span class="o">+</span> <span class="n">vmax</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">vmax</span><span class="p">)</span>
     <span class="n">scaled_slab</span><span class="p">[</span><span class="n">scaled_slab</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -847,7 +880,7 @@
     <span class="k">return</span> <span class="n">cmap</span><span class="p">(</span><span class="n">scaled_slab</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_get_text_color</span><span class="p">(</span><span class="n">bg_rgb</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_text_color</span><span class="p">(</span><span class="n">bg_rgb</span><span class="p">):</span>
     <span class="n">luminance</span> <span class="o">=</span> <span class="n">_srgb_to_luminance</span><span class="p">(</span><span class="n">bg_rgb</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">luminance</span> <span class="o">&gt;</span> <span class="mf">0.408</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;0.15&quot;</span>
@@ -855,9 +888,11 @@
         <span class="k">return</span> <span class="s2">&quot;white&quot;</span>
 
 
-<div class="viewcode-block" id="core_element_heatmap"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.core_element_heatmap">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="viewcode-block" id="core_element_heatmap">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.core_element_heatmap">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">core_element_heatmap</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">slice_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text_fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">core_element_heatmap</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">slice_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text_fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a heatmap of the slabs of the optimal core tensor for a given CP tensor and dataset.</span>
 
 <span class="sd">    It can be useful look at the optimal core tensor for a given CP tensor. This can give valuable information about which</span>
@@ -961,9 +996,12 @@
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
 
 
-<div class="viewcode-block" id="components_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.components_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="components_plot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.components_plot">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_none_weights_cp_tensor</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">components_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;normalise&quot;</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">components_plot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;normalise&quot;</span><span class="p">,</span> <span class="n">weight_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot the component vectors of a CP model.</span>
 
 <span class="sd">    Parameters</span>
@@ -1059,7 +1097,10 @@
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
 
 
-<div class="viewcode-block" id="component_comparison_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.component_comparison_plot">[docs]</a><span class="k">def</span> <span class="nf">component_comparison_plot</span><span class="p">(</span>
+
+<div class="viewcode-block" id="component_comparison_plot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.component_comparison_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">component_comparison_plot</span><span class="p">(</span>
     <span class="n">cp_tensors</span><span class="p">,</span>
     <span class="n">row</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
     <span class="n">weight_behaviour</span><span class="o">=</span><span class="s2">&quot;normalise&quot;</span><span class="p">,</span>
@@ -1227,7 +1268,10 @@
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
 
 
-<div class="viewcode-block" id="optimisation_diagnostic_plots"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.optimisation_diagnostic_plots">[docs]</a><span class="k">def</span> <span class="nf">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">error_logs</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="p">):</span>
+
+<div class="viewcode-block" id="optimisation_diagnostic_plots">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.optimisation_diagnostic_plots">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">optimisation_diagnostic_plots</span><span class="p">(</span><span class="n">error_logs</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Diagnostic plots for the optimisation problem.</span>
 
 <span class="sd">    This function creates two plots. One plot that shows the loss value for each initialisation</span>
@@ -1376,9 +1420,12 @@
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
 
 
-<div class="viewcode-block" id="percentage_variation_plot"><a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.percentage_variation_plot">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="percentage_variation_plot">
+<a class="viewcode-back" href="../../api/visualisation.html#tlviz.visualisation.percentage_variation_plot">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">percentage_variation_plot</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">percentage_variation_plot</span><span class="p">(</span>
     <span class="n">cp_tensor</span><span class="p">,</span>
     <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
@@ -1417,7 +1464,7 @@
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)</span>
 <span class="sd">        &gt;&gt;&gt; percentage_variation_plot(cp_tensor)</span>
-<span class="sd">        &lt;AxesSubplot: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="sd">        &lt;Axes: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">    We can also get the percentage of variation in the data that each component explains</span>
@@ -1431,7 +1478,7 @@
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)</span>
 <span class="sd">        &gt;&gt;&gt; percentage_variation_plot(cp_tensor, dataset, method=&quot;data&quot;)</span>
-<span class="sd">        &lt;AxesSubplot: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="sd">        &lt;Axes: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">    Or both the variation in the data and in the model</span>
@@ -1445,7 +1492,7 @@
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; cp_tensor, dataset = simulated_random_cp_tensor(shape=(5,10,15), rank=3, noise_level=0.5, seed=0)</span>
 <span class="sd">        &gt;&gt;&gt; percentage_variation_plot(cp_tensor, dataset, method=&quot;both&quot;)</span>
-<span class="sd">        &lt;AxesSubplot: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
+<span class="sd">        &lt;Axes: xlabel=&#39;Component number&#39;, ylabel=&#39;Percentage variation explained [%]&#39;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1465,6 +1512,7 @@
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Component number&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Percentage variation explained [%]&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span></div>
+
 </pre></div>
 
       </div>

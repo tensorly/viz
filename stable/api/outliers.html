@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Outlier detection &#8212; TLViz 0.1.7 documentation</title> 
+    <title>Outlier detection &#8212; TLViz 0.1.8 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -16,19 +15,20 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/documentation_options.js?v=22607128"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -169,7 +169,7 @@
       <div class="container content main-content">
         
   <section id="module-tlviz.outliers">
-<span id="outlier-detection"></span><h1>Outlier detection<a class="headerlink" href="#module-tlviz.outliers" title="Permalink to this heading">¶</a></h1>
+<span id="outlier-detection"></span><h1>Outlier detection<a class="headerlink" href="#module-tlviz.outliers" title="Link to this heading">¶</a></h1>
 <p><strong>Functions:</strong></p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -192,7 +192,7 @@
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.outliers.compute_leverage">
-<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_leverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_leverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_leverage" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_leverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_leverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_leverage" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the leverage score of the given factor matrix.</p>
 <p>The leverage score is a measure of how much “influence” a slab (often representing a sample)
 has on a tensor factorisation model. To compute the leverage score for the different slabs,
@@ -238,8 +238,8 @@ is equal to a scaled version of leverage computed based on centered factor matri
 </dl>
 <p class="rubric">Examples</p>
 <p>In this example, we compute the leverage of a random factor matrix</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.outliers</span> <span class="kn">import</span> <span class="n">compute_leverage</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.outliers</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_leverage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">leverage_scores</span> <span class="o">=</span> <span class="n">compute_leverage</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -256,7 +256,7 @@ is equal to a scaled version of leverage computed based on centered factor matri
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.outliers.compute_outlier_info">
-<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_outlier_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">true_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalise_sse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_outlier_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_outlier_info" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_outlier_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">true_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalise_sse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_outlier_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_outlier_info" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the leverage score and (normalised) slabwise SSE along one axis.</p>
 <p>These metrics are often plotted against each other to discover outliers.</p>
 <dl class="field-list simple">
@@ -299,7 +299,7 @@ argument and a tuple of components as second argument</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.outliers.compute_slabwise_sse">
-<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_slabwise_sse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimated</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_slabwise_sse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_slabwise_sse" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">compute_slabwise_sse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimated</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#compute_slabwise_sse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.compute_slabwise_sse" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the (normalised) slabwise SSE along the given mode(s).</p>
 <p>For a tensor, <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>, and an estimated tensor <span class="math notranslate nohighlight">\(\hat{\mathcal{X}}\)</span>,
 we compute the <span class="math notranslate nohighlight">\(i\)</span>-th normalised slabwise residual as</p>
@@ -337,7 +337,7 @@ then the returned tensor is too.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.outliers.get_leverage_outlier_threshold">
-<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">get_leverage_outlier_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leverage_scores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'p_value'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#get_leverage_outlier_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.get_leverage_outlier_threshold" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">get_leverage_outlier_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leverage_scores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'p_value'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#get_leverage_outlier_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.get_leverage_outlier_threshold" title="Link to this definition">¶</a></dt>
 <dd><p>Compute threshold for detecting possible outliers based on leverage.</p>
 <p><strong>Huber’s heuristic for selecting outliers</strong></p>
 <p>In Robust Statistics, Huber <span id="id4">[<a class="reference internal" href="../references.html#id6" title="P.J. Huber and E.M. Ronchetti. Robust Statistics. Wiley Series in Probability and Statistics. Wiley, 2009. ISBN 9780470129906.">HR09</a>]</span> shows that that if the leverage score,
@@ -402,13 +402,13 @@ and may be outliers.</p>
 Here, we use Monte-Carlo estimation to demonstrate that the p-value derived in <span id="id13">[<a class="reference internal" href="../references.html#id7" title="D.A. Belsley, E. Kuh, and R.E. Welsch. Regression Diagnostics: Identifying Influential Data and Sources of Collinearity. Wiley Series in Probability and Statistics - Applied Probability and Statistics Section Series. Wiley, 1980. ISBN 9780471058564.">BKW80</a>]</span>
 is valid only for large number of components.</p>
 <p>We start by importing some utilities</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">bootstrap</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.outliers</span> <span class="kn">import</span> <span class="n">compute_leverage</span><span class="p">,</span> <span class="n">get_leverage_outlier_threshold</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">bootstrap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.outliers</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_leverage</span><span class="p">,</span> <span class="n">get_leverage_outlier_threshold</span>
 </pre></div>
 </div>
 <p>Here, we create a function that computes the false positive rate</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_false_positive_rate</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p_value</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">compute_false_positive_rate</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p_value</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="n">h</span> <span class="o">=</span> <span class="n">compute_leverage</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -447,7 +447,7 @@ also, so this method is only a rule-of-thumb and can still be useful.</p>
 <p><strong>Hotelling’s T-squared statistic requires few components or many samples:</strong>
 Here, we use Monte-Carlo estimation to demonstrate that the Hotelling T-squared statistic is only valid with
 many samples.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_hotelling_false_positive_rate</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p_value</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">compute_hotelling_false_positive_rate</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p_value</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="n">h</span> <span class="o">=</span> <span class="n">compute_leverage</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -482,7 +482,7 @@ many samples.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tlviz.outliers.get_slabwise_sse_outlier_threshold">
-<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">get_slabwise_sse_outlier_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slab_sse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'p-value'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#get_slabwise_sse_outlier_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.get_slabwise_sse_outlier_threshold" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">tlviz.outliers.</span></span><span class="sig-name descname"><span class="pre">get_slabwise_sse_outlier_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slab_sse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'p-value'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tlviz/outliers.html#get_slabwise_sse_outlier_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tlviz.outliers.get_slabwise_sse_outlier_threshold" title="Link to this definition">¶</a></dt>
 <dd><p>Compute rule-of-thumb threshold values for suspicious residuals.</p>
 <p>One way to determine possible outliers is to examine how well the model describes
 the different data points. A standard way of measuring this, is by the slab-wise
@@ -518,15 +518,15 @@ and may be outliers.</p>
 <p class="rubric">Examples</p>
 <p>Here, we see that the p-value gives a good cutoff if the noise is normally distributed</p>
 <p>We start by importing the tools we’ll need</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">bootstrap</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.outliers</span> <span class="kn">import</span> <span class="n">compute_slabwise_sse</span><span class="p">,</span> <span class="n">get_slabwise_sse_outlier_threshold</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tlviz.utils</span> <span class="kn">import</span> <span class="n">cp_to_tensor</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">bootstrap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.outliers</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_slabwise_sse</span><span class="p">,</span> <span class="n">get_slabwise_sse_outlier_threshold</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tlviz.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">cp_to_tensor</span>
 </pre></div>
 </div>
 <p>Then, we create a function to compute the false positive rate. This will be useful for our
 bootstrap estimate for the true false positive rate.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_false_positive_rate</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">p_value</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">compute_false_positive_rate</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">p_value</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_components</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num_components</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">num_components</span><span class="p">))</span>

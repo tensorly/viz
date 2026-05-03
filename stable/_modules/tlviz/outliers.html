@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tlviz.outliers &#8212; TLViz 0.1.7 documentation</title> 
+    <title>tlviz.outliers &#8212; TLViz 0.1.8 documentation</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -15,18 +14,19 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=22607128"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -119,14 +119,14 @@
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marie Roald &amp; Yngve Mardal Moe&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 
-<span class="kn">from</span> <span class="nn">._module_utils</span> <span class="kn">import</span> <span class="n">is_dataframe</span><span class="p">,</span> <span class="n">is_iterable</span><span class="p">,</span> <span class="n">is_xarray</span>
-<span class="kn">from</span> <span class="nn">._tl_utils</span> <span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">_SINGLETON</span>
-<span class="kn">from</span> <span class="nn">._xarray_wrapper</span> <span class="kn">import</span> <span class="n">is_labelled_dataset</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._module_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_dataframe</span><span class="p">,</span> <span class="n">is_iterable</span><span class="p">,</span> <span class="n">is_xarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._tl_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_handle_tensorly_backends_cp</span><span class="p">,</span> <span class="n">_handle_tensorly_backends_dataset</span><span class="p">,</span> <span class="n">_SINGLETON</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._xarray_wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_labelled_dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_alias_mode_axis</span><span class="p">,</span> <span class="n">cp_to_tensor</span>
 
 <span class="n">_LEVERAGE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Leverage score&quot;</span>
 <span class="n">_SLABWISE_SSE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Slabwise SSE&quot;</span>
@@ -140,13 +140,13 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">factor_matrix</span>
     <span class="n">leverage</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">leverage</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="p">{</span><span class="n">axis</span><span class="p">}</span>
     <span class="n">axis</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
@@ -159,10 +159,12 @@
         <span class="k">return</span> <span class="n">SSE</span>
 
 
-<div class="viewcode-block" id="compute_slabwise_sse"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_slabwise_sse">[docs]</a><span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+<div class="viewcode-block" id="compute_slabwise_sse">
+<a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_slabwise_sse">[docs]</a>
+<span class="nd">@_alias_mode_axis</span><span class="p">()</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;estimated&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_slabwise_sse</span><span class="p">(</span><span class="n">estimated</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the (normalised) slabwise SSE along the given mode(s).</span>
 
 <span class="sd">    For a tensor, :math:`\mathcal{X}`, and an estimated tensor :math:`\hat{\mathcal{X}}`,</span>
@@ -225,8 +227,11 @@
     <span class="k">return</span> <span class="n">slab_sse</span></div>
 
 
-<div class="viewcode-block" id="compute_leverage"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_leverage">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
+
+<div class="viewcode-block" id="compute_leverage">
+<a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_leverage">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;factor_matrix&quot;</span><span class="p">,</span> <span class="n">_SINGLETON</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_leverage</span><span class="p">(</span><span class="n">factor_matrix</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the leverage score of the given factor matrix.</span>
 
 <span class="sd">    The leverage score is a measure of how much &quot;influence&quot; a slab (often representing a sample)</span>
@@ -300,10 +305,13 @@
         <span class="k">return</span> <span class="n">leverage</span></div>
 
 
-<div class="viewcode-block" id="compute_outlier_info"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_outlier_info">[docs]</a><span class="nd">@_alias_mode_axis</span><span class="p">()</span>
+
+<div class="viewcode-block" id="compute_outlier_info">
+<a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.compute_outlier_info">[docs]</a>
+<span class="nd">@_alias_mode_axis</span><span class="p">()</span>
 <span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;true_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="nd">@_handle_tensorly_backends_cp</span><span class="p">(</span><span class="s2">&quot;cp_tensor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_outlier_info</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">true_tensor</span><span class="p">,</span> <span class="n">normalise_sse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_outlier_info</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">true_tensor</span><span class="p">,</span> <span class="n">normalise_sse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the leverage score and (normalised) slabwise SSE along one axis.</span>
 
 <span class="sd">    These metrics are often plotted against each other to discover outliers.</span>
@@ -360,8 +368,11 @@
     <span class="k">return</span> <span class="n">results</span></div>
 
 
-<div class="viewcode-block" id="get_leverage_outlier_threshold"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_leverage_outlier_threshold">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;leverage_scores&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p_value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+
+<div class="viewcode-block" id="get_leverage_outlier_threshold">
+<a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_leverage_outlier_threshold">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;leverage_scores&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_leverage_outlier_threshold</span><span class="p">(</span><span class="n">leverage_scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p_value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute threshold for detecting possible outliers based on leverage.</span>
 
 <span class="sd">    **Huber&#39;s heuristic for selecting outliers**</span>
@@ -560,8 +571,11 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_slabwise_sse_outlier_threshold"><a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold">[docs]</a><span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;slab_sse&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_slabwise_sse_outlier_threshold</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="get_slabwise_sse_outlier_threshold">
+<a class="viewcode-back" href="../../api/outliers.html#tlviz.outliers.get_slabwise_sse_outlier_threshold">[docs]</a>
+<span class="nd">@_handle_tensorly_backends_dataset</span><span class="p">(</span><span class="s2">&quot;slab_sse&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_slabwise_sse_outlier_threshold</span><span class="p">(</span><span class="n">slab_sse</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute rule-of-thumb threshold values for suspicious residuals.</span>
 
 <span class="sd">    One way to determine possible outliers is to examine how well the model describes</span>
@@ -665,6 +679,7 @@
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method must be one of &#39;two sigma&#39;, &#39;p-value&#39;, or &#39;bonferroni p-value&#39;, not &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+
 </pre></div>
 
       </div>

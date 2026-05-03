@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_split_half_analysis.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_split_half_analysis.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -40,7 +40,7 @@ Imports and utilities
 
 .. GENERATED FROM PYTHON SOURCE LINES 21-31
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -67,7 +67,7 @@ initialisations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 35-53
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -103,7 +103,7 @@ We start with some simulated data, since then, we know exactly how many componen
 
 .. GENERATED FROM PYTHON SOURCE LINES 58-62
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cp_tensor, dataset = tlviz.data.simulated_random_cp_tensor((30, 40, 50), 4, noise_level=0.2, labelled=True)
@@ -125,7 +125,7 @@ We split the data randomly along the second mode
 
 .. GENERATED FROM PYTHON SOURCE LINES 67-76
 
-.. code-block:: default
+.. code-block:: Python
 
 
     I, J, K = dataset.shape
@@ -152,7 +152,7 @@ We split the data randomly along the second mode
 
 .. GENERATED FROM PYTHON SOURCE LINES 81-91
 
-.. code-block:: default
+.. code-block:: Python
 
 
     models = {}
@@ -193,7 +193,7 @@ affected by the sampling.
 
 .. GENERATED FROM PYTHON SOURCE LINES 99-106
 
-.. code-block:: default
+.. code-block:: Python
 
 
     split_half_stability = {}
@@ -216,7 +216,7 @@ Plotting the  factor similarity
 
 .. GENERATED FROM PYTHON SOURCE LINES 109-117
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig, ax = plt.subplots()
@@ -270,7 +270,7 @@ for 2021, fit PARAFAC models for these two datasets and compare the similarity o
 
 .. GENERATED FROM PYTHON SOURCE LINES 144-175
 
-.. code-block:: default
+.. code-block:: Python
 
 
     bike_data = tlviz.data.load_oslo_city_bike()
@@ -334,7 +334,7 @@ further with five components. This indicates that three components is a good cho
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 2 minutes  54.338 seconds)
+   **Total running time of the script:** (1 minutes 43.570 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_split_half_analysis.py:
@@ -343,14 +343,17 @@ further with five components. This indicates that three components is a good cho
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_split_half_analysis.ipynb <plot_split_half_analysis.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_split_half_analysis.py <plot_split_half_analysis.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_split_half_analysis.ipynb <plot_split_half_analysis.ipynb>`
+      :download:`Download zipped: plot_split_half_analysis.zip <plot_split_half_analysis.zip>`
 
 
 .. only:: html
