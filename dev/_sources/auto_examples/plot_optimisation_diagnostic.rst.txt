@@ -179,7 +179,7 @@ Another thing we can look at is how similar the different initialisations are wi
 
  .. code-block:: none
 
-    [np.float64(0.4708859077815532), np.float64(0.5920264839417724), np.float64(0.7423143022576455), np.float64(0.5533437244458712), np.float64(0.4101864771363849), np.float64(0.6463514554346694), np.float64(0.5885236057058181), np.float64(0.613315441976393), np.float64(0.4110835038963997), np.float64(0.9999999999999998)]
+    [np.float64(0.4708859077815791), np.float64(0.5920264839416948), np.float64(0.7423143022577989), np.float64(0.5533437244457796), np.float64(0.41018647713635215), np.float64(0.6463514554346987), np.float64(0.5885236057058754), np.float64(0.6133154419764137), np.float64(0.4110835038963934), np.float64(1.0)]
 
 
 
@@ -205,7 +205,7 @@ seems unstable. Let's also compare the selected  model with the true decompositi
 
  .. code-block:: none
 
-    0.661220081903127
+    0.6612200819031306
 
 
 
@@ -299,7 +299,7 @@ Let's compare the similarity between the different initialisations and the selec
 
  .. code-block:: none
 
-    [np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575)]
+    [np.float64(0.5126378280857938), np.float64(0.6068598338966351), np.float64(0.9999999999999998), np.float64(0.4978209914214002), np.float64(0.48813790247495986), np.float64(0.6744315207763182), np.float64(0.761900337920648), np.float64(0.8086975562739676), np.float64(0.5034024525852254), np.float64(0.9914718665026709)]
 
 
 
@@ -388,7 +388,7 @@ Let's compare the similarity between them and the selected decomposition too.
 
  .. code-block:: none
 
-    [np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575), np.float64(0.819008854610944), np.float64(0.9775165519843764), np.float64(0.728333213598958), np.float64(0.9907696759770085), np.float64(0.6357626037558778), np.float64(0.9775611091931088), np.float64(0.9912200986978796), np.float64(0.5736136740755045), np.float64(0.7574342297344882), np.float64(0.9889962033747185)]
+    [np.float64(0.5126378280857938), np.float64(0.6068598338966351), np.float64(0.9999999999999998), np.float64(0.4978209914214002), np.float64(0.48813790247495986), np.float64(0.6744315207763182), np.float64(0.761900337920648), np.float64(0.8086975562739676), np.float64(0.5034024525852254), np.float64(0.9914718665026709), np.float64(0.8190088546109442), np.float64(0.9775165519844368), np.float64(0.7283332135985395), np.float64(0.9907696759770672), np.float64(0.6357626037557824), np.float64(0.9775611091929471), np.float64(0.9912200986979502), np.float64(0.5736136740755164), np.float64(0.7574342297344825), np.float64(0.9889962033747572)]
 
 
 
@@ -428,7 +428,7 @@ Finally, let's compare our selected model with the true decomposition!
 
  .. code-block:: none
 
-    0.9321826461234626
+    0.9321826461235293
 
 
 
@@ -436,7 +436,7 @@ Finally, let's compare our selected model with the true decomposition!
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.940 seconds)
+   **Total running time of the script:** (0 minutes 5.657 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimisation_diagnostic.py:

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimisation diagnostics with PARAFAC models &#8212; TLViz 0.1.7 documentation</title> 
+    <title>Optimisation diagnostics with PARAFAC models &#8212; TLViz 0.1.8 documentation</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../_static/documentation_options.js?v=22607128"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -241,7 +241,7 @@ Another thing we can look at is how similar the different initialisations are wi
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.4708859077815532), np.float64(0.5920264839417724), np.float64(0.7423143022576455), np.float64(0.5533437244458712), np.float64(0.4101864771363849), np.float64(0.6463514554346694), np.float64(0.5885236057058181), np.float64(0.613315441976393), np.float64(0.4110835038963997), np.float64(0.9999999999999998)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.4708859077815791), np.float64(0.5920264839416948), np.float64(0.7423143022577989), np.float64(0.5533437244457796), np.float64(0.41018647713635215), np.float64(0.6463514554346987), np.float64(0.5885236057058754), np.float64(0.6133154419764137), np.float64(0.4110835038963934), np.float64(1.0)]
 </pre></div>
 </div>
 <p>We see that the different initialisations do not resemble the selected initialisation much. So the optimisation
@@ -250,7 +250,7 @@ seems unstable. Let’s also compare the selected  model with the true decomposi
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">factor_match_score</span><span class="p">(</span><span class="n">first_attempt</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.661220081903127
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.6612200819031306
 </pre></div>
 </div>
 <p>So the decomposition is, as we expected, not very good… Let’s try to increase the maximum number of iterations!</p>
@@ -289,7 +289,7 @@ Let’s compare the similarity between the different initialisations and the sel
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">second_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.5126378280857938), np.float64(0.6068598338966351), np.float64(0.9999999999999998), np.float64(0.4978209914214002), np.float64(0.48813790247495986), np.float64(0.6744315207763182), np.float64(0.761900337920648), np.float64(0.8086975562739676), np.float64(0.5034024525852254), np.float64(0.9914718665026709)]
 </pre></div>
 </div>
 <p>Ok, we got two similar decompositions.
@@ -326,7 +326,7 @@ Let’s compare the similarity between them and the selected decomposition too.<
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">similarity_evaluation</span><span class="p">(</span><span class="n">third_attempt</span><span class="p">,</span> <span class="n">estimated_cp_tensors</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.5126378280857551), np.float64(0.6068598338964849), np.float64(1.0000000000000002), np.float64(0.4978209914214391), np.float64(0.48813790247496797), np.float64(0.6744315207762689), np.float64(0.7619003379206897), np.float64(0.8086975562730121), np.float64(0.5034024525851466), np.float64(0.991471866502575), np.float64(0.819008854610944), np.float64(0.9775165519843764), np.float64(0.728333213598958), np.float64(0.9907696759770085), np.float64(0.6357626037558778), np.float64(0.9775611091931088), np.float64(0.9912200986978796), np.float64(0.5736136740755045), np.float64(0.7574342297344882), np.float64(0.9889962033747185)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[np.float64(0.5126378280857938), np.float64(0.6068598338966351), np.float64(0.9999999999999998), np.float64(0.4978209914214002), np.float64(0.48813790247495986), np.float64(0.6744315207763182), np.float64(0.761900337920648), np.float64(0.8086975562739676), np.float64(0.5034024525852254), np.float64(0.9914718665026709), np.float64(0.8190088546109442), np.float64(0.9775165519844368), np.float64(0.7283332135985395), np.float64(0.9907696759770672), np.float64(0.6357626037557824), np.float64(0.9775611091929471), np.float64(0.9912200986979502), np.float64(0.5736136740755164), np.float64(0.7574342297344825), np.float64(0.9889962033747572)]
 </pre></div>
 </div>
 <p>Here we also see that many of the initialisations were similar.
@@ -346,10 +346,10 @@ Finally, let’s compare our selected model with the true decomposition!</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461234626
+<img src="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" srcset="../_images/sphx_glr_plot_optimisation_diagnostic_004.png" alt="plot optimisation diagnostic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9321826461235293
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.940 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.657 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimisation-diagnostic-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a83bc4cc697ea80937f6c10d46189a40/plot_optimisation_diagnostic.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimisation_diagnostic.ipynb</span></code></a></p>
