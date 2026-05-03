@@ -9,6 +9,7 @@ isort
 bump2version
 plotly
 tensorly
+scikit-learn
 sphinx
 sphinxcontrib-bibtex
 sphinx-gallery
