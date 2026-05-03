@@ -5,6 +5,10 @@
 Gallery of examples
 ===================
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -148,6 +152,23 @@ Gallery of examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example desrcibes how replicability of patterns can be used to guide the component selection process for PARAFAC models :citereprref1, reprref2, reprref3.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_replicability_analysis_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/plot_replicability_analysis`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Replicability analysis</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -166,6 +187,7 @@ Gallery of examples
    /auto_examples/plot_split_half_analysis
    /auto_examples/plot_selecting_aminoacids_components
    /auto_examples/plot_outlier_detection
+   /auto_examples/plot_replicability_analysis
 
 
 .. only:: html

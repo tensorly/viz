@@ -22,7 +22,7 @@ print(type(cp_tensor[1][0]))
 ## <class 'numpy.ndarray'>
 print(type(cp_tensor_postprocessed[1][0]))
 # Expected:
-## <class 'pandas.core.frame.DataFrame'>
+## <class 'pandas.DataFrame'>
 #
 # We see that after postprocessing, the factor matrix has unit norm
 #

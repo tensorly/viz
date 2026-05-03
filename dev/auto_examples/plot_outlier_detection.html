@@ -18,22 +18,23 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../api.html" />
+    <link rel="next" title="Replicability analysis" href="plot_replicability_analysis.html" />
     <link rel="prev" title="Selecting the number of components in PARAFAC models" href="plot_selecting_aminoacids_components.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -138,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Outlier detection with PARAFAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_replicability_analysis.html">Replicability analysis</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
@@ -339,7 +341,7 @@ which is apparent from the factor match score.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The FMS is </span><span class="si">{</span><span class="n">fms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.66
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.67
 </pre></div>
 </div>
 <p>We can also create the outlier plot again to see which samples are suspicious.</p>
@@ -364,7 +366,7 @@ the model much, while sample 3 has a low error, but does affect the model. Let u
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The FMS is </span><span class="si">{</span><span class="n">fms</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.96
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FMS is 0.98
 </pre></div>
 </div>
 <div class="admonition note">
@@ -444,7 +446,7 @@ However, with real data, it is usually not this clear.
 Different cut-off values can give different outliers.
 Therefore, it is crucial to look at the data and evaluate which data points
 to remove and not on a case-by-case basis.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.004 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.510 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-outlier-detection-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/114ec741bad9663cf99bd36ece9955e8/plot_outlier_detection.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_outlier_detection.ipynb</span></code></a></p>
@@ -475,8 +477,8 @@ to remove and not on a case-by-case basis.</p>
     </a>
     
     
-    <a class="button pagination-next" href="../api.html" title="next page" accesskey="n">
-        <span>API Reference </span>
+    <a class="button pagination-next" href="plot_replicability_analysis.html" title="next page" accesskey="n">
+        <span>Replicability analysis </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>

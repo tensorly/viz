@@ -18,15 +18,16 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -137,6 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_split_half_analysis.html">Split-half analysis for selecting the number of components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_selecting_aminoacids_components.html">Selecting the number of components in PARAFAC models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_outlier_detection.html">Outlier detection with PARAFAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_replicability_analysis.html">Replicability analysis</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
@@ -169,7 +171,7 @@
         
   <section id="gallery-of-examples">
 <span id="examples"></span><h1>Gallery of examples<a class="headerlink" href="#gallery-of-examples" title="Link to this heading">¶</a></h1>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="TLViz uses labelled decompositions, implemented by storing the factor matrices as Pandas DataFrames. This makes it easy to make rich visualisations with the different decompositions. However, sometimes, we just want to plot the result directly from TensorLy. Luckily, this is also possible, even when we are using non-numpy backends."><img alt="" src="../_images/sphx_glr_plot_labelled_decompositions_thumb.png" />
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="TLViz uses labelled decompositions, implemented by storing the factor matrices as Pandas DataFrames. This makes it easy to make rich visualisations with the different decompositions. However, sometimes, we just want to plot the result directly from TensorLy. Luckily, this is also possible, even when we are using non-numpy backends."><img alt="" src="../_images/sphx_glr_plot_labelled_decompositions_thumb.png" />
 <p><a class="reference internal" href="plot_labelled_decompositions.html"><span class="doc">Labelled decompositions</span></a></p>
   <div class="sphx-glr-thumbnail-title">Labelled decompositions</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="TLViz recommends storing your datasets as xarray DataArrays, which supports labelled multi-way datasets, so the metadata is stored together with the dataset in one object."><img alt="" src="../_images/sphx_glr_plot_working_with_xarray_thumb.png" />
@@ -193,6 +195,9 @@
 </div><div class="sphx-glr-thumbcontainer" tooltip="There are two metrics that are commonly used for detecting outliers in PARAFAC models: leverage and residuals."><img alt="" src="../_images/sphx_glr_plot_outlier_detection_thumb.png" />
 <p><a class="reference internal" href="plot_outlier_detection.html"><span class="doc">Outlier detection with PARAFAC</span></a></p>
   <div class="sphx-glr-thumbnail-title">Outlier detection with PARAFAC</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example desrcibes how replicability of patterns can be used to guide the component selection process for PARAFAC models :citereprref1, reprref2, reprref3."><img alt="" src="../_images/sphx_glr_plot_replicability_analysis_thumb.png" />
+<p><a class="reference internal" href="plot_replicability_analysis.html"><span class="doc">Replicability analysis</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Replicability analysis</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:38.271** total execution time for 8 files **from all galleries**:
+**04:00.404** total execution time for 9 files **from all galleries**:
 
 .. container::
 
@@ -33,26 +33,29 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_split_half_analysis.py` (``../examples/plot_split_half_analysis.py``)
-     - 01:43.518
+     - 01:49.016
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_replicability_analysis.py` (``../examples/plot_replicability_analysis.py``)
+     - 01:13.166
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bike_plotly.py` (``../examples/plot_bike_plotly.py``)
-     - 00:22.744
+     - 00:27.429
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_selecting_aminoacids_components.py` (``../examples/plot_selecting_aminoacids_components.py``)
-     - 00:08.841
+     - 00:08.681
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_core_consistency.py` (``../examples/plot_core_consistency.py``)
-     - 00:07.687
+     - 00:07.305
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_optimisation_diagnostic.py` (``../examples/plot_optimisation_diagnostic.py``)
-     - 00:06.833
+     - 00:06.940
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_outlier_detection.py` (``../examples/plot_outlier_detection.py``)
-     - 00:05.004
+     - 00:04.510
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_labelled_decompositions.py` (``../examples/plot_labelled_decompositions.py``)
-     - 00:03.497
+     - 00:03.195
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_working_with_xarray.py` (``../examples/plot_working_with_xarray.py``)
-     - 00:00.147
+     - 00:00.163
      - 0.0
